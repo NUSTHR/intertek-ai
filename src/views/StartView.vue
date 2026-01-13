@@ -1,10 +1,22 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useQuestionnaireStore } from '@/stores/questionnaire'
 
 const router = useRouter()
 const store = useQuestionnaireStore()
+
+const friendlyError = computed(() => {
+  const raw = store.error ?? ''
+  const lower = raw.toLowerCase()
+  if (lower.includes('failed to fetch') || lower.includes('load_failed')) {
+    return '后端未启动或不可达（127.0.0.1:8000）'
+  }
+  if (lower.includes('tree_http_') || lower.includes('results_http_')) {
+    return '后端接口返回异常'
+  }
+  return raw
+})
 
 onMounted(async () => {
   await store.load()
@@ -14,6 +26,10 @@ async function start() {
   store.reset()
   await store.load()
   await router.push({ name: 'question', params: { id: store.startId } })
+}
+
+async function retry() {
+  await store.load()
 }
 </script>
 
@@ -25,59 +41,12 @@ async function start() {
     </header>
 
     <div v-if="store.loading" class="muted">加载中…</div>
-    <div v-else-if="store.error" class="error">加载失败：{{ store.error }}</div>
-    <button v-else class="primary" type="button" @click="start">开始</button>
+    <div v-else-if="store.error" class="error">
+      <div>加载失败：{{ friendlyError }}</div>
+      <button class="btn btn-ghost" type="button" @click="retry">重试</button>
+    </div>
+    <button v-else class="btn btn-primary" type="button" @click="start">开始</button>
   </section>
 </template>
 
-<style scoped>
-.card {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 16px;
-  padding: 20px;
-}
-
-.header {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 18px;
-}
-
-.title {
-  margin: 0;
-  font-size: 22px;
-  line-height: 1.25;
-}
-
-.subtitle {
-  margin: 0;
-  color: rgba(230, 237, 243, 0.72);
-  font-size: 14px;
-}
-
-.primary {
-  appearance: none;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: #2563eb;
-  color: #fff;
-  font-size: 14px;
-  padding: 10px 14px;
-  border-radius: 12px;
-  cursor: pointer;
-}
-
-.primary:hover {
-  background: #1d4ed8;
-}
-
-.muted {
-  color: rgba(230, 237, 243, 0.72);
-}
-
-.error {
-  color: #fecaca;
-}
-</style>
-
+<style scoped></style>
