@@ -69,4 +69,5 @@ async function restart() {
   border: 1px solid rgba(211, 167, 0, 0.35);
   margin-bottom: 16px;
 }
+
 </style>

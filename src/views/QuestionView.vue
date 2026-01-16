@@ -198,7 +198,7 @@ async function goNext() {
   background: transparent;
   padding: 6px 8px;
   cursor: pointer;
-  color: rgba(12, 15, 18, 0.82);
+  color: #bf952c;
   font-weight: 750;
   letter-spacing: 0.2px;
 }

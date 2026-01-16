@@ -56,10 +56,7 @@ async function retry() {
 </template>
 
 <style scoped>
-.card-footer {
-  justify-content: center;
-  margin-top: 0.25cm;
-}
+
 
 .kicker {
   display: inline-flex;
@@ -71,7 +68,7 @@ async function retry() {
   font-size: 12px;
   letter-spacing: 0.5px;
   text-transform: uppercase;
-  color: rgba(12, 15, 18, 0.72);
+  color: #8B6508;
   background: rgba(211, 167, 0, 0.14);
   border: 1px solid rgba(211, 167, 0, 0.35);
 }
@@ -90,6 +87,14 @@ async function retry() {
 .subhero-title {
   font-size: 14px;
   line-height: 1.33;
-  color: #757166;
+  background: linear-gradient(45deg, #FFD700, #8B6508);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.card-footer {
+  justify-content: center;
+  margin-top: 0.25cm;
 }
 </style>
