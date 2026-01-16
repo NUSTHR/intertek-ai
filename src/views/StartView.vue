@@ -35,18 +35,48 @@ async function retry() {
 
 <template>
   <section class="card">
-    <header class="header">
-      <h1 class="title">欧盟《人工智能法》合规认证快速自查问卷</h1>
-      <p class="subtitle">点击答案逐题判断，最终给出结果。</p>
-    </header>
+    <div class="card-body page-center">
+      <div class="kicker">EU AI Act</div>
+      <header class="header">
+        <h2 class="title hero-title">EU AI Act Risk Classifier</h2>
+        <p class="subtitle">Determine your risk level under the EU AI Act.</p>
+      </header>
 
-    <div v-if="store.loading" class="muted">加载中…</div>
-    <div v-else-if="store.error" class="error">
-      <div>加载失败：{{ friendlyError }}</div>
-      <button class="btn btn-ghost" type="button" @click="retry">重试</button>
+      <div v-if="store.loading" class="muted">加载中…</div>
+      <div v-else-if="store.error" class="error">
+        <div>加载失败：{{ friendlyError }}</div>
+        <button class="btn" type="button" @click="retry">重试</button>
+      </div>
     </div>
-    <button v-else class="btn btn-primary" type="button" @click="start">开始</button>
+
+    <div class="card-footer">
+      <button class="footer-btn" type="button" :disabled="!!store.error || store.loading" @click="start">Start</button>
+    </div>
   </section>
 </template>
 
-<style scoped></style>
+<style scoped>
+.card-footer {
+  justify-content: center;
+}
+
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin-bottom: 14px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: rgba(12, 15, 18, 0.72);
+  background: rgba(211, 167, 0, 0.14);
+  border: 1px solid rgba(211, 167, 0, 0.35);
+}
+
+.hero-title {
+  font-size: 26px;
+  line-height: 1.22;
+}
+</style>

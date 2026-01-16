@@ -1,25 +1,44 @@
-export type AnswerValue = 'yes' | 'no'
+export type AnswerValue = string | string[]
 
 export type NextNode =
   | { type: 'question'; id: string }
-  | { type: 'result'; id: 'A' | 'B' | 'C' | 'D' | 'E' }
+  | { type: 'result'; id: string }
 
-export type Option = {
+export type SingleOption = {
   label: string
-  value: AnswerValue
+  value: string
   next: NextNode
 }
 
-export type Question = {
+export type MultiOption = {
+  label: string
+  value: string
+  exclusive?: boolean
+}
+
+export type QuestionBase = {
   id: string
   title: string
   description: string | null
   bullets: string[] | null
-  options: Option[]
 }
 
+export type SingleQuestion = QuestionBase & {
+  kind: 'single'
+  options: SingleOption[]
+}
+
+export type MultiQuestion = QuestionBase & {
+  kind: 'multi'
+  options: MultiOption[]
+  next_any: NextNode
+  next_none: NextNode
+}
+
+export type Question = SingleQuestion | MultiQuestion
+
 export type Result = {
-  id: 'A' | 'B' | 'C' | 'D' | 'E'
+  id: string
   title: string
   description: string
   bullets: string[] | null
@@ -40,3 +59,28 @@ export type EvaluateResponse = {
   result: Result
 }
 
+export type StartResponse = {
+  start: string
+  question: Question
+}
+
+export type QuestionResponse = {
+  question: Question
+}
+
+export type ResultResponse = {
+  result: Result
+}
+
+export type AnswerRequest = {
+  question_id: string
+  value: AnswerValue
+  answers: Record<string, AnswerValue>
+}
+
+export type AnswerResponse = {
+  next: NextNode
+  path: string[]
+  question?: Question | null
+  result?: Result | null
+}

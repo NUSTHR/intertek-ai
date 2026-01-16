@@ -1,31 +1,86 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
+import intertekLogo from '@/assets/images/logo/79ae3f51f0781097858acc751cacf304.png'
+
+const route = useRoute()
+const showHero = computed(() => route.name !== 'result')
+
+const intertekHome = 'https://www.intertek.com/'
+const intertekPrivacy = 'https://www.intertek.com/privacy-policy/'
+const intertekCookies = 'https://www.intertek.com/cookie-policy/'
+const intertekTerms = 'https://www.intertek.com/website-terms-of-use/'
+</script>
 
 <template>
   <div class="app">
+    <header class="site-header">
+      <div class="header-inner">
+        <div class="brand-left">
+          <div class="brand-kicker">Developed By</div>
+          <div class="brand-name">Intertek AI</div>
+        </div>
+        <div class="brand-center">
+          <a class="brand-logo" :href="intertekHome" target="_blank" rel="noreferrer">
+            <img class="brand-logo-img" :src="intertekLogo" alt="Intertek" />
+          </a>
+        </div>
+        <div class="brand-right" />
+      </div>
+    </header>
     <main class="container">
-      <router-view />
+      <section v-if="showHero" class="hero">
+        <h1 class="hero-title">EU AI Act Risk Classifier</h1>
+        <p class="hero-subtitle">Determine your risk level under the EU AI Act.</p>
+      </section>
+      <router-view v-slot="{ Component, route }">
+        <transition name="page" mode="out-in">
+          <component :is="Component" :key="route.fullPath" />
+        </transition>
+      </router-view>
     </main>
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div class="footer-top">
+          <a class="footer-brand" :href="intertekHome" target="_blank" rel="noreferrer">Intertek</a>
+          <nav class="footer-links" aria-label="Legal">
+            <a :href="intertekPrivacy" target="_blank" rel="noreferrer">Privacy Policy</a>
+            <span class="footer-sep">·</span>
+            <a :href="intertekCookies" target="_blank" rel="noreferrer">Cookie Policy</a>
+            <span class="footer-sep">·</span>
+            <a :href="intertekTerms" target="_blank" rel="noreferrer">Terms of Use</a>
+          </nav>
+        </div>
+        <div class="footer-disclaimer">
+          This tool is provided for informational purposes only and does not constitute legal advice. Intertek makes no
+          warranties regarding completeness or accuracy, and you remain responsible for assessing your obligations under
+          applicable laws and regulations.
+        </div>
+      </div>
+    </footer>
   </div>
 </template>
 
 <style>
 :root {
-  --bg-0: #070c16;
-  --bg-1: #0b1324;
-  --bg-2: #0f2037;
+  --bg: #ffffff;
 
-  --text: rgba(232, 240, 249, 0.92);
-  --muted: rgba(232, 240, 249, 0.68);
-  --subtle: rgba(232, 240, 249, 0.12);
+  --text: #0c0f12;
+  --muted: rgba(12, 15, 18, 0.68);
+  --muted-2: rgba(12, 15, 18, 0.52);
 
-  --accent: #d7b554;
-  --accent-2: #f0d98b;
-  --accent-ink: #1a1506;
+  --surface: #ffffff;
+  --surface-border: rgba(12, 15, 18, 0.12);
+  --surface-border-2: rgba(12, 15, 18, 0.18);
+  --shadow: 0 18px 44px rgba(0, 0, 0, 0.12);
 
-  --card-bg: rgba(14, 23, 38, 0.72);
-  --card-border: rgba(215, 181, 84, 0.18);
-  --shadow: 0 14px 50px rgba(0, 0, 0, 0.45);
-  --ring: 0 0 0 3px rgba(215, 181, 84, 0.22);
+  --primary: #d3a700;
+  --primary-hi: #c29600;
+  --primary-ink: #0c0f12;
+  --ring: 0 0 0 3px rgba(211, 167, 0, 0.22);
+
+  --radius: 4px;
+  --header-gap: 64px;
 }
 
 html,
@@ -39,9 +94,9 @@ body {
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, 'Apple Color Emoji',
     'Segoe UI Emoji';
   color: var(--text);
-  background: radial-gradient(900px 520px at 20% 10%, rgba(215, 181, 84, 0.18), transparent 55%),
-    radial-gradient(900px 520px at 80% 20%, rgba(87, 125, 164, 0.22), transparent 60%),
-    linear-gradient(140deg, var(--bg-0), var(--bg-1) 45%, var(--bg-2));
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
 }
 
 a {
@@ -51,38 +106,176 @@ a {
 .app {
   min-height: 100%;
   display: flex;
+  flex-direction: column;
+}
+
+.site-header {
+  min-height: 25vh;
+  padding: var(--header-gap) 0;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: saturate(180%) blur(10px);
+  border-bottom: 0;
+  display: flex;
+  align-items: flex-start;
+}
+
+.header-inner {
+  width: min(1180px, calc(100% - 56px));
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 18px;
+  color: var(--text);
+}
+
+.brand-left {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  justify-self: start;
+}
+
+.brand-kicker {
+  font-size: 14px;
+  letter-spacing: 0.4px;
+  color: var(--muted);
+}
+
+.brand-name {
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  font-size: 24px;
+  line-height: 1.1;
+}
+
+.brand-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  justify-self: center;
+}
+
+.brand-right {
+  justify-self: end;
+}
+
+.brand-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(12, 15, 18, 0.1);
+  background: #ffffff;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+  text-decoration: none;
+}
+
+.brand-logo:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
+}
+
+.brand-logo-img {
+  height: 108px;
+  width: auto;
+  display: block;
 }
 
 .container {
-  width: min(960px, calc(100% - 32px));
+  width: min(1180px, calc(100% - 56px));
   margin: 0 auto;
-  padding: 38px 0 56px;
+  padding: 0 0 76px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  align-items: center;
+  gap: 28px;
+  flex: 1 0 auto;
+}
+
+.hero {
+  text-align: center;
+  margin-top: 0;
+}
+
+.hero-title {
+  margin: 0;
+  font-size: 44px;
+  line-height: 1.1;
+  letter-spacing: 0.2px;
+  color: var(--text);
+}
+
+.hero-subtitle {
+  margin: 10px 0 0;
+  font-size: 14px;
+  letter-spacing: 0.3px;
+  color: var(--muted);
 }
 
 .card {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03)), var(--card-bg);
-  border: 1px solid var(--card-border);
-  border-radius: 18px;
-  padding: 22px;
+  background: var(--surface);
+  border: 0;
+  border-radius: var(--radius);
+  padding: 0;
   box-shadow: var(--shadow);
-  backdrop-filter: blur(10px);
+  position: relative;
+  width: min(980px, 100%);
+  display: flex;
+  flex-direction: column;
+}
+
+.card-body {
+  padding: 30px 42px 26px;
+  color: var(--text);
+}
+
+.card-footer {
+  background: var(--primary);
+  padding: 18px 42px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.footer-btn {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: var(--primary-ink);
+  font-weight: 800;
+  font-size: 16px;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  padding: 6px 8px;
+}
+
+.footer-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.footer-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
 }
 
 .header {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-bottom: 16px;
+  gap: 8px;
+  margin: 0;
 }
 
 .title {
   margin: 0;
-  font-size: 20px;
-  letter-spacing: 0.2px;
-  line-height: 1.35;
+  font-size: 22px;
+  letter-spacing: 0.1px;
+  line-height: 1.28;
+  color: var(--text);
 }
 
 .subtitle {
@@ -92,10 +285,14 @@ a {
   line-height: 1.6;
 }
 
+.muted {
+  color: var(--muted);
+}
+
 .bullets {
-  margin: 0 0 18px;
+  margin: 14px 0 0;
   padding: 0 0 0 18px;
-  color: rgba(232, 240, 249, 0.9);
+  color: var(--text);
   font-size: 14px;
   line-height: 1.7;
   display: flex;
@@ -107,16 +304,17 @@ a {
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
-  margin-bottom: 14px;
+  margin-top: 18px;
+  justify-content: flex-start;
 }
 
 .btn {
   appearance: none;
-  border-radius: 14px;
+  border-radius: 3px;
   cursor: pointer;
-  border: 1px solid rgba(232, 240, 249, 0.14);
+  border: 1px solid var(--surface-border);
   color: var(--text);
-  background: rgba(255, 255, 255, 0.06);
+  background: #ffffff;
   font-size: 14px;
   padding: 10px 14px;
   transition: transform 120ms ease, background 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
@@ -128,8 +326,8 @@ a {
 }
 
 .btn:hover {
-  background: rgba(255, 255, 255, 0.09);
-  border-color: rgba(215, 181, 84, 0.32);
+  background: rgba(211, 167, 0, 0.07);
+  border-color: var(--surface-border-2);
   transform: translateY(-1px);
 }
 
@@ -138,46 +336,194 @@ a {
 }
 
 .btn-primary {
-  background: linear-gradient(180deg, rgba(240, 217, 139, 0.96), rgba(215, 181, 84, 0.92));
-  border-color: rgba(240, 217, 139, 0.44);
-  color: var(--accent-ink);
-  font-weight: 650;
-  box-shadow: 0 12px 30px rgba(215, 181, 84, 0.24);
+  background: var(--primary);
+  border-color: rgba(0, 0, 0, 0);
+  color: var(--primary-ink);
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  box-shadow: 0 10px 26px rgba(211, 167, 0, 0.22);
 }
 
 .btn-primary:hover {
-  background: linear-gradient(180deg, rgba(250, 232, 166, 0.98), rgba(229, 197, 92, 0.95));
-  border-color: rgba(240, 217, 139, 0.6);
-}
-
-.btn-ghost {
-  background: transparent;
-  border-color: rgba(232, 240, 249, 0.14);
-  color: rgba(232, 240, 249, 0.78);
-  font-size: 13px;
-  padding: 8px 12px;
-}
-
-.btn-ghost:hover {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(215, 181, 84, 0.26);
-  color: var(--text);
+  background: var(--primary-hi);
+  border-color: rgba(0, 0, 0, 0);
 }
 
 .btn-option {
-  min-width: 92px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03));
-  border-color: rgba(215, 181, 84, 0.18);
+  min-width: 150px;
+  padding: 14px 16px;
+  border-radius: 3px;
+  background: #ffffff;
+  border-color: var(--surface-border);
+  font-weight: 700;
 }
 
-.muted {
-  color: var(--muted);
+.page-center {
+  text-align: center;
+}
+
+.page-center .btn {
+  align-self: center;
+}
+
+.page-enter-active,
+.page-leave-active {
+  transition: opacity 180ms ease, transform 240ms cubic-bezier(0.2, 0.9, 0.2, 1);
+  will-change: opacity, transform;
+}
+
+.page-enter-from {
+  opacity: 0;
+  transform: translateY(10px) scale(0.992);
+}
+
+.page-leave-to {
+  opacity: 0;
+  transform: translateY(-8px) scale(0.992);
+}
+
+.page-enter-to,
+.page-leave-from {
+  opacity: 1;
+  transform: translateY(0px) scale(1);
 }
 
 .error {
-  color: rgba(255, 210, 210, 0.95);
+  color: rgba(163, 20, 20, 0.95);
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+.site-footer {
+  padding: 22px 0 30px;
+  color: var(--muted);
+}
+
+.footer-inner {
+  width: min(1180px, calc(100% - 56px));
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.footer-brand {
+  text-decoration: none;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  color: rgba(12, 15, 18, 0.78);
+}
+
+.footer-links {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.footer-links a {
+  color: rgba(12, 15, 18, 0.72);
+  text-decoration: none;
+  font-weight: 650;
+  letter-spacing: 0.1px;
+  font-size: 13px;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+}
+
+.footer-sep {
+  color: rgba(12, 15, 18, 0.4);
+}
+
+.footer-disclaimer {
+  font-size: 12px;
+  line-height: 1.65;
+  color: rgba(12, 15, 18, 0.6);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn {
+    transition: none;
+  }
+
+  .page-enter-active,
+  .page-leave-active {
+    transition: none;
+  }
+
+  .page-enter-from,
+  .page-leave-to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 640px) {
+  :root {
+    --header-gap: 28px;
+  }
+
+  .header-inner {
+    width: min(1180px, calc(100% - 28px));
+  }
+
+  .brand-logo-img {
+    height: 78px;
+  }
+
+  .brand-kicker {
+    font-size: 13px;
+  }
+
+  .brand-name {
+    font-size: 20px;
+  }
+
+  .container {
+    width: min(1180px, calc(100% - 28px));
+    padding: 0 0 48px;
+    gap: 18px;
+  }
+
+  .footer-inner {
+    width: min(1180px, calc(100% - 28px));
+  }
+
+  .footer-top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .footer-links {
+    justify-content: flex-start;
+  }
+
+  .card {
+    box-shadow: 0 12px 34px rgba(0, 0, 0, 0.24);
+  }
+
+  .card-body {
+    padding: 20px 16px 18px;
+  }
+
+  .card-footer {
+    padding: 14px 16px;
+  }
+
+  .btn-option {
+    min-width: 100%;
+  }
 }
 </style>

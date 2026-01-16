@@ -1,15 +1,37 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
-import type { AnswerValue, EvaluateResponse, Question, Result, ResultsResponse, TreeResponse } from '@/types/questionnaire'
+import type {
+  AnswerRequest,
+  AnswerResponse,
+  AnswerValue,
+  EvaluateResponse,
+  Question,
+  QuestionResponse,
+  Result,
+  ResultResponse,
+  ResultsResponse,
+  StartResponse,
+  TreeResponse,
+} from '@/types/questionnaire'
 
-const STORAGE_KEY = 'aiq:answers:v1'
+const STORAGE_KEY = 'aiq:answers:v2'
+
+function isStringArray(value: unknown): value is string[] {
+  return Array.isArray(value) && value.every((v) => typeof v === 'string')
+}
 
 function loadPersistedAnswers(): Record<string, AnswerValue> {
   const raw = localStorage.getItem(STORAGE_KEY)
   if (!raw) return {}
   try {
-    const data = JSON.parse(raw) as Record<string, AnswerValue>
-    return data ?? {}
+    const data = JSON.parse(raw) as Record<string, unknown>
+    if (!data || typeof data !== 'object') return {}
+    const out: Record<string, AnswerValue> = {}
+    for (const [k, v] of Object.entries(data)) {
+      if (typeof v === 'string') out[k] = v
+      else if (isStringArray(v)) out[k] = v
+    }
+    return out
   } catch {
     return {}
   }
@@ -37,6 +59,15 @@ export const useQuestionnaireStore = defineStore('questionnaire', () => {
     loading.value = true
     error.value = null
     try {
+      const startRes = await fetch('/api/start')
+      if (startRes.ok) {
+        const start = (await startRes.json()) as StartResponse
+        startId.value = start.start
+        questionsById.value = { ...questionsById.value, [start.question.id]: start.question }
+        loaded.value = true
+        return
+      }
+
       const [treeRes, resultsRes] = await Promise.all([fetch('/api/tree'), fetch('/api/results')])
       if (!treeRes.ok) throw new Error(`tree_http_${treeRes.status}`)
       if (!resultsRes.ok) throw new Error(`results_http_${resultsRes.status}`)
@@ -69,8 +100,48 @@ export const useQuestionnaireStore = defineStore('questionnaire', () => {
 
   function getNext(questionId: string, value: AnswerValue) {
     const q = questionsById.value[questionId]
-    const opt = q?.options.find((o) => o.value === value)
+    if (!q || q.kind !== 'single') return null
+    if (typeof value !== 'string') return null
+    const opt = q.options.find((o) => o.value === value)
     return opt?.next ?? null
+  }
+
+  async function fetchQuestion(questionId: string): Promise<Question | null> {
+    if (questionsById.value[questionId]) return questionsById.value[questionId]
+    const res = await fetch(`/api/question/${encodeURIComponent(questionId)}`)
+    if (!res.ok) return null
+    const data = (await res.json()) as QuestionResponse
+    questionsById.value = { ...questionsById.value, [data.question.id]: data.question }
+    return data.question
+  }
+
+  async function fetchResult(resultId: string): Promise<Result | null> {
+    const existing = resultsById.value[resultId as Result['id']]
+    if (existing) return existing
+    const res = await fetch(`/api/result/${encodeURIComponent(resultId)}`)
+    if (!res.ok) return null
+    const data = (await res.json()) as ResultResponse
+    resultsById.value = { ...resultsById.value, [data.result.id]: data.result }
+    return data.result
+  }
+
+  async function answer(questionId: string, value: AnswerValue): Promise<AnswerResponse | null> {
+    const payload: AnswerRequest = { question_id: questionId, value, answers: answers.value }
+    const res = await fetch('/api/answer', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(payload),
+    })
+    if (!res.ok) return null
+    const data = (await res.json()) as AnswerResponse
+    if (data.question) {
+      questionsById.value = { ...questionsById.value, [data.question.id]: data.question }
+    }
+    if (data.result) {
+      resultsById.value = { ...resultsById.value, [data.result.id]: data.result }
+      lastEvaluation.value = { result_id: data.result.id, path: data.path, result: data.result }
+    }
+    return data
   }
 
   async function evaluate(): Promise<EvaluateResponse> {
@@ -102,7 +173,9 @@ export const useQuestionnaireStore = defineStore('questionnaire', () => {
     reset,
     setAnswer,
     getNext,
+    fetchQuestion,
+    fetchResult,
+    answer,
     evaluate,
   }
 })
-

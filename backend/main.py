@@ -9,7 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 import yaml
 
-AnswerValue = Literal["yes", "no"]
+AnswerValue = str | list[str]
 
 
 class NextQuestion(BaseModel):
@@ -19,7 +19,7 @@ class NextQuestion(BaseModel):
 
 class NextResult(BaseModel):
     type: Literal["result"]
-    id: Literal["A", "B", "C", "D", "E"]
+    id: str
 
 
 NextNode = Annotated[Union[NextQuestion, NextResult], Field(discriminator="type")]
@@ -27,20 +27,41 @@ NextNode = Annotated[Union[NextQuestion, NextResult], Field(discriminator="type"
 
 class Option(BaseModel):
     label: str
-    value: AnswerValue
+    value: str
     next: NextNode
+    exclusive: bool = False
 
 
-class Question(BaseModel):
+class MultiOption(BaseModel):
+    label: str
+    value: str
+    exclusive: bool = False
+
+
+class QuestionBase(BaseModel):
     id: str
     title: str
     description: str | None = None
     bullets: list[str] | None = None
+
+
+class SingleQuestion(QuestionBase):
+    kind: Literal["single"]
     options: list[Option]
 
 
+class MultiQuestion(QuestionBase):
+    kind: Literal["multi"]
+    options: list[MultiOption]
+    next_any: NextNode
+    next_none: NextNode
+
+
+Question = Annotated[Union[SingleQuestion, MultiQuestion], Field(discriminator="kind")]
+
+
 class Result(BaseModel):
-    id: Literal["A", "B", "C", "D", "E"]
+    id: str
     title: str
     description: str
     bullets: list[str] | None = None
@@ -120,9 +141,35 @@ class EvaluateRequest(BaseModel):
 
 
 class EvaluateResponse(BaseModel):
-    result_id: Literal["A", "B", "C", "D", "E"]
+    result_id: str
     path: list[str]
     result: Result
+
+
+class StartResponse(BaseModel):
+    start: str
+    question: Question
+
+
+class QuestionResponse(BaseModel):
+    question: Question
+
+
+class ResultResponse(BaseModel):
+    result: Result
+
+
+class AnswerRequest(BaseModel):
+    question_id: str
+    value: AnswerValue
+    answers: dict[str, AnswerValue] = Field(default_factory=dict)
+
+
+class AnswerResponse(BaseModel):
+    next: NextNode
+    path: list[str]
+    question: Question | None = None
+    result: Result | None = None
 
 
 app = FastAPI(title="AI Questionnaire API", version="1.0.0")
@@ -162,13 +209,80 @@ def _evaluate(answers: dict[str, AnswerValue]) -> tuple[str, list[str]]:
         if answer is None:
             raise HTTPException(status_code=400, detail={"missing_answer": current_id, "path": path})
 
-        selected = next((opt for opt in question.options if opt.value == answer), None)
-        if selected is None:
-            raise HTTPException(status_code=400, detail={"invalid_answer": current_id, "value": answer})
+        if question.kind == "single":
+            if not isinstance(answer, str):
+                raise HTTPException(status_code=400, detail={"invalid_answer": current_id, "value": answer})
+            selected = next((opt for opt in question.options if opt.value == answer), None)
+            if selected is None:
+                raise HTTPException(status_code=400, detail={"invalid_answer": current_id, "value": answer})
+            nxt = selected.next
+        else:
+            if not isinstance(answer, list):
+                raise HTTPException(status_code=400, detail={"invalid_answer": current_id, "value": answer})
+            if len(set(answer)) != len(answer):
+                raise HTTPException(status_code=400, detail={"invalid_answer": current_id, "duplicates": True})
+            allowed = {opt.value for opt in question.options}
+            invalid = [v for v in answer if v not in allowed]
+            if invalid:
+                raise HTTPException(status_code=400, detail={"invalid_answer": current_id, "invalid": invalid})
+            exclusives = {opt.value for opt in question.options if getattr(opt, "exclusive", False)}
+            has_exclusive = any(v in exclusives for v in answer)
+            if has_exclusive:
+                if len(answer) != 1:
+                    raise HTTPException(status_code=400, detail={"invalid_answer": current_id, "exclusive": True})
+                effective = []
+            else:
+                effective = answer
+            nxt = question.next_any if len(effective) > 0 else question.next_none
 
-        nxt = selected.next
         if nxt.type == "result":
             return nxt.id, path
+
+        current_id = nxt.id
+
+
+def _next(answers: dict[str, AnswerValue]) -> tuple[NextNode, list[str]]:
+    idx = get_index()
+    current_id = idx.start
+    path: list[str] = []
+    while True:
+        question = idx.questions_by_id.get(current_id)
+        if question is None:
+            raise HTTPException(status_code=500, detail="question_not_found")
+
+        answer = answers.get(current_id)
+        if answer is None:
+            return NextQuestion(type="question", id=current_id), path
+
+        path.append(current_id)
+        if question.kind == "single":
+            if not isinstance(answer, str):
+                raise HTTPException(status_code=400, detail={"invalid_answer": current_id, "value": answer})
+            selected = next((opt for opt in question.options if opt.value == answer), None)
+            if selected is None:
+                raise HTTPException(status_code=400, detail={"invalid_answer": current_id, "value": answer})
+            nxt = selected.next
+        else:
+            if not isinstance(answer, list):
+                raise HTTPException(status_code=400, detail={"invalid_answer": current_id, "value": answer})
+            if len(set(answer)) != len(answer):
+                raise HTTPException(status_code=400, detail={"invalid_answer": current_id, "duplicates": True})
+            allowed = {opt.value for opt in question.options}
+            invalid = [v for v in answer if v not in allowed]
+            if invalid:
+                raise HTTPException(status_code=400, detail={"invalid_answer": current_id, "invalid": invalid})
+            exclusives = {opt.value for opt in question.options if getattr(opt, "exclusive", False)}
+            has_exclusive = any(v in exclusives for v in answer)
+            if has_exclusive:
+                if len(answer) != 1:
+                    raise HTTPException(status_code=400, detail={"invalid_answer": current_id, "exclusive": True})
+                effective = []
+            else:
+                effective = answer
+            nxt = question.next_any if len(effective) > 0 else question.next_none
+
+        if nxt.type == "result":
+            return nxt, path
 
         current_id = nxt.id
 
@@ -181,6 +295,50 @@ def evaluate(req: EvaluateRequest) -> EvaluateResponse:
     if result is None:
         raise HTTPException(status_code=500, detail="result_not_found")
     return EvaluateResponse(result_id=result_id, path=path, result=result)
+
+
+@app.get("/api/start", response_model=StartResponse)
+def start() -> StartResponse:
+    idx = get_index()
+    q = idx.questions_by_id.get(idx.start)
+    if q is None:
+        raise HTTPException(status_code=500, detail="start_question_not_found")
+    return StartResponse(start=idx.start, question=q)
+
+
+@app.get("/api/question/{question_id}", response_model=QuestionResponse)
+def get_question(question_id: str) -> QuestionResponse:
+    idx = get_index()
+    q = idx.questions_by_id.get(question_id)
+    if q is None:
+        raise HTTPException(status_code=404, detail="question_not_found")
+    return QuestionResponse(question=q)
+
+
+@app.get("/api/result/{result_id}", response_model=ResultResponse)
+def get_result(result_id: str) -> ResultResponse:
+    idx = get_index()
+    r = idx.results_by_id.get(result_id)
+    if r is None:
+        raise HTTPException(status_code=404, detail="result_not_found")
+    return ResultResponse(result=r)
+
+
+@app.post("/api/answer", response_model=AnswerResponse)
+def answer(req: AnswerRequest) -> AnswerResponse:
+    answers = {**req.answers, req.question_id: req.value}
+    nxt, path = _next(answers)
+    idx = get_index()
+    if nxt.type == "question":
+        q = idx.questions_by_id.get(nxt.id)
+        if q is None:
+            raise HTTPException(status_code=500, detail="question_not_found")
+        return AnswerResponse(next=nxt, path=path, question=q)
+
+    r = idx.results_by_id.get(nxt.id)
+    if r is None:
+        raise HTTPException(status_code=500, detail="result_not_found")
+    return AnswerResponse(next=nxt, path=path, result=r)
 
 
 @app.get("/health")
