@@ -58,6 +58,7 @@ async function retry() {
 <style scoped>
 .card-footer {
   justify-content: center;
+  margin-top: 0.25cm;
 }
 
 .kicker {
@@ -83,6 +84,7 @@ async function retry() {
   -webkit-text-fill-color: transparent;
   background-clip: text;
 
+  margin-top: 0.2cm;
 }
 
 .subhero-title {
