@@ -38,8 +38,8 @@ async function retry() {
     <div class="card-body page-center">
       <div class="kicker">EU AI Act</div>
       <header class="header">
-        <h2 class="title hero-title">EU AI Act Risk Classifier</h2>
-        <p class="subtitle">Determine your risk level under the EU AI Act.</p>
+        <h2 class="title hero-title">Intertek AI Square</h2>
+        <p class="subtitle subhero-title">Start your AI compliance journey.</p>
       </header>
 
       <div v-if="store.loading" class="muted">加载中…</div>
@@ -76,7 +76,18 @@ async function retry() {
 }
 
 .hero-title {
-  font-size: 26px;
+  font-size: 32px;
   line-height: 1.22;
+  background: linear-gradient(45deg, #FFD700, #8B6508);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+
+}
+
+.subhero-title {
+  font-size: 14px;
+  line-height: 1.33;
+  color: #757166;
 }
 </style>
