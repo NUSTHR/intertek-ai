@@ -5,6 +5,7 @@ import intertekLogo from '@/assets/images/logo/79ae3f51f0781097858acc751cacf304.
 
 const route = useRoute()
 const showHero = computed(() => route.name !== 'result')
+const isStart = computed(() => route.name === 'start')
 
 const intertekHome = 'https://www.intertek.com/'
 const intertekPrivacy = 'https://www.intertek.com/privacy-policy/'
@@ -14,50 +15,60 @@ const intertekTerms = 'https://www.intertek.com/website-terms-of-use/'
 
 <template>
   <div class="app">
-    <header class="site-header">
-      <div class="header-inner">
-        <div class="brand-left">
-          <div class="brand-kicker">Developed By</div>
-          <div class="brand-name">Intertek AI</div>
-        </div>
-        <div class="brand-center">
-          <a class="brand-logo" :href="intertekHome" target="_blank" rel="noreferrer">
-            <img class="brand-logo-img" :src="intertekLogo" alt="Intertek" />
-          </a>
-        </div>
-        <div class="brand-right" />
-      </div>
-    </header>
-    <main class="container">
-      <section v-if="showHero" class="hero">
-        <h1 class="hero-title">EU AI Act Risk Classifier</h1>
-        <p class="hero-subtitle">Determine your risk level under the EU AI Act.</p>
-      </section>
+    <template v-if="isStart">
       <router-view v-slot="{ Component, route }">
         <transition name="page" mode="out-in">
           <component :is="Component" :key="route.fullPath" />
         </transition>
       </router-view>
-    </main>
-    <footer class="site-footer">
-      <div class="footer-inner">
-        <div class="footer-top">
-          <a class="footer-brand" :href="intertekHome" target="_blank" rel="noreferrer">Intertek</a>
-          <nav class="footer-links" aria-label="Legal">
-            <a :href="intertekPrivacy" target="_blank" rel="noreferrer">Privacy Policy</a>
-            <span class="footer-sep">·</span>
-            <a :href="intertekCookies" target="_blank" rel="noreferrer">Cookie Policy</a>
-            <span class="footer-sep">·</span>
-            <a :href="intertekTerms" target="_blank" rel="noreferrer">Terms of Use</a>
-          </nav>
+    </template>
+
+    <template v-else>
+      <header class="site-header">
+        <div class="header-inner">
+          <div class="brand-left">
+            <div class="brand-kicker">Developed By</div>
+            <div class="brand-name">Intertek AI</div>
+          </div>
+          <div class="brand-center">
+            <a class="brand-logo" :href="intertekHome" target="_blank" rel="noreferrer">
+              <img class="brand-logo-img" :src="intertekLogo" alt="Intertek" />
+            </a>
+          </div>
+          <div class="brand-right" />
         </div>
-        <div class="footer-disclaimer">
-          This tool is provided for informational purposes only and does not constitute legal advice. Intertek makes no
-          warranties regarding completeness or accuracy, and you remain responsible for assessing your obligations under
-          applicable laws and regulations.
+      </header>
+      <main class="container">
+        <section v-if="showHero" class="hero">
+          <h1 class="hero-title">EU AI Act Risk Classifier</h1>
+          <p class="hero-subtitle">Determine your risk level under the EU AI Act.</p>
+        </section>
+        <router-view v-slot="{ Component, route }">
+          <transition name="page" mode="out-in">
+            <component :is="Component" :key="route.fullPath" />
+          </transition>
+        </router-view>
+      </main>
+      <footer class="site-footer">
+        <div class="footer-inner">
+          <div class="footer-top">
+            <a class="footer-brand" :href="intertekHome" target="_blank" rel="noreferrer">Intertek</a>
+            <nav class="footer-links" aria-label="Legal">
+              <a :href="intertekPrivacy" target="_blank" rel="noreferrer">Privacy Policy</a>
+              <span class="footer-sep">·</span>
+              <a :href="intertekCookies" target="_blank" rel="noreferrer">Cookie Policy</a>
+              <span class="footer-sep">·</span>
+              <a :href="intertekTerms" target="_blank" rel="noreferrer">Terms of Use</a>
+            </nav>
+          </div>
+          <div class="footer-disclaimer">
+            This tool is provided for informational purposes only and does not constitute legal advice. Intertek makes no
+            warranties regarding completeness or accuracy, and you remain responsible for assessing your obligations under
+            applicable laws and regulations.
+          </div>
         </div>
-      </div>
-    </footer>
+      </footer>
+    </template>
   </div>
 </template>
 

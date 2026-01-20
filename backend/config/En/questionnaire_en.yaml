@@ -1,0 +1,708 @@
+start: q1
+
+questions:
+  # --- SCOPE & EXCLUSIONS ---
+
+# --- PHASE 1: UNIVERSAL R&D EXCLUSIONS ---
+  - id: q1
+    kind: single
+    title: "Is your product developed and put into service exclusively for scientific research and development?"
+    description: "Ref: Art 2(6). The product must be exclusively for scientific research and development."
+    options:
+      - label: "Yes"
+        value: "yes"
+        next: { type: "result", id: "excluded_scientific_rd" }
+      - label: "No"
+        value: "no"
+        next: { type: "question", id: "q2" }
+
+  - id: q2
+    kind: single
+    title: "Is your product currently in a pre-market research, testing, or development phase?"
+    description: "Ref: Art 2(8). This exemption applies only where the system is not tested in real-world conditions (see Art 57 & 60)."
+    options:
+      - label: "Yes"
+        value: "yes"
+        next: { type: "question", id: "q2a" }
+      - label: "No"
+        value: "no"
+        # LOGIC CHANGE: Move to q3 (Classification) immediately to split the path
+        next: { type: "question", id: "q3" }
+
+  - id: q2a
+    kind: single
+    title: "Is any testing conducted in 'real-world conditions' outside of a laboratory?"
+    description: "Ref: Art 57 & 60. Real-world testing outside laboratory or simulated environments requires prior authorisation and compliance with specific conditions."
+    save_as: "real-word-testing"
+    options:
+      - label: "Yes"
+        value: "yes"
+        next: { type: "question", id: "q3" }
+      - label: "No"
+        value: "no"
+        next: { type: "result", id: "excluded_pre_market_rd" }
+
+  # --- PHASE 2: THE GRAND SPLIT (Relocated q3) ---
+
+  - id: q3
+    kind: single
+    title: "How is your product best classified?"
+    description: "Ref: Art 3."
+    options:
+      - label: "General-Purpose AI Model"
+        value: "option_a_gp_ai_model"
+        # LOGIC CHANGE: Direct to GPAI Branch (Q5)
+        next: { type: "question", id: "q5" }
+      - label: "AI System"
+        value: "option_b_ai_system"
+        # LOGIC CHANGE: Direct to System Branch (q4a)
+        next: { type: "question", id: "q4a" }
+      - label: "None of the above"
+        value: "option_c_not_ai"
+        next: { type: "result", id: "excluded_not_ai" }
+
+  # --- PHASE 3: AI SYSTEM BRANCH (System-Specific Exclusions) ---
+
+  - id: q4a
+    kind: single
+    title: "Does your product fall under a specific exclusion for military, defense, or international law enforcement cooperation?"
+    description: "Ref: Art 2(3), Art 2(14). Exclusion applies if the product is exclusively intended for military/defense use or international law enforcement cooperation."
+    options:
+      - label: "Yes, exclusively for military, defense, or national security purposes."
+        value: "excl_military_defence"
+        next: { type: "result", id: "excluded_specific_exclusion" }
+      - label: "Yes, public authorities/International organizations for international law enforcement cooperation."
+        value: "excl_intl_le"
+        next: { type: "result", id: "excluded_intl_le" }
+      - label: "No"
+        value: "none"
+        next: { type: "question", id: "q4b" }
+
+  - id: q4b
+    kind: single
+    title: "Are you a natural person (deployer) using the product exclusively for personal, non-professional, non-commercial activity?"
+    description: "Ref: Art 2(10). This exclusion applies ONLY to **natural persons (deployers)** using the product for **personal**, **non-commercial** activities."
+    options:
+      - label: "Yes, I am a natural person using the product exclusively for personal, non-professional activity."
+        value: "excl_personal_non_professional"
+        next: { type: "result", id: "excluded_personal_deployer" }
+      - label: "No, I am not a natural person, or I use it for professional/commercial purposes."
+        value: "none"
+        next: { type: "question", id: "q_role_identification" }
+
+  - id: q_role_identification
+    kind: single
+    title: "What is your entity's role regarding this AI system?"
+    description: "Ref: Art 3. Your obligations depend on your specific role in the supply chain."
+    save_as: "user_role"
+    options:
+      - label: "Provider (I developed the system or market it under my name/trademark)."
+        value: "provider"
+        # LOGIC CHANGE: All roles now merge back to main Prohibited/High-Risk flow (Q7)
+        next: { type: "question", id: "q7" }
+      - label: "Deployer (I am using the system in a professional capacity)."
+        value: "deployer"
+        next: { type: "question", id: "q7" }
+      - label: "Importer (I am placing a system from outside the EU onto the EU market)."
+        value: "importer"
+        next: { type: "question", id: "q7" }
+      - label: "Distributor (I am part of the supply chain making the system available)."
+        value: "distributor"
+        next: { type: "question", id: "q7" }
+      - label: "Product Manufacturer (I integrate the AI system into a product under my name)."
+        value: "product_manufacturer"
+        next: { type: "question", id: "q7" }
+      - label: "Authorised Representative (I have a written mandate to act for a non-EU provider)."
+        value: "authorised_representative"
+        next: { type: "question", id: "q7" }
+
+  # --- PHASE 4: GPAI BRANCH (From q3 Option A) ---
+
+  - id: q5
+    kind: single
+    title: "Does your General-Purpose AI Model meet the criteria for 'Systemic Risk' (>10^25 FLOPs OR Commission Designated)?"
+    description: "Ref: Art 51. Systemic risk obligations apply to GPAI models, including those released under free and open-source licences."
+    options:
+      - label: "Yes (>10^25 FLOPs OR Commission Designated)"
+        value: "yes"
+        next: { type: "question", id: "q_gpai_legacy_check_systemic" }
+      - label: "No"
+        value: "no"
+        next: { type: "question", id: "q6" }
+
+  - id: q6
+    kind: single
+    title: "Is the model released under a free and open-source licence with publicly available parameters?"
+    description: "Ref: Art 53(2). NOTE: Even if Open Source, you MUST still comply with Union Copyright law (Art 53(1)(c)) and publish a detailed summary of training content (Art 53(1)(d))."
+    options:
+      - label: "Yes"
+        value: "yes"
+        next: { type: "result", id: "gpai_open_source" }
+      - label: "No"
+        value: "no"
+        next: { type: "question", id: "q_gpai_legacy_check_standard" } # Inserted Logic
+
+  # New GPAI Legacy Check
+  - id: q_gpai_legacy_check_systemic
+    kind: single
+    title: "Was this GPAI model placed on the market before August 2, 2025?"
+    description: "Ref: Art 111(3). Models on the market before this date have a transition period until Aug 2027."
+    options:
+      - label: "Yes (Transition Period applies)"
+        next: { type: "result", id: "gpai_transition_period" }
+      - label: "No"
+        next: { type: "result", id: "gpai_systemic_risk" }
+
+  - id: q_gpai_legacy_check_standard
+    kind: single
+    title: "Was this GPAI model placed on the market before August 2, 2025?"
+    options:
+      - label: "Yes (Transition Period applies)"
+        next: { type: "result", id: "gpai_transition_period" }
+      - label: "No"
+        next: { type: "result", id: "gpai_standard" }
+
+
+  # --- PROHIBITED PRACTICES ---
+
+  - id: q7
+    kind: multi
+    title: "Does your system utilize any of the following 'Prohibited Practices'?"
+    description: "Ref: Art 5. Includes prohibited practices and reflects specific law enforcement exceptions provided in Art 5(1)(h). NOTE: Biometric categorization is NOT prohibited if used by law enforcement for labelling/filtering lawfully acquired biometric datasets."
+    options:
+      - label: "Subliminal, manipulative, or deceptive techniques."
+        value: "pp_manipulative_harm"
+      - label: "Exploiting vulnerabilities (age, disability)."
+        value: "pp_exploit_vulnerabilities"
+      - label: "Social scoring."
+        value: "pp_social_scoring"
+      - label: "Crime risk profiling based SOLELY on personality traits or profiling (without objective factual basis)."
+        value: "pp_crime_risk_profiling_only"
+      - label: "Untargeted facial scraping."
+        value: "pp_untargeted_scraping_faces"
+      - label: "Emotion recognition in workplace or educational institutions (unless officially authorized for medical/safety reasons)."
+        value: "pp_emotion_work_school"
+      - label: "Biometric categorization of sensitive traits."
+        value: "pp_sensitive_biometric_categorization"
+      - label: "None of the above"
+        value: "none"
+        exclusive: true
+    next_any: { type: "result", id: "prohibited_ai_practice" }
+    next_none: { type: "question", id: "q7a_rbi" }
+
+  - id: q7a_rbi
+    kind: single
+    title: "Does your system perform 'Real-time Remote Biometric Identification' in public spaces for law enforcement?"
+    description: "Ref: Art 5(1)(h)."
+    options:
+      - label: "Yes"
+        value: "yes"
+        next: { type: "question", id: "q7b_rbi_exception" }
+      - label: "No"
+        value: "no"
+        next: { type: "question", id: "q8" }
+
+  - id: q7b_rbi_exception
+    kind: single
+    title: "Is this strictly for searching for victims, preventing threats, locating serious criminals or missing persons?"
+    description: "Ref: Art 5(1)(h) Exceptions. The use must be strictly necessary for: (i) searching for victims or missing persons; (ii) preventing imminent life/safety threats or terrorist attacks; or (iii) locating suspects of serious criminal offenses."
+    options:
+      - label: "Yes"
+        value: "yes"
+        next: { type: "question", id: "q8" }
+      - label: "No"
+        value: "no"
+        next: { type: "result", id: "prohibited_ai_practice" }
+
+  # --- HIGH RISK ASSESSMENT ---
+
+  - id: q8
+    kind: single
+    title: "Is the system a safety component of an Annex I product requiring 3rd-party HEALTH & SAFETY assessment?"
+    description: "Ref: Art 6(1). Applies to AI systems that are safety components of products subject to third-party conformity assessment under Union harmonisation law."
+    options:
+      - label: "Yes"
+        value: "yes"
+        next: { type: "question", id: "q10_high_risk_annex1" }
+      - label: "No"
+        value: "no"
+        next: { type: "question", id: "q9" }
+
+  - id: q9
+    kind: multi
+    title: "Is the system intended to be used in any of the following 'High-Risk' areas listed in Annex III?"
+    description: "Ref: Art 6(3). Derogation applies only where the system does not materially influence decision-making affecting fundamental rights. NOTE: 'Biometrics' excludes 1:1 biometric verification. 'Critical Infrastructure' applies ONLY to safety components."
+    options:
+      - label: "Biometrics (Non-sensitive/Non-real-time)."
+        value: "a3_biometrics"
+      - label: "Critical Infrastructure."
+        value: "a3_critical_infrastructure"
+      - label: "Education/Training."
+        value: "a3_education"
+      - label: "Employment."
+        value: "a3_employment"
+      - label: "Essential Services."
+        value: "a3_essential_services"
+      - label: "Law Enforcement."
+        value: "a3_law_enforcement"
+      - label: "Migration/Border Control."
+        value: "a3_migration_border"
+      - label: "Justice/Democracy."
+        value: "a3_justice_democracy"
+      - label: "None of the above"
+        value: "none"
+        exclusive: true
+    next_any: { type: "question", id: "q9a_profiling" }
+    next_none: { type: "question", id: "q10_minimal_risk" }
+
+  - id: q9a_profiling
+    kind: single
+    title: "Does the system perform profiling of natural persons?"
+    description: "Ref: Art 6(3). The derogation (exemption from High-Risk) is NOT applicable if the system performs profiling. This prohibition is absolute."
+    options:
+      - label: "Yes"
+        value: "yes"
+        next: { type: "question", id: "q10_high_risk_annex3" }
+      - label: "No"
+        value: "no"
+        next: { type: "question", id: "q9a_derogation" }
+
+  - id: q9a_derogation
+    kind: multi
+    title: "Does the system meet any of the following conditions to be exempt from High-Risk classification (Derogation)?"
+    description: "Ref: Art 6(3)."
+    options:
+      - label: "Performs a narrow procedural task."
+        value: "derog_narrow_procedural"
+      - label: "Improves result of previously completed human activity."
+        value: "derog_improves_human_result"
+      - label: "Detects decision-making patterns without replacing human assessment."
+        value: "derog_detects_patterns_no_replace"
+      - label: "Performs a preparatory task."
+        value: "derog_preparatory_task"
+      - label: "None of the above"
+        value: "none"
+        exclusive: true
+    next_any: { type: "question", id: "q10_derogation" }
+    next_none: { type: "question", id: "q10_high_risk_annex3" }
+
+  # --- TRANSPARENCY & LEGACY LOGIC ---
+
+  # PATH 1: ANNEX I (Safety Components)
+  - id: q10_high_risk_annex1
+    kind: multi
+    title: "Does the system trigger any of the following 'Transparency Obligations'?"
+    description: "Ref: Art 6(1) & Art 50. Transparency obligations may apply in addition to high-risk requirements."
+    options:
+      - label: "Generates Synthetic Text."
+        value: "text"
+      - label: "Generates Synthetic Audio/Video/Image."
+        value: "av"
+      - label: "Chatbot (Interacts directly)."
+        value: "chat"
+      - label: "Emotion Recognition / Biometric Categorization."
+        value: "emo"
+      - label: "Deep Fake."
+        value: "deep"
+      - label: "None of the above"
+        value: "none"
+        exclusive: true
+    next_any: { type: "question", id: "q10a_exemptions_annex1" }
+    next_none: { type: "question", id: "q_legacy_annex1_no_transp" }
+
+  - id: q10a_exemptions_annex1
+    kind: multi
+    title: "Do any specific exemptions apply to the synthetic content?"
+    options:
+      - label: "Text: Subject to human editorial control."
+        value: "text_exempt"
+        next: { type: "question", id: "q_legacy_annex1_no_transp" }
+      - label: "AV: Assistive function for standard editing."
+        value: "av_exempt"
+        next: { type: "question", id: "q_legacy_annex1_no_transp" }
+      - label: "Deep Fake: Artistic, creative, satirical, or fictional work (subject to safeguards)."
+        value: "deep_fake_art_exempt"
+        next: { type: "question", id: "q_legacy_annex1_no_transp" }
+      - label: "None"
+        value: "none"
+        exclusive: true
+        next: { type: "question", id: "q_legacy_annex1_check_transp" }
+
+  # PATH 2: ANNEX III (High Risk Areas)
+  - id: q10_high_risk_annex3
+    kind: multi
+    title: "Does the system trigger any of the following 'Transparency Obligations'?"
+    description: "Ref: Art 6(2) & Art 50. Transparency obligations may apply in addition to high-risk requirements."
+    options:
+      - label: "Generates Synthetic Text."
+        value: "text"
+      - label: "Generates Synthetic Audio/Video/Image."
+        value: "av"
+      - label: "Chatbot (Interacts directly)."
+        value: "chat"
+      - label: "Emotion Recognition / Biometric Categorization."
+        value: "emo"
+      - label: "Deep Fake."
+        value: "deep"
+      - label: "None of the above"
+        value: "none"
+        exclusive: true
+    next_any: { type: "question", id: "q10a_exemptions_annex3" }
+    next_none: { type: "question", id: "q_legacy_annex3_no_transp" }
+
+  - id: q10a_exemptions_annex3
+    kind: multi
+    title: "Do any specific exemptions apply to the synthetic content?"
+    options:
+      - label: "Text: Subject to human editorial control."
+        value: "text_exempt"
+        next: { type: "question", id: "q_legacy_annex3_no_transp" }
+      - label: "AV: Assistive function for standard editing."
+        value: "av_exempt"
+        next: { type: "question", id: "q_legacy_annex3_no_transp" }
+      - label: "Deep Fake: Artistic, creative, satirical, or fictional work (subject to safeguards)."
+        value: "deep_fake_art_exempt"
+        next: { type: "question", id: "q_legacy_annex3_no_transp" }
+      - label: "None"
+        value: "none"
+        exclusive: true
+        next: { type: "question", id: "q_legacy_annex3_check_transp" }
+
+  # PATH 3: DEROGATION
+  - id: q10_derogation
+    kind: multi
+    title: "Does the system trigger any of the following 'Transparency Obligations'?"
+    options:
+      - label: "Generates Synthetic Text."
+        value: "text"
+      - label: "Generates Synthetic Audio/Video/Image."
+        value: "av"
+      - label: "Chatbot (Interacts directly)."
+        value: "chat"
+      - label: "Emotion Recognition / Biometric Categorization."
+        value: "emo"
+      - label: "Deep Fake."
+        value: "deep"
+      - label: "None of the above"
+        value: "none"
+        exclusive: true
+    next_any: { type: "question", id: "q10a_exemptions_derogation" }
+    next_none: { type: "question", id: "q11_open_source_derogation" }
+
+  - id: q10a_exemptions_derogation
+    kind: multi
+    title: "Do any specific exemptions apply to the synthetic content?"
+    options:
+      - label: "Text: Subject to human editorial control."
+        value: "text_exempt"
+        next: { type: "question", id: "q11_open_source_derogation" }
+      - label: "AV: Assistive function for standard editing."
+        value: "av_exempt"
+        next: { type: "question", id: "q11_open_source_derogation" }
+      - label: "Deep Fake: Artistic, creative, satirical, or fictional work (subject to safeguards)."
+        value: "deep_fake_art_exempt"
+        next: { type: "question", id: "q11_open_source_derogation" }
+      - label: "None"
+        value: "none"
+        exclusive: true
+        next: { type: "result", id: "non_high_risk_derogation_transparency" }
+
+  # PATH 4: MINIMAL RISK
+  - id: q10_minimal_risk
+    kind: multi
+    title: "Does the system trigger any of the following 'Transparency Obligations'?"
+    options:
+      - label: "Generates Synthetic Text."
+        value: "text"
+      - label: "Generates Synthetic Audio/Video/Image."
+        value: "av"
+      - label: "Chatbot (Interacts directly)."
+        value: "chat"
+      - label: "Emotion Recognition / Biometric Categorization."
+        value: "emo"
+      - label: "Deep Fake."
+        value: "deep"
+      - label: "None of the above"
+        value: "none"
+        exclusive: true
+    next_any: { type: "question", id: "q10a_exemptions_minimal" }
+    next_none: { type: "question", id: "q11_open_source_minimal" }
+
+  - id: q10a_exemptions_minimal
+    kind: multi
+    title: "Do any specific exemptions apply to the synthetic content?"
+    options:
+      - label: "Text: Subject to human editorial control."
+        value: "text_exempt"
+        next: { type: "question", id: "q11_open_source_minimal" }
+      - label: "AV: Assistive function for standard editing."
+        value: "av_exempt"
+        next: { type: "question", id: "q11_open_source_minimal" } 
+      - label: "Deep Fake: Artistic, creative, satirical, or fictional work (subject to safeguards)."
+        value: "deep_fake_art_exempt"
+        next: { type: "question", id: "q11_open_source_minimal" } 
+      - label: "None"
+        value: "none"
+        exclusive: true
+        next: { type: "result", id: "transparency_obligations_only" }
+
+  # --- LEGACY GATES (FIXED: Added Public Authority Checks) ---
+
+  # Annex I (No Transparency)
+  - id: q_legacy_annex1_no_transp
+    kind: single
+    title: "Was the system placed on the market before August 2, 2026?"
+    description: "Ref: Art 111. Also applies to systems 'put into service' (used internally) by that date."
+    options:
+      - label: "Yes"
+        next: { type: "question", id: "q_changes_annex1_no_transp" }
+      - label: "No"
+        next: { type: "result", id: "high_risk_annex1" }
+
+  - id: q_changes_annex1_no_transp
+    kind: single
+    title: "Has the system undergone 'significant changes' since August 2, 2026?"
+    description: "Ref: Art 87. Refers to 'substantial modification': a change not foreseen in the initial assessment that affects compliance or modifies the intended purpose."
+    options:
+      - label: "Yes"
+        next: { type: "result", id: "high_risk_annex1" }
+      - label: "No"
+        next: { type: "question", id: "q_public_auth_annex1_no_transp" } # Added Check
+
+  - id: q_public_auth_annex1_no_transp
+    kind: single
+    title: "Is the system intended to be used by public authorities?"
+    description: "Ref: Art 111(2). Public authorities have a compliance deadline of Aug 2, 2030, even for legacy systems."
+    options:
+      - label: "Yes"
+        next: { type: "result", id: "legacy_exempt_public_deadline" }
+      - label: "No"
+        next: { type: "result", id: "legacy_exempt" }
+
+  # Annex I (With Transparency)
+  - id: q_legacy_annex1_check_transp
+    kind: single
+    title: "Was the system placed on the market before August 2, 2026?"
+    description: "Ref: Art 111. Also applies to systems 'put into service' (used internally) by that date."
+    options:
+      - label: "Yes"
+        next: { type: "question", id: "q_changes_annex1_transp" }
+      - label: "No"
+        next: { type: "result", id: "high_risk_annex1_transparency" }
+
+  - id: q_changes_annex1_transp
+    kind: single
+    title: "Has the system undergone 'significant changes' since August 2, 2026?"
+    description: "Ref: Art 87. Refers to 'substantial modification': a change not foreseen in the initial assessment that affects compliance or modifies the intended purpose."
+    options:
+      - label: "Yes"
+        next: { type: "result", id: "high_risk_annex1_transparency" }
+      - label: "No"
+        next: { type: "question", id: "q_public_auth_annex1_transp" } # Added Check
+
+  - id: q_public_auth_annex1_transp
+    kind: single
+    title: "Is the system intended to be used by public authorities?"
+    options:
+      - label: "Yes"
+        next: { type: "result", id: "legacy_exempt_public_deadline_transparency" }
+      - label: "No"
+        next: { type: "result", id: "legacy_exempt_transparency" }
+
+  # Annex III (No Transparency)
+  - id: q_legacy_annex3_no_transp
+    kind: single
+    title: "Was the system placed on the market before August 2, 2026?"
+    description: "Ref: Art 111. Also applies to systems 'put into service' (used internally) by that date."
+    options:
+      - label: "Yes"
+        next: { type: "question", id: "q_changes_annex3_no_transp" }
+      - label: "No"
+        next: { type: "result", id: "high_risk_annex3" }
+
+  - id: q_changes_annex3_no_transp
+    kind: single
+    title: "Has the system undergone 'significant changes' since August 2, 2026?"
+    description: "Ref: Art 87. Refers to 'substantial modification': a change not foreseen in the initial assessment that affects compliance or modifies the intended purpose."
+    options:
+      - label: "Yes"
+        next: { type: "result", id: "high_risk_annex3" }
+      - label: "No"
+        next: { type: "question", id: "q_legacy_annex_x_check" } # UPDATED: Added Annex X check
+
+  # NEW QUESTION: Annex X Check
+  - id: q_legacy_annex_x_check
+    kind: single
+    title: "Is the system a component of a Large-Scale IT System listed in Annex X (e.g., Schengen, Eurodac, ETIAS)?"
+    description: "Ref: Art 111(1). These specific EU systems have a distinct compliance deadline."
+    options:
+      - label: "Yes"
+        next: { type: "result", id: "legacy_exempt_annex_x_deadline" }
+      - label: "No"
+        next: { type: "question", id: "q_public_auth_annex3_no_transp" }
+
+  - id: q_public_auth_annex3_no_transp
+    kind: single
+    title: "Is the system intended to be used by public authorities?"
+    options:
+      - label: "Yes"
+        next: { type: "result", id: "legacy_exempt_public_deadline" }
+      - label: "No"
+        next: { type: "result", id: "legacy_exempt" }
+
+  # Annex III (With Transparency)
+  - id: q_legacy_annex3_check_transp
+    kind: single
+    title: "Was the system placed on the market before August 2, 2026?"
+    description: "Ref: Art 111. Also applies to systems 'put into service' (used internally) by that date."
+    options:
+      - label: "Yes"
+        next: { type: "question", id: "q_changes_annex3_transp" }
+      - label: "No"
+        next: { type: "result", id: "high_risk_annex3_transparency" }
+
+  - id: q_changes_annex3_transp
+    kind: single
+    title: "Has the system undergone 'significant changes' since August 2, 2026?"
+    description: "Ref: Art 87. Refers to 'substantial modification': a change not foreseen in the initial assessment that affects compliance or modifies the intended purpose."
+    options:
+      - label: "Yes"
+        next: { type: "result", id: "high_risk_annex3_transparency" }
+      - label: "No"
+        next: { type: "question", id: "q_public_auth_annex3_transp" } # Added Check
+
+  - id: q_public_auth_annex3_transp
+    kind: single
+    title: "Is the system intended to be used by public authorities?"
+    options:
+      - label: "Yes"
+        next: { type: "result", id: "legacy_exempt_public_deadline_transparency" }
+      - label: "No"
+        next: { type: "result", id: "legacy_exempt_transparency" }
+
+  # --- OPEN SOURCE (Q11) ---
+
+  - id: q11_open_source_derogation
+    kind: single
+    title: "Is the system released under a free and open-source licence?"
+    description: "Ref: Art 2(12). Open-source AI systems are excluded unless they fall under high-risk or prohibited practices."
+    options:
+      - label: "Yes"
+        next: { type: "result", id: "excluded_open_source_no_transparency" } # FIXED: Updated Reference
+      - label: "No"
+        next: { type: "result", id: "regulated_derogation" }
+
+  - id: q11_open_source_minimal
+    kind: single
+    title: "Is the system released under a free and open-source licence?"
+    description: "Ref: Art 2(12). Open-source AI systems classified as minimal risk remain subject only to applicable transparency obligations."
+    options:
+      - label: "Yes"
+        next: { type: "result", id: "minimal_risk_opensource" }
+      - label: "No"
+        next: { type: "result", id: "minimal_risk_standard" }
+
+results:
+  # --- RESULTS ---
+  - id: "excluded_scientific_rd"
+    title: "EXCLUDED: Scientific R&D"
+    description: "Ref: Art 2(6)."
+
+  - id: "excluded_pre_market_rd"
+    title: "EXCLUDED: Pre-market R&D"
+    description: "Ref: Art 2(8)."
+
+  - id: "excluded_specific_exclusion"
+    title: "EXCLUDED: Specific Exemption (Military/Defense)"
+    description: "Ref: Art 2(3)."
+
+  - id: "excluded_personal_deployer"
+    title: "EXCLUDED: Personal Use (Deployer)"
+    description: "Ref: Art 2(10)."
+
+  - id: "excluded_not_ai"
+    title: "EXCLUDED: Not an AI System"
+    description: "Ref: Art 3."
+
+  - id: "gpai_systemic_risk"
+    title: "REGULATED: GPAI with Systemic Risk"
+    description: "Ref: Art 55."
+
+  - id: "gpai_open_source"
+    title: "REGULATED: GPAI (Open Source)"
+    description: "Ref: Art 53(2)."
+
+  - id: "gpai_standard"
+    title: "REGULATED: GPAI (Standard)"
+    description: "Ref: Art 53."
+
+  # NEW GPAI TRANSITION RESULT
+  - id: "gpai_transition_period"
+    title: "REGULATED: GPAI (In Transition Period)"
+    description: "Ref: Art 111(3). Because the model was on the market before Aug 2025, you have until August 2, 2027 to comply."
+
+  - id: "prohibited_ai_practice"
+    title: "PROHIBITED: Banned AI Practice"
+    description: "Ref: Art 5."
+
+  - id: "high_risk_annex1"
+    title: "HIGH-RISK: Annex I Product"
+    description: "Ref: Art 6(1). Comply with Chapter III."
+
+  - id: "high_risk_annex1_transparency"
+    title: "HIGH-RISK (Annex I) + Transparency Obligations"
+    description: "Ref: Art 6(1) & Art 50. Comply with both High Risk and Transparency rules."
+
+  - id: "high_risk_annex3"
+    title: "HIGH-RISK: Annex III Use Case"
+    description: "Ref: Art 6(2). Comply with Chapter III."
+
+  - id: "high_risk_annex3_transparency"
+    title: "HIGH-RISK (Annex III) + Transparency Obligations"
+    description: "Ref: Art 6(2) & Art 50. Comply with both High Risk and Transparency rules."
+
+  - id: "legacy_exempt"
+    title: "LEGACY EXEMPT (Permanent)"
+    description: "Ref: Art 111. Exempt from Chapter III due to grandfathering (Private Sector)."
+
+  # NEW PUBLIC AUTHORITY DEADLINE RESULTS
+  - id: "legacy_exempt_public_deadline"
+    title: "LEGACY EXEMPT (Until 2030)"
+    description: "Ref: Art 111(2). As a system used by Public Authorities, you are exempt ONLY until August 2, 2030. You must be compliant by that date."
+
+  - id: "legacy_exempt_annex_x_deadline"
+    title: "LEGACY EXEMPT (Until Dec 31, 2030)"
+    description: "Ref: Art 111(1). As a component of a Large-Scale IT System (Annex X), you must bring the system into compliance by December 31, 2030."
+
+  - id: "legacy_exempt_public_deadline_transparency"
+    title: "LEGACY EXEMPT (Until 2030) + Transparency Applies"
+    description: "Ref: Art 111(2) & Art 50. Exempt from High Risk rules until Aug 2, 2030. Transparency rules apply immediately."
+
+  - id: "legacy_exempt_transparency"
+    title: "LEGACY EXEMPT (Permanent) but Transparency Applies"
+    description: "Ref: Art 111 & Art 50. Exempt from Chapter III, but must comply with Transparency."
+
+  - id: "regulated_derogation"
+    title: "REGULATED: Derogation (Not High Risk)"
+    description: "Ref: Art 6(3). Register derogation."
+
+  - id: "non_high_risk_derogation_transparency"
+    title: "REGULATED: Transparency Only (Derogation)"
+    description: "Ref: Art 6(3) & Art 50. Derogation registered, but Transparency rules apply."
+
+  - id: "transparency_obligations_only"
+    title: "REGULATED: Transparency Obligations Apply"
+    description: "Ref: Art 50."
+
+  # FIXED: Removed the confusing warning. The structure now ensures this result is only reached if Transparency did NOT apply.
+  - id: "excluded_open_source_no_transparency"
+    title: "EXCLUDED: Open Source AI System"
+    description: "Ref: Art 2(12). Because your system is not High-Risk (due to derogation) and has no Transparency Obligations, the Free and Open Source exemption applies."
+
+  - id: "minimal_risk_opensource"
+    title: "MINIMAL RISK (Open Source)"
+    description: "Ref: Art 2(12)."
+
+  - id: "minimal_risk_standard"
+    title: "MINIMAL RISK"
+    description: "Ref: Art 69."

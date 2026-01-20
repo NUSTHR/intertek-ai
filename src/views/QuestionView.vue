@@ -14,7 +14,29 @@ const prompt = computed(() => question.value?.title ?? '')
 
 const multiValues = ref<string[]>([])
 const singleValue = ref<string>('')
-const infoOpen = ref(false)
+const whyOpen = ref(false)
+
+function extractStepNumber(id: string): number | null {
+  const m = /^q(\d+)\b/i.exec(id.trim())
+  if (!m) return null
+  const n = Number(m[1])
+  return Number.isFinite(n) ? n : null
+}
+
+const stepText = computed(() => {
+  const q = question.value
+  if (!q) return ''
+  const current = extractStepNumber(q.id) ?? extractStepNumber(questionId.value)
+  if (!current) return ''
+
+  const allIds = Object.keys(store.questionsById)
+  const nums = allIds.map(extractStepNumber).filter((n): n is number => typeof n === 'number')
+  if (!nums.length) return ''
+  const total = Math.max(...nums)
+  if (!Number.isFinite(total) || total <= 0) return ''
+
+  return `Step ${current} of ${total}`
+})
 
 onMounted(async () => {
   await store.load()
@@ -28,7 +50,7 @@ watch(
   () => [questionId.value, question.value] as const,
   () => {
     const q = question.value
-    infoOpen.value = false
+    whyOpen.value = false
     if (!q) return
     const saved = store.answers[q.id]
     if (q.kind === 'multi') {
@@ -59,13 +81,8 @@ async function choose(value: AnswerValue) {
   await router.push({ name: 'result', params: { id: resultId } })
 }
 
-function toggleInfo() {
-  infoOpen.value = !infoOpen.value
-}
-
-function getChecked(e: Event): boolean {
-  const t = e.target as HTMLInputElement | null
-  return t?.checked ?? false
+function toggleWhy() {
+  whyOpen.value = !whyOpen.value
 }
 
 function onMultiToggle(value: string, checked: boolean) {
@@ -85,6 +102,14 @@ function onMultiToggle(value: string, checked: boolean) {
   }
 
   multiValues.value = multiValues.value.filter((v) => v !== value)
+}
+
+function getOptionIcon(label: string, value: string): string {
+  const s = `${label} ${value}`.toLowerCase()
+  if (/\byes\b|\btrue\b|\bok\b/.test(s)) return 'check_circle'
+  if (/\bno\b|\bfalse\b/.test(s)) return 'cancel'
+  if (/\buncertain\b|\bunknown\b|\bnot sure\b|\bmaybe\b/.test(s)) return 'help_center'
+  return 'check_circle'
 }
 
 async function goBack() {
@@ -109,72 +134,96 @@ async function goNext() {
 </script>
 
 <template>
-  <section v-if="question" class="card">
-    <div class="card-body">
-      <div class="meta">
-        <span />
-        <button class="link" type="button" @click="router.push({ name: 'start' })">Restart</button>
-      </div>
+  <div v-if="question" class="q-page">
+    <section class="card q-card">
+      <div class="q-body">
+        <div class="q-head">
+          <div v-if="stepText" class="q-step">{{ stepText }}</div>
+          <h2 class="q-title">{{ prompt }}</h2>
 
-      <div class="question-row">
-        <h2 class="question-title">{{ prompt }}</h2>
-        <button v-if="question.description" class="info" type="button" title="Info" @click="toggleInfo">i</button>
-      </div>
+          <div v-if="question.description" class="q-callout">
+            <span class="material-symbols-outlined q-callout-icon" aria-hidden="true">info</span>
+            <p class="q-callout-text">{{ question.description }}</p>
+          </div>
+        </div>
 
-      <ul v-if="question.bullets?.length" class="bullets bullets-plain">
-        <li v-for="b in question.bullets" :key="b">{{ b }}</li>
-      </ul>
+        <div class="q-actions" :data-kind="question.kind">
+          <template v-if="question.kind === 'single'">
+            <button
+              v-for="opt in question.options"
+              :key="opt.value"
+              class="bento-card"
+              type="button"
+              :data-selected="singleValue === opt.value"
+              @click="singleValue = opt.value"
+            >
+              <div class="bento-icon">
+                <span class="material-symbols-outlined" aria-hidden="true">{{ getOptionIcon(opt.label, opt.value) }}</span>
+              </div>
+              <span class="bento-label">{{ opt.label }}</span>
+            </button>
+          </template>
 
-      <div v-if="infoOpen && question.description" class="info-panel">
-        <p class="subtitle">{{ question.description }}</p>
-      </div>
+          <template v-else>
+            <button
+              v-for="opt in question.options"
+              :key="opt.value"
+              class="bento-card"
+              type="button"
+              :data-selected="multiValues.includes(opt.value)"
+              @click="onMultiToggle(opt.value, !multiValues.includes(opt.value))"
+            >
+              <div class="bento-icon">
+                <span class="material-symbols-outlined" aria-hidden="true">check_circle</span>
+              </div>
+              <span class="bento-label">{{ opt.label }}</span>
+            </button>
+          </template>
+        </div>
 
-      <div v-if="question.kind === 'single'" class="options">
-        <div v-for="opt in question.options" :key="opt.value" class="optionContainer">
-          <label class="optionRow">
-            <span class="p-radiobutton p-component controlElementColor">
-              <input v-model="singleValue" class="p-radiobutton-input" type="radio" name="single" :value="opt.value" />
-              <span class="p-radiobutton-box">
-                <span class="p-radiobutton-icon" />
-              </span>
-            </span>
-            <span class="ml-2 optionText">{{ opt.label }}</span>
-          </label>
+        <div v-if="whyOpen && question.bullets?.length" class="q-why-panel">
+          <ul class="q-why-list">
+            <li v-for="b in question.bullets" :key="b">{{ b }}</li>
+          </ul>
         </div>
       </div>
 
-      <div v-else class="options">
-        <div v-for="opt in question.options" :key="opt.value" class="optionContainer">
-          <label class="optionRow">
-            <span class="p-checkbox p-component controlElementColor">
-              <input
-                class="p-checkbox-input"
-                type="checkbox"
-                :checked="multiValues.includes(opt.value)"
-                @change="onMultiToggle(opt.value, getChecked($event))"
-              />
-              <span class="p-checkbox-box">
-                <span class="p-checkbox-icon" />
-              </span>
-            </span>
-            <span class="ml-2 optionText">{{ opt.label }}</span>
-          </label>
-        </div>
-      </div>
-    </div>
+      <div class="q-footer">
+        <button class="q-back" type="button" @click="goBack">
+          <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
+          Previous
+        </button>
 
-    <div class="card-footer">
-      <button class="footer-btn" type="button" @click="goBack">Back</button>
-      <button
-        class="footer-btn"
-        type="button"
-        :disabled="(question.kind === 'single' && !singleValue) || (question.kind === 'multi' && multiValues.length === 0)"
-        @click="goNext"
-      >
-        Next
-      </button>
-    </div>
-  </section>
+        <button v-if="question.bullets?.length" class="q-why" type="button" :data-open="whyOpen" @click="toggleWhy">
+          <span class="q-why-text">Why are we asking this?</span>
+          <span class="material-symbols-outlined q-why-icon" aria-hidden="true">expand_more</span>
+        </button>
+        <span v-else />
+
+        <button
+          class="q-next"
+          type="button"
+          :disabled="(question.kind === 'single' && !singleValue) || (question.kind === 'multi' && multiValues.length === 0)"
+          @click="goNext"
+        >
+          Continue
+          <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+        </button>
+      </div>
+    </section>
+
+    <footer class="q-global-footer" aria-label="Context">
+      <div class="q-global-footer-inner">
+        <span class="q-foot-item"><span class="material-symbols-outlined" aria-hidden="true">lock</span>Secure Session</span>
+        <span class="q-foot-item"
+          ><span class="material-symbols-outlined" aria-hidden="true">description</span>Annex II Reference</span
+        >
+        <span class="q-foot-item"
+          ><span class="material-symbols-outlined" aria-hidden="true">verified</span>EU AI Act v.1.0</span
+        >
+      </div>
+    </footer>
+  </div>
 
   <section v-else class="card">
     <div class="card-body">
@@ -184,201 +233,350 @@ async function goNext() {
 </template>
 
 <style scoped>
-.meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 18px;
-}
-
-.link {
-  appearance: none;
-  border: 0;
-  background: transparent;
-  padding: 6px 8px;
-  cursor: pointer;
-  color: #bf952c;
-  font-weight: 750;
-  letter-spacing: 0.2px;
-}
-
-.question-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  margin: 8px 0 0;
-}
-
-.question-title {
-  margin: 0;
-  font-size: 24px;
-  line-height: 1.25;
-  letter-spacing: 0.1px;
-}
-
-.info {
-  width: 26px;
-  height: 26px;
-  border-radius: 999px;
-  border: 1px solid rgba(211, 167, 0, 0.45);
-  background: rgba(211, 167, 0, 0.12);
-  color: rgba(12, 15, 18, 0.92);
-  cursor: pointer;
-  font-weight: 900;
-  display: grid;
-  place-items: center;
-  flex: 0 0 auto;
-}
-
-.info-panel {
-  margin-top: 12px;
-  padding: 14px 16px;
-  border: 1px solid rgba(211, 167, 0, 0.28);
-  background: rgba(211, 167, 0, 0.09);
-}
-
-.bullets-plain {
-  margin: 14px 0 0;
-  padding: 0;
-  list-style: none;
-  display: grid;
-  gap: 10px;
-  color: rgba(12, 15, 18, 0.84);
-}
-
-.bullets-plain li {
-  position: relative;
-  padding-left: 18px;
-  line-height: 1.55;
-}
-
-.bullets-plain li::before {
-  content: '•';
-  position: absolute;
-  left: 0;
-  top: 0;
-  color: rgba(194, 150, 0, 0.95);
-}
-
-.options {
-  display: grid;
-  gap: 10px;
-  margin-top: 18px;
-}
-
-.optionContainer {
-  display: flex;
-}
-
-.optionRow {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  padding: 10px 0;
+.q-page {
   width: 100%;
-  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  align-items: center;
 }
 
-.ml-2 {
-  margin-left: 8px;
+.q-card {
+  width: min(980px, 100%);
+  border-radius: 12px;
+  border: 1px solid rgba(12, 15, 18, 0.08);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.08);
 }
 
-.optionText {
-  line-height: 1.55;
-  font-size: 15px;
-  color: rgba(12, 15, 18, 0.9);
+.q-body {
+  padding: 32px 32px 22px;
 }
 
-.controlElementColor {
-  color: var(--primary);
+.q-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 18px;
 }
 
-.p-radiobutton,
-.p-checkbox {
-  position: relative;
+.q-step {
   display: inline-flex;
-  width: 20px;
-  height: 20px;
-  flex: 0 0 20px;
+  align-items: center;
+  height: 22px;
+  padding: 0 12px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 850;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--primary);
+  background: rgba(211, 167, 0, 0.08);
+  border: 1px solid rgba(211, 167, 0, 0.14);
 }
 
-.p-radiobutton-input,
-.p-checkbox-input {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+.q-title {
   margin: 0;
-  opacity: 0;
-  cursor: pointer;
+  font-size: 28px;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  font-weight: 900;
+  color: rgba(12, 15, 18, 0.96);
 }
 
-.p-radiobutton-box,
-.p-checkbox-box {
-  width: 20px;
-  height: 20px;
-  box-sizing: border-box;
+.q-callout {
+  width: min(600px, 100%);
+  position: relative;
+  background: rgba(12, 15, 18, 0.03);
+  border-radius: 12px;
+  padding: 18px 18px 18px 24px;
+  border-left: 4px solid rgba(211, 167, 0, 0.4);
+}
+
+.q-callout-icon {
+  position: absolute;
+  left: -14px;
+  top: 16px;
+  width: 28px;
+  height: 28px;
   display: grid;
   place-items: center;
-  border: 2px solid rgba(12, 15, 18, 0.32);
+  border-radius: 999px;
   background: #ffffff;
-  transition: border-color 120ms ease, box-shadow 120ms ease, background 120ms ease;
+  color: var(--primary);
+  font-size: 18px;
+  border: 1px solid rgba(12, 15, 18, 0.06);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
 }
 
-.p-radiobutton-box {
-  border-radius: 999px;
+.q-callout-text {
+  margin: 0;
+  color: rgba(12, 15, 18, 0.62);
+  font-size: 13px;
+  line-height: 1.7;
+  text-align: left;
 }
 
-.p-checkbox-box {
-  border-radius: 3px;
+.q-actions {
+  margin-top: 34px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
 }
 
-.p-radiobutton-icon {
-  width: 10px;
-  height: 10px;
-  border-radius: 999px;
-  background: var(--primary);
-  transform: scale(0);
-  transition: transform 120ms ease;
+.bento-card {
+  appearance: none;
+  border: 2px solid rgba(12, 15, 18, 0.06);
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 18px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: background 140ms ease, border-color 140ms ease, transform 140ms ease, box-shadow 140ms ease;
+  text-align: center;
 }
 
-.p-checkbox-icon {
-  width: 10px;
-  height: 6px;
-  border-right: 2px solid #ffffff;
-  border-bottom: 2px solid #ffffff;
-  transform: rotate(45deg) scale(0);
-  transition: transform 120ms ease;
-  margin-top: -2px;
-}
-
-.p-radiobutton-input:checked + .p-radiobutton-box {
-  border-color: var(--primary);
-}
-
-.p-radiobutton-input:checked + .p-radiobutton-box .p-radiobutton-icon {
-  transform: scale(1);
-}
-
-.p-checkbox-input:checked + .p-checkbox-box {
-  border-color: var(--primary);
-  background: var(--primary);
-}
-
-.p-checkbox-input:checked + .p-checkbox-box .p-checkbox-icon {
-  transform: rotate(45deg) scale(1);
-}
-
-.p-radiobutton-input:focus-visible + .p-radiobutton-box,
-.p-checkbox-input:focus-visible + .p-checkbox-box {
+.bento-card:focus-visible {
   outline: none;
   box-shadow: var(--ring);
 }
 
-.optionRow:hover .p-radiobutton-box,
-.optionRow:hover .p-checkbox-box {
-  border-color: rgba(12, 15, 18, 0.5);
+.bento-card:hover {
+  border-color: rgba(211, 167, 0, 0.5);
+  background: rgba(211, 167, 0, 0.02);
+  transform: translateY(-1px);
+}
+
+.bento-card:active {
+  transform: translateY(0px);
+}
+
+.bento-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 999px;
+  background: rgba(12, 15, 18, 0.04);
+  display: grid;
+  place-items: center;
+  transition: background 140ms ease;
+}
+
+.bento-icon .material-symbols-outlined {
+  font-size: 22px;
+  color: rgba(12, 15, 18, 0.28);
+  transition: color 140ms ease;
+}
+
+.bento-label {
+  font-size: 16px;
+  font-weight: 850;
+  letter-spacing: 0.1px;
+  color: rgba(12, 15, 18, 0.92);
+  line-height: 1.35;
+}
+
+.bento-card[data-selected='true'] {
+  border-color: rgba(211, 167, 0, 0.65);
+  background: rgba(211, 167, 0, 0.04);
+  box-shadow: 0 16px 36px rgba(211, 167, 0, 0.12);
+}
+
+.bento-card[data-selected='true'] .bento-icon {
+  background: rgba(211, 167, 0, 0.12);
+}
+
+.bento-card[data-selected='true'] .bento-icon .material-symbols-outlined {
+  color: var(--primary);
+}
+
+.q-why-panel {
+  margin-top: 16px;
+  border-top: 1px solid rgba(12, 15, 18, 0.08);
+  padding-top: 16px;
+}
+
+.q-why-list {
+  margin: 0;
+  padding: 0 0 0 18px;
+  color: rgba(12, 15, 18, 0.78);
+  font-size: 13px;
+  line-height: 1.7;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.q-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 18px 18px;
+  border-top: 1px solid rgba(12, 15, 18, 0.08);
+}
+
+.q-back {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: 10px 12px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 850;
+  color: rgba(12, 15, 18, 0.6);
+  transition: color 140ms ease;
+}
+
+.q-back:hover {
+  color: rgba(12, 15, 18, 0.92);
+}
+
+.q-back:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
+  border-radius: 10px;
+}
+
+.q-why {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: 10px 10px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 10px;
+  color: rgba(12, 15, 18, 0.55);
+  font-weight: 850;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-size: 10px;
+  transition: color 140ms ease;
+}
+
+.q-why:hover {
+  color: var(--primary);
+}
+
+.q-why:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
+}
+
+.q-why-icon {
+  font-size: 18px;
+  transition: transform 160ms ease;
+}
+
+.q-why[data-open='true'] .q-why-icon {
+  transform: rotate(180deg);
+}
+
+.q-next {
+  appearance: none;
+  border: 0;
+  cursor: pointer;
+  padding: 12px 18px;
+  border-radius: 10px;
+  background: var(--primary);
+  color: #ffffff;
+  font-weight: 900;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 14px 26px rgba(211, 167, 0, 0.22);
+  transition: background 140ms ease, transform 140ms ease, box-shadow 140ms ease, opacity 140ms ease;
+}
+
+.q-next:hover {
+  background: var(--primary-hi);
+  transform: translateY(-1px);
+}
+
+.q-next:active {
+  transform: translateY(0px);
+}
+
+.q-next:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.q-next:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
+}
+
+.q-global-footer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  opacity: 0.4;
+  padding: 18px 0 0;
+}
+
+.q-global-footer-inner {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 850;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(12, 15, 18, 0.55);
+}
+
+.q-foot-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.q-foot-item .material-symbols-outlined {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  .q-body {
+    padding: 44px 48px 28px;
+  }
+
+  .q-title {
+    font-size: 32px;
+  }
+
+  .q-actions {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .q-global-footer-inner {
+    gap: 32px;
+  }
+}
+
+@media (max-width: 520px) {
+  .q-footer {
+    padding: 12px 12px 14px;
+  }
+
+  .q-back {
+    padding: 10px 8px;
+  }
+
+  .q-next {
+    padding: 12px 14px;
+  }
 }
 </style>
