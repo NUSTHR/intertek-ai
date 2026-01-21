@@ -1,181 +1,140 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 import type {
-  AnswerRequest,
-  AnswerResponse,
   AnswerValue,
-  EvaluateResponse,
-  Question,
-  QuestionResponse,
-  Result,
+  InitResponse,
+  Module,
+  ModuleResponse,
   ResultResponse,
-  ResultsResponse,
-  StartResponse,
-  TreeResponse,
+  SubmitRequest,
+  SubmitResponse,
 } from '@/types/questionnaire'
 
-const STORAGE_KEY = 'aiq:answers:v2'
-
-function isStringArray(value: unknown): value is string[] {
-  return Array.isArray(value) && value.every((v) => typeof v === 'string')
-}
-
-function loadPersistedAnswers(): Record<string, AnswerValue> {
-  const raw = localStorage.getItem(STORAGE_KEY)
-  if (!raw) return {}
-  try {
-    const data = JSON.parse(raw) as Record<string, unknown>
-    if (!data || typeof data !== 'object') return {}
-    const out: Record<string, AnswerValue> = {}
-    for (const [k, v] of Object.entries(data)) {
-      if (typeof v === 'string') out[k] = v
-      else if (isStringArray(v)) out[k] = v
-    }
-    return out
-  } catch {
-    return {}
-  }
-}
-
-function persistAnswers(answers: Record<string, AnswerValue>) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(answers))
-}
+const API_BASE = import.meta.env.VITE_API_BASE ?? 'http://127.0.0.1:8000'
 
 export const useQuestionnaireStore = defineStore('questionnaire', () => {
-  const startId = ref<string>('q1')
-  const questionsById = ref<Record<string, Question>>({})
-  const resultsById = ref<Record<string, Result>>({})
-  const loaded = ref(false)
+  const sessionId = ref<string>('')
+  const currentModule = ref<Module | null>(null)
+  const parameters = ref<Record<string, AnswerValue>>({})
+  const answers = ref<Record<string, AnswerValue>>({})
+  const lastAction = ref<SubmitResponse['next'] | null>(null)
+  const lastMessage = ref<string | null>(null)
   const loading = ref(false)
   const error = ref<string | null>(null)
 
-  const answers = ref<Record<string, AnswerValue>>(loadPersistedAnswers())
-  const lastEvaluation = ref<EvaluateResponse | null>(null)
+  const moduleQuestions = computed(() => currentModule.value?.questions ?? [])
 
-  const questions = computed(() => Object.values(questionsById.value))
-
-  async function load() {
-    if (loaded.value || loading.value) return
+  async function init(): Promise<Module | null> {
     loading.value = true
     error.value = null
     try {
-      const startRes = await fetch('/api/start')
-      if (startRes.ok) {
-        const start = (await startRes.json()) as StartResponse
-        startId.value = start.start
-        questionsById.value = { ...questionsById.value, [start.question.id]: start.question }
-        loaded.value = true
-        return
-      }
-
-      const [treeRes, resultsRes] = await Promise.all([fetch('/api/tree'), fetch('/api/results')])
-      if (!treeRes.ok) throw new Error(`tree_http_${treeRes.status}`)
-      if (!resultsRes.ok) throw new Error(`results_http_${resultsRes.status}`)
-
-      const tree = (await treeRes.json()) as TreeResponse
-      const results = (await resultsRes.json()) as ResultsResponse
-
-      startId.value = tree.start
-      questionsById.value = Object.fromEntries(tree.questions.map((q) => [q.id, q]))
-      resultsById.value = Object.fromEntries(results.results.map((r) => [r.id, r]))
-      loaded.value = true
+      const res = await fetch(`${API_BASE}/init`)
+      if (!res.ok) throw new Error(`init_http_${res.status}`)
+      const data = (await res.json()) as InitResponse
+      sessionId.value = data.session_id
+      currentModule.value = data.module
+      parameters.value = {}
+      answers.value = {}
+      lastAction.value = null
+      lastMessage.value = null
+      return data.module
     } catch (e) {
-      error.value = e instanceof Error ? e.message : 'load_failed'
-      loaded.value = false
+      error.value = e instanceof Error ? e.message : 'init_failed'
+      return null
+    } finally {
+      loading.value = false
+    }
+  }
+
+  async function loadModule(moduleId: string): Promise<Module | null> {
+    if (!sessionId.value) return null
+    loading.value = true
+    error.value = null
+    try {
+      const res = await fetch(`${API_BASE}/module/${encodeURIComponent(moduleId)}?session_id=${sessionId.value}`)
+      if (!res.ok) throw new Error(`module_http_${res.status}`)
+      const data = (await res.json()) as ModuleResponse
+      currentModule.value = data.module
+      return data.module
+    } catch (e) {
+      error.value = e instanceof Error ? e.message : 'module_failed'
+      return null
+    } finally {
+      loading.value = false
+    }
+  }
+
+  async function submit(moduleId: string, payloadAnswers: Record<string, AnswerValue>): Promise<SubmitResponse | null> {
+    if (!sessionId.value) return null
+    loading.value = true
+    error.value = null
+    try {
+      const payload: SubmitRequest = { session_id: sessionId.value, module_id: moduleId, answers: payloadAnswers }
+      const res = await fetch(`${API_BASE}/submit`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+      if (!res.ok) {
+        const detail = await res.json().catch(() => null)
+        throw new Error(JSON.stringify(detail ?? { status: res.status }))
+      }
+      const data = (await res.json()) as SubmitResponse
+      parameters.value = data.parameters
+      lastAction.value = data.next
+      lastMessage.value = data.next?.message ?? null
+      answers.value = { ...answers.value, ...payloadAnswers }
+      return data
+    } catch (e) {
+      error.value = e instanceof Error ? e.message : 'submit_failed'
+      return null
+    } finally {
+      loading.value = false
+    }
+  }
+
+  async function fetchResult(): Promise<Record<string, AnswerValue> | null> {
+    if (!sessionId.value) return null
+    loading.value = true
+    error.value = null
+    try {
+      const res = await fetch(`${API_BASE}/result?session_id=${sessionId.value}`)
+      if (!res.ok) throw new Error(`result_http_${res.status}`)
+      const data = (await res.json()) as ResultResponse
+      parameters.value = data.parameters
+      return data.parameters
+    } catch (e) {
+      error.value = e instanceof Error ? e.message : 'result_failed'
+      return null
     } finally {
       loading.value = false
     }
   }
 
   function reset() {
+    sessionId.value = ''
+    currentModule.value = null
+    parameters.value = {}
     answers.value = {}
-    persistAnswers(answers.value)
-    lastEvaluation.value = null
-  }
-
-  function setAnswer(questionId: string, value: AnswerValue) {
-    answers.value = { ...answers.value, [questionId]: value }
-    persistAnswers(answers.value)
-  }
-
-  function getNext(questionId: string, value: AnswerValue) {
-    const q = questionsById.value[questionId]
-    if (!q || q.kind !== 'single') return null
-    if (typeof value !== 'string') return null
-    const opt = q.options.find((o) => o.value === value)
-    return opt?.next ?? null
-  }
-
-  async function fetchQuestion(questionId: string): Promise<Question | null> {
-    if (questionsById.value[questionId]) return questionsById.value[questionId]
-    const res = await fetch(`/api/question/${encodeURIComponent(questionId)}`)
-    if (!res.ok) return null
-    const data = (await res.json()) as QuestionResponse
-    questionsById.value = { ...questionsById.value, [data.question.id]: data.question }
-    return data.question
-  }
-
-  async function fetchResult(resultId: string): Promise<Result | null> {
-    const existing = resultsById.value[resultId as Result['id']]
-    if (existing) return existing
-    const res = await fetch(`/api/result/${encodeURIComponent(resultId)}`)
-    if (!res.ok) return null
-    const data = (await res.json()) as ResultResponse
-    resultsById.value = { ...resultsById.value, [data.result.id]: data.result }
-    return data.result
-  }
-
-  async function answer(questionId: string, value: AnswerValue): Promise<AnswerResponse | null> {
-    const payload: AnswerRequest = { question_id: questionId, value, answers: answers.value }
-    const res = await fetch('/api/answer', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify(payload),
-    })
-    if (!res.ok) return null
-    const data = (await res.json()) as AnswerResponse
-    if (data.question) {
-      questionsById.value = { ...questionsById.value, [data.question.id]: data.question }
-    }
-    if (data.result) {
-      resultsById.value = { ...resultsById.value, [data.result.id]: data.result }
-      lastEvaluation.value = { result_id: data.result.id, path: data.path, result: data.result }
-    }
-    return data
-  }
-
-  async function evaluate(): Promise<EvaluateResponse> {
-    const res = await fetch('/api/evaluate', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ answers: answers.value }),
-    })
-    if (!res.ok) {
-      const detail = await res.json().catch(() => null)
-      throw new Error(JSON.stringify(detail ?? { status: res.status }))
-    }
-    const data = (await res.json()) as EvaluateResponse
-    lastEvaluation.value = data
-    return data
+    lastAction.value = null
+    lastMessage.value = null
+    error.value = null
   }
 
   return {
-    startId,
-    questionsById,
-    resultsById,
-    questions,
-    loaded,
+    sessionId,
+    currentModule,
+    moduleQuestions,
+    parameters,
+    answers,
+    lastAction,
+    lastMessage,
     loading,
     error,
-    answers,
-    lastEvaluation,
-    load,
-    reset,
-    setAnswer,
-    getNext,
-    fetchQuestion,
+    init,
+    loadModule,
+    submit,
     fetchResult,
-    answer,
-    evaluate,
+    reset,
   }
 })

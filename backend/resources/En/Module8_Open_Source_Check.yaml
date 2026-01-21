@@ -1,0 +1,24 @@
+module: "08_open_source_check"
+title: "Open-Source Check"
+description: "Evaluates if the system qualifies for open-source exemptions under Article 2(12)."
+
+questions:
+  - id: "q8.1"
+    text: "Is the model/system released under a free and open-source license?"
+    ref: "Art 2(12), Art 53(2)"
+    description: "A license that allows for the access, usage, modification, and distribution of the model, and where parameters/weights are made publicly available."
+    type: "boolean"
+
+# Internal Logical Mapping & Final Parameter State
+parameter_updates:
+  - parameter: "Open_source"
+    type: "boolean"
+    logic: |
+      IF q8.1 is True:
+        SET True
+      ELSE:
+        SET False
+
+router:
+  - if: "Module_finished"
+    action: "END & Generate Result" #"FINISH & Generate Final Compliance Report"

@@ -1,0 +1,68 @@
+module: "01_scope_and_exclusions"
+title: "Scope & Universal R&D Exclusions"
+description: "Determines if the AI is outside the legal scope based on Article 2."
+
+questions:
+  - id: "q1.1"
+    text: "Is the AI system or AI model specifically developed and put into service for the sole purpose of scientific research and development?"
+    ref: "Art 2(6)"
+    type: "single_choice"
+    options:
+      - label: "Yes"
+        value: "yes"
+      - label: "No"
+        value: "no"
+
+  - id: "q1.2"
+    text: "Is the activity a research, testing, or development activity occurring prior to the system/model being placed on the market or put into service?"
+    ref: "Art 2(8)"
+    type: "single_choice"
+    dependency: "q1.1 == 'no'"
+    options:
+      - label: "Yes"
+        value: "yes"
+      - label: "No"
+        value: "no"
+
+  - id: "q1.3"
+    text: "Does this activity involve testing in real-world conditions?"
+    ref: "Art 2(9)"
+    type: "single_choice"
+    dependency: "q1.2 == 'yes'"
+    options:
+      - label: "Yes"
+        value: "yes"
+      - label: "No"
+        value: "no"
+
+# Internal Logical Mapping & Parameter State
+parameter_updates:
+  - parameter: "Totally_excluded"
+    logic: |
+      IF q1.1 == 'yes' OR (q1.2 == 'yes' AND q1.3 == 'no'):
+        SET True
+      ELSE:
+        SET False
+
+  - parameter: "Real_world_Testing"
+    logic: |
+      IF q1.3 == 'yes':
+        SET True
+      ELSE:
+        SET False
+
+  - parameter: "Exclusion_reason"
+    type: "string"
+    logic: |
+      IF q1.1 == 'yes':
+        SET "Scientific Research and Development (Art 2(6))"
+      ELSE IF q1.2 == 'yes' AND q1.3 == 'no':
+        SET "Pre-market R&D without real-world testing (Art 2(8))"
+      ELSE:
+        SET "None / In-Scope"
+
+router:
+  - if: "Totally_excluded == True"
+    action: "END & Generate Result"
+  - if: "Totally_excluded == False"
+    action: "Go to Module 2(The Grand Split (Classification))"

@@ -1,25 +1,19 @@
 <script setup lang="ts">
 import { computed, onMounted } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { useQuestionnaireStore } from '@/stores/questionnaire'
 
-const route = useRoute()
 const router = useRouter()
 const store = useQuestionnaireStore()
 
-const resultId = computed(() => String(route.params.id ?? ''))
-const result = computed(() => store.resultsById[resultId.value] ?? store.lastEvaluation?.result ?? null)
-const resultTag = computed(() => {
-  const id = resultId.value || store.lastEvaluation?.result_id || ''
-  return id ? `RESULT ${id}` : 'RESULT'
-})
+const entries = computed(() => Object.entries(store.parameters))
 
 onMounted(async () => {
-  await store.load()
-  if (!store.resultsById[resultId.value] && store.lastEvaluation?.result_id !== resultId.value) {
-    const r = await store.fetchResult(resultId.value)
-    if (!r) await router.replace({ name: 'start' })
+  if (!store.sessionId) {
+    await router.replace({ name: 'start' })
+    return
   }
+  await store.fetchResult()
 })
 
 async function restart() {
@@ -29,45 +23,30 @@ async function restart() {
 </script>
 
 <template>
-  <section v-if="result" class="card">
-    <div class="card-body page-center">
-      <div class="kicker">{{ resultTag }}</div>
-      <header class="header">
-        <h2 class="title">{{ result.title }}</h2>
-        <p class="subtitle">{{ result.description }}</p>
-      </header>
+  <section class="card">
+    <h2>合规参数报告</h2>
+    <p class="muted">以下为系统根据你的答案推断出的全部参数。</p>
 
-      <ul v-if="result.bullets?.length" class="bullets">
-        <li v-for="b in result.bullets" :key="b">{{ b }}</li>
-      </ul>
-    </div>
+    <div v-if="store.error" class="error" style="margin: 10px 0">{{ store.error }}</div>
+    <div v-if="entries.length === 0" class="muted">加载中…</div>
 
-    <div class="card-footer">
-      <span />
-      <button class="footer-btn" type="button" @click="restart">Restart</button>
-    </div>
-  </section>
+    <table v-else style="width: 100%; border-collapse: collapse; margin-top: 12px">
+      <thead>
+        <tr>
+          <th style="text-align: left; border-bottom: 1px solid #e5e7eb; padding: 6px 0">参数</th>
+          <th style="text-align: left; border-bottom: 1px solid #e5e7eb; padding: 6px 0">值</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="[key, value] in entries" :key="key">
+          <td style="padding: 6px 0; vertical-align: top">{{ key }}</td>
+          <td style="padding: 6px 0; vertical-align: top">{{ Array.isArray(value) ? JSON.stringify(value) : String(value) }}</td>
+        </tr>
+      </tbody>
+    </table>
 
-  <section v-else class="card">
-    <div class="card-body">
-      <div class="muted">加载中…</div>
+    <div class="actions">
+      <button type="button" @click="restart">重新开始</button>
     </div>
   </section>
 </template>
-
-<style scoped>
-.kicker {
-  display: inline-flex;
-  align-items: center;
-  height: 24px;
-  padding: 0 10px;
-  border-radius: 999px;
-  font-size: 12px;
-  letter-spacing: 0.4px;
-  color: rgba(12, 15, 18, 0.72);
-  background: rgba(211, 167, 0, 0.14);
-  border: 1px solid rgba(211, 167, 0, 0.35);
-  margin-bottom: 16px;
-}
-
-</style>

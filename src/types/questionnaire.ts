@@ -1,86 +1,56 @@
-export type AnswerValue = string | string[]
+export type AnswerScalar = string | number | boolean
+export type AnswerValue = AnswerScalar | AnswerScalar[]
 
-export type NextNode =
-  | { type: 'question'; id: string }
-  | { type: 'result'; id: string }
-
-export type SingleOption = {
+export type ModuleOption = {
   label: string
-  value: string
-  next: NextNode
-}
-
-export type MultiOption = {
-  label: string
-  value: string
+  value: AnswerScalar
   exclusive?: boolean
 }
 
-export type QuestionBase = {
+export type ModuleQuestion = {
+  id: string
+  text: string
+  ref?: string
+  description?: string
+  type: 'single_choice' | 'multi_choice' | 'boolean'
+  options?: ModuleOption[]
+}
+
+export type Module = {
   id: string
   title: string
-  description: string | null
-  bullets: string[] | null
+  description?: string
+  questions: ModuleQuestion[]
 }
 
-export type SingleQuestion = QuestionBase & {
-  kind: 'single'
-  options: SingleOption[]
+export type InitResponse = {
+  session_id: string
+  module: Module
 }
 
-export type MultiQuestion = QuestionBase & {
-  kind: 'multi'
-  options: MultiOption[]
-  next_any: NextNode
-  next_none: NextNode
+export type ModuleResponse = {
+  module: Module
 }
 
-export type Question = SingleQuestion | MultiQuestion
-
-export type Result = {
-  id: string
-  title: string
-  description: string
-  bullets: string[] | null
-}
-
-export type TreeResponse = {
-  start: string
-  questions: Question[]
-}
-
-export type ResultsResponse = {
-  results: Result[]
-}
-
-export type EvaluateResponse = {
-  result_id: Result['id']
-  path: string[]
-  result: Result
-}
-
-export type StartResponse = {
-  start: string
-  question: Question
-}
-
-export type QuestionResponse = {
-  question: Question
-}
-
-export type ResultResponse = {
-  result: Result
-}
-
-export type AnswerRequest = {
-  question_id: string
-  value: AnswerValue
+export type SubmitRequest = {
+  session_id: string
+  module_id: string
   answers: Record<string, AnswerValue>
 }
 
-export type AnswerResponse = {
-  next: NextNode
-  path: string[]
-  question?: Question | null
-  result?: Result | null
+export type NextAction = {
+  type: 'module' | 'result'
+  module_id?: string | null
+  message?: string | null
+}
+
+export type SubmitResponse = {
+  session_id: string
+  parameters: Record<string, AnswerValue>
+  next: NextAction
+  module_complete: boolean
+}
+
+export type ResultResponse = {
+  parameters: Record<string, AnswerValue>
 }

@@ -1,0 +1,228 @@
+module: "09_compliance_conclusions"
+title: "Final Compliance Determination"
+description: "Maps parameter states to final legal conclusions and comprehensive obligation views based on Regulation (EU) 2024/1689."
+
+# ==============================================================================
+# RULE ENGINE LOGIC
+# The backend iterates top-to-bottom. The FIRST match determines the conclusion.
+# ==============================================================================
+
+rules:
+  # ----------------------------------------------------------------------------
+  # GROUP 1: OUT OF SCOPE & EXCLUSIONS (The Hard Stops)
+  # ----------------------------------------------------------------------------
+  
+  - id: "STOP_01_TOTAL_EXCLUSION"
+    condition: "Totally_excluded == True"
+    conclusion:
+      Type: "Excluded Activity"
+      Risk_level: "Out of Scope"
+      Real_world_testing: False
+      view: |
+        Your activity falls completely outside the scope of the AI Act for one of the following reasons:
+        1. Pure Scientific R&D: The AI is developed and put into service for the sole purpose of scientific research and development (Art 2(6)).
+        2. Pre-Market R&D: The activity is strictly research, testing, or development occurring *before* the system is placed on the market or put into service (Art 2(8)).
+        
+        CRITICAL CONDITION: This exclusion applies only as long as the system is not placed on the market. If you are conducting "Real World Testing" outside of a lab, Article 57 applies specifically.
+
+  - id: "STOP_02_SYSTEM_EXCLUSION"
+    condition: "System_Excluded == True"
+    conclusion:
+      Type: "Excluded System"
+      Risk_level: "Excluded (Specific Purpose)"
+      Real_world_testing: False 
+      view: |
+        Your system is excluded from the Regulation based on its specific intended purpose (Art 2).
+        Based on your inputs, this applies because the system is either:
+        1. Exclusively for military, defense, or national security purposes (Art 2(3)); OR
+        2. Used by public authorities for international law enforcement cooperation (Art 2(4)); OR
+        3. Used by a natural person for purely personal, non-professional activity (Art 2(10)).
+        
+        Note: If the purpose changes to a commercial or civil application, this exclusion is void.
+
+  - id: "STOP_03_PROHIBITED"
+    condition: "Unacceptable_risk == True"
+    conclusion:
+      Type: "AI System"
+      Risk_level: "Unacceptable Risk (PROHIBITED)"
+      Real_world_testing: False
+      view: |
+        CRITICAL VERDICT: The AI practice described is prohibited in the European Union under Article 5.
+        You must NOT place this system on the market, put it into service, or use it in the EU.
+        
+        The prohibition applies because the system falls into one of these banned categories:
+        - Deceptive/Manipulative techniques or exploitation of vulnerabilities.
+        - Social Scoring.
+        - Real-time Remote Biometric Identification (RBI) in public spaces (unless strictly authorized for law enforcement).
+        - Biometric categorization of sensitive traits (race, politics, religion, etc.).
+        - Predictive policing based solely on profiling.
+        - Emotion recognition in workplaces or educational institutions.
+        - Untargeted scraping of facial images (CCTV/Internet) to build databases.
+
+  - id: "STOP_04_NON_AI"
+    condition: "AI-type == 3"
+    conclusion:
+      Type: "Non-AI Software"
+      Risk_level: "No Risk (Not AI)"
+      Real_world_testing: False
+      view: |
+        The software does not meet the definition of an "AI System" under Article 3(1) (e.g., it lacks inference capabilities or autonomy).
+        Therefore, the AI Act does not apply.
+        
+        Other Regulations: You must still comply with the General Product Safety Regulation (GPSR) and GDPR where applicable.
+
+  # ----------------------------------------------------------------------------
+  # GROUP 2: GENERAL PURPOSE AI MODELS (GPAI)
+  # ----------------------------------------------------------------------------
+
+  - id: "GPAI_SYSTEMIC_CLOSED"
+    condition: "AI-type == 1 AND Systematic_risk == True AND Open_source == False"
+    conclusion:
+      Type: "General-Purpose AI Model (GPAI)"
+      Risk_level: "Systemic Risk"
+      Real_world_testing: False
+      view: |
+        Your model is classified as a GPAI Model with Systemic Risk (Art 51).
+        
+        Mandatory Obligations:
+        1. Perform model evaluation and adversarial testing ("Red Teaming").
+        2. Assess and mitigate systemic risks at the EU level.
+        3. Report serious incidents to the AI Office.
+        4. Ensure adequate cybersecurity protections.
+        5. Draw up and maintain technical documentation (Annex XI) and provide it to the AI Office.
+        6. Comply with EU Copyright law and publish a training data summary.
+
+  - id: "GPAI_SYSTEMIC_OPEN"
+    condition: "AI-type == 1 AND Systematic_risk == True AND Open_source == True"
+    conclusion:
+      Type: "General-Purpose AI Model (GPAI)"
+      Risk_level: "Systemic Risk (Open Source)"
+      Real_world_testing: False
+      view: |
+        Your model is Open Source but qualifies as having Systemic Risk.
+        
+        IMPORTANT: The Open Source exemption (Art 53(2)) DOES NOT apply to models with Systemic Risk.
+        You must fulfill ALL systemic risk obligations:
+        1. Model evaluation, adversarial testing, and cybersecurity.
+        2. Systemic risk assessment and incident reporting.
+        3. Technical documentation must be provided to the AI Office despite the license.
+        4. Copyright compliance and training data summary.
+
+  - id: "GPAI_STANDARD_CLOSED"
+    condition: "AI-type == 1 AND Systematic_risk == False AND Open_source == False"
+    conclusion:
+      Type: "General-Purpose AI Model (GPAI)"
+      Risk_level: "Standard GPAI"
+      Real_world_testing: False
+      view: |
+        Your model is a standard GPAI model (non-systemic, proprietary/closed).
+        
+        Mandatory Obligations (Art 53):
+        1. Draw up and maintain technical documentation (Annex XI) for the AI Office.
+        2. Comply with Union Copyright Law.
+        3. Make publicly available a sufficiently detailed summary of the content used for training the model.
+        4. Cooperate with the AI Office and downstream providers.
+
+  - id: "GPAI_STANDARD_OPEN"
+    condition: "AI-type == 1 AND Systematic_risk == False AND Open_source == True"
+    conclusion:
+      Type: "General-Purpose AI Model (GPAI)"
+      Risk_level: "Standard GPAI (Open Source Exempt)"
+      Real_world_testing: False
+      view: |
+        Your model is a standard GPAI model released under a free and open-source license.
+        
+        Exemptions Apply (Art 53(2)):
+        You are EXEMPT from drawing up technical documentation (Annex XI) and information sharing obligations towards downstream providers.
+        
+        Remaining Obligations:
+        1. You MUST put in place a policy to comply with Union Copyright Law.
+        2. You MUST publish a detailed summary of the content used for training the model.
+
+  # ----------------------------------------------------------------------------
+  # GROUP 3: REGULATED AI SYSTEMS (Downstream)
+  # ----------------------------------------------------------------------------
+
+  - id: "SYS_HIGH_RISK_AND_TRANSPARENT"
+    condition: "AI-type == 2 AND High_risk == True AND Transparency_Obligation == True"
+    conclusion:
+      Type: "AI System"
+      Risk_level: "High Risk + Transparency Obligations"
+      Real_world_testing: False
+      view: |
+        Your system falls under TWO regulatory regimes simultaneously: High-Risk (Chapter III) AND Transparency (Art 50).
+        
+        1. High-Risk Obligations (Heavy Burden):
+           - Establish a Risk Management System (Art 9).
+           - Data Governance: Ensure training/validation data is relevant, representative, and error-free (Art 10).
+           - Technical Documentation (Annex IV) & Record Keeping (Art 12).
+           - Accuracy, Robustness, and Cybersecurity (Art 15).
+           - Human Oversight measures (Art 14).
+           - Conformity Assessment required before market entry.
+        
+        2. Transparency Obligations:
+           - You must inform natural persons that they are interacting with an AI system (if chatbot/robot).
+           - You must inform persons exposed to emotion recognition (if applicable).
+           - You must label deep fakes/synthetic content.
+
+  - id: "SYS_HIGH_RISK_OPAQUE"
+    condition: "AI-type == 2 AND High_risk == True AND Transparency_Obligation == False"
+    conclusion:
+      Type: "AI System"
+      Risk_level: "High Risk (No Interaction/Transparency)"
+      Real_world_testing: False
+      view: |
+        Your system is classified as High-Risk (under Annex I Safety Component OR Annex III Critical Use Case).
+        It does NOT trigger the specific transparency rules (e.g., it is a backend engine, not a chatbot).
+        
+        Mandatory Obligations (Chapter III):
+        1. Establish a Risk Management System (Art 9).
+        2. Data Governance: Ensure training/validation data is relevant, representative, and error-free (Art 10).
+        3. Technical Documentation (Annex IV) & Record Keeping (Art 12).
+        4. Accuracy, Robustness, and Cybersecurity (Art 15).
+        5. Human Oversight measures (Art 14).
+        6. Conformity Assessment required before market entry (Art 43).
+
+  - id: "SYS_LIMITED_RISK"
+    condition: "AI-type == 2 AND High_risk == False AND Transparency_Obligation == True"
+    conclusion:
+      Type: "AI System"
+      Risk_level: "Limited Risk (Transparency)"
+      Real_world_testing: False
+      view: |
+        Your system is NOT High-Risk, but it presents specific transparency risks (Art 50).
+        
+        Mandatory Obligations:
+        1. Interaction: Inform natural persons they are interacting with an AI system (unless obvious).
+        2. Synthetic Content: Mark output as artificially generated or manipulated (machine-readable format).
+        3. Deep Fakes: Disclose that the content is artificially generated.
+        4. Emotion Recognition: If applicable, inform people they are being analyzed.
+        
+        No conformity assessment or risk management system is required.
+
+  - id: "SYS_MINIMAL_RISK"
+    condition: "AI-type == 2 AND High_risk == False AND Transparency_Obligation == False"
+    conclusion:
+      Type: "AI System"
+      Risk_level: "Minimal Risk"
+      Real_world_testing: False
+      view: |
+        Your system is considered Minimal Risk. It is not Prohibited, not High-Risk, and does not trigger Article 50 transparency rules.
+        
+        Obligations:
+        - No mandatory obligations under the AI Act.
+        - You may voluntarily adhere to a Code of Conduct (Art 95).
+        - Ensure compliance with GDPR and General Product Safety laws.
+
+  # ----------------------------------------------------------------------------
+  # FALLBACK
+  # ----------------------------------------------------------------------------
+  - id: "FALLBACK_UNKNOWN"
+    condition: "default"
+    conclusion:
+      Type: "Undetermined"
+      Risk_level: "Error"
+      Real_world_testing: False
+      view: |
+        The system logic could not determine a category. Please check your inputs.
+        Ensure you have completed all modules (Role, Scope, High Risk Check).

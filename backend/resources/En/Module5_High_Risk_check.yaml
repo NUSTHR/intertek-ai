@@ -1,0 +1,215 @@
+module: "05_high_risk_check"
+title: "High-Risk AI System Check"
+description: "Determines if the system is High-Risk under Article 6 pathways (Annex I or Annex III) using strict legal definitions and automated logic."
+
+questions:
+  # =========================================================================
+  # PATHWAY 1: Safety Components of Regulated Products (Article 6(1))
+  # =========================================================================
+  
+  - id: "q5.1"
+    text: "Does the AI system fall under the scope of any of the following Union Harmonisation Legislation?"
+    ref: "Annex I, Section A & B"
+    description: "Select the legislation regulating the product. If none apply, select 'None'."
+    type: "multi_choice"
+    options:
+      # Section A: New Legislative Framework
+      - label: "Machinery (Directive 2006/42/EC)"
+        value: "machinery"
+      - label: "Toys Safety (Directive 2009/48/EC)"
+        value: "toys"
+      - label: "Recreational Craft & Personal Watercraft (Directive 2013/53/EU)"
+        value: "watercraft"
+      - label: "Lifts (Directive 2014/33/EU)"
+        value: "lifts"
+      - label: "Equipment for Explosive Atmospheres (ATEX) (Directive 2014/34/EU)"
+        value: "atex"
+      - label: "Radio Equipment (Directive 2014/53/EU)"
+        value: "radio"
+      - label: "Pressure Equipment (Directive 2014/68/EU)"
+        value: "pressure"
+      - label: "Cableway Installations (Regulation (EU) 2016/424)"
+        value: "cableway"
+      - label: "Personal Protective Equipment (PPE) (Regulation (EU) 2016/425)"
+        value: "ppe"
+      - label: "Appliances Burning Gaseous Fuels (Regulation (EU) 2016/426)"
+        value: "gas_appliances"
+      - label: "Medical Devices (Regulation (EU) 2017/745)"
+        value: "medical_devices"
+      - label: "In Vitro Diagnostic Medical Devices (Regulation (EU) 2017/746)"
+        value: "ivd_medical_devices"
+      # Section B: Other Legislation
+      - label: "Civil Aviation Security (Regulation (EC) No 300/2008)"
+        value: "aviation_security"
+      - label: "Two- or Three-Wheel Vehicles and Quadricycles (Regulation (EU) No 168/2013)"
+        value: "vehicles_2_3_wheel"
+      - label: "Agricultural and Forestry Vehicles (Regulation (EU) No 167/2013)"
+        value: "vehicles_ag_forestry"
+      - label: "Marine Equipment (Directive 2014/90/EU)"
+        value: "marine"
+      - label: "Rail Interoperability (Directive (EU) 2016/797)"
+        value: "rail"
+      - label: "Motor Vehicles and Trailers (Regulation (EU) 2018/858)"
+        value: "vehicles_motor"
+      - label: "Motor Vehicle Type Approval (General Safety) (Regulation (EU) 2019/2144)"
+        value: "vehicles_type_approval"
+      - label: "Civil Aviation (Unmanned Aircraft/Drones) (Regulation (EU) 2018/1139)"
+        value: "civil_aviation"
+      - label: "None of the above"
+        value: "none"
+        exclusive: true
+
+  - id: "q5.2"
+    text: "Is the AI system intended to be used as a 'safety component' of the product, or is it the regulated product itself?"
+    ref: "Art 6(1)(a); Art 3(14)"
+    description: "A safety component is a component fulfilling a safety function, where failure or malfunction would endanger the health and safety of persons or property."
+    type: "single_choice"
+    options:
+      - label: "Yes"
+        value: "yes"
+      - label: "No"
+        value: "no"
+    dependency: "q5.1 != 'none'"
+
+  - id: "q5.3"
+    text: "Is a third-party conformity assessment (by a Notified Body) required for this product under the applicable law?"
+    ref: "Art 6(1)(b)"
+    description: "Select 'Yes' if the law mandates external assessment. Select 'No' if the manufacturer can perform self-assessment (internal control)."
+    type: "single_choice"
+    options:
+      - label: "Yes"
+        value: "yes"
+      - label: "No"
+        value: "no"
+    dependency: "q5.2 == 'yes'"
+
+  # =========================================================================
+  # PATHWAY 2: Annex III Critical Areas (Article 6(2))
+  # =========================================================================
+
+  - id: "q5.4"
+    text: "Is the AI system intended for any of the following Biometric purposes?"
+    ref: "Annex III, Point 1"
+    type: "multi_choice"
+    options:
+      - label: "Remote biometric identification system (identification at a distance, excluding sole verification)"
+        value: "bio_remote_id"
+      - label: "Biometric categorization inferring sensitive/protected attributes (e.g., race, politics, religion, sexual orientation)"
+        value: "bio_categorization"
+      - label: "Emotion recognition system"
+        value: "bio_emotion"
+      - label: "None of the above"
+        value: "none"
+        exclusive: true
+    dependency: "NOT (q5.1 != 'none' AND q5.2 == 'yes' AND q5.3 == 'yes')"
+
+  - id: "q5.5"
+    text: "Is the AI system intended for any of the following Critical Use Cases?"
+    ref: "Annex III, Points 2-8"
+    type: "multi_choice"
+    options:
+      - label: "Critical Infrastructure: Safety components for digital infra, road traffic, water, gas, heating, electricity"
+        value: "critical_infra"
+      - label: "Education: Access/admission, assigning persons, evaluating learning outcomes, steering learning, or proctoring"
+        value: "education"
+      - label: "Employment: Recruitment/filtering, promotion/termination decisions, task allocation based on traits, performance monitoring"
+        value: "employment"
+      - label: "Essential Services: Eligibility for benefits, credit scoring (except fraud), life/health insurance pricing, emergency call triage"
+        value: "essential_services"
+      - label: "Law Enforcement: Risk assessment, polygraphs, evidence reliability, profiling, investigation support"
+        value: "law_enforcement"
+      - label: "Migration/Border Control: Polygraphs, risk assessment, examining applications, detecting persons"
+        value: "migration"
+      - label: "Justice/Democracy: Assisting judicial interpretation, influencing elections"
+        value: "justice"
+      - label: "None of the above"
+        value: "none"
+        exclusive: true
+    dependency: "NOT (q5.1 != 'none' AND q5.2 == 'yes' AND q5.3 == 'yes')"
+
+  # =========================================================================
+  # EXEMPTION & PROFILING CHECKS (Article 6(3))
+  # These appear ONLY if an Annex III area (Q5.4 or Q5.5) is selected.
+  # =========================================================================
+
+  - id: "q5.6"
+    text: "Does the AI system perform 'profiling' of natural persons?"
+    ref: "Art 6(3); Art 3(4) GDPR"
+    description: "Profiling is automated processing of personal data to evaluate personal aspects (e.g., work performance, economic situation, health, preferences, reliability, behavior, location). If Yes, exemptions cannot apply."
+    type: "single_choice"
+    options:
+      - label: "Yes"
+        value: "yes"
+      - label: "No"
+        value: "no"
+    dependency: "(q5.4 is defined AND q5.4 != 'none') OR (q5.5 is defined AND q5.5 != 'none')"
+
+  - id: "q5.7"
+    text: "Does the AI system fulfill any of the following operational conditions?"
+    ref: "Art 6(3) Derogations"
+    description: "These conditions may exempt an Annex III system from being High-Risk. Select strictly if applicable."
+    type: "multi_choice"
+    options:
+      - label: "It performs a narrow procedural task"
+        value: "narrow_procedural"
+      - label: "It improves the result of a previously completed human activity"
+        value: "improve_human"
+      - label: "It detects decision-making patterns or deviations from prior patterns (without replacing human assessment)"
+        value: "detect_patterns"
+      - label: "It performs a preparatory task to an assessment"
+        value: "preparatory"
+      - label: "None of the above"
+        value: "none"
+        exclusive: true
+    # Show ONLY if Annex III is relevant AND Profiling is NOT performed.
+    dependency: "((q5.4 is defined AND q5.4 != 'none') OR (q5.5 is defined AND q5.5 != 'none')) AND q5.6 == 'no'"
+
+# =========================================================================
+# INTERNAL LOGIC ENGINE
+# =========================================================================
+parameter_updates:
+  - parameter: "High_risk"
+    type: "boolean"
+    logic: |
+      # 1. CHECK PATHWAY 1 (Annex I)
+      IF (q5.1 != 'none' AND q5.2 == 'yes' AND q5.3 == 'yes')
+        SET True
+      
+      # 2. CHECK PATHWAY 2 (Annex III)
+      # FIX: Check "is defined" first to prevent errors on skipped questions
+      ELSE IF ((q5.4 is defined AND q5.4 != 'none') OR (q5.5 is defined AND q5.5 != 'none'))
+        
+        # 2a. PROFILING CHECK
+        # FIX: Check if q5.6 exists before reading value
+        IF (q5.6 is defined AND q5.6 == 'yes')
+          SET True
+        
+        # 2b. DEROGATION CHECK
+        # FIX: Check if q5.7 exists before reading value
+        ELSE IF (q5.7 is defined AND q5.7 contains 'none')
+          SET True
+          
+        # 2c. EXEMPTION GRANTED
+        ELSE
+          SET False
+      
+      # 3. NO PATHWAY MET
+      ELSE
+        SET False
+
+  - parameter: "High_risk_reason"
+    type: "string"
+    logic: |
+      IF (q5.1 != 'none' AND q5.2 == 'yes' AND q5.3 == 'yes'): SET "Annex I Safety Component (Art 6(1))"
+      
+      # FIX: Add "is defined" to all subsequent checks
+      ELSE IF (q5.6 is defined AND q5.6 == 'yes'): SET "Annex III Critical Area with Profiling (Art 6(3))"
+      ELSE IF (q5.7 is defined AND q5.7 contains 'none'): SET "Annex III Critical Area without Derogation (Art 6(2))"
+      # FIX: Ensure we only check this if the previous conditions failed but variables exist
+      ELSE IF ((q5.4 is defined AND q5.4 != 'none') OR (q5.5 is defined AND q5.5 != 'none')): SET "Exempt (Article 6(3) Derogation applies)"
+      
+      ELSE: SET "N/A"
+
+router:
+  - if: "Module_finished"
+    action: "Go to Module 6 (High-Risk Obligations)"

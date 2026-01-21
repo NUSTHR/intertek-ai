@@ -1,0 +1,39 @@
+module: "03_roles_identification"
+title: "Roles Identification"
+description: "Identifies the entity's legal role to determine specific compliance obligations."
+
+questions:
+  - id: "q3.1"
+    text: "What is your entity's role regarding this AI?"
+    ref: "Art 3"
+    type: "single_choice"
+    options:
+      - label: "Provider"
+        value: "provider"
+        [cite_start]description: "You developed the AI system/model or have it developed and market it under your own name or trademark."
+      - label: "Deployer"
+        value: "deployer"
+        [cite_start]description: "You use the AI system under your authority in a professional capacity[cite: 68]."
+      - label: "Importer"
+        value: "importer"
+        [cite_start]description: "You are established in the EU and place an AI system from a third country on the Union market[cite: 70]."
+      - label: "Distributor"
+        value: "distributor"
+        [cite_start]description: "You are in the supply chain (other than provider/importer) making an AI system available on the Union market[cite: 71]."
+      - label: "Authorized Representative"
+        value: "authorized_representative"
+        [cite_start]description: "You have a written mandate from a non-EU provider to act on their behalf[cite: 69]."
+      - label: "Product Manufacturer"
+        value: "product_manufacturer"
+        [cite_start]description: "You integrate an AI system into a product under your name/trademark[cite: 43]."
+
+parameter_updates:
+  - parameter: "Role"
+    type: "string"
+    logic: "Value selected in q3.1"
+
+router:
+  - if: "AI-type == 2" # AI System
+    action: "Go to Module 3a (System Exclusion Check)"
+  - if: "AI-type == 1" # GPAI Model
+    action: "Go to Module 7 (GPAI Systematic Risk Check)"

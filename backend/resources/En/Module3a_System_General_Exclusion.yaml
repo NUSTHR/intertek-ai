@@ -1,0 +1,58 @@
+module: "03a_system_exclusion_check"
+title: "System Exclusion Check"
+description: "Screens for specific exclusions from the Regulation as defined in Article 2."
+
+questions:
+  - id: "q3a.1"
+    text: "Does your product fall under a specific exclusion for military, defense, or international law enforcement cooperation?"
+    ref: "Art 2(3), Art 2(4)"
+    type: "single_choice"
+    options:
+      - label: "Yes, exclusively for military, defense, or national security purposes."
+        value: "excl_military_defence"
+      - label: "Yes, public authorities/International organizations for international law enforcement cooperation."
+        value: "excl_intl_le"
+      - label: "No"
+        value: "none"
+
+  - id: "q3a.2"
+    text: "Are you a natural person (deployer) using the product exclusively for personal, non-professional, non-commercial activity?"
+    ref: "Art 2(10)"
+    type: "single_choice"
+    options:
+      - label: "Yes, I am a natural person using the product exclusively for personal, non-professional activity."
+        value: "excl_personal_non_professional"
+      - label: "No, I am not a natural person, or I use it for professional/commercial purposes."
+        value: "none"
+    dependency: "q3a.1 == 'none'"
+
+# Internal Logical Mapping & Parameter State
+parameter_updates:
+  - parameter: "System_Excluded"
+    type: "boolean"
+    logic: |
+      # 1. Military/Defense Exclusion/ judicial cooperation (Art 2(3))
+      IF (q3a.1 == "excl_military_defence"): SET True
+      
+      # 2. International Law Enforcement Exclusion (Art 2(4))
+      ELSE IF (q3a.1 == "excl_intl_le"): SET True
+      
+      # 3. Personal Non-Professional User Exclusion (Art 2(10))
+      ELSE IF (q3a.2 == "excl_personal_non_professional"): SET True
+      
+      # Default: Not Excluded
+      ELSE: SET False
+
+  - parameter: "Exclusion_Reason"
+    type: "string"
+    logic: |
+      IF (q3a.1 == "excl_military_defence"): SET "Military, Defense, or National Security Exclusion (Art 2(3))"
+      ELSE IF (q3a.1 == "excl_intl_le"): SET "International Law Enforcement Cooperation Exclusion (Art 2(4))"
+      ELSE IF (q3a.2 == "excl_personal_non_professional"): SET "Personal Non-Professional Activity Exclusion (Art 2(10))"
+      ELSE: SET "N/A"
+
+router:
+  - if: "System_Excluded == True"
+    action: "END & Generate Result (Excluded)"
+  - if: "System_Excluded == False"
+    action: "Go to Module 4 (Unacceptable Risk Check)"

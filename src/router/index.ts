@@ -9,16 +9,15 @@ const router = createRouter({
       component: () => import('@/views/StartView.vue'),
     },
     {
-      path: '/q/:id',
-      name: 'question',
+      path: '/module/:id',
+      name: 'module',
       component: () => import('@/views/QuestionView.vue'),
       props: true,
     },
     {
-      path: '/result/:id',
+      path: '/result',
       name: 'result',
       component: () => import('@/views/ResultView.vue'),
-      props: true,
     },
     {
       path: '/:pathMatch(.*)*',
