@@ -2,10 +2,10 @@ import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 import type {
   AnswerValue,
-  InitResponse,
   Module,
   ModuleResponse,
   ResultResponse,
+  StartResponse,
   SubmitRequest,
   SubmitResponse,
 } from '@/types/questionnaire'
@@ -19,6 +19,7 @@ export const useQuestionnaireStore = defineStore('questionnaire', () => {
   const answers = ref<Record<string, AnswerValue>>({})
   const lastAction = ref<SubmitResponse['next'] | null>(null)
   const lastMessage = ref<string | null>(null)
+  const conclusion = ref<Record<string, unknown> | null>(null)
   const loading = ref(false)
   const error = ref<string | null>(null)
 
@@ -28,15 +29,16 @@ export const useQuestionnaireStore = defineStore('questionnaire', () => {
     loading.value = true
     error.value = null
     try {
-      const res = await fetch(`${API_BASE}/init`)
+      const res = await fetch(`${API_BASE}/start`, { method: 'POST' })
       if (!res.ok) throw new Error(`init_http_${res.status}`)
-      const data = (await res.json()) as InitResponse
+      const data = (await res.json()) as StartResponse
       sessionId.value = data.session_id
       currentModule.value = data.module
       parameters.value = {}
       answers.value = {}
       lastAction.value = null
       lastMessage.value = null
+      conclusion.value = null
       return data.module
     } catch (e) {
       error.value = e instanceof Error ? e.message : 'init_failed'
@@ -70,7 +72,7 @@ export const useQuestionnaireStore = defineStore('questionnaire', () => {
     error.value = null
     try {
       const payload: SubmitRequest = { session_id: sessionId.value, module_id: moduleId, answers: payloadAnswers }
-      const res = await fetch(`${API_BASE}/submit`, {
+      const res = await fetch(`${API_BASE}/submit-answer`, {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify(payload),
@@ -84,6 +86,8 @@ export const useQuestionnaireStore = defineStore('questionnaire', () => {
       lastAction.value = data.next
       lastMessage.value = data.next?.message ?? null
       answers.value = { ...answers.value, ...payloadAnswers }
+      if (data.module) currentModule.value = data.module
+      if (data.conclusion !== undefined) conclusion.value = data.conclusion ?? null
       return data
     } catch (e) {
       error.value = e instanceof Error ? e.message : 'submit_failed'
@@ -102,6 +106,7 @@ export const useQuestionnaireStore = defineStore('questionnaire', () => {
       if (!res.ok) throw new Error(`result_http_${res.status}`)
       const data = (await res.json()) as ResultResponse
       parameters.value = data.parameters
+      conclusion.value = data.conclusion ?? null
       return data.parameters
     } catch (e) {
       error.value = e instanceof Error ? e.message : 'result_failed'
@@ -118,6 +123,7 @@ export const useQuestionnaireStore = defineStore('questionnaire', () => {
     answers.value = {}
     lastAction.value = null
     lastMessage.value = null
+    conclusion.value = null
     error.value = null
   }
 
@@ -129,6 +135,7 @@ export const useQuestionnaireStore = defineStore('questionnaire', () => {
     answers,
     lastAction,
     lastMessage,
+    conclusion,
     loading,
     error,
     init,

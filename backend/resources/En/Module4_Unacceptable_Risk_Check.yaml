@@ -1,4 +1,4 @@
-module: "04_unacceptable_risk_check"
+module_id: 4 #"04_unacceptable_risk_check"
 title: "Unacceptable Risk Check"
 description: "Screens for prohibited AI practices as strictly defined in Article 5 of Regulation (EU) 2024/1689."
 
@@ -9,23 +9,23 @@ questions:
     type: "multi_choice"
     options:
       - label: "Use of subliminal, manipulative, or deceptive techniques"
-        value: "manipulative"
+        value: 1
       - label: "Exploitation of vulnerabilities of specific groups"
-        value: "vulnerability"
+        value: 2
       - label: "Social scoring or evaluation of trustworthiness"
-        value: "social_scoring"
+        value: 3
       - label: "Risk assessment for criminal offenses (Predictive Policing)"
-        value: "predictive_policing"
+        value: 4
       - label: "Scraping of facial images for databases"
-        value: "facial_scraping"
+        value: 5
       - label: "Emotion recognition in workplace or education"
-        value: "emotion_recognition"
+        value: 6
       - label: "Biometric categorization of sensitive traits"
-        value: "biometric_categorization"
+        value: 7
       - label: "Real-time remote biometric identification (RBI)"
-        value: "real_time_rbi"
+        value: 8
       - label: "None of the above"
-        value: "none"
+        value: 0
         exclusive: true
 
   # -------------------------------------------------------------------------
@@ -35,45 +35,45 @@ questions:
     text: "Does the system deploy subliminal techniques beyond a person’s consciousness OR purposefully manipulative or deceptive techniques?"
     ref: "Art 5(1)(a)"
     type: "single_choice"
+    dependency: "1 in q4.1"
     options:
       - label: "Yes"
-        value: "yes"
+        value: True
       - label: "No"
-        value: "no"
-    dependency: "q4.1 contains 'manipulative'"
+        value: False
 
   - id: "q4.1_b"
     text: "Is the objective or the effect of these techniques to materially distort the behaviour of a person or a group of persons by appreciably impairing their ability to make an informed decision?"
     ref: "Art 5(1)(a)"
     type: "single_choice"
+    dependency: "q4.1_a == True"
     options:
       - label: "Yes"
-        value: "yes"
+        value: True
       - label: "No"
-        value: "no"
-    dependency: "q4.1_a == 'yes'"
+        value: False
 
   - id: "q4.1_c"
     text: "Does this distortion cause the person to take a decision that they would not have otherwise taken?"
     ref: "Art 5(1)(a)"
     type: "single_choice"
+    dependency: "q4.1_b == True"
     options:
       - label: "Yes"
-        value: "yes"
+        value: True
       - label: "No"
-        value: "no"
-    dependency: "q4.1_b == 'yes'"
+        value: False
 
   - id: "q4.1_d"
     text: "Does taking that decision cause, or is it reasonably likely to cause, significant harm to that person, another person, or a group of persons?"
     ref: "Art 5(1)(a)"
     type: "single_choice"
+    dependency: "q4.1_c == True"
     options:
       - label: "Yes"
-        value: "yes"
+        value: True
       - label: "No"
-        value: "no"
-    dependency: "q4.1_c == 'yes'"
+        value: False
 
   # -------------------------------------------------------------------------
   # 2. EXPLOITATION OF VULNERABILITIES [Article 5(1)(b)]
@@ -82,34 +82,34 @@ questions:
     text: "Does the system exploit vulnerabilities of a natural person or specific group due to their age, disability, or a specific social or economic situation?"
     ref: "Art 5(1)(b)"
     type: "single_choice"
+    dependency: "2 in q4.1"
     options:
       - label: "Yes"
-        value: "yes"
+        value: True
       - label: "No"
-        value: "no"
-    dependency: "q4.1 contains 'vulnerability'"
+        value: False
 
   - id: "q4.2_b"
     text: "Is the objective or effect to materially distort the behaviour of that person or a person belonging to that group?"
     ref: "Art 5(1)(b)"
     type: "single_choice"
+    dependency: "q4.2_a == True"
     options:
       - label: "Yes"
-        value: "yes"
+        value: True
       - label: "No"
-        value: "no"
-    dependency: "q4.2_a == 'yes'"
+        value: False
 
   - id: "q4.2_c"
     text: "Does this distortion cause, or is it reasonably likely to cause, significant harm to that person or another person?"
     ref: "Art 5(1)(b)"
     type: "single_choice"
+    dependency: "q4.2_b == True"
     options:
       - label: "Yes"
-        value: "yes"
+        value: True
       - label: "No"
-        value: "no"
-    dependency: "q4.2_b == 'yes'"
+        value: False
 
   # -------------------------------------------------------------------------
   # 3. SOCIAL SCORING [Article 5(1)(c)]
@@ -118,34 +118,34 @@ questions:
     text: "Does the system evaluate or classify natural persons or groups over a period of time based on their social behaviour or known, inferred, or predicted personal/personality characteristics?"
     ref: "Art 5(1)(c)"
     type: "single_choice"
+    dependency: "3 in q4.1"
     options:
       - label: "Yes"
-        value: "yes"
+        value: True
       - label: "No"
-        value: "no"
-    dependency: "q4.1 contains 'social_scoring'"
+        value: False
 
   - id: "q4.3_b"
     text: "Does this social score lead to detrimental or unfavourable treatment in social contexts that are UNRELATED to the contexts in which the data was originally generated or collected?"
     ref: "Art 5(1)(c)(i)"
     type: "single_choice"
+    dependency: "q4.3_a == True"
     options:
       - label: "Yes"
-        value: "yes"
+        value: True
       - label: "No"
-        value: "no"
-    dependency: "q4.3_a == 'yes'"
+        value: False
 
   - id: "q4.3_c"
     text: "Does this social score lead to detrimental or unfavourable treatment that is unjustified or disproportionate to the social behaviour or its gravity?"
     ref: "Art 5(1)(c)(ii)"
     type: "single_choice"
+    dependency: "q4.3_a == True"
     options:
       - label: "Yes"
-        value: "yes"
+        value: True
       - label: "No"
-        value: "no"
-    dependency: "q4.3_a == 'yes'"
+        value: False
 
   # -------------------------------------------------------------------------
   # 4. PREDICTIVE POLICING [Article 5(1)(d)]
@@ -154,23 +154,23 @@ questions:
     text: "Is the system used for making risk assessments of natural persons to assess or predict the risk of them committing a criminal offense?"
     ref: "Art 5(1)(d)"
     type: "single_choice"
+    dependency: "4 in q4.1"
     options:
       - label: "Yes"
-        value: "yes"
+        value: True
       - label: "No"
-        value: "no"
-    dependency: "q4.1 contains 'predictive_policing'"
+        value: False
 
   - id: "q4.4_b"
     text: "Is this assessment based SOLELY on the profiling of a natural person or on assessing their personality traits and characteristics?"
     ref: "Art 5(1)(d)"
     type: "single_choice"
+    dependency: "q4.4_a == True"
     options:
       - label: "Yes, Based solely on profiling"
-        value: "yes"
+        value: True
       - label: "No, It supports human assessment based on objective/verifiable facts"
-        value: "no"
-    dependency: "q4.4_a == 'yes'"
+        value: False
 
   # -------------------------------------------------------------------------
   # 5. FACIAL SCRAPING [Article 5(1)(e)]
@@ -179,23 +179,23 @@ questions:
     text: "Does the system create or expand facial recognition databases?"
     ref: "Art 5(1)(e)"
     type: "single_choice"
+    dependency: "5 in q4.1"
     options:
       - label: "Yes"
-        value: "yes"
+        value: True
       - label: "No"
-        value: "no"
-    dependency: "q4.1 contains 'facial_scraping'"
+        value: False
 
   - id: "q4.5_b"
     text: "Is this achieved through the UNTARGETED scraping of facial images from the internet or CCTV footage?"
     ref: "Art 5(1)(e)"
     type: "single_choice"
+    dependency: "q4.5_a == True"
     options:
       - label: "Yes"
-        value: "yes"
+        value: True
       - label: "No"
-        value: "no"
-    dependency: "q4.5_a == 'yes'"
+        value: False
 
   # -------------------------------------------------------------------------
   # 6. EMOTION RECOGNITION [Article 5(1)(f)]
@@ -204,23 +204,23 @@ questions:
     text: "Is the system used to infer emotions of a natural person?"
     ref: "Art 5(1)(f)"
     type: "single_choice"
+    dependency: "6 in q4.1"
     options:
       - label: "Yes"
-        value: "yes"
+        value: True
       - label: "No"
-        value: "no"
-    dependency: "q4.1 contains 'emotion_recognition'"
+        value: False
 
   - id: "q4.6_b"
     text: "Is the system intended to be put in place for medical or safety reasons?"
     ref: "Art 5(1)(f)"
     type: "single_choice"
+    dependency: "q4.6_a == True"
     options:
       - label: "Yes (Exempt)"
-        value: "yes"
+        value: True
       - label: "No"
-        value: "no"
-    dependency: "q4.6_a == 'yes'"
+        value: False
 
   # -------------------------------------------------------------------------
   # 7. BIOMETRIC CATEGORIZATION [Article 5(1)(g)]
@@ -229,34 +229,34 @@ questions:
     text: "Does the system categorise individually natural persons based on their biometric data?"
     ref: "Art 5(1)(g)"
     type: "single_choice"
+    dependency: "7 in q4.1"
     options:
       - label: "Yes"
-        value: "yes"
+        value: True
       - label: "No"
-        value: "no"
-    dependency: "q4.1 contains 'biometric_categorization'"
+        value: False
 
   - id: "q4.7_b"
     text: "Is the purpose to deduce or infer their race, political opinions, trade union membership, religious or philosophical beliefs, sex life, or sexual orientation?"
     ref: "Art 5(1)(g)"
     type: "single_choice"
+    dependency: "q4.7_a == True"
     options:
       - label: "Yes"
-        value: "yes"
+        value: True
       - label: "No"
-        value: "no"
-    dependency: "q4.7_a == 'yes'"
+        value: False
 
   - id: "q4.7_c"
     text: "Is this strictly for the labelling or filtering of lawfully acquired biometric datasets in the area of law enforcement?"
     ref: "Art 5(1)(g)"
     type: "single_choice"
+    dependency: "q4.7_b == True"
     options:
       - label: "Yes (Exempt)"
-        value: "yes"
+        value: True
       - label: "No"
-        value: "no"
-    dependency: "q4.7_b == 'yes'"
+        value: False
 
   # -------------------------------------------------------------------------
   # 8. REAL-TIME RBI [Article 5(1)(h)]
@@ -265,83 +265,104 @@ questions:
     text: "Is the system a 'real-time' remote biometric identification system used in publicly accessible spaces?"
     ref: "Art 5(1)(h)"
     type: "single_choice"
+    dependency: "8 in q4.1"
     options:
       - label: "Yes"
-        value: "yes"
+        value: True
       - label: "No"
-        value: "no"
-    dependency: "q4.1 contains 'real_time_rbi'"
+        value: False
 
   - id: "q4.8_b"
     text: "Is it used for the purposes of law enforcement?"
     ref: "Art 5(1)(h)"
     type: "single_choice"
+    dependency: "q4.8_a == True"
     options:
       - label: "Yes"
-        value: "yes"
+        value: True
       - label: "No (If private/non-LE, proceed to High-Risk)"
-        value: "no"
-    dependency: "q4.8_a == 'yes'"
+        value: False
 
   - id: "q4.8_c"
     text: "Is the use strictly necessary for: (i) searching for victims/missing persons, (ii) preventing imminent threat to life/terrorism, or (iii) identifying suspects of serious crimes (Annex II)?"
     ref: "Art 5(1)(h)(i)-(iii)"
     type: "single_choice"
+    dependency: "q4.8_b == True"
     options:
       - label: "Yes"
-        value: "yes"
+        value: True
       - label: "No"
-        value: "no"
-    dependency: "q4.8_b == 'yes'"
+        value: False
 
 # Internal Logical Mapping & Parameter State
-parameter_updates:
-  - parameter: "Unacceptable_risk"
+variables:
+  - name: "Unacceptable_risk"
     type: "boolean"
-    logic: |
-      # 1. Manipulative: PROHIBITED if all steps are YES
-      IF (q4.1_a == "yes" AND q4.1_b == "yes" AND q4.1_c == "yes" AND q4.1_d == "yes"): SET True
+    rules:
+      # 1. Manipulative
+      - condition: "q4.1_a == True and q4.1_b == True and q4.1_c == True and q4.1_d == True"
+        value: True
       
-      # 2. Vulnerability: PROHIBITED if all steps are YES
-      ELSE IF (q4.2_a == "yes" AND q4.2_b == "yes" AND q4.2_c == "yes"): SET True
+      # 2. Vulnerability
+      - condition: "q4.2_a == True and q4.2_b == True and q4.2_c == True"
+        value: True
       
-      # 3. Social Scoring: PROHIBITED if (a=Yes) AND (b=Yes OR c=Yes)
-      ELSE IF (q4.3_a == "yes" AND (q4.3_b == "yes" OR q4.3_c == "yes")): SET True
+      # 3. Social Scoring
+      - condition: "q4.3_a == True and (q4.3_b == True or q4.3_c == True)"
+        value: True
       
-      # 4. Predictive Policing: PROHIBITED if (a=Yes) AND (b=Yes [Based solely on profiling])
-      ELSE IF (q4.4_a == "yes" AND q4.4_b == "yes"): SET True
+      # 4. Predictive Policing
+      - condition: "q4.4_a == True and q4.4_b == True"
+        value: True
       
-      # 5. Facial Scraping: PROHIBITED if (a=Yes) AND (b=Yes)
-      ELSE IF (q4.5_a == "yes" AND q4.5_b == "yes"): SET True
+      # 5. Facial Scraping
+      - condition: "q4.5_a == True and q4.5_b == True"
+        value: True
       
-      # 6. Emotion Recognition: PROHIBITED if (a=Yes) AND (c=No [Not for safety])
-      # LOGIC UPDATED: Removed check for q4.6_b (workplace/education)
-      ELSE IF (q4.6_a == "yes" AND q4.6_b == "no"): SET True
+      # 6. Emotion Recognition (Prohibited if q4.6_b (Exemption) is False)
+      - condition: "q4.6_a == True and q4.6_b == False"
+        value: True
       
-      # 7. Biometric Categorization: PROHIBITED if (a=Yes) AND (b=Yes) AND (c=No [Not for LE filtering])
-      ELSE IF (q4.7_a == "yes" AND q4.7_b == "yes" AND q4.7_c == "no"): SET True
+      # 7. Biometric Categorization (Prohibited if q4.7_c (Exemption) is False)
+      - condition: "q4.7_a == True and q4.7_b == True and q4.7_c == False"
+        value: True
       
-      # 8. Real-time RBI: PROHIBITED if (a=Yes) AND (b=Yes) AND (c=No [Not for valid exception])
-      ELSE IF (q4.8_a == "yes" AND q4.8_b == "yes" AND q4.8_c == "no"): SET True
+      # 8. Real-time RBI (Prohibited if q4.8_c (Exemption) is False)
+      - condition: "q4.8_a == True and q4.8_b == True and q4.8_c == False"
+        value: True
       
       # Default
-      ELSE: SET False
+      - condition: "else"
+        value: False
 
-  - parameter: "Prohibited_reason"
-    type: "string"
-    logic: |
-      IF (Unacceptable_risk == True AND q4.1 contains "manipulative"): SET "Manipulative techniques causing harm (Art 5(1)(a))"
-      ELSE IF (Unacceptable_risk == True AND q4.1 contains "vulnerability"): SET "Exploitation of vulnerabilities causing harm (Art 5(1)(b))"
-      ELSE IF (Unacceptable_risk == True AND q4.1 contains "social_scoring"): SET "Social Scoring (Art 5(1)(c))"
-      ELSE IF (Unacceptable_risk == True AND q4.1 contains "predictive_policing"): SET "Predictive Policing based solely on profiling (Art 5(1)(d))"
-      ELSE IF (Unacceptable_risk == True AND q4.1 contains "facial_scraping"): SET "Untargeted Facial Scraping (Art 5(1)(e))"
-      ELSE IF (Unacceptable_risk == True AND q4.1 contains "emotion_recognition"): SET "Emotion Recognition in workplace/schools (Art 5(1)(f))"
-      ELSE IF (Unacceptable_risk == True AND q4.1 contains "biometric_categorization"): SET "Biometric Categorization of sensitive traits (Art 5(1)(g))"
-      ELSE IF (Unacceptable_risk == True AND q4.1 contains "real_time_rbi"): SET "Real-time RBI in public spaces (Art 5(1)(h))"
-      ELSE: SET "N/A"
+  - name: "Prohibited_reason"
+    type: "list"
+    description: "Collects all reasons for prohibition. Python backend should append all matching values."
+    rules:
+      - condition: "Unacceptable_risk == True and (1 in q4.1)"
+        value: "Manipulative techniques causing harm (Art 5(1)(a))"
+      - condition: "Unacceptable_risk == True and (2 in q4.1)"
+        value: "Exploitation of vulnerabilities causing harm (Art 5(1)(b))"
+      - condition: "Unacceptable_risk == True and (3 in q4.1)"
+        value: "Social Scoring (Art 5(1)(c))"
+      - condition: "Unacceptable_risk == True and (4 in q4.1)"
+        value: "Predictive Policing based solely on profiling (Art 5(1)(d))"
+      - condition: "Unacceptable_risk == True and (5 in q4.1)"
+        value: "Untargeted Facial Scraping (Art 5(1)(e))"
+      - condition: "Unacceptable_risk == True and (6 in q4.1)"
+        value: "Emotion Recognition in workplace/schools (Art 5(1)(f))"
+      - condition: "Unacceptable_risk == True and (7 in q4.1)"
+        value: "Biometric Categorization of sensitive traits (Art 5(1)(g))"
+      - condition: "Unacceptable_risk == True and (8 in q4.1)"
+        value: "Real-time RBI in public spaces (Art 5(1)(h))"
+      - condition: "else"
+        value: "N/A"
 
 router:
-  - if: "Unacceptable_risk == True"
-    action: "END & Generate Result (Prohibited)"
-  - if: "Unacceptable_risk == False"
-    action: "Go to Module 5 (High-Risk AI System Check)"
+  - condition: "Unacceptable_risk == True"
+    action: "jump"
+    target_module_id: 9 #"Module 9 (Excluded)"
+
+  - condition: "Unacceptable_risk == False"
+    action: "jump"
+    target_module_id: 5 #"Module 5 (High-Risk AI System Check)"

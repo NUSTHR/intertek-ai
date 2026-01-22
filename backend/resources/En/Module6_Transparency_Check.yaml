@@ -1,250 +1,241 @@
-module: "06_transparency_obligation_check"
+module_id: 6
 title: "Transparency Obligation Check"
-description: "Determines if the AI system triggers specific transparency obligations under Article 50 (Interaction, Synthetic Content, Emotion/Biometric, Deep Fakes)."
+description: "Determines if the AI system triggers specific transparency obligations under Article 50 of the EU AI Act (Interaction, Synthetic Content, Emotion/Biometric, Deep Fakes)."
 
 questions:
   # =========================================================================
-  # OBLIGATION 1: Interaction with Natural Persons (Article 50(1))
-  # Target: Providers (Design) & Deployers (Use)
+  # GATEWAY QUESTION (High-level Trigger Identification)
   # =========================================================================
-  
-  - id: "q6.1"
-    text: "Is the AI system intended to interact directly with natural persons?"
-    ref: "Art 50(1)"
-    description: "Applies to systems like chatbots, customer service AI, or physical robots."
-    type: "single_choice"
+  - id: "q6.gateway"
+    text: "Which of the following functions or scenarios applies to your AI system?"
+    ref: "Art 50"
+    description: "Select all that apply to determine which specific transparency obligations might be triggered."
+    type: "multi_choice"
     options:
-      - label: "Yes"
-        value: "yes"
-      - label: "No"
-        value: "no"
+      - label: "Direct Interaction: The system is intended to interact directly with natural persons (e.g., chatbots)."
+        value: 1
+      - label: "Synthetic Content Generation: The system generates synthetic audio, image, video, or text content."
+        value: 2
+      - label: "Biometric/Emotion Analysis (Not limited to sensitive traits) : The system is an emotion recognition system or a biometric categorisation system."
+        value: 3
+      - label: "Content Publication (Deep Fakes / Public Interest Text): The system generates 'deep fakes' or text informing the public on matters of public interest."
+        value: 4
+      - label: "None of the above"
+        value: 0
+        exclusive: true
 
-  - id: "q6.2"
+  # =========================================================================
+  # TRACK A: Direct Interaction (Article 50(1))
+  # Role: Provider
+  # =========================================================================
+  - id: "q6.a.1"
     text: "Is the AI nature of the interaction obvious to a reasonably well-informed, observant, and circumspect person given the context?"
     ref: "Art 50(1)"
     description: "If the interaction is obviously AI-driven from the context, the specific obligation to inform the user does not apply."
     type: "single_choice"
+    dependency: "q6.gateway contains 1"
     options:
-      - label: "Yes, it is obvious"
-        value: "yes"
-      - label: "No, it is not obvious"
-        value: "no"
-    dependency: "q6.1 == 'yes'"
+      - label: "Yes"
+        value: True
+      - label: "No"
+        value: False
 
-  - id: "q6.3"
+  - id: "q6.a.2"
     text: "Is the AI system authorised by law to detect, prevent, investigate or prosecute criminal offences?"
     ref: "Art 50(1)"
     description: "Law enforcement uses are exempt unless the system is for the public to report crimes."
     type: "single_choice"
+    dependency: "q6.gateway contains 1 and q6.a.1 == False"
     options:
       - label: "Yes"
-        value: "yes"
+        value: True
       - label: "No"
-        value: "no"
-    dependency: "q6.1 == 'yes'"
+        value: False
 
-  - id: "q6.4"
+  - id: "q6.a.3"
     text: "Is the AI system available for the public to report a criminal offence?"
     ref: "Art 50(1)"
     description: "If Yes, transparency applies even if authorised for law enforcement."
     type: "single_choice"
+    dependency: "q6.a.2 == True"
     options:
       - label: "Yes"
-        value: "yes"
+        value: True
       - label: "No"
-        value: "no"
-    dependency: "q6.3 == 'yes'"
+        value: False
 
   # =========================================================================
-  # OBLIGATION 2: Synthetic Content Generation - Marking (Article 50(2))
-  # Target: Providers
+  # TRACK B: Synthetic Content Generation - Marking (Article 50(2))
+  # Role: Provider
   # =========================================================================
-
-  - id: "q6.5"
-    text: "Does the AI system (including general-purpose AI) generate synthetic audio, image, video, or text content?"
-    ref: "Art 50(2)"
-    type: "single_choice"
-    options:
-      - label: "Yes"
-        value: "yes"
-      - label: "No"
-        value: "no"
-
-  - id: "q6.6"
+  - id: "q6.b.1"
     text: "Does the system perform ONLY an assistive function for standard editing or minor alteration?"
     ref: "Art 50(2)"
     description: "If the system does not substantially alter the input data or its semantics, the marking obligation does not apply."
     type: "single_choice"
+    dependency: "q6.gateway contains 2"
     options:
-      - label: "Yes (Assistive/Minor)"
-        value: "yes"
-      - label: "No (Substantial)"
-        value: "no"
-    dependency: "q6.5 == 'yes'"
+      - label: "Yes"
+        value: True
+      - label: "No"
+        value: False
 
-  - id: "q6.7"
+  - id: "q6.b.2"
     text: "Is the AI system authorised by law to detect, prevent, investigate or prosecute criminal offences?"
     ref: "Art 50(2)"
     type: "single_choice"
+    dependency: "q6.gateway contains 2 and q6.b.1 == False"
     options:
       - label: "Yes"
-        value: "yes"
+        value: True
       - label: "No"
-        value: "no"
-    dependency: "q6.5 == 'yes'"
+        value: False
 
   # =========================================================================
-  # OBLIGATION 3: Emotion Recognition & Biometric Categorization (Article 50(3))
-  # Target: Deployers
+  # TRACK C: Emotion Recognition & Biometric Categorization (Article 50(3))
+  # Role: Deployer
   # =========================================================================
-
-  - id: "q6.8"
-    text: "Is the AI system intended to be used for 'Emotion Recognition' OR 'Biometric Categorisation'?"
-    ref: "Art 50(3); Art 3(35), 3(39)"
-    description: "Includes identifying/inferring emotions or intentions from biometric data, OR assigning persons to categories based on biometric data."
-    type: "single_choice"
-    options:
-      - label: "Yes"
-        value: "yes"
-      - label: "No"
-        value: "no"
-
-  - id: "q6.9"
+  - id: "q6.c.1"
     text: "Is the use permitted by law to detect, prevent or investigate criminal offences?"
     ref: "Art 50(3)"
     type: "single_choice"
+    dependency: "q6.gateway contains 3"
     options:
       - label: "Yes"
-        value: "yes"
+        value: True
       - label: "No"
-        value: "no"
-    dependency: "q6.8 == 'yes'"
+        value: False
 
   # =========================================================================
-  # OBLIGATION 4: Deep Fakes (Article 50(4), Paragraph 1)
-  # Target: Deployers
+  # TRACK D: Content Publication (Deep Fakes & Public Text) (Article 50(4))
+  # Role: Deployer
   # =========================================================================
-
-  - id: "q6.10"
+  
+  # --- Scenario D1: Deep Fakes ---
+  - id: "q6.d.1"
     text: "Does the system generate/manipulate content that resembles existing persons/objects/events and would falsely appear to be authentic ('Deep Fake')?"
     ref: "Art 50(4); Art 3(60)"
     type: "single_choice"
+    dependency: "q6.gateway contains 4"
     options:
       - label: "Yes"
-        value: "yes"
+        value: True
       - label: "No"
-        value: "no"
+        value: False
 
-  - id: "q6.11"
+  - id: "q6.d.2"
     text: "Is the use authorised by law to detect, prevent, investigate or prosecute criminal offences?"
     ref: "Art 50(4)"
     type: "single_choice"
+    dependency: "q6.d.1 == True"
     options:
       - label: "Yes"
-        value: "yes"
+        value: True
       - label: "No"
-        value: "no"
-    dependency: "q6.10 == 'yes'"
+        value: False
 
-  - id: "q6.12"
+  - id: "q6.d.3"
     text: "Does the content form part of an evidently artistic, creative, satirical, fictional or analogous work?"
     ref: "Art 50(4)"
     description: "If Yes, the disclosure obligation is modified (limited to disclosing existence of the content)."
     type: "single_choice"
+    dependency: "q6.d.1 == True and q6.d.2 == False"
     options:
       - label: "Yes"
-        value: "yes"
+        value: True
       - label: "No"
-        value: "no"
-    dependency: "q6.10 == 'yes' AND q6.11 == 'no'"
+        value: False
 
-  # =========================================================================
-  # OBLIGATION 5: Public Interest Text (Article 50(4), Paragraph 2)
-  # Target: Deployers
-  # =========================================================================
-
-  - id: "q6.13"
+  # --- Scenario D2: Public Interest Text ---
+  - id: "q6.d.4"
     text: "Does the system generate text published to inform the public on matters of public interest?"
     ref: "Art 50(4)"
     type: "single_choice"
+    dependency: "q6.gateway contains 4 and q6.d.1 == False" # Logic flows to D2 if D1 is False, or treat as parallel check if gateway implies 'OR'
     options:
       - label: "Yes"
-        value: "yes"
+        value: True
       - label: "No"
-        value: "no"
+        value: False
 
-  - id: "q6.14"
+  - id: "q6.d.5"
     text: "Is the use authorised by law to detect, prevent, investigate or prosecute criminal offences?"
     ref: "Art 50(4)"
     type: "single_choice"
+    dependency: "q6.d.4 == True"
     options:
       - label: "Yes"
-        value: "yes"
+        value: True
       - label: "No"
-        value: "no"
-    dependency: "q6.13 == 'yes'"
+        value: False
 
-  - id: "q6.15"
+  - id: "q6.d.6"
     text: "Has the content undergone human review/editorial control, AND does a person hold editorial responsibility for it?"
     ref: "Art 50(4)"
     type: "single_choice"
+    dependency: "q6.d.4 == True and q6.d.5 == False"
     options:
       - label: "Yes"
-        value: "yes"
+        value: True
       - label: "No"
-        value: "no"
-    dependency: "q6.13 == 'yes' AND q6.14 == 'no'"
+        value: False
 
-# =========================================================================
-# INTERNAL LOGIC ENGINE
-# =========================================================================
-parameter_updates:
-  - parameter: "Transparency_Obligation_Apply"
+variables:
+  - name: "Transparency_obligation"
     type: "boolean"
-    logic: |
-      # 1. Interaction (Art 50(1))
-      IF (q6.1 == 'yes' AND q6.2 == 'no' AND NOT (q6.3 == 'yes' AND q6.4 == 'no')) SET True
+    rules:
+      # Track A: Gateway=1 AND Not Obvious AND NOT(Law Enf exempt)
+      - condition: "q6.gateway contains 1 and q6.a.1 == False and not (q6.a.2 == True and q6.a.3 == False)"
+        value: True
       
-      # 2. Synthetic Content Marking (Art 50(2))
-      ELSE IF (q6.5 == 'yes' AND q6.6 == 'no' AND q6.7 == 'no') SET True
+      # Track B: Gateway=2 AND Not Assistive AND NOT(Law Enf exempt)
+      - condition: "q6.gateway contains 2 and q6.b.1 == False and q6.b.2 == False"
+        value: True
       
-      # 3. Emotion/Biometric (Art 50(3))
-      ELSE IF (q6.8 == 'yes' AND q6.9 == 'no') SET True
-      
-      # 4. Deep Fake (Art 50(4))
-      ELSE IF (q6.10 == 'yes' AND q6.11 == 'no') SET True
-      
-      # 5. Public Interest Text (Art 50(4))
-      ELSE IF (q6.13 == 'yes' AND q6.14 == 'no' AND q6.15 == 'no') SET True
-      
-      ELSE SET False
+      # Track C: Gateway=3 AND NOT(Law Enf exempt)
+      - condition: "q6.gateway contains 3 and q6.c.1 == False"
+        value: True
 
-  - parameter: "Transparency_Details"
-    type: "string_list"
-    logic: |
+      # Track D1: Deep Fakes AND NOT(Law Enf exempt) -> (Artistic applies limited obligation, still counts as obligation apply)
+      - condition: "q6.d.1 == True and q6.d.2 == False"
+        value: True
+
+      # Track D2: Public Text AND NOT(Law Enf exempt) AND NOT(Human Review)
+      - condition: "q6.d.4 == True and q6.d.5 == False and q6.d.6 == False"
+        value: True
+
+      - condition: "else"
+        value: False
+
+  - name: "Transparency_Details"
+    type: "list"
+    description: "Collects all reasons for transparency obligations."
+    rules:
       # 1. Interaction
-      IF (q6.1 == 'yes' AND q6.2 == 'no' AND NOT (q6.3 == 'yes' AND q6.4 == 'no')):
-        ADD "Art 50(1): Obligation to inform natural persons they are interacting with an AI system."
-      
+      - condition: "q6.gateway contains 1 and q6.a.1 == False and not (q6.a.2 == True and q6.a.3 == False)"
+        value: "Art 50(1): Obligation to inform natural persons they are interacting with an AI system."
+
       # 2. Synthetic Content Marking
-      IF (q6.5 == 'yes' AND q6.6 == 'no' AND q6.7 == 'no'):
-        ADD "Art 50(2): Obligation to mark outputs as artificially generated/manipulated in a machine-readable format."
-      
+      - condition: "q6.gateway contains 2 and q6.b.1 == False and q6.b.2 == False"
+        value: "Art 50(2): Obligation to mark outputs as artificially generated/manipulated in a machine-readable format."
+
       # 3. Emotion/Biometric
-      IF (q6.8 == 'yes' AND q6.9 == 'no'):
-        ADD "Art 50(3): Obligation to inform natural persons exposed to emotion recognition or biometric categorisation."
-      
-      # 4. Deep Fake
-      IF (q6.10 == 'yes' AND q6.11 == 'no'):
-        IF (q6.12 == 'no'):
-          ADD "Art 50(4): Obligation to disclose that the content has been artificially generated or manipulated."
-        ELSE:
-          ADD "Art 50(4): Limited obligation to disclose existence of generated content (Artistic/Creative exemption)."
-      
+      - condition: "q6.gateway contains 3 and q6.c.1 == False"
+        value: "Art 50(3): Obligation to inform natural persons exposed to emotion recognition or biometric categorisation."
+
+      # 4a. Deep Fake (Standard)
+      - condition: "q6.d.1 == True and q6.d.2 == False and q6.d.3 == False"
+        value: "Art 50(4): Obligation to disclose that the content has been artificially generated or manipulated."
+
+      # 4b. Deep Fake (Artistic Exemption)
+      - condition: "q6.d.1 == True and q6.d.2 == False and q6.d.3 == True"
+        value: "Art 50(4): Limited obligation to disclose existence of generated content (Artistic/Creative exemption)."
+
       # 5. Public Interest Text
-      IF (q6.13 == 'yes' AND q6.14 == 'no' AND q6.15 == 'no'):
-        ADD "Art 50(4): Obligation to disclose that the text has been artificially generated or manipulated."
+      - condition: "q6.d.4 == True and q6.d.5 == False and q6.d.6 == False"
+        value: "Art 50(4): Obligation to disclose that the text has been artificially generated or manipulated."
 
 router:
-  - if: "Module_finished"
-    action: "Go to Module 8 (Open-Source Check)"
+  - condition: "True"
+    action: "jump"
+    target_module_id: 8

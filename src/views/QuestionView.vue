@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, reactive, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import type { AnswerValue, ModuleQuestion } from '@/types/questionnaire'
+import type { AnswerScalar, AnswerValue, ModuleQuestion } from '@/types/questionnaire'
 import { useQuestionnaireStore } from '@/stores/questionnaire'
 
 const route = useRoute()
@@ -81,16 +81,16 @@ watch(
   },
 )
 
-function toggleMulti(q: ModuleQuestion, value: AnswerValue, checked: boolean) {
-  const current = Array.isArray(localAnswers[q.id]) ? [...(localAnswers[q.id] as AnswerValue[])] : []
+function toggleMulti(q: ModuleQuestion, value: AnswerScalar, checked: boolean) {
+  const current = Array.isArray(localAnswers[q.id]) ? [...(localAnswers[q.id] as AnswerScalar[])] : []
   const options = q.options ?? []
-  const exclusiveValues = new Set(options.filter((o) => o.exclusive).map((o) => o.value))
+  const exclusiveValues = new Set<AnswerScalar>(options.filter((o) => o.exclusive).map((o) => o.value))
   if (checked) {
     if (exclusiveValues.has(value)) {
       localAnswers[q.id] = [value]
       return
     }
-    const withoutExclusive = current.filter((v) => !exclusiveValues.has(v as AnswerValue))
+    const withoutExclusive = current.filter((v) => !exclusiveValues.has(v))
     localAnswers[q.id] = Array.from(new Set([...withoutExclusive, value]))
     return
   }
@@ -147,14 +147,14 @@ async function restart() {
       </div>
 
       <div v-else-if="q.type === 'single_choice'">
-        <label v-for="opt in q.options ?? []" :key="opt.value" class="field">
+        <label v-for="opt in q.options ?? []" :key="String(opt.value)" class="field">
           <input v-model="localAnswers[q.id]" type="radio" :value="opt.value" />
           {{ opt.label }}
         </label>
       </div>
 
       <div v-else>
-        <label v-for="opt in q.options ?? []" :key="opt.value" class="field">
+        <label v-for="opt in q.options ?? []" :key="String(opt.value)" class="field">
           <input
             type="checkbox"
             :checked="Array.isArray(localAnswers[q.id]) && (localAnswers[q.id] as AnswerValue[]).includes(opt.value)"

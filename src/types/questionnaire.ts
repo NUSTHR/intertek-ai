@@ -23,7 +23,7 @@ export type Module = {
   questions: ModuleQuestion[]
 }
 
-export type InitResponse = {
+export type StartResponse = {
   session_id: string
   module: Module
 }
@@ -34,7 +34,7 @@ export type ModuleResponse = {
 
 export type SubmitRequest = {
   session_id: string
-  module_id: string
+  module_id?: string | null
   answers: Record<string, AnswerValue>
 }
 
@@ -49,8 +49,11 @@ export type SubmitResponse = {
   parameters: Record<string, AnswerValue>
   next: NextAction
   module_complete: boolean
+  module?: Module | null
+  conclusion?: Record<string, unknown> | null
 }
 
 export type ResultResponse = {
   parameters: Record<string, AnswerValue>
+  conclusion?: Record<string, unknown> | null
 }
