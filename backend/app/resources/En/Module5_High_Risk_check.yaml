@@ -1,0 +1,389 @@
+module_id: 5 #"05_high_risk_check"
+title: "High-Risk AI System Check"
+description: "Determines if the system is High-Risk under Article 6 pathways (Annex I or Annex III) using strict legal definitions and automated logic."
+
+questions:
+  # =========================================================================
+  # PATHWAY 1: Safety Components of Regulated Products (Article 6(1))
+  # =========================================================================
+  
+  - id: "q5.role"
+    text: "What is the role of your AI system regarding a product?"
+    ref: "Art 6(1)(a); Art 3(14)"
+    description: "Define the nature of your AI system's integration or independent function."
+    type: "single_choice"
+    options:
+      - label: "Standalone Product: The AI system itself is the product (e.g., medical device software)."
+        value: 1
+      - label: "Safety Component: The AI is integrated into another product and performs a safety function."
+        value: 2
+      - label: "Non-Safety Component: The AI is a component of a product but does not perform a safety function."
+        value: 3
+      - label: "None of the above"
+        value: 0
+
+  - id: "q5.sector"
+    text: "Which broad sector does the product belong to?"
+    ref: "Annex I"
+    type: "single_choice"
+    dependency: "q5.role in [1, 2]"
+    options:
+      - label: "Transport (Aviation, Road, Marine, Rail, Specialized Vehicles)"
+        value: "A"
+      - label: "Health (Medical devices & IVD)"
+        value: "B"
+      - label: "Industrial & Special Infrastructure (Machinery, Lifts, Pressure, ATEX, Gas)"
+        value: "C"
+      - label: "Personal Safety & General Consumer (Toys, PPE, Radio, Cableways)"
+        value: "D"
+      - label: "None of the above"
+        value: "E"
+
+  # --- Sector A: Transport Specifics ---
+  - id: "q5.spec_a"
+    text: "Identify the specific transport category:"
+    ref: "Annex I"
+    type: "multi_choice"
+    dependency: "q5.sector == 'A'"
+    options:
+      - label: "Civil Aviation Security (Reg. 300/2008)"
+        value: 13
+      - label: "Civil Aviation Safety (Reg. 2018/1139) including Unmanned Aircraft"
+        value: 20
+      - label: "Motor Vehicles and Trailers (Reg. 2018/858)"
+        value: 18
+      - label: "Vehicle Type-approval - General Safety (Reg. 2019/2144)"
+        value: 19
+      - label: "Agricultural and Forestry Vehicles (Reg. 167/2013)"
+        value: 15
+      - label: "Two- or Three-wheel Vehicles & Quadricycles (Reg. 168/2013)"
+        value: 14
+      - label: "Marine Equipment (Dir. 2014/90/EU)"
+        value: 16
+      - label: "Recreational Craft and Personal Watercraft (Dir. 2013/53/EU)"
+        value: 3
+      - label: "Interoperability of the Rail System (Dir. 2016/797)"
+        value: 17
+      - label: "None of the above"
+        value: 0
+        exclusive: true
+
+  # --- Sector B: Health Specifics ---
+  - id: "q5.spec_b"
+    text: "Identify the medical category:"
+    ref: "Annex I"
+    type: "multi_choice"
+    dependency: "q5.sector == 'B'"
+    options:
+      - label: "Medical Devices (Reg. 2017/745)"
+        value: 11
+      - label: "In Vitro Diagnostic Medical Devices (Reg. 2017/746)"
+        value: 12
+      - label: "None of the above"
+        value: 0
+        exclusive: true
+
+  # --- Sector C: Industrial Specifics ---
+  - id: "q5.spec_c"
+    text: "Identify the industrial/infrastructure category:"
+    ref: "Annex I"
+    type: "multi_choice"
+    dependency: "q5.sector == 'C'"
+    options:
+      - label: "Machinery (Dir. 2006/42/EC)"
+        value: 1
+      - label: "Lifts (Dir. 2014/33/EU)"
+        value: 4
+      - label: "Equipment for Explosive Atmospheres (ATEX) (Dir. 2014/34/EU)"
+        value: 5
+      - label: "Pressure Equipment (Dir. 2014/68/EU)"
+        value: 7
+      - label: "Appliances Burning Gaseous Fuels (Reg. 2016/426)"
+        value: 10
+      - label: "None of the above"
+        value: 0
+        exclusive: true
+
+  # --- Sector D: Personal Safety & General Specifics ---
+  - id: "q5.spec_d"
+    text: "Identify the specific consumer category:"
+    ref: "Annex I"
+    type: "multi_choice"
+    dependency: "q5.sector == 'D'"
+    options:
+      - label: "Toys Safety (Dir. 2009/48/EC)"
+        value: 2
+      - label: "Personal Protective Equipment (PPE) (Reg. 2016/425)"
+        value: 9
+      - label: "Radio Equipment (Dir. 2014/53/EU)"
+        value: 6
+      - label: "Cableway Installations (Reg. 2016/424)"
+        value: 8
+      - label: "None of the above"
+        value: 0
+        exclusive: true
+
+  - id: "q5.3rd_party"
+    text: "Is a third-party conformity assessment required for this product?"
+    ref: "Art 6(1)(b)"
+    description: "Does the applicable law mandate external assessment by a Notified Body?"
+    type: "single_choice"
+    dependency: "(q5.spec_a and 0 not in q5.spec_a) or (q5.spec_b and 0 not in q5.spec_b) or (q5.spec_c and 0 not in q5.spec_c) or (q5.spec_d and 0 not in q5.spec_d)"
+    options:
+      - label: "Yes"
+        value: 1
+      - label: "No"
+        value: 0
+
+  # =========================================================================
+  # PATHWAY 2: Annex III Critical Areas (Article 6(2))
+  # =========================================================================
+
+  - id: "q5.area_select"
+    text: "Does your AI system operate in any of these sensitive areas?"
+    ref: "Annex III, Points 1-8"
+    description: "Select the broad area of intended use. If none apply, select 'None'."
+    type: "single_choice"
+    dependency: "q5.3rd_party != 1"
+    options:
+      - label: "Biometrics"
+        value: 1
+      - label: "Critical Infrastructure"
+        value: 2
+      - label: "Education and Vocational Training"
+        value: 3
+      - label: "Employment and Worker Management"
+        value: 4
+      - label: "Essential Private and Public Services"
+        value: 5
+      - label: "Law Enforcement"
+        value: 6
+      - label: "Migration, Asylum and Border Control"
+        value: 7
+      - label: "Administration of Justice and Democracy"
+        value: 8
+      - label: "None of the above"
+        value: 0
+
+  # --- Area 1: Biometrics ---
+  - id: "q5.spec_bi"
+    text: "Identify the specific biometric use cases:"
+    ref: "Annex III, Point 1"
+    type: "multi_choice"
+    dependency: "q5.area_select == 1"
+    options:
+      - label: "Remote biometric identification systems (real-time and post identification, excluding sole verification/authentication)"
+        value: 1
+      - label: "Biometric categorization to infer sensitive/protected attributes (race, politics, religion, sex life, etc.)"
+        value: 2
+      - label: "Emotion recognition systems"
+        value: 3
+      - label: "None of the above"
+        value: 0
+        exclusive: true
+
+  # --- Area 2: Critical Infrastructure ---
+  - id: "q5.spec_ci"
+    text: "Identify the critical infrastructure safety functions:"
+    ref: "Annex III, Point 2"
+    type: "multi_choice"
+    dependency: "q5.area_select == 2"
+    options:
+      - label: "Safety components in road traffic management or the supply of water, gas, heating or electricity"
+        value: 1
+      - label: "Safety components in the management and operation of critical digital infrastructure"
+        value: 2
+      - label: "None of the above"
+        value: 0
+        exclusive: true
+
+  # --- Area 3: Education ---
+  - id: "q5.spec_ed"
+    text: "Identify the educational use cases:"
+    ref: "Annex III, Point 3"
+    type: "multi_choice"
+    dependency: "q5.area_select == 3"
+    options:
+      - label: "Determining access, admission, or assigning individuals to educational and vocational training institutions"
+        value: 1
+      - label: "Evaluating learning outcomes, including for people who may be assigned to a specific level of education"
+        value: 2
+      - label: "Assessing the appropriate level of education or steering the learning process of an individual"
+        value: 3
+      - label: "Monitoring and detecting prohibited behavior by students during tests"
+        value: 4
+      - label: "None of the above"
+        value: 0
+        exclusive: true
+
+  # --- Area 4: Employment ---
+  - id: "q5.spec_em"
+    text: "Identify the employment use cases:"
+    ref: "Annex III, Point 4"
+    type: "multi_choice"
+    dependency: "q5.area_select == 4"
+    options:
+      - label: "Recruitment or selection (placing job ads, screening applications, evaluating candidates)"
+        value: 1
+      - label: "Making decisions on promotions, termination, or task allocation based on behavior or traits"
+        value: 2
+      - label: "Monitoring and evaluating performance and behavior of persons in employment relationships"
+        value: 3
+      - label: "None of the above"
+        value: 0
+        exclusive: true
+
+  # --- Area 5: Essential Services ---
+  - id: "q5.spec_es"
+    text: "Identify the essential services use cases:"
+    ref: "Annex III, Point 5"
+    type: "multi_choice"
+    dependency: "q5.area_select == 5"
+    options:
+      - label: "Determining eligibility for public assistance benefits and services"
+        value: 1
+      - label: "Credit scoring or assessing creditworthiness (excluding fraud/financial crime prevention)"
+        value: 2
+      - label: "Evaluating and pricing for life and health insurance"
+        value: 3
+      - label: "Evaluating, classifying, and prioritizing emergency calls (e.g., dispatching fire, medical, police)"
+        value: 4
+      - label: "None of the above"
+        value: 0
+        exclusive: true
+
+  # --- Area 6: Law Enforcement ---
+  - id: "q5.spec_le"
+    text: "Identify the law enforcement use cases:"
+    ref: "Annex III, Point 6"
+    type: "multi_choice"
+    dependency: "q5.area_select == 6"
+    options:
+      - label: "Assessing the risk of a person becoming a victim of criminal offences"
+        value: 1
+      - label: "Polygraphs (lie detectors) and similar tools"
+        value: 2
+      - label: "Detecting deep fakes (unless for investigation of crimes or error prevention)"
+        value: 3
+      - label: "Evaluating reliability of evidence or individual profiling during investigation/prosecution"
+        value: 4
+      - label: "Assessing the risk of a person offending based on profiling or personality traits"
+        value: 5
+      - label: "None of the above"
+        value: 0
+        exclusive: true
+
+  # --- Area 7: Migration ---
+  - id: "q5.spec_mi"
+    text: "Identify the migration and border control use cases:"
+    ref: "Annex III, Point 7"
+    type: "multi_choice"
+    dependency: "q5.area_select == 7"
+    options:
+      - label: "Polygraphs or similar tools used in migration context"
+        value: 1
+      - label: "Assessing risks (security, health, illegal migration) for persons entering the Union"
+        value: 2
+      - label: "Assessing asylum, visa, and residence permit applications"
+        value: 3
+      - label: "Detecting, identifying or locating persons in border control context"
+        value: 4
+      - label: "None of the above"
+        value: 0
+        exclusive: true
+
+  # --- Area 8: Justice & Democracy ---
+  - id: "q5.spec_jd"
+    text: "Identify the justice and democracy use cases:"
+    ref: "Annex III, Point 8"
+    type: "multi_choice"
+    dependency: "q5.area_select == 8"
+    options:
+      - label: "Assisting a judicial authority in researching/interpreting facts and the law"
+        value: 1
+      - label: "Influencing the outcome of an election/referendum or voting behaviour"
+        value: 2
+      - label: "None of the above"
+        value: 0
+        exclusive: true
+
+  # =========================================================================
+  # EXEMPTION & PROFILING CHECKS (Article 6(3))
+  # =========================================================================
+
+  - id: "q5.profiling"
+    text: "Does the AI system perform 'profiling' of natural persons?"
+    ref: "Art 6(3); Art 3(4) GDPR"
+    description: "Automated processing of personal data to evaluate personal aspects (e.g., performance, economic situation, health, behavior). If Yes, exemptions cannot apply."
+    type: "single_choice"
+    dependency: "(q5.spec_bi and 0 not in q5.spec_bi) or (q5.spec_ci and 0 not in q5.spec_ci) or (q5.spec_ed and 0 not in q5.spec_ed) or (q5.spec_em and 0 not in q5.spec_em) or (q5.spec_es and 0 not in q5.spec_es) or (q5.spec_le and 0 not in q5.spec_le) or (q5.spec_mi and 0 not in q5.spec_mi) or (q5.spec_jd and 0 not in q5.spec_jd)"
+    options:
+      - label: "Yes"
+        value: 1
+      - label: "No"
+        value: 0
+
+  - id: "q5.derogation"
+    text: "Does the AI system fulfill any of these operational conditions?"
+    ref: "Art 6(3)"
+    description: "These specific conditions may exempt an Annex III system from being High-Risk."
+    type: "multi_choice"
+    dependency: "q5.profiling == 0"
+    options:
+      - label: "It is intended to perform a narrow procedural task"
+        value: 1
+      - label: "It is intended to improve the result of a previously completed human activity"
+        value: 2
+      - label: "It is intended to detect decision-making patterns or deviations from prior patterns and is not meant to replace or influence the previously completed human assessment, without proper human review"
+        value: 3
+      - label: "It is intended to perform a preparatory task to an assessment relevant for the purposes of the use cases listed in Annex III"
+        value: 4
+      - label: "None of the above"
+        value: 0
+        exclusive: true
+
+# =========================================================================
+# INTERNAL LOGIC ENGINE
+# =========================================================================
+variables:
+  - name: "Annex_III_Hit"
+    type: "boolean"
+    initial_value: False
+    rules:
+      - condition: "(q5.spec_bi and 0 not in q5.spec_bi) or (q5.spec_ci and 0 not in q5.spec_ci) or (q5.spec_ed and 0 not in q5.spec_ed) or (q5.spec_em and 0 not in q5.spec_em) or (q5.spec_es and 0 not in q5.spec_es) or (q5.spec_le and 0 not in q5.spec_le) or (q5.spec_mi and 0 not in q5.spec_mi) or (q5.spec_jd and 0 not in q5.spec_jd)"
+        value: True
+      - condition: "else"
+        value: False
+
+  - name: "High_risk"
+    type: "boolean"
+    initial_value: False
+    rules:
+      - condition: "q5.3rd_party == 1" 
+        value: True
+      - condition: "Annex_III_Hit == True and q5.profiling == 1" 
+        value: True
+      - condition: "Annex_III_Hit == True and q5.profiling == 0 and (0 in q5.derogation)" 
+        value: True
+      - condition: "else"
+        value: False
+
+  - name: "High_risk_reason"
+    type: "string"
+    initial_value: ""
+    rules:
+      - condition: "q5.3rd_party == 1"
+        value: "Annex I Safety Component/Product with mandatory 3rd Party Assessment (Art 6(1))"
+      - condition: "Annex_III_Hit == True and q5.profiling == 1"
+        value: "Annex III Critical Area with Profiling (Art 6(3), 2nd subparagraph)"
+      - condition: "Annex_III_Hit == True and q5.profiling == 0 and (0 in q5.derogation)"
+        value: "Annex III Critical Area without satisfying Article 6(3) derogation conditions"
+      - condition: "Annex_III_Hit == True and q5.profiling == 0 and (0 not in q5.derogation)"
+        value: "Article 6(3) Derogation applies (Annex III use case but low risk)"
+      - condition: "else"
+        value: "N/A"
+
+router:
+  - condition: "True" 
+    action: "jump"
+    target_module_id: 6

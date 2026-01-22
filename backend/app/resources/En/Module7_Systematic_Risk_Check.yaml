@@ -1,0 +1,48 @@
+module_id: 7 #"07_gpai_systemic_risk_check"
+title: "GPAI Systemic Risk Check"
+description: "Determines if a GPAI model has systemic risk based on the quantitative threshold in Article 51(2) or a designation decision under Article 51(1)(b)."
+
+questions:
+  - id: "q7.1"
+    text: "Does the general-purpose AI model meet either of the following criteria for classification as a model with systemic risk?"
+    ref: "Art 51, Annex XIII"
+    description: "A model is classified as having systemic risk if it meets the training compute threshold or if the Commission has explicitly designated it as such."
+    type: "single_choice"
+    options:
+      - label: "The cumulative amount of computation used for its training is greater than 10^25 floating point operations (FLOPs) (Art 51(2))"
+        value: 1
+      - label: "The Commission has adopted a decision designating the model as having systemic risk based on capabilities or market impact (e.g., >10,000 business users) (Art 51(1)(b))"
+        value: 2
+      - label: "None of the above"
+        value: 0
+
+# =========================================================================
+# INTERNAL LOGIC ENGINE
+# =========================================================================
+variables:
+  - name: "Systematic_risk"
+    type: "boolean"
+    initial_value: False
+    rules:
+      # Python syntax: checks if value is 1 OR 2
+      - condition: "q7.1 == 1 or q7.1 == 2"
+        value: True
+      - condition: "else"
+        value: False
+
+  - name: "Systematic_reason"
+    type: "string"
+    initial_value: ""
+    rules:
+      - condition: "q7.1 == 1"
+        value: "Presumed systemic risk: Training compute > 10^25 FLOPs (Art 51(2))"
+      - condition: "q7.1 == 2"
+        value: "Designated systemic risk: Commission decision based on Annex XIII criteria (Art 51(1)(b))"
+      - condition: "else"
+        value: "N/A"
+
+router:
+  # Always proceed to Module 8 after this check
+  - condition: "True"
+    action: "jump"
+    target_module_id: 8 #"Module 8 (Open-Source Check)"

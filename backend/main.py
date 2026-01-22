@@ -3,10 +3,13 @@ from pathlib import Path
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from .engine import Evaluator, EngineLoader, QuestionnaireService, SessionStore
-from .schemas import ModuleResponse, ResultResponse, StartResponse, SubmitAnswerRequest, SubmitResponse
+from .app.api.schemas import ModuleResponse, ResultResponse, StartResponse, SubmitAnswerRequest, SubmitResponse
+from .app.infra.loader import EngineLoader
+from .app.infra.store import SessionStore
+from .app.logic.evaluator import Evaluator
+from .app.services.questionnaire import QuestionnaireService
 
-DATA_DIR = Path(__file__).with_name("resources") / "En"
+DATA_DIR = Path(__file__).parent / "app" / "resources" / "En"
 loader = EngineLoader(DATA_DIR)
 evaluator = Evaluator()
 store = SessionStore()

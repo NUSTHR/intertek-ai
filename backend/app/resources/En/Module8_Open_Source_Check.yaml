@@ -1,0 +1,33 @@
+module_id: 8 #"08_open_source_check"
+title: "Open-Source Check"
+description: "Evaluates if the system qualifies for open-source exemptions under Article 2(12)."
+
+questions:
+  - id: "q8.1"
+    text: "Is the model/system released under a free and open-source license?"
+    ref: "Art 2(12), Art 53(2)"
+    description: "A license that allows for the access, usage, modification, and distribution of the model, and where parameters/weights are made publicly available."
+    type: "single_choice"
+    options:
+      - label: "Yes"
+        value: True
+      - label: "No"
+        value: False
+
+# =========================================================================
+# INTERNAL LOGIC ENGINE
+# =========================================================================
+variables:
+  - name: "Open_source"
+    type: "boolean"
+    initial_value: False
+    rules:
+      - condition: "q8.1 == True"
+        value: True
+      - condition: "else"
+        value: False
+
+router:
+  - condition: "True"
+    action: "jump"
+    target_module_id: 9 #"FINISH & Generate Final Compliance Report"      
