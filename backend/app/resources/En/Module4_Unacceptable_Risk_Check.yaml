@@ -5,26 +5,35 @@ description: "Screens for prohibited AI practices as strictly defined in Article
 questions:
   - id: "q4.1"
     text: "Which of the following categories best describes the AI system's practice?"
-    ref: "Art 5"
+    ref: "Art 5: Prohibited AI practices. 1. The following AI practices shall be prohibited: (a) the placing on the market, the putting into service or the use of an AI system that deploys subliminal techniques beyond a person’s consciousness or purposefully manipulative or deceptive techniques... (b) the placing on the market, the putting into service or the use of an AI system that exploits any of the vulnerabilities of a natural person or a specific group of persons due to their age, disability or a specific social or economic situation... (c) the placing on the market, the putting into service or the use of AI systems for the evaluation or classification of natural persons or groups of persons over a certain period of time based on their social behaviour or known, inferred or predicted personal or personality characteristics... (d) the placing on the market, the putting into service for this specific purpose, or the use of an AI system for making risk assessments of natural persons in order to assess or predict the risk of a natural person committing a criminal offence... (e) the placing on the market, the putting into service for this specific purpose, or the use of an AI system that create or expand facial recognition databases through the untargeted scraping of facial images from the internet or CCTV footage; (f) the placing on the market, the putting into service for this specific purpose, or the use of AI systems to infer emotions of a natural person in the areas of workplace and education institutions... (g) the placing on the market, the putting into service for this specific purpose, or the use of biometric categorisation systems that categorise individually natural persons based on their biometric data to deduce or infer their race, political opinions, trade union membership, religious or philosophical beliefs, sex life or sexual orientation; (h) the use of ‘real-time’ remote biometric identification systems in publicly accessible spaces for the purposes of law enforcement..."
     type: "multi_choice"
     options:
       - label: "Use of subliminal, manipulative, or deceptive techniques"
+        description: "Select this if the system uses techniques intended to influence behavior without the user's awareness or through misleading design."
         value: 1
       - label: "Exploitation of vulnerabilities of specific groups"
+        description: "Select this if the system targets specific weaknesses related to age, physical or mental disability, or socio-economic conditions."
         value: 2
       - label: "Social scoring or evaluation of trustworthiness"
+        description: "Select this if the system classifies or ranks individuals based on their social behavior or personal characteristics over a set period."
         value: 3
       - label: "Risk assessment for criminal offenses (Predictive Policing)"
+        description: "Select this if the system is used to predict if an individual will commit a crime based on profiling or personality traits."
         value: 4
       - label: "Scraping of facial images for databases"
+        description: "Select this if the system builds or expands facial recognition repositories by pulling images from the internet or surveillance feeds without a specific target."
         value: 5
       - label: "Emotion recognition in workplace or education"
+        description: "Select this if the system is used to detect or infer the emotional states of individuals in professional or academic environments."
         value: 6
       - label: "Biometric categorization of sensitive traits"
+        description: "Select this if the system categorizes people using biometrics to determine protected traits like race, religion, or sexual orientation."
         value: 7
       - label: "Real-time remote biometric identification (RBI)"
+        description: "Select this if the system identifies people in public spaces via biometrics in an instant or near-instant manner for law enforcement."
         value: 8
       - label: "None of the above"
+        description: "Select this if the AI system does not engage in any of the prohibited practices categorized above."
         value: 0
         exclusive: true
 
@@ -33,46 +42,54 @@ questions:
   # -------------------------------------------------------------------------
   - id: "q4.1_a"
     text: "Does the system deploy subliminal techniques beyond a person’s consciousness OR purposefully manipulative or deceptive techniques?"
-    ref: "Art 5(1)(a)"
+    ref: "Art 5(1)(a): the placing on the market, the putting into service or the use of an AI system that deploys subliminal techniques beyond a person’s consciousness or purposefully manipulative or deceptive techniques..."
     type: "single_choice"
     dependency: "1 in q4.1"
     options:
       - label: "Yes"
+        description: "Confirm if the AI uses hidden stimuli or deceptive design to influence behavior without the user's conscious knowledge."
         value: True
       - label: "No"
+        description: "Select this if the system's interactions are transparent and do not utilize covert manipulation methods."
         value: False
 
   - id: "q4.1_b"
     text: "Is the objective or the effect of these techniques to materially distort the behaviour of a person or a group of persons by appreciably impairing their ability to make an informed decision?"
-    ref: "Art 5(1)(a)"
+    ref: "Art 5(1)(a): with the objective, or the effect of materially distorting the behaviour of a person or a group of persons by appreciably impairing their ability to make an informed decision..."
     type: "single_choice"
     dependency: "q4.1_a == True"
     options:
       - label: "Yes"
+        description: "Select this if the system's influence results in a significant change in behavior by overriding the user's capacity for informed choice."
         value: True
       - label: "No"
+        description: "Select this if the techniques do not substantially interfere with or impair the user's decision-making ability."
         value: False
 
   - id: "q4.1_c"
     text: "Does this distortion cause the person to take a decision that they would not have otherwise taken?"
-    ref: "Art 5(1)(a)"
+    ref: "Art 5(1)(a): thereby causing them to take a decision that they would not have otherwise taken..."
     type: "single_choice"
     dependency: "q4.1_b == True"
     options:
       - label: "Yes"
+        description: "Indicate if the system’s interference is the primary reason the individual performed an action they would normally have avoided."
         value: True
       - label: "No"
+        description: "Select this if the decision was likely to have occurred independently of the system's manipulative elements."
         value: False
 
   - id: "q4.1_d"
     text: "Does taking that decision cause, or is it reasonably likely to cause, significant harm to that person, another person, or a group of persons?"
-    ref: "Art 5(1)(a)"
+    ref: "Art 5(1)(a): in a manner that causes or is reasonably likely to cause that person, another person or group of persons significant harm;"
     type: "single_choice"
     dependency: "q4.1_c == True"
     options:
       - label: "Yes"
+        description: "Confirm if the manipulated action leads to physical, psychological, or substantial economic or legal injury."
         value: True
       - label: "No"
+        description: "Select this if the outcome of the action does not reach the legal threshold of significant harm."
         value: False
 
   # -------------------------------------------------------------------------
@@ -80,35 +97,41 @@ questions:
   # -------------------------------------------------------------------------
   - id: "q4.2_a"
     text: "Does the system exploit vulnerabilities of a natural person or specific group due to their age, disability, or a specific social or economic situation?"
-    ref: "Art 5(1)(b)"
+    ref: "Art 5(1)(b): the placing on the market, the putting into service or the use of an AI system that exploits any of the vulnerabilities of a natural person or a specific group of persons due to their age, disability or a specific social or economic situation..."
     type: "single_choice"
     dependency: "2 in q4.1"
     options:
       - label: "Yes"
+        description: "Indicate if the AI uses specific demographic or personal weaknesses (such as targeting children or the elderly) as a tool for influence."
         value: True
       - label: "No"
+        description: "Select this if the system does not target or leverage the specific vulnerabilities defined by the Act."
         value: False
 
   - id: "q4.2_b"
     text: "Is the objective or effect to materially distort the behaviour of that person or a person belonging to that group?"
-    ref: "Art 5(1)(b)"
+    ref: "Art 5(1)(b): with the objective, or the effect, of materially distorting the behaviour of that person or a person belonging to that group..."
     type: "single_choice"
     dependency: "q4.2_a == True"
     options:
       - label: "Yes"
+        description: "Select this if the system's goal or result is a major change in how the vulnerable individual acts or decides."
         value: True
       - label: "No"
+        description: "Select this if the interaction does not result in a significant distortion of the person's normal behavior."
         value: False
 
   - id: "q4.2_c"
     text: "Does this distortion cause, or is it reasonably likely to cause, significant harm to that person or another person?"
-    ref: "Art 5(1)(b)"
+    ref: "Art 5(1)(b): in a manner that causes or is reasonably likely to cause that person or another person significant harm;"
     type: "single_choice"
     dependency: "q4.2_b == True"
     options:
       - label: "Yes"
+        description: "Confirm if the behavioral change is expected to lead to serious negative consequences for the individual or others."
         value: True
       - label: "No"
+        description: "Select this if the change in behavior is not expected to result in significant harm as defined."
         value: False
 
   # -------------------------------------------------------------------------
@@ -116,35 +139,41 @@ questions:
   # -------------------------------------------------------------------------
   - id: "q4.3_a"
     text: "Does the system evaluate or classify natural persons or groups over a period of time based on their social behaviour or known, inferred, or predicted personal/personality characteristics?"
-    ref: "Art 5(1)(c)"
+    ref: "Art 5(1)(c): the placing on the market, the putting into service or the use of AI systems for the evaluation or classification of natural persons or groups of persons over a certain period of time based on their social behaviour or known, inferred or predicted personal or personality characteristics..."
     type: "single_choice"
     dependency: "3 in q4.1"
     options:
       - label: "Yes"
+        description: "Indicate if the system monitors social conduct or traits to generate a trustworthiness score or classification over time."
         value: True
       - label: "No"
+        description: "Select this if the system does not perform longitudinal evaluation for the purpose of social scoring."
         value: False
 
   - id: "q4.3_b"
     text: "Does this social score lead to detrimental or unfavourable treatment in social contexts that are UNRELATED to the contexts in which the data was originally generated or collected?"
-    ref: "Art 5(1)(c)(i)"
+    ref: "Art 5(1)(c)(i): detrimental or unfavourable treatment of certain natural persons or groups of persons in social contexts that are unrelated to the contexts in which the data was originally generated or collected;"
     type: "single_choice"
     dependency: "q4.3_a == True"
     options:
       - label: "Yes"
+        description: "Select this if the score results in negative consequences in areas of life separate from where the initial data was gathered."
         value: True
       - label: "No"
+        description: "Select this if any unfavorable treatment is strictly confined to the original context of data collection."
         value: False
 
   - id: "q4.3_c"
     text: "Does this social score lead to detrimental or unfavourable treatment that is unjustified or disproportionate to the social behaviour or its gravity?"
-    ref: "Art 5(1)(c)(ii)"
+    ref: "Art 5(1)(c)(ii): detrimental or unfavourable treatment of certain natural persons or groups of persons that is unjustified or disproportionate to their social behaviour or its gravity;"
     type: "single_choice"
     dependency: "q4.3_a == True"
     options:
       - label: "Yes"
+        description: "Confirm if the resulting negative treatment is considered excessive or unfair relative to the behavior that was analyzed."
         value: True
       - label: "No"
+        description: "Select this if the treatment is deemed fair and directly proportional to the specific behaviors identified."
         value: False
 
   # -------------------------------------------------------------------------
@@ -152,24 +181,28 @@ questions:
   # -------------------------------------------------------------------------
   - id: "q4.4_a"
     text: "Is the system used for making risk assessments of natural persons to assess or predict the risk of them committing a criminal offense?"
-    ref: "Art 5(1)(d)"
+    ref: "Art 5(1)(d): the placing on the market, the putting into service for this specific purpose, or the use of an AI system for making risk assessments of natural persons in order to assess or predict the risk of a natural person committing a criminal offence..."
     type: "single_choice"
     dependency: "4 in q4.1"
     options:
       - label: "Yes"
+        description: "Indicate if the system is used by authorities to estimate the likelihood of a person committing a crime in the future."
         value: True
       - label: "No"
+        description: "Select this if the system is not used for assessing individual criminal risk probabilities."
         value: False
 
   - id: "q4.4_b"
     text: "Is this assessment based SOLELY on the profiling of a natural person or on assessing their personality traits and characteristics?"
-    ref: "Art 5(1)(d)"
+    ref: "Art 5(1)(d): based solely on the profiling of a natural person or on assessing their personality traits and characteristics; this prohibition shall not apply to AI systems used to support the human assessment of the involvement of a person in a criminal activity, which is already based on objective and verifiable facts directly linked to a criminal activity;"
     type: "single_choice"
     dependency: "q4.4_a == True"
     options:
       - label: "Yes, Based solely on profiling"
+        description: "Select this if the prediction relies purely on traits or profiles rather than concrete evidence of criminal involvement."
         value: True
       - label: "No, It supports human assessment based on objective/verifiable facts"
+        description: "Select this if the AI assists human experts in evaluating individuals already linked to specific crimes via verifiable facts."
         value: False
 
   # -------------------------------------------------------------------------
@@ -177,24 +210,28 @@ questions:
   # -------------------------------------------------------------------------
   - id: "q4.5_a"
     text: "Does the system create or expand facial recognition databases?"
-    ref: "Art 5(1)(e)"
+    ref: "Art 5(1)(e): the placing on the market, the putting into service for this specific purpose, or the use of AI systems that create or expand facial recognition databases..."
     type: "single_choice"
     dependency: "5 in q4.1"
     options:
       - label: "Yes"
+        description: "Indicate if the AI system is designed to build or supplement a repository used for identifying individuals through facial features."
         value: True
       - label: "No"
+        description: "Select this if the system does not contribute to the creation or expansion of recognition databases."
         value: False
 
   - id: "q4.5_b"
     text: "Is this achieved through the UNTARGETED scraping of facial images from the internet or CCTV footage?"
-    ref: "Art 5(1)(e)"
+    ref: "Art 5(1)(e): through the untargeted scraping of facial images from the internet or CCTV footage;"
     type: "single_choice"
     dependency: "q4.5_a == True"
     options:
       - label: "Yes"
+        description: "Confirm if the data is collected indiscriminately from public sources or surveillance without a specific legal target."
         value: True
       - label: "No"
+        description: "Select this if the images are obtained through targeted, legally compliant collection methods."
         value: False
 
   # -------------------------------------------------------------------------
@@ -202,24 +239,28 @@ questions:
   # -------------------------------------------------------------------------
   - id: "q4.6_a"
     text: "Is the system used to infer emotions of a natural person?"
-    ref: "Art 5(1)(f)"
+    ref: "Art 5(1)(f): the placing on the market, the putting into service for this specific purpose, or the use of AI systems to infer emotions of a natural person in the areas of workplace and education institutions..."
     type: "single_choice"
     dependency: "6 in q4.1"
     options:
       - label: "Yes"
+        description: "Confirm if the system attempts to categorize or identify a person’s feelings (e.g., happiness, stress) in professional or academic settings."
         value: True
       - label: "No"
+        description: "Select this if the system does not perform emotion analysis within the specified environments."
         value: False
 
   - id: "q4.6_b"
     text: "Is the system intended to be put in place for medical or safety reasons?"
-    ref: "Art 5(1)(f)"
+    ref: "Art 5(1)(f): except where the use of the AI system is intended to be put in place or into the market for medical or safety reasons;"
     type: "single_choice"
     dependency: "q4.6_a == True"
     options:
-      - label: "Yes (Exempt)"
+      - label: "Yes"
+        description: "Select this if the emotional detection is strictly for therapeutic health purposes or to prevent immediate physical harm."
         value: True
       - label: "No"
+        description: "Select this if the system is used for non-exempt reasons such as productivity monitoring or student evaluation."
         value: False
 
   # -------------------------------------------------------------------------
@@ -227,35 +268,41 @@ questions:
   # -------------------------------------------------------------------------
   - id: "q4.7_a"
     text: "Does the system categorise individually natural persons based on their biometric data?"
-    ref: "Art 5(1)(g)"
+    ref: "Art 5(1)(g): the placing on the market, the putting into service for this specific purpose, or the use of biometric categorisation systems that categorise individually natural persons based on their biometric data..."
     type: "single_choice"
     dependency: "7 in q4.1"
     options:
       - label: "Yes"
+        description: "Confirm if the AI uses physical or behavioral traits (face, voice, gait) to sort individuals into groups."
         value: True
       - label: "No"
+        description: "Select this if no biometric-based sorting or grouping is performed by the system."
         value: False
 
   - id: "q4.7_b"
     text: "Is the purpose to deduce or infer their race, political opinions, trade union membership, religious or philosophical beliefs, sex life, or sexual orientation?"
-    ref: "Art 5(1)(g)"
+    ref: "Art 5(1)(g): to deduce or infer their race, political opinions, trade union membership, religious or philosophical beliefs, sex life or sexual orientation;"
     type: "single_choice"
     dependency: "q4.7_a == True"
     options:
       - label: "Yes"
+        description: "Indicate if the system is designed to identify these specific sensitive and protected attributes via biometric traits."
         value: True
       - label: "No"
+        description: "Select this if the categorization is based on non-sensitive, non-prohibited groupings."
         value: False
 
   - id: "q4.7_c"
     text: "Is this strictly for the labelling or filtering of lawfully acquired biometric datasets in the area of law enforcement?"
-    ref: "Art 5(1)(g)"
+    ref: "Art 5(1)(g): this prohibition does not cover any labelling or filtering of lawfully acquired biometric datasets, such as images, based on biometric data or categorizing of biometric data in the area of law enforcement;"
     type: "single_choice"
     dependency: "q4.7_b == True"
     options:
-      - label: "Yes (Exempt)"
+      - label: "Yes"
+        description: "Select this if the practice is limited to law enforcement authorities organizing legally obtained data for criminal investigations."
         value: True
       - label: "No"
+        description: "Select this if the categorization of sensitive traits is used for general commercial or administrative purposes."
         value: False
 
   # -------------------------------------------------------------------------
@@ -263,35 +310,41 @@ questions:
   # -------------------------------------------------------------------------
   - id: "q4.8_a"
     text: "Is the system a 'real-time' remote biometric identification system used in publicly accessible spaces?"
-    ref: "Art 5(1)(h)"
+    ref: "Art 5(1)(h): the use of ‘real-time’ remote biometric identification systems in publicly accessible spaces for the purposes of law enforcement..."
     type: "single_choice"
     dependency: "8 in q4.1"
     options:
       - label: "Yes"
+        description: "Confirm if the system scans individuals in public and identifies them without significant delay using biometric data."
         value: True
       - label: "No"
+        description: "Select this if the identification happens later ('post') or occurs in private, non-public settings."
         value: False
 
   - id: "q4.8_b"
     text: "Is it used for the purposes of law enforcement?"
-    ref: "Art 5(1)(h)"
+    ref: "Art 5(1)(h): for the purposes of law enforcement, unless and in so far as such use is strictly necessary for one of the following objectives..."
     type: "single_choice"
     dependency: "q4.8_a == True"
     options:
       - label: "Yes"
+        description: "Confirm if the system is deployed by or on behalf of police or other public law enforcement bodies."
         value: True
       - label: "No (If private/non-LE, proceed to High-Risk)"
+        description: "Select this if the identification system is used for private security or commercial purposes."
         value: False
 
   - id: "q4.8_c"
     text: "Is the use strictly necessary for: (i) searching for victims/missing persons, (ii) preventing imminent threat to life/terrorism, or (iii) identifying suspects of serious crimes (Annex II)?"
-    ref: "Art 5(1)(h)(i)-(iii)"
+    ref: "Art 5(1)(h)(i)-(iii): (i) the targeted search for specific victims of abduction, trafficking in human beings or sexual exploitation of human beings, as well as the search for missing persons; (ii) the prevention of a specific, substantial and imminent threat to the life or physical safety of natural persons or a genuine and present or genuine and foreseeable threat of a terrorist attack; (iii) the localisation or identification of a person suspected of having committed a criminal offence referred to in Annex II..."
     type: "single_choice"
     dependency: "q4.8_b == True"
     options:
       - label: "Yes"
+        description: "Select this if the law enforcement use is restricted to one of these three critical public safety scenarios."
         value: True
       - label: "No"
+        description: "Select this if the system is used for general policing or for offenses not listed in the narrow legal exceptions."
         value: False
 
 # Internal Logical Mapping & Parameter State

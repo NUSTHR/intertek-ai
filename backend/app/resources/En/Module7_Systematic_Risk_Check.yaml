@@ -5,15 +5,18 @@ description: "Determines if a GPAI model has systemic risk based on the quantita
 questions:
   - id: "q7.1"
     text: "Does the general-purpose AI model meet either of the following criteria for classification as a model with systemic risk?"
-    ref: "Art 51, Annex XIII"
+    ref: "Art 51, Annex XIII; Art 51(1): A general-purpose AI model shall be classified as a general-purpose AI model with systemic risk if it meets any of the following criteria: (a) it has high-impact capabilities, as assessed on the basis of appropriate technical tools and methodologies, including indicators and benchmarks; (b) based on a decision of the Commission, ex officio or following a qualified alert from the scientific panel, it has capabilities or an impact equivalent to those set out in point (a) in accordance with the criteria set out in Annex XIII. Art 51(2): A general-purpose AI model shall be presumed to have high-impact capabilities as referred to in paragraph 1, point (a), when the cumulative amount of computation used for its training measured in floating point operations is greater than 10^25. Annex XIII: Criteria for the designation of general-purpose AI models with systemic risk referred to in Article 51: (a) the number of parameters of the model; (b) the quality or size of the data set, for example measured through tokens; (c) the amount of computation used for training the model... (f) whether it has a high impact on the internal market due to its reach, which shall be presumed when it has been made available to at least 10 000 registered business users established in the Union; (g) the number of registered end-users."
     description: "A model is classified as having systemic risk if it meets the training compute threshold or if the Commission has explicitly designated it as such."
     type: "single_choice"
     options:
-      - label: "The cumulative amount of computation used for its training is greater than 10^25 floating point operations (FLOPs) (Art 51(2))"
+      - label: "Model's training exceeded 10^25 floating-point operations."
+        description: "Select this if the total mathematical operations required to train the model reached or exceeded the 10^25 FLOPs threshold, triggering a presumption of systemic risk."
         value: 1
-      - label: "The Commission has adopted a decision designating the model as having systemic risk based on capabilities or market impact (e.g., >10,000 business users) (Art 51(1)(b))"
+      - label: "The Commission designated the model as having systemic risk."
+        description: "Select this if there is a formal regulatory decision from the European Commission identifying the model as posing systemic risk due to its high-impact capabilities or significant market reach."
         value: 2
       - label: "None of the above"
+        description: "Select this if the model does not meet the quantitative threshold and has not been designated as a model with systemic risk by the Commission."
         value: 0
 
 # =========================================================================

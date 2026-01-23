@@ -5,25 +5,30 @@ description: "Screens for specific exclusions from the Regulation as defined in 
 questions:
   - id: "q3a.1"
     text: "Does your product fall under a specific exclusion for military, defense, or international law enforcement cooperation?"
-    ref: "Art 2(3), Art 2(4)"
+    ref: "Art 2(3): This Regulation does not apply to AI systems where and in so far they are placed on the market, put into service, or used with or without modification exclusively for military, defence or national security purposes, regardless of the type of entity carrying out those activities. Art 2(4): This Regulation applies neither to public authorities in a third country nor to international organisations falling within the scope of this Regulation pursuant to paragraph 1, where those authorities or organisations use AI systems in the framework of international cooperation or agreements for law enforcement and judicial cooperation with the Union or with one or more Member States, provided that such a third country or international organisation provides adequate safeguards with respect to the protection of fundamental rights and freedoms of individuals."
     type: "single_choice"
     options:
       - label: "Yes, exclusively for military, defense, or national security purposes."
+        [cite_start]description: "Select this if the AI system is developed and used only for military or national security operations, which are outside the scope of Union law[cite: 48]."
         value: 1
       - label: "Yes, public authorities/International organizations for international law enforcement cooperation."
+        [cite_start]description: "Select this if the AI system is used by third-country authorities or international bodies for law enforcement cooperation under specific international agreements with the Union[cite: 50]."
         value: 2
       - label: "No"
+        [cite_start]description: "Select this if the AI system is intended for civil, commercial, or standard law enforcement purposes within the Union[cite: 27, 29]."
         value: 3
 
   - id: "q3a.2"
     text: "Are you a natural person (deployer) using the product exclusively for personal, non-professional, non-commercial activity?"
-    ref: "Art 2(10)"
+    ref: "Art 2(10): This Regulation does not apply to obligations of deployers who are natural persons using AI systems in the course of a purely personal non-professional activity."
     type: "single_choice"
     dependency: "q3a.1 == 3"
     options:
       - label: "Yes, I am a natural person using the product exclusively for personal, non-professional activity."
+        [cite_start]description: "Select this if you are using the AI system for purely private tasks that are not linked to any trade, business, or professional service[cite: 59]."
         value: True
       - label: "No, I am not a natural person, or I use it for professional/commercial purposes."
+        [cite_start]description: "Select this if you are using the AI system on behalf of an organization or as part of your professional or commercial work[cite: 40, 68]."
         value: False
 
 variables:

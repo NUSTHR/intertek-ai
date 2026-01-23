@@ -11,9 +11,10 @@ import type {
 } from '@/types/questionnaire'
 
 const API_BASE = import.meta.env.VITE_API_BASE ?? 'http://127.0.0.1:8000'
+const SESSION_KEY = 'questionnaire_session_id'
 
 export const useQuestionnaireStore = defineStore('questionnaire', () => {
-  const sessionId = ref<string>('')
+  const sessionId = ref<string>(localStorage.getItem(SESSION_KEY) ?? '')
   const currentModule = ref<Module | null>(null)
   const parameters = ref<Record<string, AnswerValue>>({})
   const answers = ref<Record<string, AnswerValue>>({})
@@ -33,6 +34,7 @@ export const useQuestionnaireStore = defineStore('questionnaire', () => {
       if (!res.ok) throw new Error(`init_http_${res.status}`)
       const data = (await res.json()) as StartResponse
       sessionId.value = data.session_id
+      localStorage.setItem(SESSION_KEY, data.session_id)
       currentModule.value = data.module
       parameters.value = {}
       answers.value = {}
@@ -118,6 +120,7 @@ export const useQuestionnaireStore = defineStore('questionnaire', () => {
 
   function reset() {
     sessionId.value = ''
+    localStorage.removeItem(SESSION_KEY)
     currentModule.value = null
     parameters.value = {}
     answers.value = {}

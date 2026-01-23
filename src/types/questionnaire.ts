@@ -4,6 +4,7 @@ export type AnswerValue = AnswerScalar | AnswerScalar[]
 export type ModuleOption = {
   label: string
   value: AnswerScalar
+  description?: string
   exclusive?: boolean
 }
 
