@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { AnswerValue, ModuleQuestion } from '@/types/questionnaire'
+import type { AnswerValue, Module, ModuleQuestion } from '@/types/questionnaire'
 import IntertekLayout from './IntertekLayout.vue'
+import { buildOptions } from './optionUtils'
 
 const props = defineProps<{
+  module: Module
   question: ModuleQuestion
   modelValue: AnswerValue | undefined
   error: string | null
@@ -34,36 +36,21 @@ const fallbackOptions = [
     icon: 'description',
   },
 ]
-const options = computed(() => {
-  const backendOptions = props.question.options ?? []
-  if (!backendOptions.length) return fallbackOptions
-  return backendOptions.map((opt, index) => {
-    const base = fallbackOptions[index]
-    const label = opt.label ?? base?.title ?? String(opt.value)
-    return {
-      value: opt.value,
-      title: label,
-      description: opt.description ?? base?.description ?? '',
-      icon: base?.icon ?? 'help',
-    }
-  })
-})
+const options = computed(() => buildOptions(props.question, fallbackOptions))
 </script>
 
 <template>
   <IntertekLayout
     module-label="Module 6 / 15"
-    module-title="Transparency Obligation Check"
-    step-label="Step 6"
-    step-total="of 15"
-    progress-width="40%"
+    :module-title="props.module.title"
+    :module-description="props.module.description"
     question-tag="Question q6.d.3"
     :question-text="question.text"
+    :question-description="question.description"
     :error="error"
     :message="message"
     :disable-next="!canSubmit || loading"
     @restart="emit('restart')"
-    @prev="emit('restart')"
     @next="emit('next')"
   >
     <div role="radiogroup" aria-labelledby="q6-label" class="grid grid-cols-1 md:grid-cols-2 gap-6">

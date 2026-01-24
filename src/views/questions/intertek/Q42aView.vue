@@ -1,8 +1,11 @@
 <script setup lang="ts">
-import type { AnswerValue, ModuleQuestion } from '@/types/questionnaire'
+import { computed } from 'vue'
+import type { AnswerValue, Module, ModuleQuestion } from '@/types/questionnaire'
 import IntertekLayout from './IntertekLayout.vue'
+import { buildOptions } from './optionUtils'
 
-defineProps<{
+const props = defineProps<{
+  module: Module
   question: ModuleQuestion
   modelValue: AnswerValue | undefined
   error: string | null
@@ -17,7 +20,7 @@ const emit = defineEmits<{
   (e: 'restart'): void
 }>()
 
-const options = [
+const fallbackOptions = [
   {
     value: true,
     title: 'YES',
@@ -33,22 +36,21 @@ const options = [
     icon: 'shield',
   },
 ]
+const options = computed(() => buildOptions(props.question, fallbackOptions))
 </script>
 
 <template>
   <IntertekLayout
     module-label="Module 4 / 5"
-    module-title="Unacceptable Risk Check"
-    step-label="Step 8"
-    step-total="of 12"
-    progress-width="66.66%"
+    :module-title="props.module.title"
+    :module-description="props.module.description"
     question-tag="Question 4.2_a"
     :question-text="question.text"
+    :question-description="question.description"
     :error="error"
     :message="message"
     :disable-next="!canSubmit || loading"
     @restart="emit('restart')"
-    @prev="emit('restart')"
     @next="emit('next')"
   >
     <div role="radiogroup" aria-labelledby="q4-2a-label" class="flex flex-col gap-4">

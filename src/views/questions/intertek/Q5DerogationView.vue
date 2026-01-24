@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import type { AnswerScalar, AnswerValue, ModuleQuestion } from '@/types/questionnaire'
+import { computed } from 'vue'
+import type { AnswerScalar, AnswerValue, Module, ModuleQuestion } from '@/types/questionnaire'
 import IntertekLayout from './IntertekLayout.vue'
+import { buildOptions } from './optionUtils'
 
 type Option = {
   value: AnswerScalar
@@ -11,6 +13,7 @@ type Option = {
 }
 
 const props = defineProps<{
+  module: Module
   question: ModuleQuestion
   modelValue: AnswerValue | undefined
   error: string | null
@@ -25,7 +28,7 @@ const emit = defineEmits<{
   (e: 'restart'): void
 }>()
 
-const options: Option[] = [
+const fallbackOptions: Option[] = [
   {
     value: 1,
     title: 'Narrow Task',
@@ -58,13 +61,14 @@ const options: Option[] = [
     exclusive: true,
   },
 ]
+const options = computed(() => buildOptions(props.question, fallbackOptions))
 
 const selectedValues = () => (Array.isArray(props.modelValue) ? (props.modelValue as AnswerScalar[]) : [])
 
 function toggleValue(value: AnswerScalar) {
   const current = selectedValues()
   const isSelected = current.includes(value)
-  const exclusiveValues = options.filter((opt) => opt.exclusive).map((opt) => opt.value)
+  const exclusiveValues = options.value.filter((opt) => opt.exclusive).map((opt) => opt.value)
   if (isSelected) {
     emit(
       'update:modelValue',
@@ -88,17 +92,15 @@ function isSelected(value: AnswerScalar) {
 <template>
   <IntertekLayout
     module-label="Module 5 / 5"
-    module-title="High-Risk AI System Check"
-    step-label="Step 5"
-    step-total="of 12"
-    progress-width="41.66%"
+    :module-title="props.module.title"
+    :module-description="props.module.description"
     question-tag="Question 5.Derogation"
     :question-text="question.text"
+    :question-description="question.description"
     :error="error"
     :message="message"
     :disable-next="!canSubmit || loading"
     @restart="emit('restart')"
-    @prev="emit('restart')"
     @next="emit('next')"
   >
     <div role="group" aria-labelledby="q5-label" class="flex flex-col gap-4">

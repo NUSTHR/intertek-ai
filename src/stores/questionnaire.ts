@@ -1,4 +1,4 @@
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import type {
   AnswerValue,
@@ -23,8 +23,6 @@ export const useQuestionnaireStore = defineStore('questionnaire', () => {
   const conclusion = ref<Record<string, unknown> | null>(null)
   const loading = ref(false)
   const error = ref<string | null>(null)
-
-  const moduleQuestions = computed(() => currentModule.value?.questions ?? [])
 
   async function init(): Promise<Module | null> {
     loading.value = true
@@ -133,7 +131,6 @@ export const useQuestionnaireStore = defineStore('questionnaire', () => {
   return {
     sessionId,
     currentModule,
-    moduleQuestions,
     parameters,
     answers,
     lastAction,

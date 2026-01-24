@@ -2,18 +2,24 @@
 import { computed, inject, type ComputedRef } from 'vue'
 import logoUrl from '@/assets/images/logo/b9d2336ed590ab1e2a8d517d7f555f72.png'
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   moduleLabel: string
   moduleTitle: string
-  stepLabel: string
-  stepTotal: string
-  progressWidth: string
+  moduleDescription?: string
+  stepLabel?: string
+  stepTotal?: string
+  progressWidth?: string
   questionTag: string
   questionText: string
+  questionDescription?: string
   error: string | null
   message: string | null
   disableNext: boolean
-}>()
+}>(), {
+  stepLabel: '',
+  stepTotal: '',
+  progressWidth: '',
+})
 
 const emit = defineEmits<{
   (e: 'restart'): void
@@ -21,18 +27,19 @@ const emit = defineEmits<{
   (e: 'next'): void
 }>()
 
-const progressOverride = inject<ComputedRef<Record<string, string> | null> | null>('progressOverride', null)
 const prevHandler = inject<(() => void) | null>('questionnaire_prev_handler', null)
-const moduleLabelText = computed(() => progressOverride?.value?.moduleLabel ?? props.moduleLabel)
-const stepLabelText = computed(() => progressOverride?.value?.stepLabel ?? props.stepLabel)
-const stepTotalText = computed(() => progressOverride?.value?.stepTotal ?? props.stepTotal)
-const progressWidthText = computed(() => progressOverride?.value?.progressWidth ?? props.progressWidth)
-const questionTagText = computed(() => progressOverride?.value?.questionTag ?? props.questionTag)
+const progressOverride = inject<ComputedRef<{ stepLabel: string; stepTotal: string; progressWidth: string } | null> | null>(
+  'progressOverride',
+  null,
+)
+const stepLabelText = computed(() => progressOverride?.value?.stepLabel ?? '')
+const stepTotalText = computed(() => progressOverride?.value?.stepTotal ?? '')
+const progressWidthText = computed(() => progressOverride?.value?.progressWidth ?? '')
 
 function onPrev() {
-  sessionStorage.setItem('questionnaire_prev', '1')
   if (prevHandler) {
     prevHandler()
+    return
   }
   emit('prev')
 }
@@ -91,18 +98,21 @@ function onPrev() {
       <section class="flex flex-col gap-5 bg-white dark:bg-slate-900 p-6 shadow-sm border border-slate-200 dark:border-slate-800">
         <div class="flex items-center justify-between">
           <div class="flex flex-col gap-1">
-            <span class="text-intertek-yellow font-black uppercase tracking-[0.2em] text-[10px]">{{ moduleLabelText }}</span>
-            <h3 class="font-black text-slate-900 dark:text-white text-2xl uppercase italic">{{ moduleTitle }}</h3>
+            <span class="text-intertek-yellow font-black uppercase tracking-[0.2em] text-[10px]">{{ props.moduleLabel }}</span>
+            <h3 class="font-black text-slate-900 dark:text-white text-2xl uppercase italic">{{ props.moduleTitle }}</h3>
+            <p v-if="props.moduleDescription" class="text-xs text-slate-500 dark:text-slate-400 font-medium">
+              {{ props.moduleDescription }}
+            </p>
           </div>
           <div class="text-right">
             <div class="flex items-baseline gap-1">
-              <span class="font-black text-2xl text-slate-900 dark:text-white">{{ stepLabelText }}</span>
-              <span class="text-slate-400 font-bold text-sm uppercase">{{ stepTotalText }}</span>
+              <span class="font-black text-2xl text-slate-900 dark:text-white">{{ stepLabelText || props.stepLabel }}</span>
+              <span class="text-slate-400 font-bold text-sm uppercase">{{ stepTotalText || props.stepTotal }}</span>
             </div>
           </div>
         </div>
         <div class="w-full bg-slate-100 dark:bg-slate-800 h-2">
-          <div class="bg-intertek-yellow h-2 transition-all duration-700" :style="{ width: progressWidthText }"></div>
+          <div class="bg-intertek-yellow h-2 transition-all duration-700" :style="{ width: progressWidthText || props.progressWidth }"></div>
         </div>
       </section>
       <div class="flex flex-col lg:flex-row gap-10 items-start">
@@ -110,11 +120,14 @@ function onPrev() {
           <div class="bg-white dark:bg-slate-900 p-8 md:p-12 shadow-sm border border-slate-200 dark:border-slate-800">
             <div class="mb-10">
               <span class="inline-block px-4 py-1.5 bg-intertek-dark text-white text-[10px] font-black tracking-[0.3em] uppercase mb-6">
-                {{ questionTagText }}
+                {{ props.questionTag }}
               </span>
               <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white leading-tight">
-                {{ questionText }}
+                {{ props.questionText }}
               </h1>
+              <p v-if="props.questionDescription" class="text-sm text-slate-600 dark:text-slate-400 mt-3 leading-relaxed font-medium">
+                {{ props.questionDescription }}
+              </p>
             </div>
             <slot></slot>
             <div class="flex items-center justify-between pt-10 mt-10 border-t border-slate-100 dark:border-slate-800">
@@ -129,15 +142,15 @@ function onPrev() {
               <button
                 type="button"
                 class="flex items-center gap-3 px-12 py-4 bg-intertek-yellow text-black font-black uppercase tracking-[0.2em] text-[11px] hover:bg-intertek-dark hover:text-white transition-all shadow-md active:translate-y-0.5"
-                :disabled="disableNext"
+                :disabled="props.disableNext"
                 @click="emit('next')"
               >
                 Next Question
                 <span class="material-symbols-outlined text-sm">east</span>
               </button>
             </div>
-            <div v-if="error" class="text-sm text-red-600 mt-6">加载失败：{{ error }}</div>
-            <div v-if="message" class="text-xs text-slate-500 mt-2">{{ message }}</div>
+            <div v-if="props.error" class="text-sm text-red-600 mt-6">加载失败：{{ props.error }}</div>
+            <div v-if="props.message" class="text-xs text-slate-500 mt-2">{{ props.message }}</div>
           </div>
         </div>
         <aside class="w-full lg:w-[320px] flex-shrink-0">

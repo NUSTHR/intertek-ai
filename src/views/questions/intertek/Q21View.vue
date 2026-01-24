@@ -1,8 +1,11 @@
 <script setup lang="ts">
-import type { AnswerValue, ModuleQuestion } from '@/types/questionnaire'
+import { computed } from 'vue'
+import type { AnswerValue, Module, ModuleQuestion } from '@/types/questionnaire'
 import IntertekLayout from './IntertekLayout.vue'
+import { buildOptions } from './optionUtils'
 
-defineProps<{
+const props = defineProps<{
+  module: Module
   question: ModuleQuestion
   modelValue: AnswerValue | undefined
   error: string | null
@@ -17,10 +20,10 @@ const emit = defineEmits<{
   (e: 'restart'): void
 }>()
 
-const options = [
+const fallbackOptions = [
   {
     value: 1,
-    title: 'General Purpose AI (GPAI)',
+    title: 'General Purpose AI Model (GPAI)',
     description:
       'An AI model that displays significant generality and is capable of competently performing a wide range of distinct tasks.',
     icon: 'hub',
@@ -34,34 +37,33 @@ const options = [
   },
   {
     value: 3,
-    title: 'Non-AI Product/Software',
+    title: 'Non-AI Product',
     description:
       'Traditional software based on rules or predefined logic that does not meet the definition of an AI system under the Act.',
     icon: 'settings_input_component',
   },
   {
     value: 4,
-    title: 'Uncertain / Not Sure',
+    title: 'Uncertain',
     description: 'I am not sure which category my product falls into and need further clarification.',
     icon: 'help_outline',
   },
 ]
+const options = computed(() => buildOptions(props.question, fallbackOptions))
 </script>
 
 <template>
   <IntertekLayout
     module-label="Module 2 / 5"
-    module-title="Classification & Role Identification"
-    step-label="Step 3"
-    step-total="of 12"
-    progress-width="25%"
+    :module-title="props.module.title"
+    :module-description="props.module.description"
     question-tag="Question 2.1"
     :question-text="question.text"
+    :question-description="question.description"
     :error="error"
     :message="message"
     :disable-next="!canSubmit || loading"
     @restart="emit('restart')"
-    @prev="emit('restart')"
     @next="emit('next')"
   >
     <div role="radiogroup" aria-labelledby="q21-label" class="flex flex-col gap-4">

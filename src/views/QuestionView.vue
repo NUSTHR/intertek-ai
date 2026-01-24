@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed, onMounted, provide, reactive, ref, watch, type Component, type ComputedRef } from 'vue'
+import { computed, onMounted, provide, reactive, ref, watch, type Component } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import type { AnswerScalar, AnswerValue, ModuleQuestion } from '@/types/questionnaire'
+import type { AnswerScalar, AnswerValue, ModuleQuestion, Module } from '@/types/questionnaire'
 import { useQuestionnaireStore } from '@/stores/questionnaire'
 import DefaultQuestionView from '@/views/questions/DefaultQuestionView.vue'
 import Q11View from '@/views/questions/intertek/Q11View.vue'
@@ -38,14 +38,92 @@ import Q81View from '@/views/questions/intertek/Q81View.vue'
 const route = useRoute()
 const router = useRouter()
 const store = useQuestionnaireStore()
-const QUESTION_INDEX_PREFIX = 'questionnaire_question_index'
 const PREV_HANDLER_KEY = 'questionnaire_prev_handler'
+const PROGRESS_OVERRIDE_KEY = 'progressOverride'
+
+const GLOBAL_QUESTION_SEQUENCE = [
+  'q1.1',
+  'q1.2',
+  'q2.1',
+  'q2.1a',
+  'q2.1b',
+  'q2.2a',
+  'q2.2b',
+  'q3a.1',
+  'q3a.2',
+  'q4.1',
+  'q4.1_a',
+  'q4.1_b',
+  'q4.1_c',
+  'q4.1_d',
+  'q4.2_a',
+  'q4.2_b',
+  'q4.2_c',
+  'q4.3_a',
+  'q4.3_b',
+  'q4.3_c',
+  'q4.4_a',
+  'q4.4_b',
+  'q4.5_a',
+  'q4.5_b',
+  'q4.6_a',
+  'q4.6_b',
+  'q4.7_a',
+  'q4.7_b',
+  'q4.7_c',
+  'q4.8_a',
+  'q4.8_b',
+  'q4.8_c',
+  'q5.role',
+  'q5.sector',
+  'q5.spec_a',
+  'q5.spec_b',
+  'q5.spec_c',
+  'q5.spec_d',
+  'q5.3rd_party',
+  'q5.area_select',
+  'q5.spec_bi',
+  'q5.spec_ci',
+  'q5.spec_ed',
+  'q5.spec_em',
+  'q5.spec_es',
+  'q5.spec_le',
+  'q5.spec_mi',
+  'q5.spec_jd',
+  'q5.profiling',
+  'q5.derogation',
+  'q6.gateway',
+  'q6.a.1',
+  'q6.a.2',
+  'q6.a.3',
+  'q6.b.1',
+  'q6.b.2',
+  'q6.c.1',
+  'q6.d.1',
+  'q6.d.2',
+  'q6.d.3',
+  'q6.d.4',
+  'q6.d.5',
+  'q6.d.6',
+  'q7.1',
+  'q8.1',
+]
 
 const moduleId = computed(() => String(route.params.id ?? ''))
 const moduleData = computed(() => (store.currentModule?.id === moduleId.value ? store.currentModule : null))
 const localAnswers = reactive<Record<string, AnswerValue | undefined>>({})
-const currentIndex = ref(0)
-const currentQuestion = computed(() => moduleData.value?.questions?.[currentIndex.value] ?? null)
+const questionHistory = ref<{ moduleId: string; question: ModuleQuestion }[]>([])
+const historyIndex = ref(0)
+const currentQuestion = computed(() => {
+  if (questionHistory.value.length > 0) {
+    return (
+      questionHistory.value[historyIndex.value]?.question ??
+      questionHistory.value[questionHistory.value.length - 1]?.question ??
+      null
+    )
+  }
+  return moduleData.value?.questions?.[0] ?? null
+})
 const intertekMap: Record<string, Component> = {
   'q1.1': Q11View,
   'q1.2': Q12View,
@@ -85,7 +163,7 @@ const intertekComponent = computed(() => {
 })
 
 function isAnswerValid(question: ModuleQuestion, value: AnswerValue | undefined) {
-  if (question.type === 'multi_choice') {
+  if (question.type === 'multi_choice' || question.type === 'multiple_choice') {
     return Array.isArray(value) && value.length > 0
   }
   if (question.type === 'boolean') {
@@ -95,80 +173,76 @@ function isAnswerValid(question: ModuleQuestion, value: AnswerValue | undefined)
 }
 
 const canSubmit = computed(() => {
-  const module = moduleData.value
   const question = currentQuestion.value
-  if (!module || !question) return false
-  if (currentIndex.value < module.questions.length - 1) {
-    return isAnswerValid(question, localAnswers[question.id])
-  }
-  return module.questions.every((q) => isAnswerValid(q, localAnswers[q.id]))
+  if (!question) return false
+  return isAnswerValid(question, localAnswers[question.id])
 })
 
 const progressOverride = computed(() => {
-  const module = moduleData.value
   const question = currentQuestion.value
-  if (!module || !question) return null
-  const total = module.questions.length || 1
-  const step = Math.min(currentIndex.value + 1, total)
-  const width = `${Math.round((step / total) * 100)}%`
+  if (!question) return null
+  const index = GLOBAL_QUESTION_SEQUENCE.indexOf(question.id)
+  const total = GLOBAL_QUESTION_SEQUENCE.length
+  const step = index >= 0 ? index + 1 : Math.min(historyIndex.value + 1, total)
+  const width = `${((step / total) * 100).toFixed(2)}%`
   return {
-    moduleLabel: `Module ${module.id}`,
     stepLabel: `Step ${step}`,
     stepTotal: `of ${total}`,
     progressWidth: width,
-    questionTag: `Question ${question.id}`,
   }
 })
 
-provide('progressOverride', progressOverride as ComputedRef<Record<string, string> | null>)
+provide(PROGRESS_OVERRIDE_KEY, progressOverride)
 
-function hydrateAnswers(module: { questions: ModuleQuestion[] }) {
+function hydrateAnswers(question: ModuleQuestion) {
+  const saved = store.answers[question.id]
+  if (question.type === 'multi_choice' || question.type === 'multiple_choice') {
+    localAnswers[question.id] = Array.isArray(saved) ? [...saved] : localAnswers[question.id] ?? []
+    return
+  }
+  if (question.type === 'boolean') {
+    if (typeof localAnswers[question.id] !== 'boolean') {
+      localAnswers[question.id] = typeof saved === 'boolean' ? saved : undefined
+    }
+    return
+  }
+  if (localAnswers[question.id] === undefined) {
+    localAnswers[question.id] = saved ?? ''
+  }
+}
+
+function pushQuestion(module: Module, question: ModuleQuestion) {
+  if (questionHistory.value.length === 0) {
+    questionHistory.value = [{ moduleId: module.id, question }]
+    historyIndex.value = 0
+    return
+  }
+  const last = questionHistory.value[questionHistory.value.length - 1]
+  if (!last) {
+    questionHistory.value = [{ moduleId: module.id, question }]
+    historyIndex.value = 0
+    return
+  }
+  if (last.question.id === question.id && last.moduleId === module.id) {
+    historyIndex.value = questionHistory.value.length - 1
+    return
+  }
+  if (historyIndex.value < questionHistory.value.length - 1) {
+    questionHistory.value = questionHistory.value.slice(0, historyIndex.value + 1)
+  }
+  questionHistory.value = [...questionHistory.value, { moduleId: module.id, question }]
+  historyIndex.value = questionHistory.value.length - 1
+}
+
+function resetHistory() {
+  questionHistory.value = []
+  historyIndex.value = 0
+}
+
+function resetLocalAnswers() {
   for (const key of Object.keys(localAnswers)) {
     delete localAnswers[key]
   }
-  for (const q of module.questions) {
-    const saved = store.answers[q.id]
-    if (q.type === 'multi_choice') {
-      localAnswers[q.id] = Array.isArray(saved) ? [...saved] : []
-      continue
-    }
-    if (q.type === 'boolean') {
-      localAnswers[q.id] = typeof saved === 'boolean' ? saved : undefined
-      continue
-    }
-    localAnswers[q.id] = saved ?? ''
-  }
-}
-
-function restoreQuestionIndex(module: { id: string; questions: ModuleQuestion[] }) {
-  if (!store.sessionId) {
-    currentIndex.value = 0
-    return
-  }
-  const key = `${QUESTION_INDEX_PREFIX}_${store.sessionId}_${module.id}`
-  const stored = Number(sessionStorage.getItem(key))
-  if (Number.isFinite(stored) && stored >= 0 && stored < module.questions.length) {
-    currentIndex.value = stored
-    return
-  }
-  currentIndex.value = 0
-}
-
-function persistQuestionIndex() {
-  const module = moduleData.value
-  if (!store.sessionId || !module) return
-  const key = `${QUESTION_INDEX_PREFIX}_${store.sessionId}_${module.id}`
-  sessionStorage.setItem(key, String(currentIndex.value))
-}
-
-function consumePrevFlag() {
-  const key = 'questionnaire_prev'
-  const value = sessionStorage.getItem(key)
-  if (value) {
-    sessionStorage.removeItem(key)
-    return true
-  }
-  return false
 }
 
 async function ensureModuleLoaded(targetId: string) {
@@ -187,8 +261,10 @@ async function ensureModuleLoaded(targetId: string) {
       return
     }
   }
-  if (store.currentModule) hydrateAnswers(store.currentModule)
-  if (store.currentModule) restoreQuestionIndex(store.currentModule)
+  if (store.currentModule?.questions?.[0]) {
+    pushQuestion(store.currentModule, store.currentModule.questions[0])
+    hydrateAnswers(store.currentModule.questions[0])
+  }
 }
 
 onMounted(async () => {
@@ -203,19 +279,22 @@ watch(
 )
 
 watch(
-  () => moduleData.value,
-  (module) => {
-    if (module) {
-      hydrateAnswers(module)
-      restoreQuestionIndex(module)
+  () => store.sessionId,
+  (next, prev) => {
+    if (!next || next !== prev) {
+      resetHistory()
+      resetLocalAnswers()
     }
   },
 )
 
 watch(
-  () => currentIndex.value,
-  () => {
-    persistQuestionIndex()
+  () => moduleData.value?.questions?.[0],
+  (question) => {
+    if (question && moduleData.value) {
+      pushQuestion(moduleData.value, question)
+      hydrateAnswers(question)
+    }
   },
 )
 
@@ -253,10 +332,11 @@ async function submitModule() {
   const module = moduleData.value
   if (!module) return
   const payload: Record<string, AnswerValue> = {}
-  for (const q of module.questions) {
-    const val = localAnswers[q.id]
+  for (const entry of questionHistory.value) {
+    if (entry.moduleId !== module.id) continue
+    const val = localAnswers[entry.question.id]
     if (val === undefined || val === '' || (Array.isArray(val) && val.length === 0)) continue
-    payload[q.id] = val as AnswerValue
+    payload[entry.question.id] = val as AnswerValue
   }
   const res = await store.submit(module.id, payload)
   if (!res) return
@@ -268,17 +348,16 @@ async function submitModule() {
 }
 
 function goPrev() {
-  consumePrevFlag()
-  if (currentIndex.value > 0) {
-    currentIndex.value -= 1
+  if (historyIndex.value > 0) {
+    historyIndex.value -= 1
   }
 }
 
 async function goNext() {
   const module = moduleData.value
   if (!module) return
-  if (currentIndex.value < module.questions.length - 1) {
-    currentIndex.value += 1
+  if (historyIndex.value < questionHistory.value.length - 1) {
+    historyIndex.value += 1
     return
   }
   await submitModule()
@@ -287,11 +366,9 @@ async function goNext() {
 provide(PREV_HANDLER_KEY, goPrev)
 
 async function restart() {
-  if (consumePrevFlag()) {
-    goPrev()
-    return
-  }
   store.reset()
+  resetHistory()
+  resetLocalAnswers()
   const module = await store.init()
   if (!module) return
   await router.push({ name: 'module', params: { id: module.id } })
@@ -302,6 +379,7 @@ async function restart() {
   <component
     v-if="moduleData && currentQuestion && intertekComponent"
     :is="intertekComponent"
+    :module="moduleData"
     :question="currentQuestion"
     :model-value="localAnswers[currentQuestion.id]"
     :error="store.error"
@@ -315,8 +393,8 @@ async function restart() {
   />
 
   <DefaultQuestionView
-    v-else-if="moduleData"
-    :module="moduleData"
+    v-else-if="moduleData && currentQuestion"
+    :module="{ id: moduleData.id, title: moduleData.title, description: moduleData.description, questions: [currentQuestion] }"
     :answers="localAnswers"
     :error="store.error"
     :message="store.lastMessage"

@@ -4,7 +4,7 @@ import re
 from typing import Any
 
 from fastapi import HTTPException
-from simpleeval import SimpleEval
+from simpleeval import AttributeDoesNotExist, NameNotDefined, SimpleEval
 
 from ..domain.models import Engine, ModuleDef, QuestionDef
 
@@ -130,8 +130,13 @@ class Evaluator:
         try:
             normalized = self._normalize_expr(self._rewrite_contains(expr))
             return bool(evaluator.eval(normalized))
-        except Exception:
+        except (NameNotDefined, AttributeDoesNotExist, TypeError):
             return False
+        except Exception as exc:
+            raise HTTPException(
+                status_code=500,
+                detail={"invalid_condition": expr, "error": str(exc)},
+            )
 
     def _normalize_name(self, name: str) -> str:
         normalized = re.sub(r"[^0-9A-Za-z_]", "_", name)

@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { AnswerValue, ModuleQuestion } from '@/types/questionnaire'
+import type { AnswerValue, Module, ModuleQuestion } from '@/types/questionnaire'
 import IntertekLayout from './IntertekLayout.vue'
+import { buildOptions } from './optionUtils'
 
 const props = defineProps<{
+  module: Module
   question: ModuleQuestion
   modelValue: AnswerValue | undefined
   error: string | null
@@ -39,36 +41,21 @@ const fallbackOptions = [
     icon: 'close',
   },
 ]
-const options = computed(() => {
-  const backendOptions = props.question.options ?? []
-  if (!backendOptions.length) return fallbackOptions
-  return backendOptions.map((opt, index) => {
-    const base = fallbackOptions[index]
-    const label = opt.label ?? base?.title ?? String(opt.value)
-    return {
-      value: opt.value,
-      title: label,
-      description: opt.description ?? base?.description ?? '',
-      icon: base?.icon ?? 'help',
-    }
-  })
-})
+const options = computed(() => buildOptions(props.question, fallbackOptions))
 </script>
 
 <template>
   <IntertekLayout
     module-label="Module 3 / 5"
-    module-title="System Exclusion Check"
-    step-label="Step 8"
-    step-total="of 12"
-    progress-width="66.66%"
+    :module-title="props.module.title"
+    :module-description="props.module.description"
     question-tag="Question 3A.1"
     :question-text="question.text"
+    :question-description="question.description"
     :error="error"
     :message="message"
     :disable-next="!canSubmit || loading"
     @restart="emit('restart')"
-    @prev="emit('prev')"
     @next="emit('next')"
   >
     <div role="radiogroup" aria-labelledby="q3a1-label" class="flex flex-col gap-4">

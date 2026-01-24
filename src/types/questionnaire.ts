@@ -13,7 +13,7 @@ export type ModuleQuestion = {
   text: string
   ref?: string
   description?: string
-  type: 'single_choice' | 'multi_choice' | 'boolean'
+  type: 'single_choice' | 'multi_choice' | 'multiple_choice' | 'boolean'
   options?: ModuleOption[]
 }
 
