@@ -101,7 +101,7 @@ const options = computed(() => buildOptions(props.question, fallbackOptions))
           <div class="border-b border-slate-100 dark:border-slate-800 pb-4">
             <h4 class="font-black text-slate-900 dark:text-white mb-3 text-xs uppercase tracking-tight">GPAI and Product Scope</h4>
             <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
-              General-purpose AI models (GPAI) are often integrated as components into downstream systems. The AI Act distinguishes between the responsibilities of model providers and system providers (Art 3 and 50).
+              General-purpose AI models (GPAI) are often integrated as components into downstream systems. The AI Act distinguishes between the responsibilities of model providers and system providers.
             </p>
           </div>
           <div class="bg-slate-50 dark:bg-slate-800 p-4 border-l-4 border-intertek-yellow">

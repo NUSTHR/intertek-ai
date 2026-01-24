@@ -24,37 +24,47 @@ const fallbackOptions = [
   {
     value: true,
     title: 'YES',
-    description:
-      'The system serves as an assistive tool (e.g., spellcheck, minor cropping) and does not fundamentally alter or generate the primary content.',
-    icon: 'edit_note',
+    description: 'Select this if the statement applies to your system.',
+    icon: 'check_circle',
   },
   {
     value: false,
     title: 'NO',
-    description:
-      'The system performs generative functions or substantial alterations that go beyond simple assistive editing of existing content.',
-    icon: 'auto_awesome',
+    description: 'Select this if the statement does not apply to your system.',
+    icon: 'cancel',
   },
 ]
 const options = computed(() => buildOptions(props.question, fallbackOptions))
-const inputName = computed(() => props.question?.id?.replace(/[^a-zA-Z0-9]/g, '_') ?? 'q6')
+const inputName = computed(() => props.question?.id?.replace(/[^a-zA-Z0-9]/g, '_') ?? 'q4')
 const labelId = computed(() => `${inputName.value}_label`)
 const questionTag = computed(() => {
   const id = props.question?.id ?? ''
   if (!id) return ''
   return `Question ${id.replace(/^q/i, '').toUpperCase()}`
 })
-const legalCopy = computed(() => props.question?.ref ?? '')
-const tipMap: Record<string, string> = {
-  'q6.b.1': 'Confirm whether the system only performs standard editing or minor alteration.',
-  'q6.b.2': 'Confirm whether the system is legally authorized for law enforcement purposes.',
+const tipTextMap: Record<string, string> = {
+  'q4.3_b': 'Confirm whether negative treatment occurs outside the original data-collection context.',
+  'q4.3_c': 'Assess whether outcomes are disproportionate to the behaviour analyzed.',
+  'q4.4_a': 'Focus on individual criminal risk prediction or assessment use cases.',
+  'q4.4_b': 'Check if the assessment relies solely on profiling rather than objective facts.',
+  'q4.5_a': 'Identify whether a facial recognition database is created or expanded.',
+  'q4.5_b': 'Verify whether data is scraped indiscriminately from internet or CCTV sources.',
+  'q4.6_a': 'Limit the scope to workplace and education emotion inference use.',
+  'q4.6_b': 'Confirm whether the medical or safety exception applies.',
+  'q4.7_a': 'Determine if biometric data is used to categorise individuals.',
+  'q4.7_b': 'Confirm inference of sensitive traits via biometric categorisation.',
+  'q4.7_c': 'Check whether the law enforcement labelling exemption applies.',
+  'q4.8_a': 'Confirm the system performs real-time remote biometric identification in public spaces.',
+  'q4.8_b': 'Confirm the purpose is law enforcement rather than private use.',
+  'q4.8_c': 'Verify strict necessity for the three listed public-safety objectives.',
 }
-const tipCopy = computed(() => tipMap[props.question?.id ?? ''] ?? '')
+const legalCopy = computed(() => props.question?.ref ?? '')
+const tipCopy = computed(() => tipTextMap[props.question?.id ?? ''] ?? props.question?.description ?? '')
 </script>
 
 <template>
   <IntertekLayout
-    module-label="Module 6 / 6"
+    module-label="Module 4 / 5"
     :module-title="props.module.title"
     :module-description="props.module.description"
     :question-tag="questionTag"
@@ -109,15 +119,15 @@ const tipCopy = computed(() => tipMap[props.question?.id ?? ''] ?? '')
         <div class="p-6 flex flex-col gap-6">
           <div class="border-b border-slate-100 dark:border-slate-800 pb-4">
             <h4 class="font-black text-slate-900 dark:text-white mb-3 text-xs uppercase tracking-tight">REFERENCE</h4>
-            <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
-              {{ legalCopy }}
-            </p>
+        <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
+          {{ legalCopy }}
+        </p>
           </div>
           <div class="bg-slate-50 dark:bg-slate-800 p-4 border-l-4 border-intertek-yellow">
             <div class="flex gap-3">
               <span class="material-symbols-outlined text-intertek-dark dark:text-intertek-yellow text-xl">info</span>
               <p class="text-[11px] text-slate-700 dark:text-slate-300 font-bold leading-normal italic">
-                Confirm whether an exemption applies before concluding the obligation.
+                Confirm scope, purpose, and exemptions before selecting an answer.
               </p>
             </div>
           </div>

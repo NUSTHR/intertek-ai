@@ -48,6 +48,10 @@ class QuestionnaireService:
                 raise HTTPException(status_code=400, detail={"unknown_question": qid})
             session.answers[qid] = self.evaluator.validate_answer(question, value)
         session.parameters = self.evaluator.compute_parameters(engine, session.answers)
+        for _ in range(5):
+            if not self.evaluator.prune_hidden_answers(module, session.answers, session.parameters):
+                break
+            session.parameters = self.evaluator.compute_parameters(engine, session.answers)
         complete = self.evaluator.module_complete(module, session.answers, session.parameters)
         if not complete:
             next_type, next_module_id, message = ("module", module.module_id, None)

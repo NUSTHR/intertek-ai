@@ -67,6 +67,14 @@ class Evaluator:
                 return False
         return True
 
+    def prune_hidden_answers(self, module: ModuleDef, answers: dict[str, Any], params: dict[str, Any]) -> bool:
+        removed = False
+        for q in module.questions:
+            if q.id in answers and not self.question_visible(q, answers, params):
+                del answers[q.id]
+                removed = True
+        return removed
+
     def next_action(self, module: ModuleDef, answers: dict[str, Any], params: dict[str, Any]) -> tuple[str, str | None, str | None]:
         module_done = self.module_complete(module, answers, params)
         params_with_flag = {**params, "Module_finished": module_done}
@@ -128,7 +136,7 @@ class Evaluator:
         evaluator = SimpleEval()
         evaluator.names = self._build_env(answers, params)
         try:
-            normalized = self._normalize_expr(self._rewrite_contains(expr))
+            normalized = self._normalize_expr(self._rewrite_contains(self._rewrite_in_list(expr)))
             return bool(evaluator.eval(normalized))
         except (NameNotDefined, AttributeDoesNotExist, TypeError):
             return False
@@ -184,6 +192,87 @@ class Evaluator:
             if updated == prev:
                 return updated
             prev = updated
+
+    def _rewrite_in_list(self, expr: str) -> str:
+        out: list[str] = []
+        i = 0
+        length = len(expr)
+        while i < length:
+            ch = expr[i]
+            if ch in "\"'":
+                quote = ch
+                out.append(ch)
+                i += 1
+                while i < length and expr[i] != quote:
+                    out.append(expr[i])
+                    i += 1
+                if i < length:
+                    out.append(expr[i])
+                    i += 1
+                continue
+            if ch.isalpha() or ch == "_":
+                start = i
+                i += 1
+                while i < length and (expr[i].isalnum() or expr[i] in "._-"):
+                    i += 1
+                token = expr[start:i]
+                j = i
+                while j < length and expr[j].isspace():
+                    j += 1
+                if expr[j:j + 2] == "in" and (j + 2 == length or not expr[j + 2].isalnum()):
+                    k = j + 2
+                    while k < length and expr[k].isspace():
+                        k += 1
+                    if k < length and expr[k] == "[":
+                        k += 1
+                        list_start = k
+                        quote = None
+                        while k < length:
+                            current = expr[k]
+                            if quote:
+                                if current == quote:
+                                    quote = None
+                                k += 1
+                                continue
+                            if current in "\"'":
+                                quote = current
+                                k += 1
+                                continue
+                            if current == "]":
+                                break
+                            k += 1
+                        if k < length and expr[k] == "]":
+                            list_str = expr[list_start:k]
+                            items: list[str] = []
+                            current = ""
+                            quote = None
+                            for ch_item in list_str:
+                                if quote:
+                                    current += ch_item
+                                    if ch_item == quote:
+                                        quote = None
+                                    continue
+                                if ch_item in "\"'":
+                                    quote = ch_item
+                                    current += ch_item
+                                    continue
+                                if ch_item == ",":
+                                    if current.strip():
+                                        items.append(current.strip())
+                                    current = ""
+                                    continue
+                                current += ch_item
+                            if current.strip():
+                                items.append(current.strip())
+                            if items:
+                                out.append("(" + " or ".join(f"{token} == {item}" for item in items) + ")")
+                                i = k + 1
+                                continue
+                out.append(token)
+                continue
+            out.append(ch)
+            i += 1
+        return "".join(out)
 
     def _build_env(self, answers: dict[str, Any], params: dict[str, Any]) -> dict[str, Any]:
         env: dict[str, Any] = {}

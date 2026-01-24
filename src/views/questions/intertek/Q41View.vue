@@ -51,13 +51,6 @@ const fallbackOptions: Option[] = [
     icon: 'fact_check',
   },
   {
-    value: 8,
-    title: 'Real-time Remote Biometric ID',
-    description:
-      "Use of 'real-time' remote biometric identification systems in publicly accessible spaces for law enforcement, with specific narrow exceptions.",
-    icon: 'sensors',
-  },
-  {
     value: 4,
     title: 'Individual Risk Assessments',
     description:
@@ -84,6 +77,13 @@ const fallbackOptions: Option[] = [
     description:
       'Categorizing individuals based on biometric data to infer race, political opinions, trade union membership, religious beliefs, or sexual orientation.',
     icon: 'groups',
+  },
+  {
+    value: 8,
+    title: 'Real-time Remote Biometric ID',
+    description:
+      "Use of 'real-time' remote biometric identification systems in publicly accessible spaces for law enforcement, with specific narrow exceptions.",
+    icon: 'sensors',
   },
   {
     value: 0,

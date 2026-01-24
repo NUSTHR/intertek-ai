@@ -15,6 +15,7 @@ const emit = defineEmits<{
   (e: 'toggle-multi', payload: { id: string; value: AnswerValue }): void
   (e: 'submit'): void
   (e: 'restart'): void
+  (e: 'prev'): void
 }>()
 
 function onSingleChange(question: ModuleQuestion, value: AnswerValue) {
@@ -88,6 +89,7 @@ function onMultiToggle(question: ModuleQuestion, value: AnswerValue) {
     <div v-if="message" class="muted">{{ message }}</div>
 
     <div class="actions">
+      <button type="button" @click="emit('prev')">上一题</button>
       <button type="button" @click="emit('restart')">重新开始</button>
       <button type="button" :disabled="!canSubmit || loading" @click="emit('submit')">继续</button>
     </div>

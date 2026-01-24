@@ -94,7 +94,7 @@ async function goHome() {
             handling.
           </h1>
           <div v-if="store.error" class="text-sm text-red-600">{{ store.error }}</div>
-          <div v-else-if="summaryRows.length === 0" class="text-sm text-gray-500">加载中…</div>
+          <div v-else-if="summaryRows.length === 0" class="text-sm text-gray-500">Loading…</div>
         </div>
         <div class="relative py-4">
           <span class="block text-xs font-black tracking-[0.5em] mb-6 text-[#FAD400] uppercase">Regulatory Status</span>

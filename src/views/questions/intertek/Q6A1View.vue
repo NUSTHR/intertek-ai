@@ -37,6 +37,19 @@ const fallbackOptions = [
   },
 ]
 const options = computed(() => buildOptions(props.question, fallbackOptions))
+const inputName = computed(() => props.question?.id?.replace(/[^a-zA-Z0-9]/g, '_') ?? 'q6')
+const labelId = computed(() => `${inputName.value}_label`)
+const questionTag = computed(() => {
+  const id = props.question?.id ?? ''
+  if (!id) return ''
+  return `Question ${id.replace(/^q/i, '').toUpperCase()}`
+})
+const legalCopy = computed(() => props.question?.ref ?? '')
+const tipMap: Record<string, string> = {
+  'q6.a.1': 'Confirm whether the AI nature is obvious to a reasonably well-informed, observant user in context.',
+  'q6.a.2': 'Confirm whether the system is legally authorized for law enforcement and whether the public-reporting exception applies.',
+}
+const tipCopy = computed(() => tipMap[props.question?.id ?? ''] ?? '')
 </script>
 
 <template>
@@ -44,7 +57,7 @@ const options = computed(() => buildOptions(props.question, fallbackOptions))
     module-label="Module 6 / 6"
     :module-title="props.module.title"
     :module-description="props.module.description"
-    question-tag="Question q6.a.1"
+    :question-tag="questionTag"
     :question-text="question.text"
     :question-description="question.description"
     :error="error"
@@ -53,7 +66,7 @@ const options = computed(() => buildOptions(props.question, fallbackOptions))
     @restart="emit('restart')"
     @next="emit('next')"
   >
-    <div role="radiogroup" aria-labelledby="q6-label" class="flex flex-col gap-4">
+    <div role="radiogroup" :aria-labelledby="labelId" class="flex flex-col gap-4">
       <label
         v-for="opt in options"
         :key="String(opt.value)"
@@ -62,7 +75,7 @@ const options = computed(() => buildOptions(props.question, fallbackOptions))
       >
         <input
           class="peer sr-only"
-          name="transparency_check"
+          :name="inputName"
           type="radio"
           :value="opt.value"
           :checked="modelValue === opt.value"
@@ -95,20 +108,16 @@ const options = computed(() => buildOptions(props.question, fallbackOptions))
         </div>
         <div class="p-6 flex flex-col gap-6">
           <div class="border-b border-slate-100 dark:border-slate-800 pb-4">
-            <h4 class="font-black text-slate-900 dark:text-white mb-3 text-xs uppercase tracking-tight">ARTICLE 50(1)</h4>
+            <h4 class="font-black text-slate-900 dark:text-white mb-3 text-xs uppercase tracking-tight">REFERENCE</h4>
             <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
-              Providers shall ensure that AI systems intended to interact with natural persons are designed and
-              developed in such a way that those persons are informed that they are interacting with an AI system,
-              unless this is obvious from the point of view of a reasonably well-informed, observant and circumspect
-              natural person, taking into account the circumstances and the context of use.
+              {{ legalCopy }}
             </p>
           </div>
           <div class="bg-slate-50 dark:bg-slate-800 p-4 border-l-4 border-intertek-yellow">
             <div class="flex gap-3">
               <span class="material-symbols-outlined text-intertek-dark dark:text-intertek-yellow text-xl">info</span>
               <p class="text-[11px] text-slate-700 dark:text-slate-300 font-bold leading-normal italic">
-                This obligation does not apply to AI systems authorized by law to detect, prevent, investigate and
-                prosecute criminal offenses.
+                Confirm whether an exemption applies before concluding the obligation.
               </p>
             </div>
           </div>
@@ -125,8 +134,7 @@ const options = computed(() => buildOptions(props.question, fallbackOptions))
       <div class="flex items-start gap-4 p-5 bg-intertek-yellow/5 border border-intertek-yellow/20">
         <span class="material-symbols-outlined text-intertek-yellow text-2xl">lightbulb</span>
         <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-medium italic">
-          The "reasonably well-informed" standard is adapted from EU consumer protection law and implies a standard
-          level of digital literacy.
+          {{ tipCopy }}
         </p>
       </div>
     </template>

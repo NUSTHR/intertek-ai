@@ -18,6 +18,7 @@ import Q41aView from '@/views/questions/intertek/Q41aView.vue'
 import Q41bView from '@/views/questions/intertek/Q41bView.vue'
 import Q42aView from '@/views/questions/intertek/Q42aView.vue'
 import Q43aView from '@/views/questions/intertek/Q43aView.vue'
+import Q4SingleChoiceView from '@/views/questions/intertek/Q4SingleChoiceView.vue'
 import Q5RoleView from '@/views/questions/intertek/Q5RoleView.vue'
 import Q5SectorView from '@/views/questions/intertek/Q5SectorView.vue'
 import Q5SpecBView from '@/views/questions/intertek/Q5SpecBView.vue'
@@ -139,6 +140,20 @@ const intertekMap: Record<string, Component> = {
   'q4.1_b': Q41bView,
   'q4.2_a': Q42aView,
   'q4.3_a': Q43aView,
+  'q4.3_b': Q4SingleChoiceView,
+  'q4.3_c': Q4SingleChoiceView,
+  'q4.4_a': Q4SingleChoiceView,
+  'q4.4_b': Q4SingleChoiceView,
+  'q4.5_a': Q4SingleChoiceView,
+  'q4.5_b': Q4SingleChoiceView,
+  'q4.6_a': Q4SingleChoiceView,
+  'q4.6_b': Q4SingleChoiceView,
+  'q4.7_a': Q4SingleChoiceView,
+  'q4.7_b': Q4SingleChoiceView,
+  'q4.7_c': Q4SingleChoiceView,
+  'q4.8_a': Q4SingleChoiceView,
+  'q4.8_b': Q4SingleChoiceView,
+  'q4.8_c': Q4SingleChoiceView,
   'q5.role': Q5RoleView,
   'q5.sector': Q5SectorView,
   'q5.spec_b': Q5SpecBView,
@@ -147,7 +162,9 @@ const intertekMap: Record<string, Component> = {
   'q5.derogation': Q5DerogationView,
   'q6.gateway': Q6GatewayView,
   'q6.a.1': Q6A1View,
+  'q6.a.2': Q6A1View,
   'q6.b.1': Q6B1View,
+  'q6.b.2': Q6B1View,
   'q6.c.1': Q6C1View,
   'q6.d.1': Q6D1View,
   'q6.d.3': Q6D3View,
@@ -215,6 +232,10 @@ function pushQuestion(module: Module, question: ModuleQuestion) {
   if (questionHistory.value.length === 0) {
     questionHistory.value = [{ moduleId: module.id, question }]
     historyIndex.value = 0
+    return
+  }
+  const currentEntry = questionHistory.value[historyIndex.value]
+  if (currentEntry && currentEntry.moduleId === module.id && currentEntry.question.id === question.id) {
     return
   }
   const last = questionHistory.value[questionHistory.value.length - 1]
@@ -331,8 +352,12 @@ function handleToggleMulti(payload: { id: string; value: AnswerValue }) {
 async function submitModule() {
   const module = moduleData.value
   if (!module) return
+  if (historyIndex.value < questionHistory.value.length - 1) {
+    questionHistory.value = questionHistory.value.slice(0, historyIndex.value + 1)
+  }
+  const scopedHistory = questionHistory.value.slice(0, historyIndex.value + 1)
   const payload: Record<string, AnswerValue> = {}
-  for (const entry of questionHistory.value) {
+  for (const entry of scopedHistory) {
     if (entry.moduleId !== module.id) continue
     const val = localAnswers[entry.question.id]
     if (val === undefined || val === '' || (Array.isArray(val) && val.length === 0)) continue
@@ -348,18 +373,21 @@ async function submitModule() {
 }
 
 function goPrev() {
-  if (historyIndex.value > 0) {
-    historyIndex.value -= 1
+  const nextIndex = historyIndex.value - 1
+  if (nextIndex < 0) return
+  const entry = questionHistory.value[nextIndex]
+  if (!entry) return
+  historyIndex.value = nextIndex
+  if (moduleId.value !== entry.moduleId) {
+    void router.push({ name: 'module', params: { id: entry.moduleId } })
+    return
   }
+  hydrateAnswers(entry.question)
 }
 
 async function goNext() {
   const module = moduleData.value
   if (!module) return
-  if (historyIndex.value < questionHistory.value.length - 1) {
-    historyIndex.value += 1
-    return
-  }
   await submitModule()
 }
 
@@ -403,6 +431,7 @@ async function restart() {
     @update-answer="updateAnswer($event.id, $event.value)"
     @toggle-multi="handleToggleMulti"
     @submit="submitModule"
+    @prev="goPrev"
     @restart="restart"
   />
 
