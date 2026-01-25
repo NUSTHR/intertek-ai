@@ -9,6 +9,7 @@ type Option = {
   title: string
   description: string
   icon: string
+  cite?: string
   exclusive?: boolean
 }
 
@@ -129,8 +130,23 @@ function isSelected(value: AnswerScalar) {
         <div class="flex-1">
           <div class="flex justify-between items-center mb-2">
             <h3 class="text-lg font-black text-slate-900 dark:text-white uppercase tracking-tight">{{ opt.title }}</h3>
-            <div class="size-6 border-2 border-slate-200 dark:border-slate-700 peer-checked:border-intertek-yellow peer-checked:bg-intertek-yellow flex items-center justify-center opacity-0 peer-checked:opacity-100 transition-all">
-              <span class="material-symbols-outlined text-black font-black text-lg">check</span>
+            <div class="flex items-center gap-3">
+              <div class="relative group/info">
+                <span
+                  class="material-symbols-outlined text-base text-slate-400 group-hover/info:text-intertek-yellow transition-colors"
+                >
+                  info
+                </span>
+                <div
+                  v-if="opt.cite"
+                  class="absolute right-0 top-6 z-10 w-72 rounded bg-slate-900 text-white text-[10px] leading-relaxed px-3 py-2 shadow-lg opacity-0 invisible group-hover/info:visible group-hover/info:opacity-100 transition-opacity"
+                >
+                  {{ opt.cite }}
+                </div>
+              </div>
+              <div class="size-6 border-2 border-slate-200 dark:border-slate-700 peer-checked:border-intertek-yellow peer-checked:bg-intertek-yellow flex items-center justify-center opacity-0 peer-checked:opacity-100 transition-all">
+                <span class="material-symbols-outlined text-black font-black text-lg">check</span>
+              </div>
             </div>
           </div>
           <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed max-w-xl font-medium">
@@ -147,13 +163,21 @@ function isSelected(value: AnswerScalar) {
           <h3 class="font-black text-white text-[11px] uppercase tracking-[0.2em]">Legal Context</h3>
         </div>
         <div class="p-6 flex flex-col gap-6">
-          <div class="border-b border-slate-100 dark:border-slate-800 pb-4">
-            <h4 class="font-black text-slate-900 dark:text-white mb-3 text-xs uppercase tracking-tight">ARTICLE 50 REFERENCE</h4>
+          <div v-if="question.ref" class="border-b border-slate-100 dark:border-slate-800 pb-4">
+            <h4 class="font-black text-slate-900 dark:text-white mb-3 text-xs uppercase tracking-tight">REFERENCE</h4>
             <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
-              Article 50 outlines specific transparency obligations for certain AI systems to ensure that individuals
-              are aware they are interacting with an AI or being subjected to certain AI techniques.
+              {{ question.ref }}
             </p>
           </div>
+          <template v-else>
+            <div class="border-b border-slate-100 dark:border-slate-800 pb-4">
+              <h4 class="font-black text-slate-900 dark:text-white mb-3 text-xs uppercase tracking-tight">ARTICLE 50 REFERENCE</h4>
+              <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
+                Article 50 outlines specific transparency obligations for certain AI systems to ensure that individuals
+                are aware they are interacting with an AI or being subjected to certain AI techniques.
+              </p>
+            </div>
+          </template>
           <div class="bg-slate-50 dark:bg-slate-800 p-4 border-l-4 border-intertek-yellow">
             <div class="flex gap-3">
               <span class="material-symbols-outlined text-intertek-dark dark:text-intertek-yellow text-xl">info</span>
@@ -164,8 +188,13 @@ function isSelected(value: AnswerScalar) {
           </div>
         </div>
         <div class="px-6 py-4 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-800">
-          <a class="inline-flex items-center gap-2 text-[10px] font-black text-intertek-dark dark:text-intertek-yellow uppercase tracking-widest hover:underline" href="#">
-            Article 50 Full Text
+          <a
+            class="inline-flex items-center gap-2 text-[10px] font-black text-intertek-dark dark:text-intertek-yellow uppercase tracking-widest hover:underline"
+            href="https://eur-lex.europa.eu/eli/reg/2024/1689/oj/eng"
+            target="_blank"
+            rel="noreferrer"
+          >
+            View Full Act.
             <span class="material-symbols-outlined text-sm">open_in_new</span>
           </a>
         </div>
@@ -175,8 +204,8 @@ function isSelected(value: AnswerScalar) {
       <div class="flex items-start gap-4 p-5 bg-intertek-yellow/5 border border-intertek-yellow/20">
         <span class="material-symbols-outlined text-intertek-yellow text-2xl">lightbulb</span>
         <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-medium italic">
-          Unsure if your system qualifies as a "Deep Fake"? Consult the
-          <a class="text-intertek-dark dark:text-intertek-yellow font-black underline" href="#">Transparency Guidelines</a>.
+          If your system generates or manipulates content that could mislead users about authenticity, treat it as
+          deep-fake content for Article 50 transparency duties.
         </p>
       </div>
     </template>

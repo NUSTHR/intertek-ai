@@ -149,7 +149,7 @@ function onPrev() {
                 <span class="material-symbols-outlined text-sm">east</span>
               </button>
             </div>
-            <div v-if="props.error" class="text-sm text-red-600 mt-6">加载失败：{{ props.error }}</div>
+            <div v-if="props.error" class="text-sm text-red-600 mt-6">Loading Failed{{ props.error }}</div>
             <div v-if="props.message" class="text-xs text-slate-500 mt-2">{{ props.message }}</div>
           </div>
         </div>

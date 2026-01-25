@@ -134,9 +134,16 @@ class Evaluator:
         if expr.strip().lower() == "else":
             return True
         evaluator = SimpleEval()
-        evaluator.names = self._build_env(answers, params)
+        normalized = self._normalize_expr(self._rewrite_contains(self._rewrite_in_list(expr)))
+        env = self._build_env(answers, params)
+        keywords = {"and", "or", "not", "in", "is", "True", "False", "None"}
+        for name in re.findall(r"\b[A-Za-z_][A-Za-z0-9_]*\b", normalized):
+            if name in keywords:
+                continue
+            if name not in env:
+                env[name] = None
+        evaluator.names = env
         try:
-            normalized = self._normalize_expr(self._rewrite_contains(self._rewrite_in_list(expr)))
             return bool(evaluator.eval(normalized))
         except (NameNotDefined, AttributeDoesNotExist, TypeError):
             return False

@@ -80,8 +80,21 @@ const options = computed(() => buildOptions(props.question, fallbackOptions))
         <div class="flex-1">
           <div class="flex justify-between items-center mb-2">
             <h3 class="text-lg font-black text-slate-900 dark:text-white uppercase tracking-tight">{{ opt.title }}</h3>
-            <div class="size-6 border-2 border-slate-200 dark:border-slate-700 peer-checked:border-intertek-yellow peer-checked:bg-intertek-yellow flex items-center justify-center opacity-0 peer-checked:opacity-100 transition-all">
-              <span class="material-symbols-outlined text-black font-black text-lg">check</span>
+            <div class="flex items-center gap-3">
+              <div class="relative group/info">
+                <span class="material-symbols-outlined text-base text-slate-400 group-hover/info:text-intertek-yellow transition-colors">
+                  info
+                </span>
+                <div
+                  v-if="opt.cite"
+                  class="absolute right-0 top-6 z-10 w-72 rounded bg-slate-900 text-white text-[10px] leading-relaxed px-3 py-2 shadow-lg opacity-0 invisible group-hover/info:visible group-hover/info:opacity-100 transition-opacity"
+                >
+                  {{ opt.cite }}
+                </div>
+              </div>
+              <div class="size-6 border-2 border-slate-200 dark:border-slate-700 peer-checked:border-intertek-yellow peer-checked:bg-intertek-yellow flex items-center justify-center opacity-0 peer-checked:opacity-100 transition-all">
+                <span class="material-symbols-outlined text-black font-black text-lg">check</span>
+              </div>
             </div>
           </div>
           <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed max-w-xl font-medium">
@@ -99,8 +112,11 @@ const options = computed(() => buildOptions(props.question, fallbackOptions))
         </div>
         <div class="p-6 flex flex-col gap-6">
           <div class="border-b border-slate-100 dark:border-slate-800 pb-4">
-            <h4 class="font-black text-slate-900 dark:text-white mb-3 text-xs uppercase tracking-tight">ARTICLE 51</h4>
-            <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
+            <h4 class="font-black text-slate-900 dark:text-white mb-3 text-xs uppercase tracking-tight">REFERENCE</h4>
+            <p v-if="question.ref" class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
+              {{ question.ref }}
+            </p>
+            <p v-else class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
               Article 51 establishes criteria for classifying general-purpose AI (GPAI) models as having systemic risk.
               A model is considered to have systemic risk if it has high-impact capabilities, evaluated through
               technical tools/methodologies, or based on the cumulative computation used for training.
@@ -116,8 +132,13 @@ const options = computed(() => buildOptions(props.question, fallbackOptions))
           </div>
         </div>
         <div class="px-6 py-4 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-800">
-          <a class="inline-flex items-center gap-2 text-[10px] font-black text-intertek-dark dark:text-intertek-yellow uppercase tracking-widest hover:underline" href="#">
-            Reference Archive
+          <a
+            class="inline-flex items-center gap-2 text-[10px] font-black text-intertek-dark dark:text-intertek-yellow uppercase tracking-widest hover:underline"
+            href="https://eur-lex.europa.eu/eli/reg/2024/1689/oj/eng"
+            target="_blank"
+            rel="noreferrer"
+          >
+            View Full Act.
             <span class="material-symbols-outlined text-sm">open_in_new</span>
           </a>
         </div>
@@ -127,9 +148,8 @@ const options = computed(() => buildOptions(props.question, fallbackOptions))
       <div class="flex items-start gap-4 p-5 bg-intertek-yellow/5 border border-intertek-yellow/20">
         <span class="material-symbols-outlined text-intertek-yellow text-2xl">lightbulb</span>
         <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-medium italic">
-          Models with systemic risk are subject to additional transparency and risk management obligations. Consult
-          <a class="text-intertek-dark dark:text-intertek-yellow font-black underline" href="#">Article 51-55 Guidance</a>
-          for details.
+          Models with systemic risk are subject to additional transparency and risk management obligations under
+          Articles 51–55.
         </p>
       </div>
     </template>

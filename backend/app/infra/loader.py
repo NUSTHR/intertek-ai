@@ -29,7 +29,8 @@ class EngineLoader:
         modules: list[ModuleDef] = []
         for path in files:
             raw_text = path.read_text(encoding="utf-8")
-            raw_text = raw_text.replace("[cite_start]", "").replace("[cite_end]", "")
+            raw_text = raw_text.replace("", "").replace("[cite_end]", "")
+            raw_text = re.sub(r"\[cite:[^\]]*\]", "", raw_text)
             raw = yaml.safe_load(raw_text) or {}
             module_id_raw = raw.get("module_id") or raw.get("module")
             if module_id_raw is None:

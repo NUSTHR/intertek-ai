@@ -51,11 +51,11 @@ function scrollToSection(sectionId: string) {
         </div>
         <div class="hidden md:flex items-center gap-8">
           <nav class="flex items-center gap-6 text-sm font-medium text-[#111111]">
-            <a class="flex items-center gap-2 hover:text-[#4B5563] transition-colors" href="#top">
+            <a class="flex items-center gap-2 font-bold hover:text-[#4B5563] transition-colors" href="#top">
               <span class="material-symbols-outlined text-xl">home</span>
               Home
             </a>
-            <a class="flex items-center gap-2 hover:text-[#4B5563] transition-colors" href="https://www.intertek.com/help/">
+            <a class="flex items-center gap-2 font-bold hover:text-[#4B5563] transition-colors" href="https://www.intertek.com/help/">
               <span class="material-symbols-outlined text-xl">help_center</span>
               Help Center
             </a>
@@ -103,9 +103,9 @@ function scrollToSection(sectionId: string) {
             Read Methodology
           </button>
         </div>
-        <div v-if="store.loading" class="text-sm text-[#4B5563]">加载中…</div>
+        <div v-if="store.loading" class="text-sm text-[#4B5563]">Loading…</div>
         <div v-else-if="store.error" class="text-sm text-red-600">
-          加载失败：{{ friendlyError }}
+          Loading Failed{{ friendlyError }}
           <button type="button" class="ml-3 underline" @click="retry">重试</button>
         </div>
         <div class="flex items-center gap-3 justify-center mt-10">
@@ -114,7 +114,7 @@ function scrollToSection(sectionId: string) {
             class="h-8 w-auto rounded-full grayscale"
             src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3blJImmlOBw_Wm0MwN_hqL23N_wYdQkAYyYlDXYVksY0YLKXfNgI5Lg-IQIYlymKTn8hd0xLrypR2yIDvgzhN94KpreaXmTh3ExRpMsrOcfx1VCU4nk66Unkdgef9sYQMIItgUW_iMayh_xEI3NlIHf0CyqiXjhK-c5M6nmB9ZDIJNKdhRcjCQ55KAcFUnnnBLopv6QWG8T0DqHx0HcDgB98fQloxD74vrPDKqaRaHhqt3yoJAB3UVtdC59NHPqm4CEyO9zzd3n4"
           />
-          <span class="text-sm font-medium text-[#4B5563]">Trusted by 500+ global enterprises</span>
+          <span class="text-sm font-medium text-[#4B5563]">Intertek is trusted by 1000+ global enterprises</span>
         </div>
       </div>
     </section>

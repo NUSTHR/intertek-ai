@@ -24,35 +24,25 @@ const emit = defineEmits<{
 const fallbackOptions = [
   {
     value: 1,
-    title: 'Standalone Product',
-    description: 'The AI system is itself a product covered by the Union harmonisation legislation listed in Annex I.',
-    icon: 'inventory_2',
-  },
-  {
-    value: 2,
-    title: 'Safety Component',
-    description:
-      'The AI system is intended to be used as a safety component of a product, or is itself a safety component. A failure or malfunction endangers the health and safety of persons or property.',
-    icon: 'shield_with_heart',
-  },
-  {
-    value: 3,
-    title: 'Non-Safety Component',
-    description:
-      'The AI system is a component of a product but does not perform a safety function, or is integrated for purely functional/utility purposes.',
-    icon: 'settings_input_component',
+    title: 'Yes',
+    description: 'A notified body or external conformity assessment is required under the relevant sector legislation.',
+    icon: 'verified',
   },
   {
     value: 0,
-    title: 'None of the above',
-    description:
-      'The AI system is not related to products covered by the specific Union harmonisation legislation listed in Annex I.',
-    icon: 'block',
+    title: 'No',
+    description: 'The product can be self-assessed or does not require third-party conformity assessment.',
+    icon: 'fact_check',
   },
 ]
 const options = computed(() => buildOptions(props.question, fallbackOptions))
-const inputName = 'ai_role'
-const labelId = 'q5-label'
+const inputName = computed(() => props.question?.id?.replace(/[^a-zA-Z0-9]/g, '_') ?? 'q5_3rd_party')
+const labelId = computed(() => `${inputName.value}_label`)
+const questionTag = computed(() => {
+  const id = props.question?.id ?? ''
+  if (!id) return ''
+  return `Question ${id.replace(/^q/i, '').toUpperCase()}`
+})
 </script>
 
 <template>
@@ -60,7 +50,7 @@ const labelId = 'q5-label'
     module-label="Module 5 / 5"
     :module-title="props.module.title"
     :module-description="props.module.description"
-    question-tag="Question 5.Role"
+    :question-tag="questionTag"
     :question-text="question.text"
     :question-description="question.description"
     :error="error"
@@ -84,25 +74,17 @@ const labelId = 'q5-label'
         </div>
         <div class="p-6 flex flex-col gap-6">
           <div v-if="question.ref" class="border-b border-slate-100 dark:border-slate-800 pb-4">
-            <h4 class="font-black text-slate-900 dark:text-white mb-2 text-xs uppercase tracking-tight">REFERENCE</h4>
+            <h4 class="font-black text-slate-900 dark:text-white mb-3 text-xs uppercase tracking-tight">REFERENCE</h4>
             <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
               {{ question.ref }}
             </p>
           </div>
           <template v-else>
             <div class="border-b border-slate-100 dark:border-slate-800 pb-4">
-              <h4 class="font-black text-slate-900 dark:text-white mb-2 text-xs uppercase tracking-tight">Art 6(1)(a)</h4>
+              <h4 class="font-black text-slate-900 dark:text-white mb-3 text-xs uppercase tracking-tight">ARTICLE 6(1)(b)</h4>
               <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
-                An AI system is high-risk if it is intended to be used as a safety component of a product, or is itself a
-                product, covered by Union harmonisation legislation listed in Annex I.
-              </p>
-            </div>
-            <div class="border-b border-slate-100 dark:border-slate-800 pb-4">
-              <h4 class="font-black text-slate-900 dark:text-white mb-2 text-xs uppercase tracking-tight">Art 3(14)</h4>
-              <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
-                Defines 'safety component' as a component of a product or a system which fulfils a safety function for
-                that product or system or the failure or malfunction of which endangers the health and safety of persons
-                or property.
+                Third-party conformity assessment is required when mandated by the applicable Union harmonisation
+                legislation in Annex I.
               </p>
             </div>
           </template>
@@ -110,8 +92,7 @@ const labelId = 'q5-label'
             <div class="flex gap-3">
               <span class="material-symbols-outlined text-intertek-dark dark:text-intertek-yellow text-xl">info</span>
               <p class="text-[11px] text-slate-700 dark:text-slate-300 font-bold leading-normal italic">
-                Identifying the product role is critical for determining if the AI system falls under Article 6(1)
-                classification.
+                A Yes answer classifies the system as High-Risk under Annex I.
               </p>
             </div>
           </div>
@@ -133,8 +114,7 @@ const labelId = 'q5-label'
       <div class="flex items-start gap-4 p-5 bg-intertek-yellow/5 border border-intertek-yellow/20">
         <span class="material-symbols-outlined text-intertek-yellow text-2xl">lightbulb</span>
         <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-medium italic">
-          Safety components are those whose failure endangers health or safety and fall under Annex I harmonisation
-          legislation.
+          Check the sector legislation for whether a notified body is required.
         </p>
       </div>
     </template>

@@ -21,15 +21,17 @@ import Q43aView from '@/views/questions/intertek/Q43aView.vue'
 import Q4SingleChoiceView from '@/views/questions/intertek/Q4SingleChoiceView.vue'
 import Q5RoleView from '@/views/questions/intertek/Q5RoleView.vue'
 import Q5SectorView from '@/views/questions/intertek/Q5SectorView.vue'
-import Q5SpecBView from '@/views/questions/intertek/Q5SpecBView.vue'
+import Q5SpecMultiView from '@/views/questions/intertek/Q5SpecMultiView.vue'
 import Q5AreaSelectView from '@/views/questions/intertek/Q5AreaSelectView.vue'
 import Q5ProfilingView from '@/views/questions/intertek/Q5ProfilingView.vue'
 import Q5DerogationView from '@/views/questions/intertek/Q5DerogationView.vue'
+import Q53rdPartyView from '@/views/questions/intertek/Q53rdPartyView.vue'
 import Q6GatewayView from '@/views/questions/intertek/Q6GatewayView.vue'
 import Q6A1View from '@/views/questions/intertek/Q6A1View.vue'
 import Q6B1View from '@/views/questions/intertek/Q6B1View.vue'
 import Q6C1View from '@/views/questions/intertek/Q6C1View.vue'
 import Q6D1View from '@/views/questions/intertek/Q6D1View.vue'
+import Q6D2View from '@/views/questions/intertek/Q6D2View.vue'
 import Q6D3View from '@/views/questions/intertek/Q6D3View.vue'
 import Q6D4View from '@/views/questions/intertek/Q6D4View.vue'
 import Q6D6View from '@/views/questions/intertek/Q6D6View.vue'
@@ -115,6 +117,7 @@ const moduleData = computed(() => (store.currentModule?.id === moduleId.value ? 
 const localAnswers = reactive<Record<string, AnswerValue | undefined>>({})
 const questionHistory = ref<{ moduleId: string; question: ModuleQuestion }[]>([])
 const historyIndex = ref(0)
+const pendingQuestionId = ref<string | null>(null)
 const currentQuestion = computed(() => {
   if (questionHistory.value.length > 0) {
     return (
@@ -138,7 +141,11 @@ const intertekMap: Record<string, Component> = {
   'q4.1': Q41View,
   'q4.1_a': Q41aView,
   'q4.1_b': Q41bView,
+  'q4.1_c': Q4SingleChoiceView,
+  'q4.1_d': Q4SingleChoiceView,
   'q4.2_a': Q42aView,
+  'q4.2_b': Q4SingleChoiceView,
+  'q4.2_c': Q4SingleChoiceView,
   'q4.3_a': Q43aView,
   'q4.3_b': Q4SingleChoiceView,
   'q4.3_c': Q4SingleChoiceView,
@@ -156,19 +163,34 @@ const intertekMap: Record<string, Component> = {
   'q4.8_c': Q4SingleChoiceView,
   'q5.role': Q5RoleView,
   'q5.sector': Q5SectorView,
-  'q5.spec_b': Q5SpecBView,
+  'q5.spec_a': Q5SpecMultiView,
+  'q5.spec_b': Q5SpecMultiView,
+  'q5.spec_c': Q5SpecMultiView,
+  'q5.spec_d': Q5SpecMultiView,
+  'q5.3rd_party': Q53rdPartyView,
   'q5.area_select': Q5AreaSelectView,
+  'q5.spec_bi': Q5SpecMultiView,
+  'q5.spec_ci': Q5SpecMultiView,
+  'q5.spec_ed': Q5SpecMultiView,
+  'q5.spec_em': Q5SpecMultiView,
+  'q5.spec_es': Q5SpecMultiView,
+  'q5.spec_le': Q5SpecMultiView,
+  'q5.spec_mi': Q5SpecMultiView,
+  'q5.spec_jd': Q5SpecMultiView,
   'q5.profiling': Q5ProfilingView,
   'q5.derogation': Q5DerogationView,
   'q6.gateway': Q6GatewayView,
   'q6.a.1': Q6A1View,
   'q6.a.2': Q6A1View,
+  'q6.a.3': Q6A1View,
   'q6.b.1': Q6B1View,
   'q6.b.2': Q6B1View,
   'q6.c.1': Q6C1View,
   'q6.d.1': Q6D1View,
+  'q6.d.2': Q6D2View,
   'q6.d.3': Q6D3View,
   'q6.d.4': Q6D4View,
+  'q6.d.5': Q6D2View,
   'q6.d.6': Q6D6View,
   'q7.1': Q71View,
   'q8.1': Q81View,
@@ -283,8 +305,15 @@ async function ensureModuleLoaded(targetId: string) {
     }
   }
   if (store.currentModule?.questions?.[0]) {
-    pushQuestion(store.currentModule, store.currentModule.questions[0])
-    hydrateAnswers(store.currentModule.questions[0])
+    const targetId = pendingQuestionId.value
+    pendingQuestionId.value = null
+    const targetQuestion =
+      (targetId ? store.currentModule.questions.find((q) => q.id === targetId) : null) ??
+      store.currentModule.questions[0]
+    if (targetQuestion) {
+      pushQuestion(store.currentModule, targetQuestion)
+      hydrateAnswers(targetQuestion)
+    }
   }
 }
 
@@ -366,6 +395,19 @@ async function submitModule() {
   const res = await store.submit(module.id, payload)
   if (!res) return
   if (res.next.type === 'module' && res.next.module_id) {
+    if (res.next.module_id === module.id) {
+      if (res.module?.questions?.[0]) {
+        pushQuestion(res.module, res.module.questions[0])
+        hydrateAnswers(res.module.questions[0])
+        return
+      }
+      const refreshed = await store.loadModule(module.id)
+      if (refreshed?.questions?.[0]) {
+        pushQuestion(refreshed, refreshed.questions[0])
+        hydrateAnswers(refreshed.questions[0])
+      }
+      return
+    }
     await router.push({ name: 'module', params: { id: res.next.module_id } })
     return
   }
@@ -374,15 +416,18 @@ async function submitModule() {
 
 function goPrev() {
   const nextIndex = historyIndex.value - 1
-  if (nextIndex < 0) return
-  const entry = questionHistory.value[nextIndex]
-  if (!entry) return
-  historyIndex.value = nextIndex
-  if (moduleId.value !== entry.moduleId) {
-    void router.push({ name: 'module', params: { id: entry.moduleId } })
+  if (nextIndex >= 0) {
+    const entry = questionHistory.value[nextIndex]
+    if (!entry) return
+    historyIndex.value = nextIndex
+    if (moduleId.value !== entry.moduleId) {
+      pendingQuestionId.value = entry.question.id
+      void router.push({ name: 'module', params: { id: entry.moduleId } })
+      return
+    }
+    hydrateAnswers(entry.question)
     return
   }
-  hydrateAnswers(entry.question)
 }
 
 async function goNext() {
@@ -436,8 +481,8 @@ async function restart() {
   />
 
   <section v-else class="card">
-    <div v-if="store.error" class="error">加载失败：{{ store.error }}</div>
-    <div v-else class="muted">加载中…</div>
+    <div v-if="store.error" class="error">Loading Failed{{ store.error }}</div>
+    <div v-else class="muted">Loading…</div>
     <div class="actions">
       <button type="button" @click="restart">返回</button>
     </div>

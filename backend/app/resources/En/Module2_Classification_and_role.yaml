@@ -1,103 +1,114 @@
-module_id: 2 #"02_classification_and_roles"
+module_id: 2
 title: "Classification & Role Identification"
 description: "Determines the regulatory nature of the product and the entity's legal role based on Article 3 definitions."
 
 questions:
   # --- Part 1: Classification (AI System vs GPAI vs Non-AI) ---
   - id: "q2.1"
-    text: "How would you classify the nature of the product?"
-    [cite_start]ref: "Art 3(1): ‘AI system’ means a machine-based system that is designed to operate with varying levels of autonomy and that may exhibit adaptiveness after deployment, and that, for explicit or implicit objectives, infers, from the input it receives, how to generate outputs such as predictions, content, recommendations, or decisions that can influence physical or virtual environments[cite: 65]. [cite_start]Art 3(63): ‘general-purpose AI model’ means an AI model, including where such an AI model is trained with a large amount of data using self-supervision at scale, that displays significant generality and is capable of competently performing a wide range of distinct tasks regardless of the way the model is placed on the market and that can be integrated into a variety of downstream systems or applications, except AI models that are used for research, development or prototyping activities before they are placed on the market[cite: 141]."
+    text: "What kind of product is this?"
+    ref: "Art 3(1): ‘AI system’ means a machine-based system that is designed to operate with varying levels of autonomy and that may exhibit adaptiveness after deployment, and that, for explicit or implicit objectives, infers, from the input it receives, how to generate outputs such as predictions, content, recommendations, or decisions that can influence physical or virtual environments. Art 3(63): ‘general-purpose AI model’ means an AI model, including where such an AI model is trained with a large amount of data using self-supervision at scale, that displays significant generality and is capable of competently performing a wide range of distinct tasks regardless of the way the model is placed on the market and that can be integrated into a variety of downstream systems or applications, except AI models that are used for research, development or prototyping activities before they are placed on the market."
     type: "single_choice"
     options:
       - label: "General-Purpose AI Model (GPAI)"
-        [cite_start]description: "Select this if the product is a base model trained on massive datasets that can perform many different tasks and be integrated into various downstream applications[cite: 141]."
+        cite: "Art 3(63): ‘general-purpose AI model’ means an AI model... that displays significant generality and is capable of competently performing a wide range of distinct tasks... and that can be integrated into a variety of downstream systems or applications." [cite: 141]
+        description: "Select this if the product is a versatile base model that can do many different tasks and be built into other software."
         value: 1
       - label: "AI System"
-        [cite_start]description: "Select this if the product is a machine-based system that uses received input to infer how to produce specific outputs like content or decisions[cite: 65]."
+        cite: "Art 3(1): ‘AI system’ means a machine-based system that... infers, from the input it receives, how to generate outputs such as predictions, content, recommendations, or decisions that can influence physical or virtual environments." [cite: 65]
+        description: "Select this if the product is a software application that uses data to create specific results like content or decisions."
         value: 2
-      - label: "Non-AI or Non-General-Purpose AI Model"
-        [cite_start]description: "Select this if your software operates on fixed logic without the capability to infer outputs from data or operate with autonomy[cite: 65]."
+      - label: "Non-AI Software"
+        cite: "Art 3(1): AI systems are specifically defined by their ability to infer how to generate outputs; software operating on simple fixed rules without this capability falls outside this definition." [cite: 65]
+        description: "Select this if your software follows basic, fixed logic without learning from data or making its own inferences."
         value: 3
-      - label: "Uncertain"
-        description: "Select this if you are unsure of the technical classification and require further guided questions to determine the nature of the product."
+      - label: "Not Sure"
+        description: "Select this if you need more help classifying the technology."
         value: 4
 
   - id: "q2.1a"
-    text: "Which of the following descriptions best fits the product?"
+    text: "Which description fits your product best?"
     type: "single_choice"
     dependency: "q2.1 == 4"
     options:
-      - label: "A model trained on data that is capable of being incorporated into various downstream AI systems or applications"
-        [cite_start]description: "Identify if the product serves as a foundational component meant for integration into other software rather than being a final end-user system[cite: 141]."
+      - label: "A foundational model meant for other systems"
+        cite: "Art 3(63): A general-purpose AI model is one that displays significant generality and is capable of performing a wide range of tasks and being integrated into downstream systems." [cite: 141]
+        description: "Select this if the product is a core component meant to be used inside other software."
         value: 1
-      - label: "A complete system, potentially integrating multiple models, designed for a specific intended purpose with varying levels of autonomy"
-        [cite_start]description: "Identify if the product is a functional application designed to perform specific roles, even if it utilizes underlying models[cite: 65]."
+      - label: "A completed system for a specific job"
+        cite: "Art 3(1): An AI system is a machine-based system designed to operate with autonomy to generate specific outputs based on its objectives." [cite: 65]
+        description: "Select this if the product is a complete tool designed for a specific purpose."
         value: 2
-      - label: "None of above"
-        [cite_start]description: "Select this if the product is standard software or hardware that does not utilize artificial intelligence or large-scale data models[cite: 65]."
+      - label: "None of the above"
+        cite: "Art 3(1): Systems that do not use machine-based inference to produce outputs like predictions or content are not classified as AI systems." [cite: 65]
+        description: "Select this if the product is not neither a completed system nor a model."
         value: 0
 
   - id: "q2.1b"
-    text: "Does it display significant generality and is it capable of competently performing a wide range of distinct tasks?"
-    [cite_start]ref: "Art 3(63): ‘general-purpose AI model’ means an AI model... that displays significant generality and is capable of competently performing a wide range of distinct tasks regardless of the way the model is placed on the market and that can be integrated into a variety of downstream systems or applications[cite: 141]."
+    text: "Can it perform many different types of tasks competently?"
+    ref: "Art 3(63): ‘general-purpose AI model’ means an AI model... that displays significant generality and is capable of competently performing a wide range of distinct tasks regardless of the way the model is placed on the market and that can be integrated into a variety of downstream systems or applications."
     type: "single_choice"
     dependency: "q2.1 == 4 and q2.1a == 1"
     options:
       - label: "Yes"
-        [cite_start]description: "Confirm if the model is versatile enough to perform diverse tasks such as text generation, coding, and image analysis within one framework[cite: 141]."
+        cite: "Art 3(63): General-purpose AI models are characterized by their significant generality and ability to perform a wide range of distinct tasks." [cite: 141]
+        description: "Select this if the model is a 'jack-of-all-trades' that can handle varied tasks like writing, coding, or identifying images."
         value: True
       - label: "No"
-        [cite_start]description: "Select this if the model is narrow and optimized for a single, specific task without the capability for broad application[cite: 141]."
+        cite: "Art 3(63): If a model is not capable of performing a wide range of tasks or lacks significant generality, it does not meet the criteria for a general-purpose AI model." [cite: 141]
+        description: "Select this if the model is built for one specific, narrow purpose."
         value: False
 
-  # --- Part 2: Role Identification (Conditioned on Part 1 results) ---
-  
-  # Scenario A: If classified as AI System -> Ask Full Role List
+  # --- Part 2: Role Identification ---
   - id: "q2.2a"
-    text: "What is your entity's role regarding the AI System?"
-    [cite_start]ref: "Art 3(3): ‘provider’ means a natural or legal person, public authority, agency or other body that develops an AI system or a general-purpose AI model or that has an AI system or a general-purpose AI model developed and places it on the market or puts the AI system into service under its own name or trademark, whether for payment or free of charge[cite: 67]. [cite_start]Art 3(4): ‘deployer’ means a natural or legal person, public authority, agency or other body using an AI system under its authority except where the AI system is used in the course of a personal non-professional activity[cite: 68]. [cite_start]Art 3(5): ‘authorised representative’ means a natural or legal person located or established in the Union who has received and accepted a written mandate from a provider of an AI system or a general-purpose AI model to, respectively, perform and carry out on its behalf the obligations and procedures established by this Regulation[cite: 69]. [cite_start]Art 3(6): ‘importer’ means a natural or legal person located or established in the Union that places on the market an AI system that bears the name or trademark of a natural or legal person established in a third country[cite: 70]. [cite_start]Art 3(7): ‘distributor’ means a natural or legal person in the supply chain, other than the provider or the importer, that makes an AI system available on the Union market[cite: 71]. [cite_start]Art 2(1)(e): product manufacturers placing on the market or putting into service an AI system together with their product and under their own name or trademark[cite: 43]."
+    text: "What is your company's role with this AI System?"
+    ref: "Art 3(3): ‘provider’ means a natural or legal person... that develops an AI system... or has an AI system... developed and places it on the market or puts the AI system into service under its own name or trademark. Art 3(4): ‘deployer’ means a natural or legal person... using an AI system under its authority. Art 3(5): ‘authorised representative’ means a natural or legal person located or established in the Union who has received... a written mandate from a provider. Art 3(6): ‘importer’ means a natural or legal person located or established in the Union that places on the market an AI system that bears the name... of a natural or legal person established in a third country. Art 3(7): ‘distributor’ means a natural or legal person... other than the provider or the importer, that makes an AI system available on the Union market. Art 2(1)(e): product manufacturers placing on the market or putting into service an AI system together with their product."
     type: "single_choice"
-    # Logic: Direct AI System selection OR Uncertain -> System classification
     dependency: "q2.1 == 2 or (q2.1 == 4 and q2.1a == 2)"
     options:
       - label: "Provider"
-        [cite_start]description: "Select this if you are the entity that created the AI system or had it created to sell it under your brand[cite: 67]."
+        cite: "Art 3(3): ‘provider’ means a... body that develops an AI system... or has an AI system... developed and places it on the market or puts the AI system into service under its own name or trademark." [cite: 67]
+        description: "Select this if you built the AI or had it built to sell under your name."
         value: 1
       - label: "Deployer"
-        [cite_start]description: "Select this if you are using an AI system in a professional or business context to produce results or assist in decision-making[cite: 68]."
+        cite: "Art 3(4): ‘deployer’ means a... body using an AI system under its authority except where the AI system is used in the course of a personal non-professional activity." [cite: 68]
+        description: "Select this if you use the AI for your business or professional work."
         value: 2
       - label: "Importer"
-        [cite_start]description: "Select this if you are the first entity to bring an AI system created outside the EU into the Union market[cite: 70]."
+        cite: "Art 3(6): ‘importer’ means a... person located or established in the Union that places on the market an AI system that bears the name... of a person established in a third country." [cite: 70]
+        description: "Select this if you are the first to bring a non-EU AI system into the European market."
         value: 3
       - label: "Distributor"
-        [cite_start]description: "Select this if you sell or provide access to an AI system in the EU that was already imported or provided by another EU entity[cite: 71]."
+        cite: "Art 3(7): ‘distributor’ means a... person in the supply chain, other than the provider or the importer, that makes an AI system available on the Union market." [cite: 71]
+        description: "Select this if you sell or provide an AI system that is already in the EU."
         value: 4
       - label: "Authorized Representative"
-        [cite_start]description: "Select this if you are located in the EU and have been legally appointed by a non-EU provider to handle their regulatory duties[cite: 69]."
+        cite: "Art 3(5): ‘authorised representative’ means a... person located or established in the Union who has received and accepted a written mandate from a provider... to perform and carry out on its behalf the obligations... established by this Regulation." [cite: 69]
+        description: "Select this if you are an EU-based person appointed to handle legal duties for a non-EU provider."
         value: 5
       - label: "Product Manufacturer"
-        [cite_start]description: "Select this if you incorporate AI as a component into a physical product (like machinery or toys) that you sell under your name[cite: 43]."
+        cite: "Art 2(1): This Regulation applies to product manufacturers placing on the market or putting into service an AI system together with their product and under their own name." [cite: 43]
+        description: "Select this if you build AI into a physical product, like a machine, and sell it under your brand."
         value: 6
-      - label: "None of the above"
-        description: "Select this if none of the specific regulatory roles described above apply to your current activities."
+      - label: "None"
+        description: "Select this if none of these roles fit."
         value: 0
 
-  # Scenario B: If classified as GPAI -> Ask Limited Role List
   - id: "q2.2b"
-    text: "What is your entity's role regarding the General-Purpose AI Model?"
-    [cite_start]ref: "Art 3(3): ‘provider’ means a natural or legal person, public authority, agency or other body that develops an AI system or a general-purpose AI model or that has an AI system or a general-purpose AI model developed and places it on the market or puts the AI system into service under its own name or trademark[cite: 67]. [cite_start]Art 3(5): ‘authorised representative’ means a natural or legal person located or established in the Union who has received and accepted a written mandate from a provider of an AI system or a general-purpose AI model to, respectively, perform and carry out on its behalf the obligations and procedures established by this Regulation[cite: 69]."
+    text: "What is your company's role with this GPAI Model?"
+    ref: "Art 3(3): ‘provider’ means a natural or legal person... that develops an AI system or a general-purpose AI model... and places it on the market. Art 3(5): ‘authorised representative’ means a natural or legal person... who has received and accepted a written mandate from a provider of an AI system or a general-purpose AI model."
     type: "single_choice"
-    # Logic: Direct GPAI selection OR Uncertain -> GPAI classification
     dependency: "q2.1 == 1 or (q2.1 == 4 and q2.1a == 1 and q2.1b == True)"
     options:
       - label: "Provider"
-        [cite_start]description: "Select this if you are the developer of the base model or are responsible for its initial release on the market[cite: 67]."
+        cite: "Art 3(3): ‘provider’ means a... person... that develops... a general-purpose AI model or that has a general-purpose AI model developed and places it on the market." [cite: 67]
+        description: "Select this if you developed the base model or are the primary person releasing it."
         value: 1
       - label: "Authorized Representative"
-        [cite_start]description: "Select this if you represent a non-EU GPAI developer within the Union for legal and compliance purposes[cite: 69]."
+        cite: "Art 3(5): ‘authorised representative’ means a... person... in the Union who has received... a written mandate from a provider of a... general-purpose AI model." [cite: 69]
+        description: "Select this if you represent a non-EU developer in the European Union."
         value: 5
-      - label: "None of the above"
-        description: "Select this if you are a downstream user or integrator who did not develop the primary GPAI model yourself."
+      - label: "None"
+        description: "Select this if you are just using or integrating a model built by someone else."
         value: 0
 
 variables:
@@ -122,7 +133,7 @@ variables:
   # 2. Determine Role String (Maps answers from either q2.2a or q2.2b to a unified variable)
   - name: "Role"
     type: "string"
-    initial_value: "Unregulated"
+    initial_value: "Undetermined"
     rules:
       - condition: "q2.2a == 1 or q2.2b == 1"
         value: "provider"
@@ -137,7 +148,7 @@ variables:
       - condition: "q2.2a == 6"
         value: "product_manufacturer"
       - condition: "else"
-        value: "Unregulated"
+        value: "Undetermined"
 
 router:
   # 1. Termination: Not AI

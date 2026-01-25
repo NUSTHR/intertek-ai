@@ -110,7 +110,7 @@ async function goHome() {
         </div>
       </section>
       <section
-        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-12 gap-y-16 mb-32 border-t border-gray-100 pt-16"
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-16 mb-32 border-t border-gray-100 pt-16"
       >
         <div class="space-y-4">
           <h3 class="font-black text-sm uppercase tracking-widest border-l-4 border-[#FAD400] pl-4">
@@ -131,21 +131,11 @@ async function goHome() {
           </p>
         </div>
         <div class="space-y-4">
-          <h3 class="font-black text-sm uppercase tracking-widest border-l-4 border-gray-200 pl-4">
-            Article 2<br /><span class="text-gray-400">Scope Exclusion</span>
+          <h3 class="font-black text-sm uppercase tracking-widest border-l-4 border-[#FAD400] pl-4">
+            View<br /><span class="text-gray-400">Summary &amp; Suggestion</span>
           </h3>
-          <p class="text-sm font-medium leading-relaxed text-gray-500">
-            Exclusion applies to systems developed and used exclusively for military, defense, or national security
-            purposes (Art. 2(3)).
-          </p>
-        </div>
-        <div class="space-y-4">
-          <h3 class="font-black text-sm uppercase tracking-widest border-l-4 border-gray-200 pl-4">
-            Article 2<br /><span class="text-gray-400">R&amp;D Exemption</span>
-          </h3>
-          <p class="text-sm font-medium leading-relaxed text-gray-500">
-            Regulation does not apply to AI systems developed and put into service for the sole purpose of scientific
-            research and development (Art. 2(6)).
+          <p class="text-sm font-medium leading-relaxed text-black">
+            {{ conclusion?.View || '' }}
           </p>
         </div>
       </section>

@@ -10,9 +10,11 @@ questions:
     type: "single_choice"
     options:
       - label: "Model's training exceeded 10^25 floating-point operations."
+        cite: "Art 51(2): A general-purpose AI model shall be presumed to have high-impact capabilities... when the cumulative amount of computation used for its training... is greater than 10^25."
         description: "Select this if the total mathematical operations required to train the model reached or exceeded the 10^25 FLOPs threshold, triggering a presumption of systemic risk."
         value: 1
       - label: "The Commission designated the model as having systemic risk."
+        cite: "Art 51(1)(b): A general-purpose AI model shall be classified as... with systemic risk if... based on a decision of the Commission... it has capabilities or an impact equivalent to those set out in point (a)..."
         description: "Select this if there is a formal regulatory decision from the European Commission identifying the model as posing systemic risk due to its high-impact capabilities or significant market reach."
         value: 2
       - label: "None of the above"

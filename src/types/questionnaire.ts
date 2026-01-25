@@ -5,6 +5,7 @@ export type ModuleOption = {
   label: string
   value: AnswerScalar
   description?: string
+  cite?: string
   exclusive?: boolean
 }
 

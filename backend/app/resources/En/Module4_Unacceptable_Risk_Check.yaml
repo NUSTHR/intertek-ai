@@ -73,7 +73,7 @@ questions:
     dependency: "q4.1_b == True"
     options:
       - label: "Yes"
-        description: "Indicate if the system’s interference is the primary reason the individual performed an action they would normally have avoided."
+        description: "Select this if system’s interference is the primary reason the individual performed an action they would normally have avoided."
         value: True
       - label: "No"
         description: "Select this if the decision was likely to have occurred independently of the system's manipulative elements."
@@ -102,7 +102,7 @@ questions:
     dependency: "2 in q4.1"
     options:
       - label: "Yes"
-        description: "Indicate if the AI uses specific demographic or personal weaknesses (such as targeting children or the elderly) as a tool for influence."
+        description: "Select this if AI uses specific demographic or personal weaknesses (such as targeting children or the elderly) as a tool for influence."
         value: True
       - label: "No"
         description: "Select this if the system does not target or leverage the specific vulnerabilities defined by the Act."
@@ -144,7 +144,7 @@ questions:
     dependency: "3 in q4.1"
     options:
       - label: "Yes"
-        description: "Indicate if the system monitors social conduct or traits to generate a trustworthiness score or classification over time."
+        description: "Select this if system monitors social conduct or traits to generate a trustworthiness score or classification over time."
         value: True
       - label: "No"
         description: "Select this if the system does not perform longitudinal evaluation for the purpose of social scoring."
@@ -186,7 +186,7 @@ questions:
     dependency: "4 in q4.1"
     options:
       - label: "Yes"
-        description: "Indicate if the system is used by authorities to estimate the likelihood of a person committing a crime in the future."
+        description: "Select this if system is used by authorities to estimate the likelihood of a person committing a crime in the future."
         value: True
       - label: "No"
         description: "Select this if the system is not used for assessing individual criminal risk probabilities."
@@ -215,7 +215,7 @@ questions:
     dependency: "5 in q4.1"
     options:
       - label: "Yes"
-        description: "Indicate if the AI system is designed to build or supplement a repository used for identifying individuals through facial features."
+        description: "Select this if AI system is designed to build or supplement a repository used for identifying individuals through facial features."
         value: True
       - label: "No"
         description: "Select this if the system does not contribute to the creation or expansion of recognition databases."
@@ -286,7 +286,7 @@ questions:
     dependency: "q4.7_a == True"
     options:
       - label: "Yes"
-        description: "Indicate if the system is designed to identify these specific sensitive and protected attributes via biometric traits."
+        description: "Select this if system is designed to identify these specific sensitive and protected attributes via biometric traits."
         value: True
       - label: "No"
         description: "Select this if the categorization is based on non-sensitive, non-prohibited groupings."

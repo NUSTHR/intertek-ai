@@ -1,8 +1,17 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { AnswerValue, Module, ModuleQuestion } from '@/types/questionnaire'
+import type { AnswerScalar, AnswerValue, Module, ModuleQuestion } from '@/types/questionnaire'
 import IntertekLayout from './IntertekLayout.vue'
 import { buildOptions } from './optionUtils'
+
+type Option = {
+  value: AnswerScalar
+  title: string
+  description: string
+  icon: string
+  cite?: string
+  exclusive?: boolean
+}
 
 const props = defineProps<{
   module: Module
@@ -16,43 +25,156 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: AnswerValue): void
-  (e: 'prev'): void
   (e: 'next'): void
   (e: 'restart'): void
 }>()
 
-const fallbackOptions = [
-  {
-    value: 1,
-    title: 'Provider',
-    description:
-      'My entity develops or has developed a general-purpose AI model and places it on the market under its own name or trademark.',
-    icon: 'precision_manufacturing',
+const fallbackOptions: Option[] = []
+const iconMap: Record<string, Record<string, string>> = {
+  'q5.spec_a': {
+    '13': 'flight_takeoff',
+    '20': 'flight',
+    '18': 'directions_car',
+    '19': 'car_repair',
+    '15': 'agriculture',
+    '14': 'two_wheeler',
+    '16': 'directions_boat',
+    '3': 'sailing',
+    '17': 'train',
+    '0': 'block',
   },
-  {
-    value: 5,
-    title: 'Authorized Representative',
-    description:
-      'My entity is established in the EU and has received a written mandate from a non-EU GPAI provider to act on their behalf.',
-    icon: 'assignment_ind',
+  'q5.spec_c': {
+    '1': 'precision_manufacturing',
+    '4': 'elevator',
+    '5': 'warning',
+    '7': 'compress',
+    '10': 'local_fire_department',
+    '0': 'block',
   },
-  {
-    value: 0,
-    title: 'None of the above',
-    description:
-      'My entity is an importer, distributor, or deployer, but does not fulfill the specific roles of Provider or Representative for this GPAI model.',
-    icon: 'block',
+  'q5.spec_b': {
+    '11': 'medical_services',
+    '12': 'biotech',
+    '0': 'block',
   },
-]
-const options = computed(() => buildOptions(props.question, fallbackOptions))
+  'q5.spec_d': {
+    '2': 'toys',
+    '9': 'health_and_safety',
+    '6': 'radio',
+    '8': 'cable',
+    '0': 'block',
+  },
+  'q5.spec_bi': {
+    '1': 'camera',
+    '2': 'fingerprint',
+    '3': 'sentiment_satisfied',
+    '0': 'block',
+  },
+  'q5.spec_ci': {
+    '1': 'traffic',
+    '2': 'router',
+    '0': 'block',
+  },
+  'q5.spec_ed': {
+    '1': 'school',
+    '2': 'grading',
+    '3': 'menu_book',
+    '4': 'fact_check',
+    '0': 'block',
+  },
+  'q5.spec_em': {
+    '1': 'person_search',
+    '2': 'work_off',
+    '3': 'monitoring',
+    '0': 'block',
+  },
+  'q5.spec_es': {
+    '1': 'account_balance',
+    '2': 'credit_score',
+    '3': 'health_and_safety',
+    '4': 'emergency',
+    '0': 'block',
+  },
+  'q5.spec_le': {
+    '1': 'person_alert',
+    '2': 'psychology',
+    '3': 'memory',
+    '4': 'shield',
+    '5': 'gavel',
+    '0': 'block',
+  },
+  'q5.spec_mi': {
+    '1': 'passport',
+    '2': 'security',
+    '3': 'assignment',
+    '4': 'location_on',
+    '0': 'block',
+  },
+  'q5.spec_jd': {
+    '1': 'balance',
+    '2': 'how_to_vote',
+    '0': 'block',
+  },
+}
+const options = computed(() => {
+  const built = buildOptions(props.question, fallbackOptions)
+  const map = iconMap[props.question?.id ?? '']
+  if (!map) return built
+  return built.map((opt) => ({
+    ...opt,
+    icon: map[String(opt.value)] ?? opt.icon,
+  }))
+})
+const selectedValues = () => (Array.isArray(props.modelValue) ? (props.modelValue as AnswerScalar[]) : [])
+const inputName = computed(() => props.question?.id?.replace(/[^a-zA-Z0-9]/g, '_') ?? 'q5_spec')
+const labelId = computed(() => `${inputName.value}_label`)
+const questionTag = computed(() => {
+  const id = props.question?.id ?? ''
+  if (!id) return ''
+  return `Question ${id.replace(/^q/i, '').toUpperCase()}`
+})
+const infoText = computed(() => {
+  if (props.question?.id === 'q5.spec_b') {
+    return 'Medical devices requiring third-party assessment under MDR or IVDR are automatically classified as High-Risk AI Systems.'
+  }
+  return 'Choose all applicable options. Use “None of the above” only if no listed category applies.'
+})
+const tipText = computed(() => {
+  if (props.question?.id === 'q5.spec_b') {
+    return 'Medical devices covered by MDR or IVDR that require third-party assessment are classified as high-risk under Annex I.'
+  }
+  return 'Select all categories that apply to your system’s intended use.'
+})
+
+function toggleValue(value: AnswerScalar) {
+  const current = selectedValues()
+  const isSelected = current.includes(value)
+  const exclusiveValues = options.value.filter((opt) => opt.exclusive).map((opt) => opt.value)
+  if (isSelected) {
+    emit(
+      'update:modelValue',
+      current.filter((v) => v !== value) as AnswerValue,
+    )
+    return
+  }
+  if (exclusiveValues.includes(value)) {
+    emit('update:modelValue', [value])
+    return
+  }
+  const withoutExclusive = current.filter((v) => !exclusiveValues.includes(v))
+  emit('update:modelValue', Array.from(new Set([...withoutExclusive, value])) as AnswerValue)
+}
+
+function isSelected(value: AnswerScalar) {
+  return selectedValues().includes(value)
+}
 </script>
 
 <template>
   <IntertekLayout
-    module-label="Module 2 / 5"
+    module-label="Module 5 / 5"
     :module-title="props.module.title"
     :module-description="props.module.description"
-    question-tag="Question 2.2b"
+    :question-tag="questionTag"
     :question-text="question.text"
     :question-description="question.description"
     :error="error"
@@ -61,20 +183,20 @@ const options = computed(() => buildOptions(props.question, fallbackOptions))
     @restart="emit('restart')"
     @next="emit('next')"
   >
-    <div role="radiogroup" aria-labelledby="q22b-label" class="flex flex-col gap-4">
+    <div role="group" :aria-labelledby="labelId" class="flex flex-col gap-4">
       <label
         v-for="opt in options"
         :key="String(opt.value)"
         class="option-card cursor-pointer relative flex items-start p-6 border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 transition-all duration-200 group"
-        :class="{ selected: modelValue === opt.value }"
+        :class="{ selected: isSelected(opt.value) }"
       >
         <input
           class="peer sr-only"
-          name="role_type"
-          type="radio"
+          :name="inputName"
+          type="checkbox"
           :value="opt.value"
-          :checked="modelValue === opt.value"
-          @change="emit('update:modelValue', opt.value as AnswerValue)"
+          :checked="isSelected(opt.value)"
+          @change="toggleValue(opt.value)"
         />
         <div class="flex-shrink-0 mr-6">
           <div class="size-14 bg-white dark:bg-slate-800 flex items-center justify-center text-slate-400 group-hover:bg-intertek-yellow group-hover:text-black transition-colors shadow-sm">
@@ -86,7 +208,9 @@ const options = computed(() => buildOptions(props.question, fallbackOptions))
             <h3 class="text-lg font-black text-slate-900 dark:text-white uppercase tracking-tight">{{ opt.title }}</h3>
             <div class="flex items-center gap-3">
               <div class="relative group/info">
-                <span class="material-symbols-outlined text-base text-slate-400 group-hover/info:text-intertek-yellow transition-colors">
+                <span
+                  class="material-symbols-outlined text-base text-slate-400 group-hover/info:text-intertek-yellow transition-colors"
+                >
                   info
                 </span>
                 <div
@@ -123,9 +247,9 @@ const options = computed(() => buildOptions(props.question, fallbackOptions))
           </div>
           <template v-else>
             <div class="border-b border-slate-100 dark:border-slate-800 pb-4">
-              <h4 class="font-black text-slate-900 dark:text-white mb-3 text-xs uppercase tracking-tight">Article 3(3) & 3(5)</h4>
+              <h4 class="font-black text-slate-900 dark:text-white mb-3 text-xs uppercase tracking-tight">ANNEX I / ANNEX III</h4>
               <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
-                GPAI Model Providers are defined as persons who develop or have developed a model and place it on the market.
+                Select all relevant Annex I or Annex III categories that match the system’s sector or use case.
               </p>
             </div>
           </template>
@@ -133,7 +257,7 @@ const options = computed(() => buildOptions(props.question, fallbackOptions))
             <div class="flex gap-3">
               <span class="material-symbols-outlined text-intertek-dark dark:text-intertek-yellow text-xl">info</span>
               <p class="text-[11px] text-slate-700 dark:text-slate-300 font-bold leading-normal italic">
-                Providers not established in the Union must appoint an authorized representative to ensure compliance oversight.
+                {{ infoText }}
               </p>
             </div>
           </div>
@@ -155,8 +279,7 @@ const options = computed(() => buildOptions(props.question, fallbackOptions))
       <div class="flex items-start gap-4 p-5 bg-intertek-yellow/5 border border-intertek-yellow/20">
         <span class="material-symbols-outlined text-intertek-yellow text-2xl">lightbulb</span>
         <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-medium italic">
-          Providers place a GPAI model on the market under their name or trademark; authorized representatives act on
-          behalf of non-EU providers.
+          {{ tipText }}
         </p>
       </div>
     </template>

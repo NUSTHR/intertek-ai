@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import type { AnswerValue, Module, ModuleQuestion } from '@/types/questionnaire'
 import IntertekLayout from './IntertekLayout.vue'
+import IntertekSingleChoiceCards from './IntertekSingleChoiceCards.vue'
 import { buildOptions } from './optionUtils'
 
 const props = defineProps<{
@@ -58,7 +59,36 @@ const tipTextMap: Record<string, string> = {
   'q4.8_b': 'Confirm the purpose is law enforcement rather than private use.',
   'q4.8_c': 'Verify strict necessity for the three listed public-safety objectives.',
 }
-const legalCopy = computed(() => props.question?.ref ?? '')
+const legalTextMap: Record<string, string> = {
+  'q4.3_b':
+    'Art 5(1)(c)(i): detrimental or unfavourable treatment of certain natural persons or groups of persons in social contexts that are unrelated to the contexts in which the data was originally generated or collected;',
+  'q4.3_c':
+    'Art 5(1)(c)(ii): detrimental or unfavourable treatment of certain natural persons or groups of persons that is unjustified or disproportionate to their social behaviour or its gravity;',
+  'q4.4_a':
+    'Art 5(1)(d): the placing on the market, the putting into service for this specific purpose, or the use of an AI system for making risk assessments of natural persons in order to assess or predict the risk of a natural person committing a criminal offence...',
+  'q4.4_b':
+    'Art 5(1)(d): based solely on the profiling of a natural person or on assessing their personality traits and characteristics; this prohibition shall not apply to AI systems used to support the human assessment of the involvement of a person in a criminal activity, which is already based on objective and verifiable facts directly linked to a criminal activity;',
+  'q4.5_a':
+    'Art 5(1)(e): the placing on the market, the putting into service for this specific purpose, or the use of AI systems that create or expand facial recognition databases...',
+  'q4.5_b': 'Art 5(1)(e): through the untargeted scraping of facial images from the internet or CCTV footage;',
+  'q4.6_a':
+    'Art 5(1)(f): the placing on the market, the putting into service for this specific purpose, or the use of AI systems to infer emotions of a natural person in the areas of workplace and education institutions...',
+  'q4.6_b':
+    'Art 5(1)(f): except where the use of the AI system is intended to be put in place or into the market for medical or safety reasons;',
+  'q4.7_a':
+    'Art 5(1)(g): the placing on the market, the putting into service for this specific purpose, or the use of biometric categorisation systems that categorise individually natural persons based on their biometric data...',
+  'q4.7_b':
+    'Art 5(1)(g): to deduce or infer their race, political opinions, trade union membership, religious or philosophical beliefs, sex life or sexual orientation;',
+  'q4.7_c':
+    'Art 5(1)(g): this prohibition does not cover any labelling or filtering of lawfully acquired biometric datasets, such as images, based on biometric data or categorizing of biometric data in the area of law enforcement;',
+  'q4.8_a':
+    'Art 5(1)(h): the use of ‘real-time’ remote biometric identification systems in publicly accessible spaces for the purposes of law enforcement...',
+  'q4.8_b':
+    'Art 5(1)(h): for the purposes of law enforcement, unless and in so far as such use is strictly necessary for one of the following objectives...',
+  'q4.8_c':
+    'Art 5(1)(h)(i)-(iii): (i) the targeted search for specific victims of abduction, trafficking in human beings or sexual exploitation of human beings, as well as the search for missing persons; (ii) the prevention of a specific, substantial and imminent threat to the life or physical safety of natural persons or a genuine and present or genuine and foreseeable threat of a terrorist attack; (iii) the localisation or identification of a person suspected of having committed a criminal offence referred to in Annex II...',
+}
+const legalCopy = computed(() => props.question?.ref ?? legalTextMap[props.question?.id ?? ''] ?? '')
 const tipCopy = computed(() => tipTextMap[props.question?.id ?? ''] ?? props.question?.description ?? '')
 </script>
 
@@ -76,40 +106,13 @@ const tipCopy = computed(() => tipTextMap[props.question?.id ?? ''] ?? props.que
     @restart="emit('restart')"
     @next="emit('next')"
   >
-    <div role="radiogroup" :aria-labelledby="labelId" class="flex flex-col gap-4">
-      <label
-        v-for="opt in options"
-        :key="String(opt.value)"
-        class="option-card cursor-pointer relative flex items-start p-6 border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 transition-all duration-200 group"
-        :class="{ selected: modelValue === opt.value }"
-      >
-        <input
-          class="peer sr-only"
-          :name="inputName"
-          type="radio"
-          :value="opt.value"
-          :checked="modelValue === opt.value"
-          @change="emit('update:modelValue', opt.value as AnswerValue)"
-        />
-        <div class="flex-shrink-0 mr-6">
-          <div class="size-14 bg-white dark:bg-slate-800 flex items-center justify-center text-slate-400 group-hover:bg-intertek-yellow group-hover:text-black transition-colors shadow-sm">
-            <span class="material-symbols-outlined text-3xl">{{ opt.icon }}</span>
-          </div>
-        </div>
-        <div class="flex-1">
-          <div class="flex justify-between items-center mb-2">
-            <h3 class="text-lg font-black text-slate-900 dark:text-white uppercase tracking-tight">{{ opt.title }}</h3>
-            <div class="size-6 border-2 border-slate-200 dark:border-slate-700 peer-checked:border-intertek-yellow peer-checked:bg-intertek-yellow flex items-center justify-center opacity-0 peer-checked:opacity-100 transition-all">
-              <span class="material-symbols-outlined text-black font-black text-lg">check</span>
-            </div>
-          </div>
-          <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed max-w-xl font-medium">
-            {{ opt.description }}
-          </p>
-        </div>
-        <div class="absolute inset-0 border-2 border-intertek-yellow opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity"></div>
-      </label>
-    </div>
+    <IntertekSingleChoiceCards
+      :options="options"
+      :model-value="modelValue"
+      :input-name="inputName"
+      :label-id="labelId"
+      @update:modelValue="emit('update:modelValue', $event)"
+    />
     <template #sidebar>
       <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
         <div class="bg-intertek-dark px-5 py-4 flex items-center gap-3">
@@ -133,8 +136,13 @@ const tipCopy = computed(() => tipTextMap[props.question?.id ?? ''] ?? props.que
           </div>
         </div>
         <div class="px-6 py-4 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-800">
-          <a class="inline-flex items-center gap-2 text-[10px] font-black text-intertek-dark dark:text-intertek-yellow uppercase tracking-widest hover:underline" href="#">
-            Reference Archive
+          <a
+            class="inline-flex items-center gap-2 text-[10px] font-black text-intertek-dark dark:text-intertek-yellow uppercase tracking-widest hover:underline"
+            href="https://eur-lex.europa.eu/eli/reg/2024/1689/oj/eng"
+            target="_blank"
+            rel="noreferrer"
+          >
+            View Full Act.
             <span class="material-symbols-outlined text-sm">open_in_new</span>
           </a>
         </div>

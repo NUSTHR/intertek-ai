@@ -1,40 +1,40 @@
-module_id: 1 #"01_scope_and_exclusions"
+module_id: 1
 title: "Scope & Universal R&D Exclusions"
 description: "Determines if the AI is outside the legal scope based on Article 2 exclusions for R&D."
 
 # 1. QUESTIONS SECTION
 questions:
   - id: "q1.1"
-    text: "Which of the following descriptions best applies to your product or activity?"
-    [cite_start]ref: "Art 2(6): This Regulation does not apply to AI systems or AI models, including their output, specifically developed and put into service for the sole purpose of scientific research and development[cite: 52]. [cite_start]Art 2(8): This Regulation does not apply to any research, testing or development activity regarding AI systems or AI models prior to their being placed on the market or put into service[cite: 55]."
+    text: "How would you best describe your AI product or project?"
+    ref: "Art 2(6): This Regulation does not apply to AI systems or AI models, including their output, specifically developed and put into service for the sole purpose of scientific research and development. Art 2(8): This Regulation does not apply to any research, testing or development activity regarding AI systems or AI models prior to their being placed on the market or put into service."
     type: "single_choice"
     options:
-      # Value 1: Scientific R&D exclusion (Art 2(6))
-      - label: "It is specifically developed and put into service for the sole purpose of scientific research and development."
-        [cite_start]description: "Select this if your AI is strictly for scientific discovery and will not be used for commercial or operational purposes outside of a research setting[cite: 52]."
+      - label: "It is for pure scientific research only."
+        cite: "Art 2(6): This Regulation does not apply to AI systems or AI models... specifically developed and put into service for the sole purpose of scientific research and development[cite: 52]."
+        description: "Select this for AI used only for scientific discovery, not for commercial or business use."
         value: 1
-      # Value 2: Pre-market R&D exclusion (Art 2(8))
-      - label: "It is a research, testing, or development activity occurring prior to being placed on the market or put into service."
-        [cite_start]description: "Select this if you are currently in the development phase and have not yet made the system available for distribution or first use on the Union market[cite: 55, 73, 75]."
+      - label: "It is a development project not yet on the market."
+        cite: "Art 2(8): This Regulation does not apply to any research, testing or development activity... prior to their being placed on the market or put into service[cite: 55]."
+        description: "Select this if you are still building or testing and have not yet released the system for use or sale."
         value: 2
-      # Value 0: None (In-scope)
-      - label: "None of the above (e.g., intended for commercial use, public service, or already on the market)."
-        [cite_start]description: "Select this if your AI system is already available to users, in use, or intended for a purpose other than pure R&D[cite: 29, 39, 40]."
+      - label: "It is for commercial or operational use."
+        cite: "Art 2(1): This Regulation applies to providers placing on the market... AI systems... irrespective of whether those providers are established... in the Union[cite: 39]."
+        description: "Select this if your AI is intended for business, public service, or is already available to users."
         value: 0
 
   - id: "q1.2"
-    text: "Does this activity involve testing in real-world conditions?"
-    [cite_start]ref: "Art 2(9): Testing in real world conditions shall not be covered by that exclusion[cite: 57]."
+    text: "Are you testing the AI in real-world settings?"
+    ref: "Art 2(9): Testing in real world conditions shall not be covered by that exclusion."
     type: "single_choice"
-    # Only ask if User selected "Pre-market R&D" (Value 2)
-    # Scientific R&D (Value 1) is unconditionally excluded per Art 2(6).
     dependency: "q1.1 == 2"
     options:
       - label: "Yes"
-        [cite_start]description: "Select this if you are testing the AI system for its intended purpose in real-world conditions outside a laboratory or simulated environment[cite: 130]."
+        cite: "Art 2(9): Testing in real world conditions shall not be covered by that exclusion[cite: 57]."
+        description: "Select this if you are testing the AI for its intended use with real people outside of a lab."
         value: True
       - label: "No"
-        [cite_start]description: "Select this if your testing is confined to a laboratory, simulated environment, or purely internal development phase[cite: 130]."
+        cite: "Art 3(45): ‘testing in real-world conditions’ means the temporary testing... outside a laboratory or otherwise simulated environment[cite: 130]."
+        description: "Select this if testing stays strictly inside a lab or a controlled computer simulation."
         value: False
 
 # 2. LOGIC SECTION
@@ -57,7 +57,7 @@ variables:
     type: "boolean"
     initial_value: False
     rules:
-      # [cite_start]Testing in real world conditions is not covered by the R&D exclusion [cite: 57]
+      # Testing in real world conditions is not covered by the R&D exclusion [cite: 57]
       - condition: "q1.1 == 2 and q1.2 == True"
         value: True
       - condition: "else"

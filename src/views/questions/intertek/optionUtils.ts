@@ -6,6 +6,7 @@ type FallbackOption = {
   description?: string
   icon?: string
   label?: string
+  cite?: string
   exclusive?: boolean
   span?: string
 }
@@ -16,6 +17,7 @@ type BuiltOption = {
   description?: string
   icon?: string
   label?: string
+  cite?: string
   exclusive?: boolean
   span?: string
 }
@@ -33,6 +35,7 @@ export function buildOptions(question: ModuleQuestion, fallbackOptions: Fallback
       description: opt.description ?? base?.description ?? '',
       icon: base?.icon ?? 'help',
       label,
+      cite: opt.cite ?? base?.cite,
       exclusive: opt.exclusive ?? base?.exclusive,
       span: base?.span,
     }
