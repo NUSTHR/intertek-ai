@@ -17,8 +17,7 @@ questions:
         cite: "Art 3(1): ‘AI system’ means a machine-based system that... infers, from the input it receives, how to generate outputs such as predictions, content, recommendations, or decisions that can influence physical or virtual environments." [cite: 65]
         description: "Select this if the product is a software application that uses data to create specific results like content or decisions."
         value: 2
-      - label: "Non-AI Software"
-        cite: "Art 3(1): AI systems are specifically defined by their ability to infer how to generate outputs; software operating on simple fixed rules without this capability falls outside this definition." [cite: 65]
+      - label: "Non-AI Software / Non-General-Purpose AI Model"
         description: "Select this if your software follows basic, fixed logic without learning from data or making its own inferences."
         value: 3
       - label: "Not Sure"

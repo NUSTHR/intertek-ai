@@ -63,7 +63,7 @@ variables:
       - condition: "AI_type == 2 and High_risk == True and Transparency_obligation == False"
         value: "High Risk"
       - condition: "AI_type == 2 and High_risk == False and Transparency_obligation == True"
-        value: "Limited Risk (Transparency Obligation)"
+        value: "Limited Risk (Transparency Obligation Only)"
       - condition: "AI_type == 2 and High_risk == False and Transparency_obligation == False"
         value: "Minimal Risk"
       - condition: "Role == 'Undetermined'"

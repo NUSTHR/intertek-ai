@@ -105,7 +105,7 @@ function scrollToSection(sectionId: string) {
         </div>
         <div v-if="store.loading" class="text-sm text-[#4B5563]">Loading…</div>
         <div v-else-if="store.error" class="text-sm text-red-600">
-          Loading Failed{{ friendlyError }}
+          Loading Failed {{ friendlyError }}
           <button type="button" class="ml-3 underline" @click="retry">重试</button>
         </div>
         <div class="flex items-center gap-3 justify-center mt-10">

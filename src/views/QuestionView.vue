@@ -387,7 +387,6 @@ async function submitModule() {
   const scopedHistory = questionHistory.value.slice(0, historyIndex.value + 1)
   const payload: Record<string, AnswerValue> = {}
   for (const entry of scopedHistory) {
-    if (entry.moduleId !== module.id) continue
     const val = localAnswers[entry.question.id]
     if (val === undefined || val === '' || (Array.isArray(val) && val.length === 0)) continue
     payload[entry.question.id] = val as AnswerValue
@@ -481,7 +480,7 @@ async function restart() {
   />
 
   <section v-else class="card">
-    <div v-if="store.error" class="error">Loading Failed{{ store.error }}</div>
+    <div v-if="store.error" class="error">Loading Failed {{ store.error }}</div>
     <div v-else class="muted">Loading…</div>
     <div class="actions">
       <button type="button" @click="restart">返回</button>

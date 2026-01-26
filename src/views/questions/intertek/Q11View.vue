@@ -92,7 +92,7 @@ const labelId = 'q11-label'
             <div class="flex gap-3">
               <span class="material-symbols-outlined text-intertek-dark dark:text-intertek-yellow text-xl">info</span>
               <p class="text-[11px] text-slate-700 dark:text-slate-300 font-bold leading-normal italic">
-                Exclusions also apply to free and open-source AI components, except when placed on the market as a prohibited practice.
+                R&D exclusions apply only when the system is solely for scientific research or pre-market testing and not placed on the market.
               </p>
             </div>
           </div>
@@ -114,8 +114,7 @@ const labelId = 'q11-label'
       <div class="flex items-start gap-4 p-5 bg-intertek-yellow/5 border border-intertek-yellow/20">
         <span class="material-symbols-outlined text-intertek-yellow text-2xl">lightbulb</span>
         <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-medium italic">
-          R&D exclusions apply only when the system is solely for scientific research or pre-market testing and not
-          placed on the market.
+          If you fill out this questionnaire for products soon to hit the market, we recommend selecting the third option.
         </p>
       </div>
     </template>

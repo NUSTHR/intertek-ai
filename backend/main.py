@@ -40,7 +40,7 @@ def get_module(module_id: str, session_id: str) -> ModuleResponse:
 
 @app.post("/submit-answer", response_model=SubmitResponse)
 def submit_answer(req: SubmitAnswerRequest) -> SubmitResponse:
-    payload = service.submit_answer(req.session_id, req.module_id, req.answers)
+    payload = service.submit_answer(req.session_id, req.module_id, req.answers, req.replace)
     return SubmitResponse(
         session_id=payload["session_id"],
         parameters=payload["parameters"],

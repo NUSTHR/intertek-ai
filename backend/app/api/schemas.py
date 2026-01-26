@@ -18,6 +18,7 @@ class SubmitAnswerRequest(BaseModel):
     session_id: str
     module_id: str | None = None
     answers: dict[str, Any] = Field(default_factory=dict)
+    replace: bool = False
 
 
 class NextAction(BaseModel):

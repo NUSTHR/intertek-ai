@@ -10,7 +10,7 @@ import type {
   SubmitResponse,
 } from '@/types/questionnaire'
 
-const API_BASE = import.meta.env.VITE_API_BASE ?? 'http://127.0.0.1:8000'
+const API_BASE = import.meta.env.VITE_API_BASE ?? (import.meta.env.DEV ? '/api' : '')
 const SESSION_KEY = 'questionnaire_session_id'
 
 export const useQuestionnaireStore = defineStore('questionnaire', () => {
@@ -71,7 +71,12 @@ export const useQuestionnaireStore = defineStore('questionnaire', () => {
     loading.value = true
     error.value = null
     try {
-      const payload: SubmitRequest = { session_id: sessionId.value, module_id: moduleId, answers: payloadAnswers }
+      const payload: SubmitRequest = {
+        session_id: sessionId.value,
+        module_id: moduleId,
+        answers: payloadAnswers,
+        replace: true,
+      }
       const res = await fetch(`${API_BASE}/submit-answer`, {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
@@ -85,7 +90,7 @@ export const useQuestionnaireStore = defineStore('questionnaire', () => {
       parameters.value = data.parameters
       lastAction.value = data.next
       lastMessage.value = data.next?.message ?? null
-      answers.value = { ...answers.value, ...payloadAnswers }
+      answers.value = { ...payloadAnswers }
       if (data.module) currentModule.value = data.module
       if (data.conclusion !== undefined) conclusion.value = data.conclusion ?? null
       return data

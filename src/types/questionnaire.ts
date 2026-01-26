@@ -38,6 +38,7 @@ export type SubmitRequest = {
   session_id: string
   module_id?: string | null
   answers: Record<string, AnswerValue>
+  replace?: boolean
 }
 
 export type NextAction = {

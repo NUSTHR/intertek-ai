@@ -132,9 +132,10 @@ async function goHome() {
         </div>
         <div class="space-y-4">
           <h3 class="font-black text-sm uppercase tracking-widest border-l-4 border-[#FAD400] pl-4">
-            View<br /><span class="text-gray-400">Summary &amp; Suggestion</span>
+            Suggestion<br /><span class="text-gray-400">Compliance Mapper's View</span>
           </h3>
-          <p class="text-sm font-medium leading-relaxed text-black">
+           <p class="text-xl font-bold leading-relaxed text-black">For reference</p>
+          <p class="text-sm text-gray-500">
             {{ conclusion?.View || '' }}
           </p>
         </div>

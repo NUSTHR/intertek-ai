@@ -33,7 +33,13 @@ class QuestionnaireService:
             raise HTTPException(status_code=404, detail="module_not_found")
         return self.evaluator.module_payload(module, session.answers, session.parameters)
 
-    def submit_answer(self, session_id: str, module_id: str | None, answers: dict[str, Any]) -> dict[str, Any]:
+    def submit_answer(
+        self,
+        session_id: str,
+        module_id: str | None,
+        answers: dict[str, Any],
+        replace: bool = False,
+    ) -> dict[str, Any]:
         engine = self._engine()
         session = self.store.get(session_id)
         active_module_id = module_id or session.current_module_id
@@ -42,8 +48,16 @@ class QuestionnaireService:
         module = engine.modules_by_id.get(active_module_id)
         if not module:
             raise HTTPException(status_code=404, detail="module_not_found")
+        if module_id:
+            session.current_module_id = active_module_id
+        if replace:
+            session.answers = {}
+        all_questions: dict[str, Any] = {}
+        for mod in engine.modules:
+            for q in mod.questions:
+                all_questions[q.id] = q
         for qid, value in answers.items():
-            question = module.questions_by_id.get(qid)
+            question = all_questions.get(qid)
             if not question:
                 raise HTTPException(status_code=400, detail={"unknown_question": qid})
             session.answers[qid] = self.evaluator.validate_answer(question, value)

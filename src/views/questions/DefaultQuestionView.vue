@@ -85,7 +85,7 @@ function onMultiToggle(question: ModuleQuestion, value: AnswerValue) {
       </div>
     </div>
 
-    <div v-if="error" class="error">Loading Failed{{ error }}</div>
+    <div v-if="error" class="error">Loading Failed {{ error }}</div>
     <div v-if="message" class="muted">{{ message }}</div>
 
     <div class="actions">
