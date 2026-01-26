@@ -48,10 +48,8 @@ variables:
         value: "Theoretically Exempt (Real-World Testing Inapplicable to GPAI Models)"
 
       # Group 3: GPAI Market Placement
-      - condition: "AI_type == 1 and Systematic_risk == True and Open_source == False"
-        value: "Systemic Risk"
-      - condition: "AI_type == 1 and Systematic_risk == True and Open_source == True"
-        value: "Systemic Risk (Open Source)"
+      - condition: "AI_type == 1 and Systematic_risk == True"
+        value: "Systemic Risk GPAI"
       - condition: "AI_type == 1 and Systematic_risk == False and Open_source == False"
         value: "Standard GPAI"
       - condition: "AI_type == 1 and Systematic_risk == False and Open_source == True"
@@ -59,7 +57,7 @@ variables:
 
       # Group 4: AI Systems Market Placement
       - condition: "AI_type == 2 and High_risk == True and Transparency_obligation == True"
-        value: "High Risk with Transparency Obligation Obligations"
+        value: "High Risk with Transparency Obligations"
       - condition: "AI_type == 2 and High_risk == True and Transparency_obligation == False"
         value: "High Risk"
       - condition: "AI_type == 2 and High_risk == False and Transparency_obligation == True"
@@ -90,7 +88,7 @@ variables:
       - condition: "Real_world_Testing == True and AI_type == 2 and High_risk == True"
         value: "Real-world testing of a High-Risk system (Reason: {{High_risk_reason}}) triggers Article 60 governance requirements."
       - condition: "Real_world_Testing == True and AI_type == 2 and High_risk == False and Transparency_obligation == True"
-        value: "Real-world testing involves interaction with persons or content generation (Reason: {{Transparency_reason}}), triggering Article 50 transparency obligations."
+        value: "Real-world testing involves interaction with persons or content generation (Reason: {{Transparency_Reasons}}), triggering Article 50 transparency obligations."
       - condition: "Real_world_Testing == True and AI_type == 2 and High_risk == False and Transparency_obligation == False"
         value: "Real-world testing of minimal risk systems is not restricted by specific AI Act testing obligations."
       - condition: "Real_world_Testing == True and AI_type == 1"
@@ -104,11 +102,11 @@ variables:
 
       # Group 4: AI Systems Market Placement (Extracts from Module 5 & 6)
       - condition: "AI_type == 2 and High_risk == True and Transparency_obligation == True"
-        value: "The system is High-Risk because {{High_risk_reason}}, and triggers transparency obligations because {{Transparency_reason}}."
+        value: "The system is High-Risk because {{High_risk_reason}}, and triggers transparency obligations because {{Transparency_Reasons}}."
       - condition: "AI_type == 2 and High_risk == True and Transparency_obligation == False"
         value: "{{High_risk_reason}}"
       - condition: "AI_type == 2 and High_risk == False and Transparency_obligation == True"
-        value: "{{Transparency_reason}}"
+        value: "{{Transparency_Reasons}}"
       - condition: "AI_type == 2 and High_risk == False and Transparency_obligation == False"
         value: "The system does not fall under any High-Risk or Transparency categories defined in the Regulation."
 
@@ -205,13 +203,13 @@ variables:
       # ------------------------------------------------------------------------
       # PRIORITY 5: GPAI MARKET PLACEMENT
       # ------------------------------------------------------------------------
-      - condition: "Risk_level == 'Systemic Risk'"
+      - condition: "Risk_level == 'Systemic Risk GPAI' and Open_source == False"
         value: |
           This model is classified as a General-Purpose AI Model with Systemic Risk under Article 51. Providers must strictly comply with the comprehensive obligations in Article 55, which include performing adversarial testing ('red-teaming') to identify vulnerabilities, assessing and mitigating systemic risks at the Union level, and ensuring high levels of cybersecurity. You are also required to document these processes in detail for the AI Office and report any serious incidents immediately.
 
-      - condition: "Risk_level == 'Systemic Risk (Open Source)'"
+      - condition: "Risk_level == 'Systemic Risk GPAI' and Open_source == True"
         value: |
-          Although this model is released under an open-source license, its classification as posing 'Systemic Risk' overrides the standard open-source exemptions in Article 53(2). You must fully comply with Article 55 obligations, including conducting adversarial evaluations, mitigating systemic risks, and reporting serious incidents to the AI Office. The transparency requirements regarding copyright policy and the publication of a training data summary also remain fully applicable.
+          Although this model is released under an open-source license, its classification as posing 'Systemic Risk GPAI' overrides the standard open-source exemptions in Article 53(2). You must fully comply with Article 55 obligations, including conducting adversarial evaluations, mitigating systemic risks, and reporting serious incidents to the AI Office. The transparency requirements regarding copyright policy and the publication of a training data summary also remain fully applicable.
 
       - condition: "Risk_level == 'Standard GPAI'"
         value: |
@@ -224,7 +222,7 @@ variables:
       # ------------------------------------------------------------------------
       # PRIORITY 6: AI SYSTEMS MARKET PLACEMENT
       # ------------------------------------------------------------------------
-      - condition: "Risk_level == 'High Risk with Transparency Obligation Obligations'"
+      - condition: "Risk_level == 'High Risk with Transparency Obligations'"
         value: |
           This system is classified as High-Risk and also triggers specific transparency requirements. Providers must comply with the full conformity regime of Chapter III, including establishing a Risk Management System (Art 9), ensuring Data Governance (Art 10), and undergoing Conformity Assessment (Art 43). Simultaneously, you must satisfy Article 50 by ensuring that the system is designed to inform natural persons that they are interacting with an AI or that the outputs are artificially generated.
 

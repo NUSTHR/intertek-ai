@@ -23,11 +23,6 @@ const riskLevel = computed(() => conclusion.value.Risk_level ?? store.parameters
 const statusTitle = computed(() => {
   const raw = String(riskLevel.value ?? '').trim()
   if (!raw) return 'Out of Regulation'
-  const lower = raw.toLowerCase()
-  if (lower.includes('out of regulation') || lower.includes('outside')) return 'Out of Regulation'
-  if (lower.includes('high')) return 'High Risk'
-  if (lower.includes('limited')) return 'Limited Risk'
-  if (lower.includes('minimal')) return 'Minimal Risk'
   return raw
 })
 const statusSubtitle = computed(() => {
@@ -221,7 +216,7 @@ async function goHome() {
         </button>
         <div class="w-full max-w-6xl">
           <div class="bg-[#F9FAFB] p-8 rounded-lg border border-[#E5E7EB] w-full">
-            <p class="text-xs text-[#4B5563] leading-relaxed text-center">
+            <p class="text-sm text-[#4B5563] leading-relaxed text-center">
               The EU AI ACT Compliance Mapper provides automated evaluations for general guidance based on user input.
               It is not legal advice. Intertek disclaims all liability and warranties regarding the accuracy or
               completeness of results. Users are responsible for final classification, which must be verified by expert
