@@ -107,7 +107,7 @@ questions:
         description: "Select this if you represent a non-EU developer in the European Union."
         value: 5
       - label: "None"
-        description: "Select this if you are just using or integrating a model built by someone else."
+        description: "Select this if you are any other roles else."
         value: 0
 
 variables:

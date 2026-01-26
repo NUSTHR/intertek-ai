@@ -11,7 +11,7 @@ from ..domain.models import Session
 
 
 class SessionStore:
-    def __init__(self, ttl_seconds: int = 5400, cleanup_interval: int = 600) -> None:
+    def __init__(self, ttl_seconds: int = 7200, cleanup_interval: int = 300) -> None:
         self._sessions: dict[str, Session] = {}
         self._last_access: dict[str, float] = {}
         self._ttl_seconds = ttl_seconds

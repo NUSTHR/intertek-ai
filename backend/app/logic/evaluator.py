@@ -12,6 +12,7 @@ from ..domain.models import Engine, ModuleDef, QuestionDef
 class Evaluator:
     def __init__(self) -> None:
         self._contains_pattern = re.compile(r"([A-Za-z0-9_.\-]+)\s+contains\s+('.*?'|\".*?\"|[A-Za-z0-9_.\-]+)")
+        self._template_pattern = re.compile(r"\{\{\s*([A-Za-z0-9_.\-]+)\s*\}\}")
 
     def validate_answer(self, question: QuestionDef, value: Any) -> Any:
         if question.qtype == "boolean":
@@ -127,6 +128,8 @@ class Evaluator:
                             value = rule.value
                             break
                 params[variable.name] = value
+        for key in list(params.keys()):
+            params[key] = self._render_template(params[key], answers, params)
         return params
 
     def compute_conclusion(self, params: dict[str, Any]) -> dict[str, Any] | None:
@@ -295,6 +298,29 @@ class Evaluator:
         for key, value in {**params, **answers}.items():
             env[self._normalize_name(key)] = value
         return env
+
+    def _render_template(self, value: Any, answers: dict[str, Any], params: dict[str, Any]) -> Any:
+        if isinstance(value, str):
+            return self._template_pattern.sub(
+                lambda match: self._stringify_placeholder(match.group(1), answers, params),
+                value,
+            )
+        if isinstance(value, list):
+            return [self._render_template(item, answers, params) for item in value]
+        return value
+
+    def _stringify_placeholder(self, name: str, answers: dict[str, Any], params: dict[str, Any]) -> str:
+        if name in params:
+            raw = params[name]
+        elif name in answers:
+            raw = answers[name]
+        else:
+            raw = None
+        if raw is None:
+            return ""
+        if isinstance(raw, list):
+            return "; ".join(str(item) for item in raw if item is not None)
+        return str(raw)
 
     @staticmethod
     def _default_for_type(param_type: str | None) -> Any:

@@ -109,34 +109,47 @@ async function goHome() {
           </div>
         </div>
       </section>
-      <section
-        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-16 mb-32 border-t border-gray-100 pt-16"
-      >
-        <div class="space-y-4">
-          <h3 class="font-black text-sm uppercase tracking-widest border-l-4 border-[#FAD400] pl-4">
-            System Profile<br /><span class="text-gray-400">Role</span>
+      <section class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-32 border-t border-gray-100 pt-16">
+        <div class="bg-[#F8FAFC] p-10 rounded-3xl border border-gray-100 hover:border-[#FAD400] transition-colors flex flex-col justify-center">
+          <h3 class="font-black text-xl uppercase tracking-tighter mb-4">
+            {{ conclusion.Role ?? store.parameters.Role ?? '' }}<br />
+            <span class="text-[#FAD400] text-sm tracking-widest font-bold">Role</span>
           </h3>
-          <p class="text-xl font-bold leading-relaxed text-black">{{ summaryRows[0]?.value || 'Unspecified' }}</p>
-          <p class="text-sm text-gray-500">
-            Entity role classification derived from your responses for this system context.
+          <p class="text-sm font-medium leading-relaxed text-gray-500 max-w-md">
+            {{ conclusion.Role_Description ?? store.parameters.Role_Description ?? '' }}
           </p>
         </div>
-        <div class="space-y-4">
-          <h3 class="font-black text-sm uppercase tracking-widest border-l-4 border-[#FAD400] pl-4">
-            System Profile<br /><span class="text-gray-400">Product Type</span>
+        <div class="bg-[#F8FAFC] p-10 rounded-3xl border border-gray-100 hover:border-[#FAD400] transition-colors flex flex-col justify-center">
+          <h3 class="font-black text-xl uppercase tracking-tighter mb-4">
+            {{ conclusion.Type ?? store.parameters.Type ?? '' }}<br />
+            <span class="text-[#FAD400] text-sm tracking-widest font-bold">Product Type</span>
           </h3>
-          <p class="text-xl font-bold leading-relaxed text-black">{{ summaryRows[1]?.value || 'Unspecified' }}</p>
-          <p class="text-sm text-gray-500">
-            Product type classification based on the module inputs provided during assessment.
+          <p class="text-sm font-medium leading-relaxed text-gray-500 max-w-md">
+            {{ conclusion.Product_Type_Description ?? store.parameters.Product_Type_Description ?? '' }}
           </p>
         </div>
-        <div class="space-y-4">
-          <h3 class="font-black text-sm uppercase tracking-widest border-l-4 border-[#FAD400] pl-4">
-            Suggestion<br /><span class="text-gray-400">Compliance Mapper's View</span>
-          </h3>
-           <p class="text-xl font-bold leading-relaxed text-black">For reference</p>
-          <p class="text-sm text-gray-500">
-            {{ conclusion?.View || '' }}
+        <div class="bg-white p-10 rounded-3xl border-2 border-black flex flex-col min-h-[400px]">
+          <div class="mb-auto">
+            <span class="material-symbols-outlined text-4xl mb-6 text-black">code_blocks</span>
+            <h3 class="font-black text-3xl uppercase tracking-tighter mb-6">
+              {{ conclusion.Risk_Level_Justification ?? store.parameters.Risk_Level_Justification ?? 'Risk Level Justification' }}<br />
+              <span class="text-[#FAD400] text-xs tracking-[0.3em] font-black">Free / Open Source</span>
+            </h3>
+          </div>
+          <p class="text-base font-medium leading-relaxed text-gray-600">
+            {{ conclusion.Risk_Level_Reason ?? store.parameters.Risk_Level_Reason ?? '' }}
+          </p>
+        </div>
+        <div class="bg-black p-10 rounded-3xl flex flex-col min-h-[400px] text-white">
+          <div class="mb-auto">
+            <span class="material-symbols-outlined text-4xl mb-6 text-[#FAD400]">verified_user</span>
+            <h3 class="font-black text-3xl uppercase tracking-tighter mb-6">
+              Obligation<br />
+              <span class="text-[#FAD400] text-xs tracking-[0.3em] font-black">National Security</span>
+            </h3>
+          </div>
+          <p class="text-base font-medium leading-relaxed text-gray-300">
+            {{ conclusion.View ?? store.parameters.View ?? '' }}
           </p>
         </div>
       </section>
@@ -149,21 +162,20 @@ async function goHome() {
               Optional Verification
             </span>
             <h3 class="text-4xl md:text-5xl font-black tracking-tight leading-tight">
-              Validate Your <br /><span class="relative inline-block before:content-[''] before:absolute before:-bottom-1 before:left-0 before:w-full before:h-2 before:bg-[#FAD400] before:-z-10">Exclusion</span>
+              Validate Your <br /><span class="relative inline-block before:content-[''] before:absolute before:-bottom-1 before:left-0 before:w-full before:h-2 before:bg-[#FAD400] before:-z-10">Self-assessment</span>
             </h3>
             <p class="text-gray-500 text-lg max-w-md">
-              While your system appears unregulated, boundaries can be complex. Documentation of exclusion logic is
-              recommended.
+              Fortify your compliance strategy by transitioning from a preliminary self-assessment to a definitive, expert-verified validation.
             </p>
           </div>
           <div class="flex flex-wrap gap-4">
-            <button
-              type="button"
+            <a
               class="px-10 py-5 bg-black text-white text-sm font-black uppercase tracking-widest rounded-xl hover:bg-[#FAD400] hover:text-black transition-all flex items-center gap-3"
+              href="mailto:tom.hr.tang@intertek.com?subject=AI%20Compliance%20consult%20reservation"
             >
               Book a Meeting
               <span class="material-symbols-outlined text-lg">calendar_today</span>
-            </button>
+            </a>
             <button
               type="button"
               class="px-10 py-5 border border-gray-200 text-black text-sm font-black uppercase tracking-widest rounded-xl hover:border-black transition-colors"
@@ -176,15 +188,15 @@ async function goHome() {
           <div class="relative w-full max-w-md bg-white rounded-3xl p-6 border border-gray-100 shadow-xl shadow-gray-100/50">
             <div class="flex flex-col md:flex-row gap-8 items-center">
               <img
-                alt="Dr. Elena Rossi, AI Regulatory Specialist"
+                alt="Tom Tang, AI Regulatory Specialist"
                 class="w-32 h-32 md:w-48 md:h-64 object-cover rounded-2xl shadow-sm grayscale hover:grayscale-0 transition-all duration-500"
                 :src="portraitUrl"
               />
               <div class="space-y-3 text-center md:text-left">
-                <h4 class="text-2xl font-black leading-tight tracking-tight">Dr. Elena Rossi</h4>
+                <h4 class="text-2xl font-black leading-tight tracking-tight">Tom Tang</h4>
                 <p class="text-[#FAD400] font-black text-[10px] tracking-[0.2em] uppercase">EU AI Regulatory Specialist</p>
                 <p class="text-gray-500 font-medium text-sm leading-relaxed">
-                  Expert in regulatory scope definition, Article 2 exclusions, and compliance strategy.
+                  AI Compliance Engineer with extensive experience in AI field.
                 </p>
               </div>
             </div>
