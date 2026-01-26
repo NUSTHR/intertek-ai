@@ -546,13 +546,13 @@ variables:
     initial_value: ""
     rules:
       - condition: "q5.3rd_party == 1"
-        value: "Annex I Safety Component/Product with mandatory 3rd Party Assessment (Art 6(1))"
+        value: "The AI system is a safety component or a standalone product that requires an external safety audit by law (Annex I), making it High-Risk under Article 6(1)."
       - condition: "Annex_III_Hit == True and q5.profiling == 1"
-        value: "Annex III Critical Area with Profiling (Art 6(3), 2nd subparagraph)"
+        value: "The system is used in a sensitive public or private sector (Annex III) and performs individual profiling, which automatically classifies it as High-Risk under Article 6(3)."
       - condition: "Annex_III_Hit == True and q5.profiling == 0 and (0 in q5.derogation)"
-        value: "Annex III Critical Area without satisfying Article 6(3) derogation conditions"
+        value: "The system operates in a sensitive area (Annex III) and performs a significant role in decision-making that does not qualify for a 'minor task' exemption, making it High-Risk under Article 6(2)."
       - condition: "Annex_III_Hit == True and q5.profiling == 0 and (0 not in q5.derogation)"
-        value: "Article 6(3) Derogation applies (Annex III use case but low risk)"
+        value: "The system is exempt from High-Risk status because its functions are limited to narrow, preparatory, or purely procedural tasks that pose no significant risk of harm, as per Article 6(3)."
       - condition: "else"
         value: "N/A"
 

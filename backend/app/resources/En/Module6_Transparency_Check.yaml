@@ -239,34 +239,34 @@ variables:
       - condition: "else"
         value: False
 
-  - name: "Transparency_Details"
+  - name: "Transparency_Reasons"
     type: "list"
     initial_value: []
     description: "Collects all reasons for transparency obligations."
     rules:
       # 1. Interaction
       - condition: "q6.gateway contains 1 and q6.a.1 == False and not (q6.a.2 == True and q6.a.3 == False)"
-        value: "Art 50(1): Obligation to inform natural persons they are interacting with an AI system."
+        value: "The AI interacts directly with users who might not realize they are talking to a machine, requiring a clear notice that the system is artificial (Article 50(1))."
 
       # 2. Synthetic Content Marking
       - condition: "q6.gateway contains 2 and q6.b.1 == False and q6.b.2 == False"
-        value: "Art 50(2): Obligation to mark outputs as artificially generated/manipulated in a machine-readable format."
+        value: "The system creates synthetic media (like images or audio) that could be mistaken for real, so it must be marked as AI-made in a way that computers can recognize (Article 50(2))."
 
       # 3. Emotion/Biometric
       - condition: "q6.gateway contains 3 and q6.c.1 == False"
-        value: "Art 50(3): Obligation to inform natural persons exposed to emotion recognition or biometric categorisation."
+        value: "The AI is designed to sense emotions or group people by their physical features, which requires you to tell people they are being analyzed (Article 50(3))."
 
       # 4a. Deep Fake (Standard)
       - condition: "q6.d.1 == True and q6.d.2 == False and q6.d.3 == False"
-        value: "Art 50(4): Obligation to disclose that the content has been artificially generated or manipulated."
+        value: "The AI produces 'Deep Fakes'—highly realistic but fake images or videos—which must be clearly labeled so people aren't misled (Article 50(4))."
 
       # 4b. Deep Fake (Artistic Exemption)
       - condition: "q6.d.1 == True and q6.d.2 == False and q6.d.3 == True"
-        value: "Art 50(4): Limited obligation to disclose existence of generated content (Artistic/Creative exemption)."
+        value: "While the AI makes fake media for artistic or satirical purposes, you must still disclose that it is artificial in a way that doesn't interrupt the work (Article 50(4))."
 
       # 5. Public Interest Text
       - condition: "q6.d.4 == True and q6.d.5 == False and q6.d.6 == False"
-        value: "Art 50(4): Obligation to disclose that the text has been artificially generated or manipulated."
+        value: "The system writes news or public interest text without a human editor checking it, so readers must be told the content is AI-generated (Article 50(4))."
 
 router:
   - condition: "True"

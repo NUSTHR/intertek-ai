@@ -48,12 +48,21 @@ class Evaluator:
 
     def module_payload(self, module: ModuleDef, answers: dict[str, Any], params: dict[str, Any]) -> dict[str, Any]:
         visible: list[dict[str, Any]] = []
+        last_answered: dict[str, Any] | None = None
+        last_visible: dict[str, Any] | None = None
         for q in module.questions:
             if not self.question_visible(q, answers, params):
                 continue
+            last_visible = q.raw
             if q.id not in answers:
                 visible = [q.raw]
                 break
+            last_answered = q.raw
+        if not visible:
+            if last_answered is not None:
+                visible = [last_answered]
+            elif last_visible is not None:
+                visible = [last_visible]
         return {
             "id": module.module_id,
             "title": module.title,

@@ -318,6 +318,13 @@ async function ensureModuleLoaded(targetId: string) {
 }
 
 onMounted(async () => {
+  const nav = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined
+  const isReload =
+    nav?.type === 'reload' || (performance as Performance & { navigation?: { type?: number } }).navigation?.type === 1
+  if (isReload) {
+    await restart()
+    return
+  }
   await ensureModuleLoaded(moduleId.value)
 })
 

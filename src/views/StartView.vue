@@ -111,8 +111,8 @@ function scrollToSection(sectionId: string) {
         <div class="flex items-center gap-3 justify-center mt-10">
           <img
             alt="Trusted by legal teams"
-            class="h-8 w-auto rounded-full grayscale"
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3blJImmlOBw_Wm0MwN_hqL23N_wYdQkAYyYlDXYVksY0YLKXfNgI5Lg-IQIYlymKTn8hd0xLrypR2yIDvgzhN94KpreaXmTh3ExRpMsrOcfx1VCU4nk66Unkdgef9sYQMIItgUW_iMayh_xEI3NlIHf0CyqiXjhK-c5M6nmB9ZDIJNKdhRcjCQ55KAcFUnnnBLopv6QWG8T0DqHx0HcDgB98fQloxD74vrPDKqaRaHhqt3yoJAB3UVtdC59NHPqm4CEyO9zzd3n4"
+            class="h-8 w-auto rounded-full"
+            src="@/assets/images/logo/673b5ff37cae4f8b28a83e0f972bcc37.png"
           />
           <span class="text-sm font-medium text-[#4B5563]">Intertek is trusted by 1000+ global enterprises</span>
         </div>
@@ -172,7 +172,7 @@ function scrollToSection(sectionId: string) {
           <img
             alt="Checklist Icon"
             class="w-10 h-10"
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBdLzTHBR-w4pTfm2InE0qABKZOfeUh3qpSNAbGFr5PH1bY7GbDhnTfXDM_2a0hf84Sg7EjtREmJlsDzLlQVgSokM4bAxjUmnIM3ynbYBOfzgoWpf5EBgCJ9u1CyIKXUPOMHpxQglnhQUfNOFiQk8Y9CDd8Ckad3qcMcMBONCXFlilsEFghyPJxtyf8ZWr_UjcGSyb0qwKdG9GHTlJcsbd3ef2umy2mTS2We9lEOXgObBPxy0C4Pp8GtCGvJpdnCJ37pMFlfq3vyUg"
+            src="@/assets/images/logo/AISquareimage.png"
           />
         </div>
         <h2 class="font-serif text-[2.5rem] text-[#111111] font-bold mb-4">Ready to ensure compliance?</h2>

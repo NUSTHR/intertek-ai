@@ -23,7 +23,7 @@ questions:
 
   - id: "q3a.2"
     text: "Are you using this AI solely for personal, non-work activities?"
-    ref: "Art 2(10): This Regulation does not apply to obligations of deployers who are natural persons using AI systems in the course of a purely personal non-professional activity." [cite: 59]
+    ref: "Art 2(10): This Regulation does not apply to obligations of deployers (pure users) who are natural persons using AI systems in the course of a purely personal non-professional activity." [cite: 59]
     type: "single_choice"
     dependency: "q3a.1 == 3"
     options:
@@ -55,11 +55,11 @@ variables:
     initial_value: ""
     rules:
       - condition: "q3a.1 == 1"
-        value: "Military, Defense, or National Security Exclusion (Art 2(3))"
+        value: "The AI system is used exclusively for military, defense, or national security purposes, placing it entirely outside the scope of this Regulation as per Article 2(3)."
       - condition: "q3a.1 == 2"
-        value: "International Law Enforcement Cooperation Exclusion (Art 2(4))"
+        value: "The system is operated by third-country public authorities or international organizations under a law enforcement cooperation agreement with the Union, qualifying for the exclusion under Article 2(11)."
       - condition: "q3a.2 == True"
-        value: "Personal Non-Professional Activity Exclusion (Art 2(10))"
+        value: "The system is used by a natural person for purely personal, non-professional activities, exempting the user from deployer obligations under Article 2(10)"
       - condition: "else"
         value: "N/A"
 

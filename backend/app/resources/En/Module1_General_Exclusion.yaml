@@ -68,9 +68,9 @@ variables:
     initial_value: ""
     rules:
       - condition: "q1.1 == 1"
-        value: "Scientific Research and Development (Art 2(6))"
+        value: "The system is specifically developed and put into service for the sole purpose of scientific research and development, granting it a total exclusion from the Regulation under Article 2(6)."
       - condition: "q1.1 == 2 and q1.2 == False"
-        value: "Pre-market R&D without real-world testing (Art 2(8))"
+        value: "The project is currently limited to internal research, testing, or development activities conducted in controlled environments and has not yet been placed on the market or put into service as per Article 2(8)."
       - condition: "else"
         value: "None / In-Scope"
 

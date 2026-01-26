@@ -40,9 +40,9 @@ variables:
     initial_value: ""
     rules:
       - condition: "q7.1 == 1"
-        value: "Presumed systemic risk: Training compute > 10^25 FLOPs (Art 51(2))"
+        value: "The model is presumed to pose systemic risk because its training used more than 10^25 floating-point operations, meeting the 'high-impact' quantitative threshold set in Article 51(2)."
       - condition: "q7.1 == 2"
-        value: "Designated systemic risk: Commission decision based on Annex XIII criteria (Art 51(1)(b))"
+        value: "The model is officially designated as having systemic risk by a European Commission decision, due to its significant market reach or capabilities equivalent to high-impact models under Article 51(1)(b)."
       - condition: "else"
         value: "N/A"
 
