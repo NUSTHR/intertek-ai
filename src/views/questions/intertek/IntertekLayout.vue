@@ -51,7 +51,9 @@ function onPrev() {
     <header class="flex items-center justify-between whitespace-nowrap bg-white dark:bg-slate-900 px-6 py-4 sticky top-0 z-50 shadow-sm">
       <div class="flex items-center gap-6">
         <div class="flex items-center gap-3">
-          <img alt="Intertek AI² Logo" class="w-8 h-8 rounded-md" :src="logoUrl" />
+          <a href="https://www.intertek.com/">
+            <img alt="Intertek AI² Logo" class="w-8 h-8 rounded-md" :src="logoUrl" />
+          </a>
           <div class="h-8 w-px bg-slate-200 dark:bg-slate-700 mx-2"></div>
           <h2 class="text-slate-900 dark:text-white text-sm font-extrabold leading-tight tracking-tight uppercase">
             Intertek AI²
@@ -85,7 +87,7 @@ function onPrev() {
           </button>
           <a
             class="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-slate-600 dark:text-slate-400 hover:text-intertek-dark transition-colors"
-            href="https://www.intertek.com/help/"
+            href="https://www.intertek.com/amazed/"
           >
             <span class="material-symbols-outlined text-lg">help_center</span>
             <span class="hidden lg:block">Help Center</span>

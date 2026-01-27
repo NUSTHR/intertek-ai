@@ -53,7 +53,9 @@ async function goHome() {
   <div class="min-h-screen flex flex-col font-sans antialiased text-black bg-white">
     <header class="max-w-7xl mx-auto px-8 py-10 flex justify-between items-center border-b border-gray-100 w-full">
       <div class="flex items-center gap-3">
-        <img alt="Intertek AI² Logo" class="w-8 h-8 rounded-md" :src="logoUrl" />
+        <a href="https://www.intertek.com/">
+          <img alt="Intertek AI² Logo" class="w-8 h-8 rounded-md" :src="logoUrl" />
+        </a>
         <span class="text-3xl font-black tracking-tighter uppercase italic leading-none">Intertek AI²</span>
       </div>
       <div class="flex items-center gap-8">
@@ -68,7 +70,7 @@ async function goHome() {
           </button>
           <a
             class="flex items-center gap-2 text-sm font-bold hover:text-[#FAD400] transition-colors group"
-            href="https://www.intertek.com/help/"
+            href="https://www.intertek.com/amazed/"
           >
             <span class="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">help_center</span>
             <span class="uppercase tracking-widest text-[10px]">Help Center</span>
@@ -128,7 +130,7 @@ async function goHome() {
             <span class="material-symbols-outlined text-4xl mb-6 text-black">code_blocks</span>
             <h3 class="font-black text-3xl uppercase tracking-tighter mb-6">
               {{ conclusion.Risk_Level_Justification ?? store.parameters.Risk_Level_Justification ?? 'Risk Level Justification' }}<br />
-              <span class="text-[#FAD400] text-xs tracking-[0.3em] font-black">Free / Open Source</span>
+              <span class="text-[#FAD400] text-xs tracking-[0.3em] font-black">Legal Justification</span>
             </h3>
           </div>
           <p class="text-base font-medium leading-relaxed text-gray-600">
@@ -140,7 +142,7 @@ async function goHome() {
             <span class="material-symbols-outlined text-4xl mb-6 text-[#FAD400]">verified_user</span>
             <h3 class="font-black text-3xl uppercase tracking-tighter mb-6">
               Obligation<br />
-              <span class="text-[#FAD400] text-xs tracking-[0.3em] font-black">National Security</span>
+              <span class="text-[#FAD400] text-xs tracking-[0.3em] font-black">Compliance Suggestion</span>
             </h3>
           </div>
           <p class="text-base font-medium leading-relaxed text-gray-300">
@@ -166,17 +168,14 @@ async function goHome() {
           <div class="flex flex-wrap gap-4">
             <a
               class="px-10 py-5 bg-black text-white text-sm font-black uppercase tracking-widest rounded-xl hover:bg-[#FAD400] hover:text-black transition-all flex items-center gap-3"
-              href="mailto:tom.hr.tang@intertek.com?subject=AI%20Compliance%20consult%20reservation"
+              href="mailto:tom.hr.tang@intertek.com?subject=AI%20Compliance%20Meeting%20Reservation"
             >
               Book a Meeting
               <span class="material-symbols-outlined text-lg">calendar_today</span>
             </a>
-            <button
-              type="button"
-              class="px-10 py-5 border border-gray-200 text-black text-sm font-black uppercase tracking-widest rounded-xl hover:border-black transition-colors"
-            >
-              Download Memo
-            </button>
+            <div class="flex items-center justify-center w-fit px-10 py-5 border border-gray-200 text-black text-sm font-black uppercase tracking-widest rounded-xl hover:border-black transition-colors cursor-default">
+              call: 020-82139147
+            </div>
           </div>
         </div>
         <div class="flex-1 flex justify-center lg:justify-end">
@@ -229,7 +228,9 @@ async function goHome() {
     </main>
     <footer class="max-w-7xl mx-auto px-8 py-16 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-8 w-full">
       <div class="flex items-center gap-6">
-        <img alt="Intertek AI² Logo" class="w-8 h-8 rounded-md" :src="logoUrl" />
+        <a href="https://www.intertek.com/">
+          <img alt="Intertek AI² Logo" class="w-8 h-8 rounded-md" :src="logoUrl" />
+        </a>
         <span class="text-xl font-black uppercase italic tracking-tighter">Intertek AI²</span>
         <span class="w-px h-4 bg-gray-200"></span>
         <span class="text-gray-400 text-[10px] font-bold tracking-widest">© 2024 COMPLIANCE MAPPER</span>
@@ -237,7 +238,8 @@ async function goHome() {
       <div class="flex gap-10 text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">
         <a class="hover:text-black transition-colors" href="https://www.intertek.com/privacy/">Privacy Policy</a>
         <a class="hover:text-black transition-colors" href="https://www.intertek.com/terms/">Terms of Service</a>
-        <a class="hover:text-black transition-colors" href="https://www.intertek.com/contact/">Support</a>
+        <a class="hover:text-black transition-colors" href="https://www.intertek.com/cookie-policy/">Cookie Policy</a>
+        <a class="hover:text-black transition-colors" href="https://www.intertek.com/amazed/">Help Center</a>
       </div>
     </footer>
   </div>

@@ -42,11 +42,13 @@ function scrollToSection(sectionId: string) {
     <header class="bg-white w-full py-6 border-b border-[#E5E7EB]">
       <div class="container mx-auto px-6 lg:px-12 flex items-center justify-between">
         <div class="flex items-center gap-3">
-          <img
-            alt="Intertek AI² Logo"
-            class="w-8 h-8 rounded-md"
-            :src="logoUrl"
-          />
+          <a href="https://www.intertek.com/">
+            <img
+              alt="Intertek AI² Logo"
+              class="w-8 h-8 rounded-md"
+              :src="logoUrl"
+            />
+          </a>
           <span class="text-[#111111] font-bold text-lg tracking-wide uppercase">Intertek AI²</span>
         </div>
         <div class="hidden md:flex items-center gap-8">
@@ -55,7 +57,7 @@ function scrollToSection(sectionId: string) {
               <span class="material-symbols-outlined text-xl">home</span>
               Home
             </a>
-            <a class="flex items-center gap-2 font-bold hover:text-[#4B5563] transition-colors" href="https://www.intertek.com/help/">
+            <a class="flex items-center gap-2 font-bold hover:text-[#4B5563] transition-colors" href="https://www.intertek.com/amazed/">
               <span class="material-symbols-outlined text-xl">help_center</span>
               Help Center
             </a>
@@ -109,11 +111,13 @@ function scrollToSection(sectionId: string) {
           <button type="button" class="ml-3 underline" @click="retry">重试</button>
         </div>
         <div class="flex items-center gap-3 justify-center mt-10">
-          <img
-            alt="Trusted by legal teams"
-            class="h-8 w-auto rounded-full"
-            src="@/assets/images/logo/673b5ff37cae4f8b28a83e0f972bcc37.png"
-          />
+          <a href="https://www.intertek.com/">
+            <img
+              alt="Trusted by legal teams"
+              class="h-8 w-auto rounded-full"
+              src="@/assets/images/logo/673b5ff37cae4f8b28a83e0f972bcc37.png"
+            />
+          </a>
           <span class="text-sm font-medium text-[#4B5563]">Intertek is trusted by 1000+ global enterprises</span>
         </div>
       </div>
@@ -204,12 +208,13 @@ function scrollToSection(sectionId: string) {
     <footer id="contact" class="bg-white py-12 border-t border-[#E5E7EB]">
       <div class="container mx-auto px-6 lg:px-12 flex flex-col md:flex-row items-center justify-between gap-8">
         <div class="flex items-center gap-3">
-          <img
-            alt="Compliance Mapper Logo"
-            class="w-8 h-8 rounded-md"
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJQkfX8__-vf6rmrZyDztGJ217awHv7KHQ9hL1cz7NKnWe-hKVU3sieSrtMU9tGLWb5y-c11Kvson0CeKQguDZkM5sJrSkw1l5Fb4z93OOu-uLbLjWYK2lazw6x3OHFiL_E3A9an-rYVE6DnVkDysbr09F5OE4gJL-9QH84kMesk6k_QApRVuTkVPF1vmslFatgi-6Bw_uXAWg0kAl7XAn_KVD7Ak4ZrkNhWtxSFQE5u8a9H6x4SlWA9GrmWhAWkHWqL07nFOv75Y"
-          />
-          <span class="text-[#111111] font-bold text-sm uppercase tracking-wider">Compliance Mapper</span>
+          <a href="https://www.intertek.com/">
+            <img
+              alt="Intertek Logo"
+              class="w-8 h-8 rounded-md"
+              :src="logoUrl"
+            />
+          </a>
         </div>
         <div class="flex flex-wrap justify-center gap-10 text-xs font-semibold uppercase tracking-widest text-[#4B5563]">
           <a class="hover:text-[#111111] transition-colors" href="https://www.intertek.com/privacy/">Privacy Policy</a>
@@ -218,6 +223,9 @@ function scrollToSection(sectionId: string) {
           </a>
           <a class="hover:text-[#111111] transition-colors" href="https://www.intertek.com/terms/">
             Terms of Service
+          </a>
+          <a class="hover:text-[#111111] transition-colors" href="https://www.intertek.com/cookie-policy/">
+            Cookie Policy
           </a>
         </div>
         <div class="text-xs text-[#4B5563] font-medium">© 2024 COMPLIANCE MAPPER. ALL RIGHTS RESERVED.</div>

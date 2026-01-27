@@ -18,7 +18,7 @@ questions:
         description: "Select this if the product is a software application that uses data to create specific results like content or decisions."
         value: 2
       - label: "Non-AI Software / Non-General-Purpose AI Model"
-        description: "Select this if your software follows basic, fixed logic without learning from data or making its own inferences."
+        description: "Select this option if your software operates on fixed, deterministic logic without learning or inferring from data, or if it is a model lacking the capability to perform a wide range of distinct tasks."
         value: 3
       - label: "Not Sure"
         description: "Select this if you need more help classifying the technology."
