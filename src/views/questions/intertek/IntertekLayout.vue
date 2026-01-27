@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, inject, type ComputedRef } from 'vue'
 import logoUrl from '@/assets/images/logo/b9d2336ed590ab1e2a8d517d7f555f72.png'
+import { useLocaleStore } from '@/stores/locale'
 
 const props = withDefaults(defineProps<{
   moduleLabel: string
@@ -35,6 +36,39 @@ const progressOverride = inject<ComputedRef<{ stepLabel: string; stepTotal: stri
 const stepLabelText = computed(() => progressOverride?.value?.stepLabel ?? '')
 const stepTotalText = computed(() => progressOverride?.value?.stepTotal ?? '')
 const progressWidthText = computed(() => progressOverride?.value?.progressWidth ?? '')
+const locale = useLocaleStore()
+const helpCenterUrl = 'https://www.intertekinform.com/en-au/contact-us/'
+const ui = computed(() =>
+  locale.isZh
+    ? {
+        home: '首页',
+        restart: '重新开始',
+        helpCenter: '帮助中心',
+        previous: '上一题',
+        next: '下一题',
+        loadingFailed: '加载失败',
+        privacy: '隐私政策',
+        terms: '服务条款',
+        disclaimer: '合规免责声明',
+        contact: '联系支持',
+        langEn: 'EN',
+        langZh: '中文',
+      }
+    : {
+        home: 'Home',
+        restart: 'Restart',
+        helpCenter: 'Help Center',
+        previous: 'Previous',
+        next: 'Next Question',
+        loadingFailed: 'Loading Failed',
+        privacy: 'Privacy',
+        terms: 'Terms',
+        disclaimer: 'Compliance Disclaimer',
+        contact: 'Contact Support',
+        langEn: 'EN',
+        langZh: 'ZH',
+      },
+)
 
 function onPrev() {
   if (prevHandler) {
@@ -54,7 +88,6 @@ function onPrev() {
           <a href="https://www.intertek.com/">
             <img alt="Intertek AI² Logo" class="w-8 h-8 rounded-md" :src="logoUrl" />
           </a>
-          <div class="h-8 w-px bg-slate-200 dark:bg-slate-700 mx-2"></div>
           <h2 class="text-slate-900 dark:text-white text-sm font-extrabold leading-tight tracking-tight uppercase">
             Intertek AI²
           </h2>
@@ -62,11 +95,21 @@ function onPrev() {
       </div>
       <div class="flex items-center gap-8">
         <div class="flex items-center bg-slate-100 dark:bg-slate-800 p-0.5 rounded-sm">
-          <button type="button" class="px-3 py-1 text-[10px] font-black bg-white dark:bg-slate-700 shadow-sm text-intertek-dark">
-            EN
+          <button
+            type="button"
+            class="px-3 py-1 text-[10px] font-black shadow-sm"
+            :class="locale.isZh ? 'text-slate-400 dark:text-slate-500' : 'bg-white dark:bg-slate-700 text-intertek-dark'"
+            @click="locale.setLang('en')"
+          >
+            {{ ui.langEn }}
           </button>
-          <button type="button" class="px-3 py-1 text-[10px] font-bold text-slate-400 hover:text-intertek-dark">
-            ZH
+          <button
+            type="button"
+            class="px-3 py-1 text-[10px] font-black shadow-sm"
+            :class="locale.isZh ? 'bg-white dark:bg-slate-700 text-intertek-dark' : 'text-slate-400 dark:text-slate-500'"
+            @click="locale.setLang('zh')"
+          >
+            {{ ui.langZh }}
           </button>
         </div>
         <div class="flex items-center gap-6">
@@ -75,7 +118,7 @@ function onPrev() {
             href="/"
           >
             <span class="material-symbols-outlined text-lg">home</span>
-            <span class="hidden lg:block">Home</span>
+            <span class="hidden lg:block">{{ ui.home }}</span>
           </a>
           <button
             type="button"
@@ -83,14 +126,14 @@ function onPrev() {
             @click="emit('restart')"
           >
             <span class="material-symbols-outlined text-lg">refresh</span>
-            <span class="hidden lg:block">Restart</span>
+            <span class="hidden lg:block">{{ ui.restart }}</span>
           </button>
           <a
             class="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-slate-600 dark:text-slate-400 hover:text-intertek-dark transition-colors"
-            href="https://www.intertek.com/amazed/"
+            :href="helpCenterUrl"
           >
             <span class="material-symbols-outlined text-lg">help_center</span>
-            <span class="hidden lg:block">Help Center</span>
+            <span class="hidden lg:block">{{ ui.helpCenter }}</span>
           </a>
           <div class="h-6 w-px bg-slate-200 dark:bg-slate-700"></div>
         </div>
@@ -139,7 +182,7 @@ function onPrev() {
                 @click="onPrev"
               >
                 <span class="material-symbols-outlined text-sm">west</span>
-                Previous
+                {{ ui.previous }}
               </button>
               <button
                 type="button"
@@ -147,11 +190,11 @@ function onPrev() {
                 :disabled="props.disableNext"
                 @click="emit('next')"
               >
-                Next Question
+                {{ ui.next }}
                 <span class="material-symbols-outlined text-sm">east</span>
               </button>
             </div>
-            <div v-if="props.error" class="text-sm text-red-600 mt-6">Loading Failed {{ props.error }}</div>
+            <div v-if="props.error" class="text-sm text-red-600 mt-6">{{ ui.loadingFailed }} {{ props.error }}</div>
             <div v-if="props.message" class="text-xs text-slate-500 mt-2">{{ props.message }}</div>
           </div>
         </div>
@@ -174,13 +217,13 @@ function onPrev() {
           </p>
         </div>
         <div class="flex flex-wrap justify-center gap-8 text-[10px] text-slate-500 font-black uppercase tracking-widest">
-          <a class="hover:text-intertek-dark transition-colors" href="https://www.intertek.com/privacy/">Privacy</a>
-          <a class="hover:text-intertek-dark transition-colors" href="https://www.intertek.com/terms/">Terms</a>
+          <a class="hover:text-intertek-dark transition-colors" href="https://www.intertek.com/privacy/">{{ ui.privacy }}</a>
+          <a class="hover:text-intertek-dark transition-colors" href="https://www.intertek.com/terms/">{{ ui.terms }}</a>
           <a class="hover:text-intertek-dark transition-colors" href="https://www.intertek.com/disclaimer/">
-            Compliance Disclaimer
+            {{ ui.disclaimer }}
           </a>
           <a class="hover:text-intertek-dark transition-colors" href="https://www.intertek.com/contact/">
-            Contact Support
+            {{ ui.contact }}
           </a>
         </div>
       </div>

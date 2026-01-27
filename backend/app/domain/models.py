@@ -59,4 +59,5 @@ class Session:
     answers: dict[str, Any] = field(default_factory=dict)
     parameters: dict[str, Any] = field(default_factory=dict)
     current_module_id: str | None = None
+    lang: str = "en"
     conclusion: dict[str, Any] | None = None

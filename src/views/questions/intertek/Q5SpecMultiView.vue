@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import type { AnswerScalar, AnswerValue, Module, ModuleQuestion } from '@/types/questionnaire'
 import IntertekLayout from './IntertekLayout.vue'
 import { buildOptions } from './optionUtils'
+import { useLocaleStore } from '@/stores/locale'
 
 type Option = {
   value: AnswerScalar
@@ -127,22 +128,46 @@ const options = computed(() => {
 const selectedValues = () => (Array.isArray(props.modelValue) ? (props.modelValue as AnswerScalar[]) : [])
 const inputName = computed(() => props.question?.id?.replace(/[^a-zA-Z0-9]/g, '_') ?? 'q5_spec')
 const labelId = computed(() => `${inputName.value}_label`)
+const locale = useLocaleStore()
+const ui = computed(() =>
+  locale.isZh
+    ? {
+        legalContext: '法律依据',
+        reference: '参考',
+        annexTitle: '附件 I / 附件 III',
+        annexDesc: '选择与系统行业或使用场景匹配的附件 I 或附件 III 类别。',
+        viewFullAct: '查看法规全文。',
+      }
+    : {
+        legalContext: 'Legal Context',
+        reference: 'REFERENCE',
+        annexTitle: 'ANNEX I / ANNEX III',
+        annexDesc: 'Select all relevant Annex I or Annex III categories that match the system’s sector or use case.',
+        viewFullAct: 'View Full Act.',
+      },
+)
 const questionTag = computed(() => {
   const id = props.question?.id ?? ''
   if (!id) return ''
-  return `Question ${id.replace(/^q/i, '').toUpperCase()}`
+  return locale.isZh ? `问题 ${id.replace(/^q/i, '').toUpperCase()}` : `Question ${id.replace(/^q/i, '').toUpperCase()}`
 })
 const infoText = computed(() => {
   if (props.question?.id === 'q5.spec_b') {
-    return 'Medical devices requiring third-party assessment under MDR or IVDR are automatically classified as High-Risk AI Systems.'
+    return locale.isZh
+      ? '依据 MDR 或 IVDR 需要第三方评估的医疗器械将自动被归类为高风险 AI 系统。'
+      : 'Medical devices requiring third-party assessment under MDR or IVDR are automatically classified as High-Risk AI Systems.'
   }
-  return 'Choose all applicable options. Use “None of the above” only if no listed category applies.'
+  return locale.isZh
+    ? '请选择所有适用选项，仅在无任何匹配项时选择“以上都不是”。'
+    : 'Choose all applicable options. Use “None of the above” only if no listed category applies.'
 })
 const tipText = computed(() => {
   if (props.question?.id === 'q5.spec_b') {
-    return 'Medical devices covered by MDR or IVDR that require third-party assessment are classified as high-risk under Annex I.'
+    return locale.isZh
+      ? '符合 MDR 或 IVDR 且需第三方评估的医疗器械在附件 I 下被归类为高风险。'
+      : 'Medical devices covered by MDR or IVDR that require third-party assessment are classified as high-risk under Annex I.'
   }
-  return 'Select all categories that apply to your system’s intended use.'
+  return locale.isZh ? '请选择与系统预期用途相符的所有类别。' : 'Select all categories that apply to your system’s intended use.'
 })
 
 function toggleValue(value: AnswerScalar) {
@@ -236,20 +261,20 @@ function isSelected(value: AnswerScalar) {
       <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
         <div class="bg-intertek-dark px-5 py-4 flex items-center gap-3">
           <span class="material-symbols-outlined text-intertek-yellow text-xl">gavel</span>
-          <h3 class="font-black text-white text-[11px] uppercase tracking-[0.2em]">Legal Context</h3>
+          <h3 class="font-black text-white text-[11px] uppercase tracking-[0.2em]">{{ ui.legalContext }}</h3>
         </div>
         <div class="p-6 flex flex-col gap-6">
           <div v-if="question.ref" class="border-b border-slate-100 dark:border-slate-800 pb-4">
-            <h4 class="font-black text-slate-900 dark:text-white mb-3 text-xs uppercase tracking-tight">REFERENCE</h4>
+            <h4 class="font-black text-slate-900 dark:text-white mb-3 text-xs uppercase tracking-tight">{{ ui.reference }}</h4>
             <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
               {{ question.ref }}
             </p>
           </div>
           <template v-else>
             <div class="border-b border-slate-100 dark:border-slate-800 pb-4">
-              <h4 class="font-black text-slate-900 dark:text-white mb-3 text-xs uppercase tracking-tight">ANNEX I / ANNEX III</h4>
+              <h4 class="font-black text-slate-900 dark:text-white mb-3 text-xs uppercase tracking-tight">{{ ui.annexTitle }}</h4>
               <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
-                Select all relevant Annex I or Annex III categories that match the system’s sector or use case.
+                {{ ui.annexDesc }}
               </p>
             </div>
           </template>
@@ -269,7 +294,7 @@ function isSelected(value: AnswerScalar) {
             target="_blank"
             rel="noreferrer"
           >
-            View Full Act.
+            {{ ui.viewFullAct }}
             <span class="material-symbols-outlined text-sm">open_in_new</span>
           </a>
         </div>

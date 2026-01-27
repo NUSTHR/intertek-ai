@@ -4,30 +4,33 @@ from typing import Any
 
 from fastapi import HTTPException
 
-from ..domain.models import Engine
+from ..domain.models import Engine, Session
 from ..infra.loader import EngineLoader
 from ..infra.store import SessionStore
 from ..logic.evaluator import Evaluator
 
 
 class QuestionnaireService:
-    def __init__(self, loader: EngineLoader, evaluator: Evaluator, store: SessionStore) -> None:
-        self.loader = loader
+    def __init__(self, loaders: dict[str, EngineLoader], evaluator: Evaluator, store: SessionStore) -> None:
+        self.loaders = loaders
         self.evaluator = evaluator
         self.store = store
 
-    def start(self) -> tuple[str, dict[str, Any]]:
-        engine = self._engine()
+    def start(self, lang: str | None = None) -> tuple[str, dict[str, Any]]:
+        lang_value = self._normalize_lang(lang)
+        engine = self._engine(lang_value)
         if not engine.modules:
             raise HTTPException(status_code=500, detail="no_modules_loaded")
-        session = self.store.create(engine.modules[0].module_id)
+        session = self.store.create(engine.modules[0].module_id, lang_value)
         session.parameters = self.evaluator.compute_parameters(engine, session.answers)
         module = engine.modules_by_id[session.current_module_id]
         return session.id, self.evaluator.module_payload(module, session.answers, session.parameters)
 
-    def get_module(self, session_id: str, module_id: str) -> dict[str, Any]:
-        engine = self._engine()
+    def get_module(self, session_id: str, module_id: str, lang: str | None = None) -> dict[str, Any]:
         session = self.store.get(session_id)
+        lang_value = self._normalize_lang(lang, session)
+        engine = self._engine(lang_value)
+        session.lang = lang_value
         module = engine.modules_by_id.get(module_id)
         if not module:
             raise HTTPException(status_code=404, detail="module_not_found")
@@ -39,9 +42,12 @@ class QuestionnaireService:
         module_id: str | None,
         answers: dict[str, Any],
         replace: bool = False,
+        lang: str | None = None,
     ) -> dict[str, Any]:
-        engine = self._engine()
         session = self.store.get(session_id)
+        lang_value = self._normalize_lang(lang, session)
+        engine = self._engine(lang_value)
+        session.lang = lang_value
         active_module_id = module_id or session.current_module_id
         if not active_module_id:
             raise HTTPException(status_code=400, detail="module_id_required")
@@ -95,13 +101,24 @@ class QuestionnaireService:
             "conclusion": conclusion,
         }
 
-    def result(self, session_id: str) -> tuple[dict[str, Any], dict[str, Any] | None]:
-        engine = self._engine()
+    def result(self, session_id: str, lang: str | None = None) -> tuple[dict[str, Any], dict[str, Any] | None]:
         session = self.store.get(session_id)
+        lang_value = self._normalize_lang(lang, session)
+        engine = self._engine(lang_value)
+        session.lang = lang_value
         session.parameters = self.evaluator.compute_parameters(engine, session.answers)
         conclusion = self.evaluator.compute_conclusion(session.parameters)
         session.conclusion = conclusion
         return session.parameters, conclusion
 
-    def _engine(self) -> Engine:
-        return self.loader.get_engine()
+    def _engine(self, lang: str) -> Engine:
+        loader = self.loaders.get(lang) or self.loaders.get("en")
+        if not loader:
+            raise HTTPException(status_code=500, detail="engine_loader_missing")
+        return loader.get_engine()
+
+    def _normalize_lang(self, lang: str | None, session: Session | None = None) -> str:
+        raw = (lang or (session.lang if session else "") or "en").lower()
+        if raw in {"zh", "cn", "zh-cn", "zh-hans", "zh-hans-cn"}:
+            return "cn"
+        return "en"

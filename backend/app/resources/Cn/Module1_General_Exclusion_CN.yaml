@@ -6,34 +6,34 @@ description: "根据第 2 条关于研发的豁免规定，确定该人工智能
 questions:
   - id: "q1.1"
     text: "您会如何最好地描述您的人工智能产品或项目？"
-    [cite_start]ref: "第 2(6) 条：本法规不适用于专门为科学研究和开发目的而开发并投入使用的 AI 系统或 AI 模型，包括其输出 [cite: 52][cite_start]。第 2(8) 条：本法规不适用于在 AI 系统或 AI 模型投放市场或投入使用之前的任何研究、测试或开发活动 [cite: 55]。"
+    ref: "第 2(6) 条：本法规不适用于专门为科学研究和开发目的而开发并投入使用的 AI 系统或 AI 模型，包括其输出 [cite: 52]。第 2(8) 条：本法规不适用于在 AI 系统或 AI 模型投放市场或投入使用之前的任何研究、测试或开发活动 [cite: 55]。"
     type: "single_choice"
     options:
       - label: "仅用于纯科学研究。"
-        [cite_start]cite: "第 2(6) 条：本法规不适用于……专门为科学研究和开发目的而开发并投入使用的 AI 系统或 AI 模型 [cite: 52]。"
+        cite: "第 2(6) 条：本法规不适用于……专门为科学研究和开发目的而开发并投入使用的 AI 系统或 AI 模型 [cite: 52]。"
         description: "若 AI 仅用于科学发现，而非用于商业或业务用途，请选择此项。"
         value: 1
       - label: "这是一个尚未投放市场的开发项目。"
-        [cite_start]cite: "第 2(8) 条：本法规不适用于……投放市场或投入使用之前的任何研究、测试或开发活动 [cite: 55]。"
+        cite: "第 2(8) 条：本法规不适用于……投放市场或投入使用之前的任何研究、测试或开发活动 [cite: 55]。"
         description: "如果您仍在构建或测试，尚未发布该系统供使用或销售，请选择此项。"
         value: 2
       - label: "用于商业或运营用途。"
-        [cite_start]cite: "第 2(1) 条：本法规适用于在欧盟内投放市场……AI 系统……的提供者，无论这些提供者是否在欧盟内设立或位于欧盟内 [cite: 39]。"
+        cite: "第 2(1) 条：本法规适用于在欧盟内投放市场……AI 系统……的提供者，无论这些提供者是否在欧盟内设立或位于欧盟内 [cite: 39]。"
         description: "如果您的 AI 旨在用于商业、公共服务，或已经可供用户使用，请选择此项。"
         value: 0
 
   - id: "q1.2"
     text: "您是否在真实世界环境中测试该人工智能？"
-    [cite_start]ref: "第 2(9) 条：真实世界条件下的测试不应包含在该豁免范围内 [cite: 57]。"
+    ref: "第 2(9) 条：真实世界条件下的测试不应包含在该豁免范围内 [cite: 57]。"
     type: "single_choice"
     dependency: "q1.1 == 2"
     options:
       - label: "是"
-        [cite_start]cite: "第 2(9) 条：真实世界条件下的测试不应包含在该豁免范围内 [cite: 57]。"
+        cite: "第 2(9) 条：真实世界条件下的测试不应包含在该豁免范围内 [cite: 57]。"
         description: "如果您是在实验室之外，通过真人测试 AI 的预期用途，请选择此项。"
         value: True
       - label: "否"
-        [cite_start]cite: "第 3(45) 条：‘真实世界条件下的测试’是指……在实验室或其他模拟环境之外……进行的临时测试 [cite: 130]。"
+        cite: "第 3(45) 条：‘真实世界条件下的测试’是指……在实验室或其他模拟环境之外……进行的临时测试 [cite: 130]。"
         description: "如果测试严格限制在实验室或受控的计算机模拟环境中，请选择此项。"
         value: False
 
@@ -57,7 +57,7 @@ variables:
     type: "boolean"
     initial_value: False
     rules:
-      # [cite_start]Testing in real world conditions is not covered by the R&D exclusion [cite: 57]
+      # Testing in real world conditions is not covered by the R&D exclusion [cite: 57]
       - condition: "q1.1 == 2 and q1.2 == True"
         value: True
       - condition: "else"

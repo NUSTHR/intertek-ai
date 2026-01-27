@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import type { AnswerValue, Module, ModuleQuestion } from '@/types/questionnaire'
 import IntertekLayout from './IntertekLayout.vue'
 import { buildOptions } from './optionUtils'
+import { useLocaleStore } from '@/stores/locale'
 
 const props = defineProps<{
   module: Module
@@ -20,27 +21,78 @@ const emit = defineEmits<{
   (e: 'restart'): void
 }>()
 
-const fallbackOptions = [
-  {
-    value: 1,
-    title: 'Computation Threshold',
-    description: 'The cumulative amount of computation used for its training is greater than 10^25 FLOPs.',
-    icon: 'memory',
-  },
-  {
-    value: 2,
-    title: 'Commission Decision',
-    description: 'The Commission has adopted a decision designating the model as having systemic risk.',
-    icon: 'gavel',
-  },
-  {
-    value: 0,
-    title: 'None of the above',
-    description: 'The model does not meet the 10^25 FLOPs threshold and has not been designated by the Commission.',
-    icon: 'close',
-  },
-]
-const options = computed(() => buildOptions(props.question, fallbackOptions))
+const locale = useLocaleStore()
+const ui = computed(() =>
+  locale.isZh
+    ? {
+        legalContext: '法律依据',
+        reference: '参考',
+        articleDesc:
+          '第51条确立将通用目的 AI 模型认定为具有系统性风险的标准，包括通过技术工具评估高影响能力，或依据训练累计计算量。',
+        infoTip: '10^25 FLOPs 阈值是一项可反驳的推定，表明模型具备高影响能力。',
+        viewFullAct: '查看法规全文。',
+        tip: '具有系统性风险的模型需遵守第51-55条的额外透明度与风险管理义务。',
+      }
+    : {
+        legalContext: 'Legal Context',
+        reference: 'REFERENCE',
+        articleDesc:
+          'Article 51 establishes criteria for classifying general-purpose AI (GPAI) models as having systemic risk. A model is considered to have systemic risk if it has high-impact capabilities, evaluated through technical tools/methodologies, or based on the cumulative computation used for training.',
+        infoTip:
+          'The 10^25 FLOPs threshold is a rebuttable presumption that the model possesses high-impact capabilities.',
+        viewFullAct: 'View Full Act.',
+        tip: 'Models with systemic risk are subject to additional transparency and risk management obligations under Articles 51–55.',
+      },
+)
+const fallbackOptions = computed(() =>
+  locale.isZh
+    ? [
+        {
+          value: 1,
+          title: '计算量阈值',
+          description: '训练所用累计计算量超过 10^25 FLOPs。',
+          icon: 'memory',
+        },
+        {
+          value: 2,
+          title: '委员会决定',
+          description: '欧盟委员会已决定将该模型认定为具有系统性风险。',
+          icon: 'gavel',
+        },
+        {
+          value: 0,
+          title: '以上都不是',
+          description: '模型未达到 10^25 FLOPs 阈值且未被委员会认定。',
+          icon: 'close',
+        },
+      ]
+    : [
+        {
+          value: 1,
+          title: 'Computation Threshold',
+          description: 'The cumulative amount of computation used for its training is greater than 10^25 FLOPs.',
+          icon: 'memory',
+        },
+        {
+          value: 2,
+          title: 'Commission Decision',
+          description: 'The Commission has adopted a decision designating the model as having systemic risk.',
+          icon: 'gavel',
+        },
+        {
+          value: 0,
+          title: 'None of the above',
+          description: 'The model does not meet the 10^25 FLOPs threshold and has not been designated by the Commission.',
+          icon: 'close',
+        },
+      ],
+)
+const options = computed(() => buildOptions(props.question, fallbackOptions.value))
+const questionTag = computed(() => {
+  const id = props.question?.id ?? ''
+  if (!id) return ''
+  return locale.isZh ? `问题 ${id.replace(/^q/i, '').toUpperCase()}` : `Question ${id.replace(/^q/i, '').toUpperCase()}`
+})
 </script>
 
 <template>
@@ -48,7 +100,7 @@ const options = computed(() => buildOptions(props.question, fallbackOptions))
     module-label="Module 7 / 9"
     :module-title="props.module.title"
     :module-description="props.module.description"
-    question-tag="Question Q7.1"
+    :question-tag="questionTag"
     :question-text="question.text"
     :question-description="question.description"
     :error="error"
@@ -108,26 +160,22 @@ const options = computed(() => buildOptions(props.question, fallbackOptions))
       <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
         <div class="bg-intertek-dark px-5 py-4 flex items-center gap-3">
           <span class="material-symbols-outlined text-intertek-yellow text-xl">gavel</span>
-          <h3 class="font-black text-white text-[11px] uppercase tracking-[0.2em]">Legal Context</h3>
+          <h3 class="font-black text-white text-[11px] uppercase tracking-[0.2em]">{{ ui.legalContext }}</h3>
         </div>
         <div class="p-6 flex flex-col gap-6">
           <div class="border-b border-slate-100 dark:border-slate-800 pb-4">
-            <h4 class="font-black text-slate-900 dark:text-white mb-3 text-xs uppercase tracking-tight">REFERENCE</h4>
+            <h4 class="font-black text-slate-900 dark:text-white mb-3 text-xs uppercase tracking-tight">{{ ui.reference }}</h4>
             <p v-if="question.ref" class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
               {{ question.ref }}
             </p>
             <p v-else class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
-              Article 51 establishes criteria for classifying general-purpose AI (GPAI) models as having systemic risk.
-              A model is considered to have systemic risk if it has high-impact capabilities, evaluated through
-              technical tools/methodologies, or based on the cumulative computation used for training.
+              {{ ui.articleDesc }}
             </p>
           </div>
           <div class="bg-slate-50 dark:bg-slate-800 p-4 border-l-4 border-intertek-yellow">
             <div class="flex gap-3">
               <span class="material-symbols-outlined text-intertek-dark dark:text-intertek-yellow text-xl">info</span>
-              <p class="text-[11px] text-slate-700 dark:text-slate-300 font-bold leading-normal italic">
-                The 10^25 FLOPs threshold is a rebuttable presumption that the model possesses high-impact capabilities.
-              </p>
+              <p class="text-[11px] text-slate-700 dark:text-slate-300 font-bold leading-normal italic">{{ ui.infoTip }}</p>
             </div>
           </div>
         </div>
@@ -138,7 +186,7 @@ const options = computed(() => buildOptions(props.question, fallbackOptions))
             target="_blank"
             rel="noreferrer"
           >
-            View Full Act.
+            {{ ui.viewFullAct }}
             <span class="material-symbols-outlined text-sm">open_in_new</span>
           </a>
         </div>
@@ -148,8 +196,7 @@ const options = computed(() => buildOptions(props.question, fallbackOptions))
       <div class="flex items-start gap-4 p-5 bg-intertek-yellow/5 border border-intertek-yellow/20">
         <span class="material-symbols-outlined text-intertek-yellow text-2xl">lightbulb</span>
         <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-medium italic">
-          Models with systemic risk are subject to additional transparency and risk management obligations under
-          Articles 51–55.
+          {{ ui.tip }}
         </p>
       </div>
     </template>

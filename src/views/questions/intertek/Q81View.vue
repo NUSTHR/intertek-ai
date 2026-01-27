@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import type { AnswerValue, Module, ModuleQuestion } from '@/types/questionnaire'
 import IntertekLayout from './IntertekLayout.vue'
 import { buildOptions } from './optionUtils'
+import { useLocaleStore } from '@/stores/locale'
 
 const props = defineProps<{
   module: Module
@@ -20,23 +21,68 @@ const emit = defineEmits<{
   (e: 'restart'): void
 }>()
 
-const fallbackOptions = [
-  {
-    value: true,
-    title: 'Free & Open-Source',
-    description:
-      'Select this if the AI system or model is provided under a license that grants users the freedom to use, study, modify, and redistribute the software or model weights.',
-    label: 'YES',
-  },
-  {
-    value: false,
-    title: 'Proprietary / Restricted',
-    description:
-      'Select this if the system is proprietary or if access to the source code, architecture, or model parameters is restricted.',
-    label: 'NO',
-  },
-]
-const options = computed(() => buildOptions(props.question, fallbackOptions))
+const locale = useLocaleStore()
+const ui = computed(() =>
+  locale.isZh
+    ? {
+        legalContext: '法律依据',
+        reference: '参考',
+        articleDesc:
+          '欧盟 AI 法对以自由开源许可证发布的模型与系统提供特定豁免，包括公开模型参数、权重与架构的情形。若模型具有系统性风险或用于高风险系统，则不适用豁免。',
+        infoTip: '许可证必须允许使用、研究、修改与再分发，方可适用部分文档豁免。',
+        viewFullAct: '查看法规全文。',
+        tip: '开源模型在非高风险或非系统性风险场景下可豁免部分文档义务。',
+      }
+    : {
+        legalContext: 'Legal Context',
+        reference: 'REFERENCE',
+        articleDesc:
+          'The EU AI Act provides specific exemptions for AI models and systems released under free and open-source licenses. This includes software and models where parameters, weights, and architecture are made publicly available. These exemptions do not apply if the model presents systemic risks or is used in high-risk AI systems.',
+        infoTip:
+          'Licensing must allow for use, study, modification, and redistribution to qualify for certain documentation exemptions.',
+        viewFullAct: 'View Full Act.',
+        tip: 'Open-source models are exempt from certain documentation obligations unless they are high-risk or have systemic risks.',
+      },
+)
+const fallbackOptions = computed(() =>
+  locale.isZh
+    ? [
+        {
+          value: true,
+          title: '自由与开源',
+          description: '系统或模型以允许使用、研究、修改与再分发的软件或模型权重许可发布。',
+          label: '是',
+        },
+        {
+          value: false,
+          title: '专有/受限',
+          description: '系统为专有，或源代码、架构或模型参数访问受限。',
+          label: '否',
+        },
+      ]
+    : [
+        {
+          value: true,
+          title: 'Free & Open-Source',
+          description:
+            'Select this if the AI system or model is provided under a license that grants users the freedom to use, study, modify, and redistribute the software or model weights.',
+          label: 'YES',
+        },
+        {
+          value: false,
+          title: 'Proprietary / Restricted',
+          description:
+            'Select this if the system is proprietary or if access to the source code, architecture, or model parameters is restricted.',
+          label: 'NO',
+        },
+      ],
+)
+const options = computed(() => buildOptions(props.question, fallbackOptions.value))
+const questionTag = computed(() => {
+  const id = props.question?.id ?? ''
+  if (!id) return ''
+  return locale.isZh ? `问题 ${id.replace(/^q/i, '').toUpperCase()}` : `Question ${id.replace(/^q/i, '').toUpperCase()}`
+})
 </script>
 
 <template>
@@ -44,7 +90,7 @@ const options = computed(() => buildOptions(props.question, fallbackOptions))
     module-label="Module 8 / 9"
     :module-title="props.module.title"
     :module-description="props.module.description"
-    question-tag="Question Q8.1"
+    :question-tag="questionTag"
     :question-text="question.text"
     :question-description="question.description"
     :error="error"
@@ -104,28 +150,22 @@ const options = computed(() => buildOptions(props.question, fallbackOptions))
       <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
         <div class="bg-intertek-dark px-5 py-4 flex items-center gap-3">
           <span class="material-symbols-outlined text-intertek-yellow text-xl">gavel</span>
-          <h3 class="font-black text-white text-[11px] uppercase tracking-[0.2em]">Legal Context</h3>
+          <h3 class="font-black text-white text-[11px] uppercase tracking-[0.2em]">{{ ui.legalContext }}</h3>
         </div>
         <div class="p-6 flex flex-col gap-6">
           <div class="border-b border-slate-100 dark:border-slate-800 pb-4">
-            <h4 class="font-black text-slate-900 dark:text-white mb-3 text-xs uppercase tracking-tight">REFERENCE</h4>
+            <h4 class="font-black text-slate-900 dark:text-white mb-3 text-xs uppercase tracking-tight">{{ ui.reference }}</h4>
             <p v-if="question.ref" class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
               {{ question.ref }}
             </p>
             <p v-else class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
-              The EU AI Act provides specific exemptions for AI models and systems released under free and open-source
-              licenses. This includes software and models where parameters, weights, and architecture are made publicly
-              available. These exemptions do not apply if the model presents systemic risks or is used in high-risk AI
-              systems.
+              {{ ui.articleDesc }}
             </p>
           </div>
           <div class="bg-slate-50 dark:bg-slate-800 p-4 border-l-4 border-intertek-yellow">
             <div class="flex gap-3">
               <span class="material-symbols-outlined text-intertek-dark dark:text-intertek-yellow text-xl">info</span>
-              <p class="text-[11px] text-slate-700 dark:text-slate-300 font-bold leading-normal italic">
-                Licensing must allow for use, study, modification, and redistribution to qualify for certain
-                documentation exemptions.
-              </p>
+              <p class="text-[11px] text-slate-700 dark:text-slate-300 font-bold leading-normal italic">{{ ui.infoTip }}</p>
             </div>
           </div>
         </div>
@@ -136,7 +176,7 @@ const options = computed(() => buildOptions(props.question, fallbackOptions))
             target="_blank"
             rel="noreferrer"
           >
-            View Full Act.
+            {{ ui.viewFullAct }}
             <span class="material-symbols-outlined text-sm">open_in_new</span>
           </a>
         </div>
@@ -146,8 +186,7 @@ const options = computed(() => buildOptions(props.question, fallbackOptions))
       <div class="flex items-start gap-4 p-5 bg-intertek-yellow/5 border border-intertek-yellow/20">
         <span class="material-symbols-outlined text-intertek-yellow text-2xl">lightbulb</span>
         <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-medium italic">
-          Open-source models are exempt from certain documentation obligations unless they are high-risk or have
-          systemic risks.
+          {{ ui.tip }}
         </p>
       </div>
     </template>

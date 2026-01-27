@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import type { AnswerValue, Module, ModuleQuestion } from '@/types/questionnaire'
+import { useLocaleStore } from '@/stores/locale'
 
 defineProps<{
   module: Module
@@ -17,6 +19,27 @@ const emit = defineEmits<{
   (e: 'restart'): void
   (e: 'prev'): void
 }>()
+
+const locale = useLocaleStore()
+const ui = computed(() =>
+  locale.isZh
+    ? {
+        yes: '是',
+        no: '否',
+        loadingFailed: '加载失败',
+        prev: '上一题',
+        restart: '重新开始',
+        next: '继续',
+      }
+    : {
+        yes: 'Yes',
+        no: 'No',
+        loadingFailed: 'Loading Failed',
+        prev: 'Previous',
+        restart: 'Restart',
+        next: 'Continue',
+      },
+)
 
 function onSingleChange(question: ModuleQuestion, value: AnswerValue) {
   emit('update-answer', { id: question.id, value })
@@ -47,7 +70,7 @@ function onMultiToggle(question: ModuleQuestion, value: AnswerValue) {
             :checked="answers[question.id] === true"
             @change="onBooleanChange(question, true)"
           />
-          <span>是</span>
+          <span>{{ ui.yes }}</span>
         </label>
         <label class="option">
           <input
@@ -56,7 +79,7 @@ function onMultiToggle(question: ModuleQuestion, value: AnswerValue) {
             :checked="answers[question.id] === false"
             @change="onBooleanChange(question, false)"
           />
-          <span>否</span>
+          <span>{{ ui.no }}</span>
         </label>
       </div>
 
@@ -85,13 +108,13 @@ function onMultiToggle(question: ModuleQuestion, value: AnswerValue) {
       </div>
     </div>
 
-    <div v-if="error" class="error">Loading Failed {{ error }}</div>
+    <div v-if="error" class="error">{{ ui.loadingFailed }} {{ error }}</div>
     <div v-if="message" class="muted">{{ message }}</div>
 
     <div class="actions">
-      <button type="button" @click="emit('prev')">上一题</button>
-      <button type="button" @click="emit('restart')">重新开始</button>
-      <button type="button" :disabled="!canSubmit || loading" @click="emit('submit')">继续</button>
+      <button type="button" @click="emit('prev')">{{ ui.prev }}</button>
+      <button type="button" @click="emit('restart')">{{ ui.restart }}</button>
+      <button type="button" :disabled="!canSubmit || loading" @click="emit('submit')">{{ ui.next }}</button>
     </div>
   </section>
 </template>

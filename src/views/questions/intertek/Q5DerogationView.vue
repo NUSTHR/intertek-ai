@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import type { AnswerScalar, AnswerValue, Module, ModuleQuestion } from '@/types/questionnaire'
 import IntertekLayout from './IntertekLayout.vue'
 import { buildOptions } from './optionUtils'
+import { useLocaleStore } from '@/stores/locale'
 
 type Option = {
   value: AnswerScalar
@@ -28,40 +29,105 @@ const emit = defineEmits<{
   (e: 'restart'): void
 }>()
 
-const fallbackOptions: Option[] = [
-  {
-    value: 1,
-    title: 'Narrow Task',
-    description: 'The system performs a narrow procedural task (e.g., transforming data into a specific format).',
-    icon: 'target',
-  },
-  {
-    value: 2,
-    title: 'Human Activity Improvement',
-    description: 'The system is intended to improve the result of a previously completed human activity.',
-    icon: 'trending_up',
-  },
-  {
-    value: 3,
-    title: 'Pattern Detection',
-    description: 'The system is used to detect decision-making patterns or deviations from prior patterns.',
-    icon: 'hub',
-  },
-  {
-    value: 4,
-    title: 'Preparatory Task',
-    description: 'The system performs a purely preparatory task for an assessment (without determining the outcome).',
-    icon: 'assignment',
-  },
-  {
-    value: 0,
-    title: 'None of the above',
-    description: 'Select this if none of the specific operational exemptions apply to your system.',
-    icon: 'block',
-    exclusive: true,
-  },
-]
-const options = computed(() => buildOptions(props.question, fallbackOptions))
+const locale = useLocaleStore()
+const ui = computed(() =>
+  locale.isZh
+    ? {
+        legalContext: '法律依据',
+        reference: '参考',
+        articleTitle: '第6(3)条条件',
+        articleDesc:
+          '根据第6(3)条，附件 III 所列高风险 AI 系统在不对健康、安全或基本权利造成重大风险，且不实质影响决策结果时，可不被视为高风险，前提是满足(a)至(d)项条件。',
+        infoTip: '若系统对自然人进行画像处理，上述减免不适用。',
+        viewFullAct: '查看法规全文。',
+        tip: '仅当系统不实质影响决策且满足(a)-(d)条件时，方适用第6(3)条减免。',
+      }
+    : {
+        legalContext: 'Legal Context',
+        reference: 'REFERENCE',
+        articleTitle: 'ARTICLE 6(3) CONDITIONS',
+        articleDesc:
+          'According to Article 6(3), a high-risk AI system mentioned in Annex III shall not be considered high-risk if it does not pose a significant risk of harm to the health, safety or fundamental rights, including by not materially influencing the outcome of decision making. This applies if it fulfills conditions (a) to (d).',
+        infoTip: 'These derogations do not apply if the AI system performs profiling of natural persons.',
+        viewFullAct: 'View Full Act.',
+        tip: 'Article 6(3) derogations apply only when the system does not materially influence decisions and the conditions (a)–(d) are satisfied.',
+      },
+)
+const fallbackOptions = computed<Option[]>(() =>
+  locale.isZh
+    ? [
+        {
+          value: 1,
+          title: '狭窄任务',
+          description: '系统执行狭窄的程序性任务（如将数据转换为特定格式）。',
+          icon: 'target',
+        },
+        {
+          value: 2,
+          title: '提升人类活动结果',
+          description: '系统用于改善已完成的人类活动结果。',
+          icon: 'trending_up',
+        },
+        {
+          value: 3,
+          title: '模式检测',
+          description: '系统用于检测决策模式或偏离既有模式的情况。',
+          icon: 'hub',
+        },
+        {
+          value: 4,
+          title: '准备性任务',
+          description: '系统仅执行评估前的准备性任务（不决定结果）。',
+          icon: 'assignment',
+        },
+        {
+          value: 0,
+          title: '以上都不是',
+          description: '若上述特定豁免均不适用，请选择此项。',
+          icon: 'block',
+          exclusive: true,
+        },
+      ]
+    : [
+        {
+          value: 1,
+          title: 'Narrow Task',
+          description: 'The system performs a narrow procedural task (e.g., transforming data into a specific format).',
+          icon: 'target',
+        },
+        {
+          value: 2,
+          title: 'Human Activity Improvement',
+          description: 'The system is intended to improve the result of a previously completed human activity.',
+          icon: 'trending_up',
+        },
+        {
+          value: 3,
+          title: 'Pattern Detection',
+          description: 'The system is used to detect decision-making patterns or deviations from prior patterns.',
+          icon: 'hub',
+        },
+        {
+          value: 4,
+          title: 'Preparatory Task',
+          description: 'The system performs a purely preparatory task for an assessment (without determining the outcome).',
+          icon: 'assignment',
+        },
+        {
+          value: 0,
+          title: 'None of the above',
+          description: 'Select this if none of the specific operational exemptions apply to your system.',
+          icon: 'block',
+          exclusive: true,
+        },
+      ],
+)
+const options = computed(() => buildOptions(props.question, fallbackOptions.value))
+const questionTag = computed(() => {
+  const id = props.question?.id ?? ''
+  if (!id) return ''
+  return locale.isZh ? `问题 ${id.replace(/^q/i, '').toUpperCase()}` : `Question ${id.replace(/^q/i, '').toUpperCase()}`
+})
 
 const selectedValues = () => (Array.isArray(props.modelValue) ? (props.modelValue as AnswerScalar[]) : [])
 
@@ -94,7 +160,7 @@ function isSelected(value: AnswerScalar) {
     module-label="Module 5 / 5"
     :module-title="props.module.title"
     :module-description="props.module.description"
-    question-tag="Question 5.Derogation"
+    :question-tag="questionTag"
     :question-text="question.text"
     :question-description="question.description"
     :error="error"
@@ -156,32 +222,29 @@ function isSelected(value: AnswerScalar) {
       <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
         <div class="bg-intertek-dark px-5 py-4 flex items-center gap-3">
           <span class="material-symbols-outlined text-intertek-yellow text-xl">gavel</span>
-          <h3 class="font-black text-white text-[11px] uppercase tracking-[0.2em]">Legal Context</h3>
+          <h3 class="font-black text-white text-[11px] uppercase tracking-[0.2em]">{{ ui.legalContext }}</h3>
         </div>
         <div class="p-6 flex flex-col gap-6">
           <div v-if="question.ref" class="border-b border-slate-100 dark:border-slate-800 pb-4">
-            <h4 class="font-black text-slate-900 dark:text-white mb-3 text-xs uppercase tracking-tight">REFERENCE</h4>
+            <h4 class="font-black text-slate-900 dark:text-white mb-3 text-xs uppercase tracking-tight">{{ ui.reference }}</h4>
             <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
               {{ question.ref }}
             </p>
           </div>
           <template v-else>
             <div class="border-b border-slate-100 dark:border-slate-800 pb-4">
-              <h4 class="font-black text-slate-900 dark:text-white mb-3 text-xs uppercase tracking-tight">ARTICLE 6(3) CONDITIONS</h4>
+              <h4 class="font-black text-slate-900 dark:text-white mb-3 text-xs uppercase tracking-tight">
+                {{ ui.articleTitle }}
+              </h4>
               <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
-                According to Article 6(3), a high-risk AI system mentioned in Annex III shall not be considered high-risk
-                if it does not pose a significant risk of harm to the health, safety or fundamental rights, including by
-                not materially influencing the outcome of decision making. This applies if it fulfills conditions (a) to
-                (d).
+                {{ ui.articleDesc }}
               </p>
             </div>
           </template>
           <div class="bg-slate-50 dark:bg-slate-800 p-4 border-l-4 border-intertek-yellow">
             <div class="flex gap-3">
               <span class="material-symbols-outlined text-intertek-dark dark:text-intertek-yellow text-xl">info</span>
-              <p class="text-[11px] text-slate-700 dark:text-slate-300 font-bold leading-normal italic">
-                These derogations do not apply if the AI system performs profiling of natural persons.
-              </p>
+              <p class="text-[11px] text-slate-700 dark:text-slate-300 font-bold leading-normal italic">{{ ui.infoTip }}</p>
             </div>
           </div>
         </div>
@@ -192,7 +255,7 @@ function isSelected(value: AnswerScalar) {
             target="_blank"
             rel="noreferrer"
           >
-            View Full Act.
+            {{ ui.viewFullAct }}
             <span class="material-symbols-outlined text-sm">open_in_new</span>
           </a>
         </div>
@@ -202,8 +265,7 @@ function isSelected(value: AnswerScalar) {
       <div class="flex items-start gap-4 p-5 bg-intertek-yellow/5 border border-intertek-yellow/20">
         <span class="material-symbols-outlined text-intertek-yellow text-2xl">lightbulb</span>
         <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-medium italic">
-          Article 6(3) derogations apply only when the system does not materially influence decisions and the conditions
-          (a)–(d) are satisfied.
+          {{ ui.tip }}
         </p>
       </div>
     </template>

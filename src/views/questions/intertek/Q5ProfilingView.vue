@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import type { AnswerValue, Module, ModuleQuestion } from '@/types/questionnaire'
 import IntertekLayout from './IntertekLayout.vue'
 import { buildOptions } from './optionUtils'
+import { useLocaleStore } from '@/stores/locale'
 
 const props = defineProps<{
   module: Module
@@ -20,23 +21,69 @@ const emit = defineEmits<{
   (e: 'restart'): void
 }>()
 
-const fallbackOptions = [
-  {
-    value: 1,
-    title: 'YES',
-    description:
-      'The system uses automated processing of personal data to evaluate aspects of a person, such as performance, health, preferences, or behavior.',
-    icon: 'check_circle',
-  },
-  {
-    value: 0,
-    title: 'NO',
-    description:
-      'The system does not process personal data for the purpose of automated evaluation or behavioral prediction.',
-    icon: 'cancel',
-  },
-]
-const options = computed(() => buildOptions(props.question, fallbackOptions))
+const locale = useLocaleStore()
+const ui = computed(() =>
+  locale.isZh
+    ? {
+        legalContext: '法律依据',
+        reference: '参考',
+        articleTitle: '第6(3)条与第3(58)条',
+        articleDesc: '“画像”是指自动化处理个人数据，用于评估个人的某些方面。',
+        infoTip: '画像是判断高风险类别的重要因素，尤其在招聘与信贷评分场景。',
+        viewFullAct: '查看法规全文。',
+        tip: '不确定是否构成画像？请查阅第3(58)条定义或联系专家。',
+      }
+    : {
+        legalContext: 'Legal Context',
+        reference: 'REFERENCE',
+        articleTitle: 'Art 6(3) & Art 3(58)',
+        articleDesc:
+          "'Profiling' means any form of automated processing of personal data consisting of the use of personal data to evaluate certain personal aspects relating to a natural person.",
+        infoTip:
+          'Profiling is a critical factor in determining if an AI system falls under certain High-Risk categories, particularly in HR and credit scoring.',
+        viewFullAct: 'View Full Act.',
+        tip: 'Unsure if your system qualifies as profiling? Review Article 3(58) for the full definition or contact our experts.',
+      },
+)
+const fallbackOptions = computed(() =>
+  locale.isZh
+    ? [
+        {
+          value: 1,
+          title: '是',
+          description: '系统使用自动化处理个人数据评估个人表现、健康、偏好或行为等方面。',
+          icon: 'check_circle',
+        },
+        {
+          value: 0,
+          title: '否',
+          description: '系统不以自动化评估或行为预测为目的处理个人数据。',
+          icon: 'cancel',
+        },
+      ]
+    : [
+        {
+          value: 1,
+          title: 'YES',
+          description:
+            'The system uses automated processing of personal data to evaluate aspects of a person, such as performance, health, preferences, or behavior.',
+          icon: 'check_circle',
+        },
+        {
+          value: 0,
+          title: 'NO',
+          description:
+            'The system does not process personal data for the purpose of automated evaluation or behavioral prediction.',
+          icon: 'cancel',
+        },
+      ],
+)
+const options = computed(() => buildOptions(props.question, fallbackOptions.value))
+const questionTag = computed(() => {
+  const id = props.question?.id ?? ''
+  if (!id) return ''
+  return locale.isZh ? `问题 ${id.replace(/^q/i, '').toUpperCase()}` : `Question ${id.replace(/^q/i, '').toUpperCase()}`
+})
 </script>
 
 <template>
@@ -44,7 +91,7 @@ const options = computed(() => buildOptions(props.question, fallbackOptions))
     module-label="Module 5 / 5"
     :module-title="props.module.title"
     :module-description="props.module.description"
-    question-tag="Question 5.Profiling"
+    :question-tag="questionTag"
     :question-text="question.text"
     :question-description="question.description"
     :error="error"
@@ -104,31 +151,27 @@ const options = computed(() => buildOptions(props.question, fallbackOptions))
       <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
         <div class="bg-intertek-dark px-5 py-4 flex items-center gap-3">
           <span class="material-symbols-outlined text-intertek-yellow text-xl">gavel</span>
-          <h3 class="font-black text-white text-[11px] uppercase tracking-[0.2em]">Legal Context</h3>
+          <h3 class="font-black text-white text-[11px] uppercase tracking-[0.2em]">{{ ui.legalContext }}</h3>
         </div>
         <div class="p-6 flex flex-col gap-6">
           <div v-if="question.ref" class="border-b border-slate-100 dark:border-slate-800 pb-4">
-            <h4 class="font-black text-slate-900 dark:text-white mb-3 text-xs uppercase tracking-tight">REFERENCE</h4>
+            <h4 class="font-black text-slate-900 dark:text-white mb-3 text-xs uppercase tracking-tight">{{ ui.reference }}</h4>
             <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
               {{ question.ref }}
             </p>
           </div>
           <template v-else>
             <div class="border-b border-slate-100 dark:border-slate-800 pb-4">
-              <h4 class="font-black text-slate-900 dark:text-white mb-3 text-xs uppercase tracking-tight">Art 6(3) & Art 3(58)</h4>
+              <h4 class="font-black text-slate-900 dark:text-white mb-3 text-xs uppercase tracking-tight">{{ ui.articleTitle }}</h4>
               <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
-                'Profiling' means any form of automated processing of personal data consisting of the use of personal
-                data to evaluate certain personal aspects relating to a natural person.
+                {{ ui.articleDesc }}
               </p>
             </div>
           </template>
           <div class="bg-slate-50 dark:bg-slate-800 p-4 border-l-4 border-intertek-yellow">
             <div class="flex gap-3">
               <span class="material-symbols-outlined text-intertek-dark dark:text-intertek-yellow text-xl">info</span>
-              <p class="text-[11px] text-slate-700 dark:text-slate-300 font-bold leading-normal italic">
-                Profiling is a critical factor in determining if an AI system falls under certain High-Risk categories,
-                particularly in HR and credit scoring.
-              </p>
+              <p class="text-[11px] text-slate-700 dark:text-slate-300 font-bold leading-normal italic">{{ ui.infoTip }}</p>
             </div>
           </div>
         </div>
@@ -139,7 +182,7 @@ const options = computed(() => buildOptions(props.question, fallbackOptions))
             target="_blank"
             rel="noreferrer"
           >
-            View Full Act.
+            {{ ui.viewFullAct }}
             <span class="material-symbols-outlined text-sm">open_in_new</span>
           </a>
         </div>
@@ -149,8 +192,7 @@ const options = computed(() => buildOptions(props.question, fallbackOptions))
       <div class="flex items-start gap-4 p-5 bg-intertek-yellow/5 border border-intertek-yellow/20">
         <span class="material-symbols-outlined text-intertek-yellow text-2xl">lightbulb</span>
         <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-medium italic">
-          Unsure if your system qualifies as profiling? Review Article 3(58) for the full definition or contact our
-          experts.
+          {{ ui.tip }}
         </p>
       </div>
     </template>

@@ -3,6 +3,7 @@ import { computed, onMounted, provide, reactive, ref, watch, type Component } fr
 import { useRoute, useRouter } from 'vue-router'
 import type { AnswerScalar, AnswerValue, ModuleQuestion, Module } from '@/types/questionnaire'
 import { useQuestionnaireStore } from '@/stores/questionnaire'
+import { useLocaleStore } from '@/stores/locale'
 import DefaultQuestionView from '@/views/questions/DefaultQuestionView.vue'
 import Q11View from '@/views/questions/intertek/Q11View.vue'
 import Q12View from '@/views/questions/intertek/Q12View.vue'
@@ -41,6 +42,7 @@ import Q81View from '@/views/questions/intertek/Q81View.vue'
 const route = useRoute()
 const router = useRouter()
 const store = useQuestionnaireStore()
+const locale = useLocaleStore()
 const PREV_HANDLER_KEY = 'questionnaire_prev_handler'
 const PROGRESS_OVERRIDE_KEY = 'progressOverride'
 
@@ -277,6 +279,23 @@ function pushQuestion(module: Module, question: ModuleQuestion) {
   historyIndex.value = questionHistory.value.length - 1
 }
 
+function replaceCurrentQuestion(module: Module, question: ModuleQuestion) {
+  if (questionHistory.value.length === 0) {
+    questionHistory.value = [{ moduleId: module.id, question }]
+    historyIndex.value = 0
+    return
+  }
+  const currentIndex = historyIndex.value
+  const currentEntry = questionHistory.value[currentIndex]
+  if (currentEntry && currentEntry.moduleId === module.id && currentEntry.question.id === question.id) {
+    const nextHistory = [...questionHistory.value]
+    nextHistory[currentIndex] = { moduleId: module.id, question }
+    questionHistory.value = nextHistory
+    return
+  }
+  pushQuestion(module, question)
+}
+
 function resetHistory() {
   questionHistory.value = []
   historyIndex.value = 0
@@ -332,6 +351,22 @@ watch(
   () => moduleId.value,
   async (nextId) => {
     await ensureModuleLoaded(nextId)
+  },
+)
+
+watch(
+  () => locale.lang,
+  async () => {
+    if (!store.sessionId) return
+    const activeId = currentQuestion.value?.id
+    const module = await store.loadModule(moduleId.value)
+    if (!module) return
+    const targetQuestion =
+      (activeId ? module.questions.find((q) => q.id === activeId) : null) ?? module.questions[0] ?? null
+    if (targetQuestion) {
+      replaceCurrentQuestion(module, targetQuestion)
+      hydrateAnswers(targetQuestion)
+    }
   },
 )
 

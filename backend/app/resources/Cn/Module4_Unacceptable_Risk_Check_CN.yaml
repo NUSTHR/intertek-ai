@@ -1,6 +1,6 @@
 module_id: 4 #"04_unacceptable_risk_check"
 title: "不可接受风险检查"
-[cite_start]description: "本部分检查您的人工智能系统是否在欧盟被完全禁止。根据法律规定，某些人工智能活动被认为对社会过于危险并被禁止。[cite: 151, 152]"
+description: "本部分检查您的人工智能系统是否在欧盟被完全禁止。根据法律规定，某些人工智能活动被认为对社会过于危险并被禁止。[cite: 151, 152]"
 
 questions:
   - id: "q4.1"
@@ -9,40 +9,40 @@ questions:
     type: "multi_choice"
     options:
       - label: "使用潜意识、操纵性或欺骗性技术"
-        [cite_start]cite: "第 5(1)(a) 条：‘投放市场、投入使用或使用部署了超越人类意识的潜意识技术，或使用故意操纵或欺骗技术的 AI 系统……’ [cite: 154]"
-        [cite_start]description: "如果系统使用隐藏信息或混淆性设计等‘花招’，在人们不知情的情况下对其施加影响，请选择此项。[cite: 154]"
+        cite: "第 5(1)(a) 条：‘投放市场、投入使用或使用部署了超越人类意识的潜意识技术，或使用故意操纵或欺骗技术的 AI 系统……’ [cite: 154]"
+        description: "如果系统使用隐藏信息或混淆性设计等‘花招’，在人们不知情的情况下对其施加影响，请选择此项。[cite: 154]"
         value: 1
       - label: "利用特定群体的弱点"
-        [cite_start]cite: "第 5(1)(b) 条：‘投放市场、投入使用或使用利用自然人或特定群体因年龄、残疾或特定社会或经济状况而存在的任何弱点的 AI 系统……’ [cite: 155]"
-        [cite_start]description: "如果系统利用人们的年龄、残疾或经济状况来改变他们的行为，请选择此项。[cite: 155]"
+        cite: "第 5(1)(b) 条：‘投放市场、投入使用或使用利用自然人或特定群体因年龄、残疾或特定社会或经济状况而存在的任何弱点的 AI 系统……’ [cite: 155]"
+        description: "如果系统利用人们的年龄、残疾或经济状况来改变他们的行为，请选择此项。[cite: 155]"
         value: 2
       - label: "社会评分或可信度评估"
-        [cite_start]cite: "第 5(1)(c) 条：‘根据自然人或群体的社会行为或已知、推断或预测的个人或性格特征，在一段时间内对其进行评估或分类的 AI 系统……’ [cite: 156]"
-        [cite_start]description: "如果系统给人们打‘信用分’或根据他们的社会行为进行排名，从而导致后续的不公平待遇，请选择此项。[cite: 156]"
+        cite: "第 5(1)(c) 条：‘根据自然人或群体的社会行为或已知、推断或预测的个人或性格特征，在一段时间内对其进行评估或分类的 AI 系统……’ [cite: 156]"
+        description: "如果系统给人们打‘信用分’或根据他们的社会行为进行排名，从而导致后续的不公平待遇，请选择此项。[cite: 156]"
         value: 3
       - label: "刑事犯罪风险评估（预测性警务）"
-        [cite_start]cite: "第 5(1)(d) 条：‘使用 AI 系统对自然人进行风险评估，以评估或预测自然人犯刑事罪的风险……’ [cite: 159]"
-        [cite_start]description: "如果系统仅通过查看某人的性格特征或档案来预测其是否会犯罪，请选择此项。[cite: 159]"
+        cite: "第 5(1)(d) 条：‘使用 AI 系统对自然人进行风险评估，以评估或预测自然人犯刑事罪的风险……’ [cite: 159]"
+        description: "如果系统仅通过查看某人的性格特征或档案来预测其是否会犯罪，请选择此项。[cite: 159]"
         value: 4
       - label: "抓取面部图像以建立数据库"
-        [cite_start]cite: "第 5(1)(e) 条：‘通过从互联网或闭路电视录像中无针对性地抓取面部图像来创建或扩充面部识别数据库的 AI 系统；’ [cite: 161]"
-        [cite_start]description: "如果系统从网络或监控摄像头收集面部照片，以建立大规模识别数据库而没有特定的法律目标，请选择此项。[cite: 161]"
+        cite: "第 5(1)(e) 条：‘通过从互联网或闭路电视录像中无针对性地抓取面部图像来创建或扩充面部识别数据库的 AI 系统；’ [cite: 161]"
+        description: "如果系统从网络或监控摄像头收集面部照片，以建立大规模识别数据库而没有特定的法律目标，请选择此项。[cite: 161]"
         value: 5
       - label: "工作场所或教育机构中的情绪识别"
-        [cite_start]cite: "第 5(1)(f) 条：‘在工作场所和教育机构领域推断自然人情绪的 AI 系统……’ [cite: 162]"
-        [cite_start]description: "如果系统试图猜测员工在工作时或学生在校时的感受，请选择此项。[cite: 162]"
+        cite: "第 5(1)(f) 条：‘在工作场所和教育机构领域推断自然人情绪的 AI 系统……’ [cite: 162]"
+        description: "如果系统试图猜测员工在工作时或学生在校时的感受，请选择此项。[cite: 162]"
         value: 6
       - label: "敏感特征的生物特征分类"
-        [cite_start]cite: "第 5(1)(g) 条：‘生物特征分类系统，根据自然人的生物特征数据对其进行单独分类，以推断其种族、政治观点、工会会员资格、宗教或哲学信仰、性生活或性取向；’ [cite: 163]"
-        [cite_start]description: "如果系统使用身体测量数据（如面部或指纹）按种族、宗教或性取向等敏感特征对人进行分类，请选择此项。[cite: 163]"
+        cite: "第 5(1)(g) 条：‘生物特征分类系统，根据自然人的生物特征数据对其进行单独分类，以推断其种族、政治观点、工会会员资格、宗教或哲学信仰、性生活或性取向；’ [cite: 163]"
+        description: "如果系统使用身体测量数据（如面部或指纹）按种族、宗教或性取向等敏感特征对人进行分类，请选择此项。[cite: 163]"
         value: 7
       - label: "实时远程生物特征识别 (RBI)"
-        [cite_start]cite: "第 5(1)(h) 条：‘在公共可进入的空间使用‘实时’远程生物特征识别系统用于执法目的……’ [cite: 165]"
-        [cite_start]description: "如果系统在公共场所扫描人脸或身体，以便警方或执法部门即时识别他们，请选择此项。[cite: 165]"
+        cite: "第 5(1)(h) 条：‘在公共可进入的空间使用‘实时’远程生物特征识别系统用于执法目的……’ [cite: 165]"
+        description: "如果系统在公共场所扫描人脸或身体，以便警方或执法部门即时识别他们，请选择此项。[cite: 165]"
         value: 8
       - label: "以上都不是"
-        [cite_start]cite: "不适用：此选项表示系统不涉及第 5 条禁止的做法。[cite: 153]"
-        [cite_start]description: "如果您的人工智能系统不执行上述任何非法活动，请选择此项。[cite: 153]"
+        cite: "不适用：此选项表示系统不涉及第 5 条禁止的做法。[cite: 153]"
+        description: "如果您的人工智能系统不执行上述任何非法活动，请选择此项。[cite: 153]"
         value: 0
         exclusive: true
 
@@ -56,12 +56,12 @@ questions:
     dependency: "1 in q4.1"
     options:
       - label: "是"
-        [cite_start]cite: "第 5(1)(a) 条：‘部署了超越人类意识的潜意识技术，或使用故意操纵或欺骗技术的 AI 系统……’ [cite: 154]"
-        [cite_start]description: "系统使用隐藏线索或狡猾的设计，在人们未意识到的情况下对其施加影响。[cite: 154]"
+        cite: "第 5(1)(a) 条：‘部署了超越人类意识的潜意识技术，或使用故意操纵或欺骗技术的 AI 系统……’ [cite: 154]"
+        description: "系统使用隐藏线索或狡猾的设计，在人们未意识到的情况下对其施加影响。[cite: 154]"
         value: True
       - label: "否"
-        [cite_start]cite: "不适用：未使用第 5(1)(a) 条定义的操纵性技术。[cite: 154]"
-        [cite_start]description: "系统对用户诚实、清晰，不试图欺骗他们。[cite: 154]"
+        cite: "不适用：未使用第 5(1)(a) 条定义的操纵性技术。[cite: 154]"
+        description: "系统对用户诚实、清晰，不试图欺骗他们。[cite: 154]"
         value: False
 
   - id: "q4.1_b"
@@ -71,12 +71,12 @@ questions:
     dependency: "q4.1_a == True"
     options:
       - label: "是"
-        [cite_start]cite: "第 5(1)(a) 条：‘其目的或效果是通过明显削弱一个人……做出知情决定的能力，来实质性地扭曲其行为……’ [cite: 154]"
-        [cite_start]description: "系统的影响足够大，以至于阻止人们做出自己正常的、明智的选择。[cite: 154]"
+        cite: "第 5(1)(a) 条：‘其目的或效果是通过明显削弱一个人……做出知情决定的能力，来实质性地扭曲其行为……’ [cite: 154]"
+        description: "系统的影响足够大，以至于阻止人们做出自己正常的、明智的选择。[cite: 154]"
         value: True
       - label: "否"
-        [cite_start]cite: "不适用：根据第 5(1)(a) 条，该技术未显著削弱决策能力。[cite: 154]"
-        [cite_start]description: "即使有系统的影响，人们仍然可以做出自己的知情决定。[cite: 154]"
+        cite: "不适用：根据第 5(1)(a) 条，该技术未显著削弱决策能力。[cite: 154]"
+        description: "即使有系统的影响，人们仍然可以做出自己的知情决定。[cite: 154]"
         value: False
 
   - id: "q4.1_c"
@@ -86,12 +86,12 @@ questions:
     dependency: "q4.1_b == True"
     options:
       - label: "是"
-        [cite_start]cite: "第 5(1)(a) 条：‘从而导致他们做出了如果不受影响就不会做出的决定……’ [cite: 154]"
-        [cite_start]description: "由于 AI 的影响，该人做了一些他们通常会拒绝做的事情。[cite: 154]"
+        cite: "第 5(1)(a) 条：‘从而导致他们做出了如果不受影响就不会做出的决定……’ [cite: 154]"
+        description: "由于 AI 的影响，该人做了一些他们通常会拒绝做的事情。[cite: 154]"
         value: True
       - label: "否"
-        [cite_start]cite: "不适用：无论是否有 AI 系统，该决定可能都会做出。[cite: 154]"
-        [cite_start]description: "即使没有 AI 的参与，该人可能也会做出同样的选择。[cite: 154]"
+        cite: "不适用：无论是否有 AI 系统，该决定可能都会做出。[cite: 154]"
+        description: "即使没有 AI 的参与，该人可能也会做出同样的选择。[cite: 154]"
         value: False
 
   - id: "q4.1_d"
@@ -101,12 +101,12 @@ questions:
     dependency: "q4.1_c == True"
     options:
       - label: "是"
-        [cite_start]cite: "第 5(1)(a) 条：‘导致或有合理可能导致该人、其他人或群体受到重大伤害的方式；’ [cite: 154]"
-        [cite_start]description: "这种被迫的决定导致了严重的伤害、重大的精神痛苦或重大的经济损失。[cite: 154]"
+        cite: "第 5(1)(a) 条：‘导致或有合理可能导致该人、其他人或群体受到重大伤害的方式；’ [cite: 154]"
+        description: "这种被迫的决定导致了严重的伤害、重大的精神痛苦或重大的经济损失。[cite: 154]"
         value: True
       - label: "否"
-        [cite_start]cite: "不适用：由此产生的决定不太可能造成重大伤害。[cite: 154]"
-        [cite_start]description: "虽然选择受到了影响，但不太可能导致任何严重的危险或损害。[cite: 154]"
+        cite: "不适用：由此产生的决定不太可能造成重大伤害。[cite: 154]"
+        description: "虽然选择受到了影响，但不太可能导致任何严重的危险或损害。[cite: 154]"
         value: False
 
   # -------------------------------------------------------------------------
@@ -119,12 +119,12 @@ questions:
     dependency: "2 in q4.1"
     options:
       - label: "是"
-        [cite_start]cite: "第 5(1)(b) 条：‘利用自然人或特定群体……因年龄、残疾或特定社会或经济状况而存在的任何弱点的 AI 系统……’ [cite: 155]"
-        [cite_start]description: "系统专门针对某些人群的弱点，如儿童、老人或贫困人口。[cite: 155]"
+        cite: "第 5(1)(b) 条：‘利用自然人或特定群体……因年龄、残疾或特定社会或经济状况而存在的任何弱点的 AI 系统……’ [cite: 155]"
+        description: "系统专门针对某些人群的弱点，如儿童、老人或贫困人口。[cite: 155]"
         value: True
       - label: "否"
-        [cite_start]cite: "不适用：未发生第 5(1)(b) 条定义的利用弱点的情况。[cite: 155]"
-        [cite_start]description: "系统不试图利用任何人的年龄、残疾或财务状况。[cite: 155]"
+        cite: "不适用：未发生第 5(1)(b) 条定义的利用弱点的情况。[cite: 155]"
+        description: "系统不试图利用任何人的年龄、残疾或财务状况。[cite: 155]"
         value: False
 
   - id: "q4.2_b"
@@ -134,12 +134,12 @@ questions:
     dependency: "q4.2_a == True"
     options:
       - label: "是"
-        [cite_start]cite: "第 5(1)(b) 条：‘其目的或效果是实质性地扭曲该人或该群体成员的行为……’ [cite: 155]"
-        [cite_start]description: "AI 旨在显著改变这些弱势群体的行为方式。[cite: 155]"
+        cite: "第 5(1)(b) 条：‘其目的或效果是实质性地扭曲该人或该群体成员的行为……’ [cite: 155]"
+        description: "AI 旨在显著改变这些弱势群体的行为方式。[cite: 155]"
         value: True
       - label: "否"
-        [cite_start]cite: "不适用：根据第 5(1)(b) 条，系统未实质性扭曲行为。[cite: 155]"
-        [cite_start]description: "系统的交互并未从根本上改变该人的正常行为。[cite: 155]"
+        cite: "不适用：根据第 5(1)(b) 条，系统未实质性扭曲行为。[cite: 155]"
+        description: "系统的交互并未从根本上改变该人的正常行为。[cite: 155]"
         value: False
 
   - id: "q4.2_c"
@@ -149,12 +149,12 @@ questions:
     dependency: "q4.2_b == True"
     options:
       - label: "是"
-        [cite_start]cite: "第 5(1)(b) 条：‘导致或有合理可能导致该人或其他人受到重大伤害的方式；’ [cite: 155]"
-        [cite_start]description: "行为的改变可能会导致严重的伤害或其他重大损害。[cite: 155]"
+        cite: "第 5(1)(b) 条：‘导致或有合理可能导致该人或其他人受到重大伤害的方式；’ [cite: 155]"
+        description: "行为的改变可能会导致严重的伤害或其他重大损害。[cite: 155]"
         value: True
       - label: "否"
-        [cite_start]cite: "不适用：重大伤害不是合理可能的结果。[cite: 155]"
-        [cite_start]description: "行为改变预计不会造成任何严重伤害。[cite: 155]"
+        cite: "不适用：重大伤害不是合理可能的结果。[cite: 155]"
+        description: "行为改变预计不会造成任何严重伤害。[cite: 155]"
         value: False
 
   # -------------------------------------------------------------------------
@@ -167,12 +167,12 @@ questions:
     dependency: "3 in q4.1"
     options:
       - label: "是"
-        [cite_start]cite: "第 5(1)(c) 条：‘根据自然人或群体的社会行为或已知、推断或预测的个人或性格特征，在一段时间内对其进行评估或分类……’ [cite: 156]"
-        [cite_start]description: "系统随时间推移观察人们，以判断他们的性格或他们在社会中的行为表现。[cite: 156]"
+        cite: "第 5(1)(c) 条：‘根据自然人或群体的社会行为或已知、推断或预测的个人或性格特征，在一段时间内对其进行评估或分类……’ [cite: 156]"
+        description: "系统随时间推移观察人们，以判断他们的性格或他们在社会中的行为表现。[cite: 156]"
         value: True
       - label: "否"
-        [cite_start]cite: "不适用：根据第 5(1)(c) 条，系统不执行社会评分/评估。[cite: 156]"
-        [cite_start]description: "系统不保留人们社会行为的记录来判断其可信度。[cite: 156]"
+        cite: "不适用：根据第 5(1)(c) 条，系统不执行社会评分/评估。[cite: 156]"
+        description: "系统不保留人们社会行为的记录来判断其可信度。[cite: 156]"
         value: False
 
   - id: "q4.3_b"
@@ -182,12 +182,12 @@ questions:
     dependency: "q4.3_a == True"
     options:
       - label: "是"
-        [cite_start]cite: "第 5(1)(c)(i) 条：‘在与数据最初产生或收集的背景无关的社会背景下，进行不利或不优惠的待遇；’ [cite: 157]"
-        [cite_start]description: "评分在他们生活的完全不同领域造成了问题（例如，社交媒体行为影响银行贷款）。[cite: 157]"
+        cite: "第 5(1)(c)(i) 条：‘在与数据最初产生或收集的背景无关的社会背景下，进行不利或不优惠的待遇；’ [cite: 157]"
+        description: "评分在他们生活的完全不同领域造成了问题（例如，社交媒体行为影响银行贷款）。[cite: 157]"
         value: True
       - label: "否"
-        [cite_start]cite: "不适用：任何不优惠待遇都保留在原始数据背景内。[cite: 157]"
-        [cite_start]description: "如果有任何负面待遇，它只发生在最初发现数据的同一领域。[cite: 157]"
+        cite: "不适用：任何不优惠待遇都保留在原始数据背景内。[cite: 157]"
+        description: "如果有任何负面待遇，它只发生在最初发现数据的同一领域。[cite: 157]"
         value: False
 
   - id: "q4.3_c"
@@ -197,12 +197,12 @@ questions:
     dependency: "q4.3_a == True"
     options:
       - label: "是"
-        [cite_start]cite: "第 5(1)(c)(ii) 条：‘不利或不优惠的待遇……且这种待遇与其社会行为或其严重程度相比是不合理或不成比例的；’ [cite: 158]"
-        [cite_start]description: "与此人的实际行为相比，惩罚或负面结果过于严厉。[cite: 158]"
+        cite: "第 5(1)(c)(ii) 条：‘不利或不优惠的待遇……且这种待遇与其社会行为或其严重程度相比是不合理或不成比例的；’ [cite: 158]"
+        description: "与此人的实际行为相比，惩罚或负面结果过于严厉。[cite: 158]"
         value: True
       - label: "否"
-        [cite_start]cite: "不适用：待遇是合理且相称的。[cite: 158]"
-        [cite_start]description: "结果是公平的，并且与行为的严重程度相匹配。[cite: 158]"
+        cite: "不适用：待遇是合理且相称的。[cite: 158]"
+        description: "结果是公平的，并且与行为的严重程度相匹配。[cite: 158]"
         value: False
 
   # -------------------------------------------------------------------------
@@ -215,12 +215,12 @@ questions:
     dependency: "4 in q4.1"
     options:
       - label: "是"
-        [cite_start]cite: "第 5(1)(d) 条：‘对自然人进行风险评估，以评估或预测自然人犯刑事罪的风险……’ [cite: 159]"
-        [cite_start]description: "AI 试图计算出特定人员将来犯罪的可能性有多大。[cite: 159]"
+        cite: "第 5(1)(d) 条：‘对自然人进行风险评估，以评估或预测自然人犯刑事罪的风险……’ [cite: 159]"
+        description: "AI 试图计算出特定人员将来犯罪的可能性有多大。[cite: 159]"
         value: True
       - label: "否"
-        [cite_start]cite: "不适用：系统不用于个人犯罪风险预测。[cite: 159]"
-        [cite_start]description: "系统不用于猜测谁可能成为罪犯。[cite: 159]"
+        cite: "不适用：系统不用于个人犯罪风险预测。[cite: 159]"
+        description: "系统不用于猜测谁可能成为罪犯。[cite: 159]"
         value: False
 
   - id: "q4.4_b"
@@ -230,12 +230,12 @@ questions:
     dependency: "q4.4_a == True"
     options:
       - label: "是，仅基于特征分析"
-        [cite_start]cite: "第 5(1)(d) 条：‘仅基于对自然人的特征分析或评估其性格特征和特性；’ [cite: 159]"
-        [cite_start]description: "预测仅仅是基于此人是谁或其特征做出的，没有任何实际证据。[cite: 159]"
+        cite: "第 5(1)(d) 条：‘仅基于对自然人的特征分析或评估其性格特征和特性；’ [cite: 159]"
+        description: "预测仅仅是基于此人是谁或其特征做出的，没有任何实际证据。[cite: 159]"
         value: True
       - label: "否，它支持基于客观/可验证事实的人类评估"
-        [cite_start]cite: "第 5(1)(d) 条：‘此禁令不适用于用于支持人类评估……的 AI 系统，该评估已基于与犯罪活动直接相关的客观且可验证的事实；’ [cite: 160]"
-        [cite_start]description: "AI 帮助人类官员查看关于已发生犯罪的真实、经证实的事实。[cite: 160]"
+        cite: "第 5(1)(d) 条：‘此禁令不适用于用于支持人类评估……的 AI 系统，该评估已基于与犯罪活动直接相关的客观且可验证的事实；’ [cite: 160]"
+        description: "AI 帮助人类官员查看关于已发生犯罪的真实、经证实的事实。[cite: 160]"
         value: False
 
   # -------------------------------------------------------------------------
@@ -248,12 +248,12 @@ questions:
     dependency: "5 in q4.1"
     options:
       - label: "是"
-        [cite_start]cite: "第 5(1)(e) 条：‘创建或扩充面部识别数据库的 AI 系统……’ [cite: 161]"
-        [cite_start]description: "系统旨在建立或增加用于识别人员的面部库。[cite: 161]"
+        cite: "第 5(1)(e) 条：‘创建或扩充面部识别数据库的 AI 系统……’ [cite: 161]"
+        description: "系统旨在建立或增加用于识别人员的面部库。[cite: 161]"
         value: True
       - label: "否"
-        [cite_start]cite: "不适用：系统不创建或扩充识别数据库。[cite: 161]"
-        [cite_start]description: "系统不建立人员面孔的列表或数据库。[cite: 161]"
+        cite: "不适用：系统不创建或扩充识别数据库。[cite: 161]"
+        description: "系统不建立人员面孔的列表或数据库。[cite: 161]"
         value: False
 
   - id: "q4.5_b"
@@ -263,12 +263,12 @@ questions:
     dependency: "q4.5_a == True"
     options:
       - label: "是"
-        [cite_start]cite: "第 5(1)(e) 条：‘通过从互联网或闭路电视录像中无针对性地抓取面部图像；’ [cite: 161]"
-        [cite_start]description: "系统没有特定理由地从整个互联网或它能找到的任何摄像头抓取面部照片。[cite: 161]"
+        cite: "第 5(1)(e) 条：‘通过从互联网或闭路电视录像中无针对性地抓取面部图像；’ [cite: 161]"
+        description: "系统没有特定理由地从整个互联网或它能找到的任何摄像头抓取面部照片。[cite: 161]"
         value: True
       - label: "否"
-        [cite_start]cite: "不适用：图像是通过有针对性的合法方法获取的。[cite: 161]"
-        [cite_start]description: "图像是出于特定的合法原因收集的，而不是随机抓取的。[cite: 161]"
+        cite: "不适用：图像是通过有针对性的合法方法获取的。[cite: 161]"
+        description: "图像是出于特定的合法原因收集的，而不是随机抓取的。[cite: 161]"
         value: False
 
   # -------------------------------------------------------------------------
@@ -281,12 +281,12 @@ questions:
     dependency: "6 in q4.1"
     options:
       - label: "是"
-        [cite_start]cite: "第 5(1)(f) 条：‘在工作场所和教育机构领域推断自然人情绪的 AI 系统……’ [cite: 162]"
-        [cite_start]description: "系统试图弄清楚某人是高兴、悲伤、愤怒还是有压力。[cite: 162]"
+        cite: "第 5(1)(f) 条：‘在工作场所和教育机构领域推断自然人情绪的 AI 系统……’ [cite: 162]"
+        description: "系统试图弄清楚某人是高兴、悲伤、愤怒还是有压力。[cite: 162]"
         value: True
       - label: "否"
-        [cite_start]cite: "不适用：未在指定区域执行情绪识别。[cite: 162]"
-        [cite_start]description: "系统不试图解读人们的感受。[cite: 162]"
+        cite: "不适用：未在指定区域执行情绪识别。[cite: 162]"
+        description: "系统不试图解读人们的感受。[cite: 162]"
         value: False
 
   - id: "q4.6_b"
@@ -296,12 +296,12 @@ questions:
     dependency: "q4.6_a == True"
     options:
       - label: "是"
-        [cite_start]cite: "第 5(1)(f) 条：‘除非该 AI 系统旨在出于医疗或安全原因被部署……’ [cite: 162]"
-        [cite_start]description: "系统仅出于健康治疗或保护人们免受即时危险的目的读取情绪。[cite: 162]"
+        cite: "第 5(1)(f) 条：‘除非该 AI 系统旨在出于医疗或安全原因被部署……’ [cite: 162]"
+        description: "系统仅出于健康治疗或保护人们免受即时危险的目的读取情绪。[cite: 162]"
         value: True
       - label: "否"
-        [cite_start]cite: "不适用：情绪识别用于非豁免目的（例如，监控绩效）。[cite: 162]"
-        [cite_start]description: "系统出于其他原因读取情绪，例如检查员工的工作努力程度。[cite: 162]"
+        cite: "不适用：情绪识别用于非豁免目的（例如，监控绩效）。[cite: 162]"
+        description: "系统出于其他原因读取情绪，例如检查员工的工作努力程度。[cite: 162]"
         value: False
 
   # -------------------------------------------------------------------------
@@ -314,12 +314,12 @@ questions:
     dependency: "7 in q4.1"
     options:
       - label: "是"
-        [cite_start]cite: "第 5(1)(g) 条：‘生物特征分类系统，根据自然人的生物特征数据对其进行单独分类……’ [cite: 163]"
-        [cite_start]description: "系统使用身体特征（如脸或步态）将您归入某一组。[cite: 163]"
+        cite: "第 5(1)(g) 条：‘生物特征分类系统，根据自然人的生物特征数据对其进行单独分类……’ [cite: 163]"
+        description: "系统使用身体特征（如脸或步态）将您归入某一组。[cite: 163]"
         value: True
       - label: "否"
-        [cite_start]cite: "不适用：未执行基于生物特征的分类。[cite: 163]"
-        [cite_start]description: "系统不根据身体测量数据对人进行分类。[cite: 163]"
+        cite: "不适用：未执行基于生物特征的分类。[cite: 163]"
+        description: "系统不根据身体测量数据对人进行分类。[cite: 163]"
         value: False
 
   - id: "q4.7_b"
@@ -329,12 +329,12 @@ questions:
     dependency: "q4.7_a == True"
     options:
       - label: "是"
-        [cite_start]cite: "第 5(1)(g) 条：‘以推断其种族、政治观点、工会会员资格、宗教或哲学信仰、性生活或性取向；’ [cite: 163]"
-        [cite_start]description: "AI 试图猜测关于您的敏感信息，如您的宗教、种族或恋爱对象。[cite: 163]"
+        cite: "第 5(1)(g) 条：‘以推断其种族、政治观点、工会会员资格、宗教或哲学信仰、性生活或性取向；’ [cite: 163]"
+        description: "AI 试图猜测关于您的敏感信息，如您的宗教、种族或恋爱对象。[cite: 163]"
         value: True
       - label: "否"
-        [cite_start]cite: "不适用：分类不基于敏感/禁止的特征。[cite: 163]"
-        [cite_start]description: "系统将人们分为无害的群体（如按年龄或身高），而不是敏感群体。[cite: 163]"
+        cite: "不适用：分类不基于敏感/禁止的特征。[cite: 163]"
+        description: "系统将人们分为无害的群体（如按年龄或身高），而不是敏感群体。[cite: 163]"
         value: False
 
   - id: "q4.7_c"
@@ -344,12 +344,12 @@ questions:
     dependency: "q4.7_b == True"
     options:
       - label: "是"
-        [cite_start]cite: "第 5(1)(g) 条：‘此禁令不涵盖执法领域中……对合法获取的生物特征数据集进行的任何标记或过滤；’ [cite: 164]"
-        [cite_start]description: "警方只是用它来整理他们为特定案件合法获得的证据。[cite: 164]"
+        cite: "第 5(1)(g) 条：‘此禁令不涵盖执法领域中……对合法获取的生物特征数据集进行的任何标记或过滤；’ [cite: 164]"
+        description: "警方只是用它来整理他们为特定案件合法获得的证据。[cite: 164]"
         value: True
       - label: "否"
-        [cite_start]cite: "不适用：分类用于一般商业或行政目的。[cite: 164]"
-        [cite_start]description: "私营公司或普通政府部门将其用于非警务工作。[cite: 164]"
+        cite: "不适用：分类用于一般商业或行政目的。[cite: 164]"
+        description: "私营公司或普通政府部门将其用于非警务工作。[cite: 164]"
         value: False
 
   # -------------------------------------------------------------------------
@@ -362,12 +362,12 @@ questions:
     dependency: "8 in q4.1"
     options:
       - label: "是"
-        [cite_start]cite: "第 5(1)(h) 条：‘在公共可进入的空间使用‘实时’远程生物特征识别系统……’ [cite: 165]"
-        [cite_start]description: "当人们经过时，系统会在街道或公园等公共场所即时识别他们。[cite: 165]"
+        cite: "第 5(1)(h) 条：‘在公共可进入的空间使用‘实时’远程生物特征识别系统……’ [cite: 165]"
+        description: "当人们经过时，系统会在街道或公园等公共场所即时识别他们。[cite: 165]"
         value: True
       - label: "否"
-        [cite_start]cite: "不适用：系统不用于公共场所的实时识别。[cite: 165]"
-        [cite_start]description: "系统不在公共场所即时识别人员。[cite: 165]"
+        cite: "不适用：系统不用于公共场所的实时识别。[cite: 165]"
+        description: "系统不在公共场所即时识别人员。[cite: 165]"
         value: False
 
   - id: "q4.8_b"
@@ -377,12 +377,12 @@ questions:
     dependency: "q4.8_a == True"
     options:
       - label: "是"
-        [cite_start]cite: "第 5(1)(h) 条：‘用于执法目的，除非且仅当该使用……是绝对必要的……’ [cite: 165]"
-        [cite_start]description: "警察或其他当局正在使用它来抓捕罪犯或维持治安。[cite: 165]"
+        cite: "第 5(1)(h) 条：‘用于执法目的，除非且仅当该使用……是绝对必要的……’ [cite: 165]"
+        description: "警察或其他当局正在使用它来抓捕罪犯或维持治安。[cite: 165]"
         value: True
       - label: "否"
-        [cite_start]cite: "不适用：用于私人/商业目的，而非执法。[cite: 165]"
-        [cite_start]description: "私人商店或场所正将其用于自己的目的。[cite: 165]"
+        cite: "不适用：用于私人/商业目的，而非执法。[cite: 165]"
+        description: "私人商店或场所正将其用于自己的目的。[cite: 165]"
         value: False
 
   - id: "q4.8_c"
@@ -392,12 +392,12 @@ questions:
     dependency: "q4.8_b == True"
     options:
       - label: "是"
-        [cite_start]cite: "第 5(1)(h)(i-iii) 条：‘绝对必要……搜索失踪人员；防止恐怖袭击；定位涉嫌犯有……附件 II 所列刑事罪行的人……’ [cite: 166, 167, 168]"
-        [cite_start]description: "系统正用于紧急情况，如寻找被绑架的儿童或阻止恐怖袭击。[cite: 166, 167, 168]"
+        cite: "第 5(1)(h)(i-iii) 条：‘绝对必要……搜索失踪人员；防止恐怖袭击；定位涉嫌犯有……附件 II 所列刑事罪行的人……’ [cite: 166, 167, 168]"
+        description: "系统正用于紧急情况，如寻找被绑架的儿童或阻止恐怖袭击。[cite: 166, 167, 168]"
         value: True
       - label: "否"
-        [cite_start]cite: "不适用：用于一般警务或非例外犯罪。[cite: 166, 167, 168]"
-        [cite_start]description: "系统正用于日常警务，而非紧急例外情况。[cite: 166, 167, 168]"
+        cite: "不适用：用于一般警务或非例外犯罪。[cite: 166, 167, 168]"
+        description: "系统正用于日常警务，而非紧急例外情况。[cite: 166, 167, 168]"
         value: False
 
 # Internal Logical Mapping & Parameter State

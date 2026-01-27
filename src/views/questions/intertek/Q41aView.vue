@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import type { AnswerValue, Module, ModuleQuestion } from '@/types/questionnaire'
 import IntertekLayout from './IntertekLayout.vue'
 import { buildOptions } from './optionUtils'
+import { useLocaleStore } from '@/stores/locale'
 
 const props = defineProps<{
   module: Module
@@ -20,23 +21,70 @@ const emit = defineEmits<{
   (e: 'restart'): void
 }>()
 
-const fallbackOptions = [
-  {
-    value: true,
-    title: 'YES',
-    description:
-      "Select this if the system uses hidden stimuli or deceptive design patterns intended to influence behavior without the user's full awareness or consent.",
-    icon: 'visibility_off',
-  },
-  {
-    value: false,
-    title: 'NO',
-    description:
-      'Select this if the system interacts transparently with users and does not employ techniques aimed at distorting behavior or impairing informed decision-making.',
-    icon: 'info',
-  },
-]
-const options = computed(() => buildOptions(props.question, fallbackOptions))
+const locale = useLocaleStore()
+const ui = computed(() =>
+  locale.isZh
+    ? {
+        legalContext: '法律依据',
+        reference: '参考',
+        articleTitle: '第5(1)(a)条',
+        articleDesc:
+          '禁止将使用超出个人意识的潜意识技术或有目的的操控或欺骗技术的 AI 系统投放市场、投入使用或使用，其目的或效果是实质性扭曲个人或群体行为。',
+        infoTip: '确认使用这些技术的系统被归类为“不可接受风险”，在欧盟被禁止。',
+        viewFullAct: '查看法规全文。',
+        tip: '潜意识技术通常涉及未被有意识感知的感官刺激。',
+      }
+    : {
+        legalContext: 'Legal Context',
+        reference: 'REFERENCE',
+        articleTitle: 'ARTICLE 5(1)(A)',
+        articleDesc:
+          'The placing on the market, putting into service or use of an AI system that deploys subliminal techniques beyond a person’s consciousness or purposefully manipulative or deceptive techniques, with the objective or the effect of materially distorting a person’s or a group of persons’ behaviour.',
+        infoTip:
+          'Systems confirmed to use these techniques are classified as "Unacceptable Risk" and are prohibited in the EU.',
+        viewFullAct: 'View Full Act.',
+        tip: 'Subliminal techniques often involve sensory stimuli that are not consciously perceived.',
+      },
+)
+const fallbackOptions = computed(() =>
+  locale.isZh
+    ? [
+        {
+          value: true,
+          title: '是',
+          description: '若系统使用隐藏刺激或欺骗性设计模式，在用户未充分知情或同意的情况下影响其行为，选择此项。',
+          icon: 'visibility_off',
+        },
+        {
+          value: false,
+          title: '否',
+          description: '若系统与用户透明互动且未采用扭曲行为或削弱知情决策能力的技术，选择此项。',
+          icon: 'info',
+        },
+      ]
+    : [
+        {
+          value: true,
+          title: 'YES',
+          description:
+            "Select this if the system uses hidden stimuli or deceptive design patterns intended to influence behavior without the user's full awareness or consent.",
+          icon: 'visibility_off',
+        },
+        {
+          value: false,
+          title: 'NO',
+          description:
+            'Select this if the system interacts transparently with users and does not employ techniques aimed at distorting behavior or impairing informed decision-making.',
+          icon: 'info',
+        },
+      ],
+)
+const options = computed(() => buildOptions(props.question, fallbackOptions.value))
+const questionTag = computed(() => {
+  const id = props.question?.id ?? ''
+  if (!id) return ''
+  return locale.isZh ? `问题 ${id.replace(/^q/i, '').toUpperCase()}` : `Question ${id.replace(/^q/i, '').toUpperCase()}`
+})
 </script>
 
 <template>
@@ -44,7 +92,7 @@ const options = computed(() => buildOptions(props.question, fallbackOptions))
     module-label="Module 4 / 5"
     :module-title="props.module.title"
     :module-description="props.module.description"
-    question-tag="Question 4.1_a"
+    :question-tag="questionTag"
     :question-text="question.text"
     :question-description="question.description"
     :error="error"
@@ -106,22 +154,20 @@ const options = computed(() => buildOptions(props.question, fallbackOptions))
       <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
         <div class="bg-intertek-dark px-5 py-4 flex items-center gap-3">
           <span class="material-symbols-outlined text-intertek-yellow text-xl">gavel</span>
-          <h3 class="font-black text-white text-[11px] uppercase tracking-[0.2em]">Legal Context</h3>
+          <h3 class="font-black text-white text-[11px] uppercase tracking-[0.2em]">{{ ui.legalContext }}</h3>
         </div>
         <div class="p-6 flex flex-col gap-6">
           <div v-if="question.ref" class="border-b border-slate-100 dark:border-slate-800 pb-4">
-            <h4 class="font-black text-slate-900 dark:text-white mb-3 text-xs uppercase tracking-tight">REFERENCE</h4>
+            <h4 class="font-black text-slate-900 dark:text-white mb-3 text-xs uppercase tracking-tight">{{ ui.reference }}</h4>
             <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
               {{ question.ref }}
             </p>
           </div>
           <template v-else>
             <div class="border-b border-slate-100 dark:border-slate-800 pb-4">
-              <h4 class="font-black text-slate-900 dark:text-white mb-3 text-xs uppercase tracking-tight">ARTICLE 5(1)(A)</h4>
+              <h4 class="font-black text-slate-900 dark:text-white mb-3 text-xs uppercase tracking-tight">{{ ui.articleTitle }}</h4>
               <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
-                The placing on the market, putting into service or use of an AI system that deploys subliminal techniques
-                beyond a person’s consciousness or purposefully manipulative or deceptive techniques, with the objective
-                or the effect of materially distorting a person’s or a group of persons’ behaviour.
+                {{ ui.articleDesc }}
               </p>
             </div>
           </template>
@@ -129,8 +175,7 @@ const options = computed(() => buildOptions(props.question, fallbackOptions))
             <div class="flex gap-3">
               <span class="material-symbols-outlined text-intertek-dark dark:text-intertek-yellow text-xl">warning</span>
               <p class="text-[11px] text-slate-700 dark:text-slate-300 font-bold leading-normal italic">
-                Systems confirmed to use these techniques are classified as "Unacceptable Risk" and are prohibited in
-                the EU.
+                {{ ui.infoTip }}
               </p>
             </div>
           </div>
@@ -142,7 +187,7 @@ const options = computed(() => buildOptions(props.question, fallbackOptions))
             target="_blank"
             rel="noreferrer"
           >
-            View Full Act.
+            {{ ui.viewFullAct }}
             <span class="material-symbols-outlined text-sm">open_in_new</span>
           </a>
         </div>
@@ -152,7 +197,7 @@ const options = computed(() => buildOptions(props.question, fallbackOptions))
       <div class="flex items-start gap-4 p-5 bg-intertek-yellow/5 border border-intertek-yellow/20">
         <span class="material-symbols-outlined text-intertek-yellow text-2xl">lightbulb</span>
         <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-medium italic">
-          Subliminal techniques often involve sensory stimuli that are not consciously perceived.
+          {{ ui.tip }}
         </p>
       </div>
     </template>

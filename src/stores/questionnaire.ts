@@ -9,11 +9,13 @@ import type {
   SubmitRequest,
   SubmitResponse,
 } from '@/types/questionnaire'
+import { useLocaleStore } from '@/stores/locale'
 
 const API_BASE = import.meta.env.VITE_API_BASE ?? (import.meta.env.DEV ? '/api' : '')
 const SESSION_KEY = 'questionnaire_session_id'
 
 export const useQuestionnaireStore = defineStore('questionnaire', () => {
+  const locale = useLocaleStore()
   const sessionId = ref<string>(localStorage.getItem(SESSION_KEY) ?? '')
   const currentModule = ref<Module | null>(null)
   const parameters = ref<Record<string, AnswerValue>>({})
@@ -28,7 +30,7 @@ export const useQuestionnaireStore = defineStore('questionnaire', () => {
     loading.value = true
     error.value = null
     try {
-      const res = await fetch(`${API_BASE}/start`, { method: 'POST' })
+      const res = await fetch(`${API_BASE}/start?lang=${locale.apiLang}`, { method: 'POST' })
       if (!res.ok) throw new Error(`init_http_${res.status}`)
       const data = (await res.json()) as StartResponse
       sessionId.value = data.session_id
@@ -53,7 +55,9 @@ export const useQuestionnaireStore = defineStore('questionnaire', () => {
     loading.value = true
     error.value = null
     try {
-      const res = await fetch(`${API_BASE}/module/${encodeURIComponent(moduleId)}?session_id=${sessionId.value}`)
+      const res = await fetch(
+        `${API_BASE}/module/${encodeURIComponent(moduleId)}?session_id=${sessionId.value}&lang=${locale.apiLang}`,
+      )
       if (!res.ok) throw new Error(`module_http_${res.status}`)
       const data = (await res.json()) as ModuleResponse
       currentModule.value = data.module
@@ -77,7 +81,7 @@ export const useQuestionnaireStore = defineStore('questionnaire', () => {
         answers: payloadAnswers,
         replace: true,
       }
-      const res = await fetch(`${API_BASE}/submit-answer`, {
+      const res = await fetch(`${API_BASE}/submit-answer?lang=${locale.apiLang}`, {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify(payload),
@@ -107,7 +111,7 @@ export const useQuestionnaireStore = defineStore('questionnaire', () => {
     loading.value = true
     error.value = null
     try {
-      const res = await fetch(`${API_BASE}/result?session_id=${sessionId.value}`)
+      const res = await fetch(`${API_BASE}/result?session_id=${sessionId.value}&lang=${locale.apiLang}`)
       if (!res.ok) throw new Error(`result_http_${res.status}`)
       const data = (await res.json()) as ResultResponse
       parameters.value = data.parameters

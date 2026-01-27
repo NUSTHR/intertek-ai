@@ -9,11 +9,15 @@ from .app.infra.store import SessionStore
 from .app.logic.evaluator import Evaluator
 from .app.services.questionnaire import QuestionnaireService
 
-DATA_DIR = Path(__file__).parent / "app" / "resources" / "En"
-loader = EngineLoader(DATA_DIR)
+DATA_DIR_EN = Path(__file__).parent / "app" / "resources" / "En"
+DATA_DIR_CN = Path(__file__).parent / "app" / "resources" / "Cn"
+loaders = {
+    "en": EngineLoader(DATA_DIR_EN),
+    "cn": EngineLoader(DATA_DIR_CN),
+}
 evaluator = Evaluator()
 store = SessionStore()
-service = QuestionnaireService(loader, evaluator, store)
+service = QuestionnaireService(loaders, evaluator, store)
 
 app = FastAPI(title="AI Act Questionnaire API", version="1.0.0")
 
@@ -27,20 +31,20 @@ app.add_middleware(
 
 
 @app.post("/start", response_model=StartResponse)
-def start() -> StartResponse:
-    session_id, module = service.start()
+def start(lang: str = "en") -> StartResponse:
+    session_id, module = service.start(lang)
     return StartResponse(session_id=session_id, module=module)
 
 
 @app.get("/module/{module_id}", response_model=ModuleResponse)
-def get_module(module_id: str, session_id: str) -> ModuleResponse:
-    module = service.get_module(session_id, module_id)
+def get_module(module_id: str, session_id: str, lang: str | None = None) -> ModuleResponse:
+    module = service.get_module(session_id, module_id, lang)
     return ModuleResponse(module=module)
 
 
 @app.post("/submit-answer", response_model=SubmitResponse)
-def submit_answer(req: SubmitAnswerRequest) -> SubmitResponse:
-    payload = service.submit_answer(req.session_id, req.module_id, req.answers, req.replace)
+def submit_answer(req: SubmitAnswerRequest, lang: str | None = None) -> SubmitResponse:
+    payload = service.submit_answer(req.session_id, req.module_id, req.answers, req.replace, lang)
     return SubmitResponse(
         session_id=payload["session_id"],
         parameters=payload["parameters"],
@@ -52,8 +56,8 @@ def submit_answer(req: SubmitAnswerRequest) -> SubmitResponse:
 
 
 @app.get("/result", response_model=ResultResponse)
-def result(session_id: str) -> ResultResponse:
-    parameters, conclusion = service.result(session_id)
+def result(session_id: str, lang: str | None = None) -> ResultResponse:
+    parameters, conclusion = service.result(session_id, lang)
     return ResultResponse(parameters=parameters, conclusion=conclusion)
 
 

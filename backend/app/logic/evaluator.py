@@ -135,8 +135,11 @@ class Evaluator:
     def compute_conclusion(self, params: dict[str, Any]) -> dict[str, Any] | None:
         return {
             "Role": params.get("Role"),
+            "Role_CN": params.get("Role_CN"),
             "Type": params.get("Type"),
+            "Type_CN": params.get("Type_CN"),
             "Risk_level": params.get("Risk_level"),
+            "Risk_level_CN": params.get("Risk_level_CN"),
             "View": params.get("View"),
         }
 

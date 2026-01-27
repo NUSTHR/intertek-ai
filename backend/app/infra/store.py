@@ -30,9 +30,9 @@ class SessionStore:
                     self._sessions.pop(sid, None)
                     self._last_access.pop(sid, None)
 
-    def create(self, first_module_id: str) -> Session:
+    def create(self, first_module_id: str, lang: str) -> Session:
         session_id = uuid4().hex
-        session = Session(id=session_id, current_module_id=first_module_id)
+        session = Session(id=session_id, current_module_id=first_module_id, lang=lang)
         with self._lock:
             self._sessions[session_id] = session
             self._last_access[session_id] = time.time()
