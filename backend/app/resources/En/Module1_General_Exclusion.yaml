@@ -18,7 +18,6 @@ questions:
         description: "Select this if you are still building or testing and have not yet released the system for use or sale."
         value: 2
       - label: "It is for commercial or operational use."
-        cite: "Art 2(1): This Regulation applies to providers placing on the market... AI systems... irrespective of whether those providers are established... in the Union[cite: 39]."
         description: "Select this if your AI is intended for business, public service, or is already available to users."
         value: 0
 

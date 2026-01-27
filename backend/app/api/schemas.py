@@ -39,3 +39,7 @@ class SubmitResponse(BaseModel):
 class ResultResponse(BaseModel):
     parameters: dict[str, Any]
     conclusion: dict[str, Any] | None = None
+
+
+class QuestionResponse(BaseModel):
+    question: dict[str, Any]

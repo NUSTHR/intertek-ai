@@ -4,6 +4,8 @@ import threading
 import time
 from typing import Any
 from uuid import uuid4
+import os
+import json
 
 from fastapi import HTTPException
 
@@ -12,13 +14,22 @@ from ..domain.models import Session
 
 class SessionStore:
     def __init__(self, ttl_seconds: int = 7200, cleanup_interval: int = 300) -> None:
-        self._sessions: dict[str, Session] = {}
-        self._last_access: dict[str, float] = {}
         self._ttl_seconds = ttl_seconds
         self._cleanup_interval = cleanup_interval
         self._lock = threading.Lock()
-        self._cleanup_thread = threading.Thread(target=self._cleanup_loop, daemon=True)
-        self._cleanup_thread.start()
+        self._sessions: dict[str, Session] = {}
+        self._last_access: dict[str, float] = {}
+        self._redis = None
+        url = os.environ.get("REDIS_URL") or os.environ.get("SESSION_REDIS_URL")
+        if url:
+            try:
+                import redis
+                self._redis = redis.Redis.from_url(url, decode_responses=True)
+            except Exception:
+                self._redis = None
+        if not self._redis:
+            self._cleanup_thread = threading.Thread(target=self._cleanup_loop, daemon=True)
+            self._cleanup_thread.start()
 
     def _cleanup_loop(self) -> None:
         while True:
@@ -33,19 +44,64 @@ class SessionStore:
     def create(self, first_module_id: str, lang: str) -> Session:
         session_id = uuid4().hex
         session = Session(id=session_id, current_module_id=first_module_id, lang=lang)
-        with self._lock:
-            self._sessions[session_id] = session
-            self._last_access[session_id] = time.time()
+        if self._redis:
+            self._redis.setex(self._key(session_id), self._ttl_seconds, self._dump(session))
+        else:
+            with self._lock:
+                self._sessions[session_id] = session
+                self._last_access[session_id] = time.time()
         return session
 
     def get(self, session_id: str) -> Session:
-        with self._lock:
-            session = self._sessions.get(session_id)
-            if not session:
+        if self._redis:
+            raw = self._redis.get(self._key(session_id))
+            if not raw:
                 raise HTTPException(status_code=404, detail="session_not_found")
-            self._last_access[session_id] = time.time()
+            session = self._load(raw)
+            self._redis.expire(self._key(session_id), self._ttl_seconds)
             return session
+        else:
+            with self._lock:
+                session = self._sessions.get(session_id)
+                if not session:
+                    raise HTTPException(status_code=404, detail="session_not_found")
+                self._last_access[session_id] = time.time()
+                return session
 
     def update_parameters(self, session: Session, params: dict[str, Any]) -> None:
         with self._lock:
             session.parameters = params
+
+    def save(self, session: Session) -> None:
+        if self._redis:
+            self._redis.setex(self._key(session.id), self._ttl_seconds, self._dump(session))
+        else:
+            with self._lock:
+                self._sessions[session.id] = session
+                self._last_access[session.id] = time.time()
+
+    def _key(self, session_id: str) -> str:
+        return f"aiq:sessions:{session_id}"
+
+    def _dump(self, session: Session) -> str:
+        return json.dumps(
+            {
+                "id": session.id,
+                "answers": session.answers,
+                "parameters": session.parameters,
+                "current_module_id": session.current_module_id,
+                "lang": session.lang,
+                "conclusion": session.conclusion,
+            }
+        )
+
+    def _load(self, raw: str) -> Session:
+        data = json.loads(raw)
+        return Session(
+            id=data.get("id"),
+            answers=data.get("answers") or {},
+            parameters=data.get("parameters") or {},
+            current_module_id=data.get("current_module_id"),
+            lang=data.get("lang") or "en",
+            conclusion=data.get("conclusion"),
+        )

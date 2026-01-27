@@ -27,7 +27,7 @@ const ui = computed(() =>
     ? {
         legalContext: '法律依据',
         reference: '参考',
-        articleTitle: '第50(3)条',
+        articleTitle: '法规第50(3)条',
         articleDesc:
           '对接触生物特征分类或情绪识别系统的个人的告知义务，不适用于在执法目的下且该用途由欧盟或成员国法律允许的 AI 系统。',
         infoTip: '豁免仅在执法活动具有明确法律授权时适用。',

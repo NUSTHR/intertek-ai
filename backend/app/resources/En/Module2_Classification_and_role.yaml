@@ -31,7 +31,7 @@ questions:
     options:
       - label: "A foundational model meant for other systems"
         cite: "Art 3(63): A general-purpose AI model is one that displays significant generality and is capable of performing a wide range of tasks and being integrated into downstream systems." [cite: 141]
-        description: "Select this if the product is a core component meant to be used inside other software."
+        description: "Select this if the project is a model that is a core component meant to be used inside other software."
         value: 1
       - label: "A completed system for a specific job"
         cite: "Art 3(1): An AI system is a machine-based system designed to operate with autonomy to generate specific outputs based on its objectives." [cite: 65]

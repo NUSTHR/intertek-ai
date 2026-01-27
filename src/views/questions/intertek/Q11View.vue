@@ -28,7 +28,7 @@ const ui = computed(() =>
     ? {
         legalContext: '法律依据',
         reference: '参考',
-        articleTitle: '第 2(6) 与 2(8) 条',
+        articleTitle: '法规第 2(6) 与 2(8) 条',
         articleDesc: '法规不适用于仅用于科学研究与开发目的而开发并投入使用的 AI 系统。',
         infoTip: '仅当系统用于科学研究或上市前测试且未投放市场时，研发排除条款才适用。',
         viewFullAct: '查看法规全文。',

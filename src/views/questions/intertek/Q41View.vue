@@ -37,7 +37,7 @@ const ui = computed(() =>
         selectAll: '可多选',
         legalContext: '法律依据',
         reference: '参考',
-        articleTitle: '第 5 条：禁止的 AI 实践',
+        articleTitle: '法规第 5 条：禁止的 AI 实践',
         articleIntro: '1. 以下 AI 实践被禁止：',
         articleItems: [
           '将使用超出个人意识的潜意识技术的 AI 系统投放市场、投入使用或用于实质性扭曲个人行为。',
@@ -47,7 +47,7 @@ const ui = computed(() =>
         ],
         tip: '落入上述类别的 AI 系统被视为“不可接受风险”，在欧盟被禁止。',
         viewFullAct: '查看法规全文。',
-        complianceTip: '第 5 条要求必须遵守。被认定为禁止的系统不得在欧盟市场投放。',
+        complianceTip: '法规第 5 条要求必须遵守。被认定为禁止的系统不得在欧盟市场投放。',
       }
     : {
         selectAll: 'Select all that apply',

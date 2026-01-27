@@ -4,6 +4,8 @@ import type {
   AnswerValue,
   Module,
   ModuleResponse,
+  ModuleQuestion,
+  QuestionResponse,
   ResultResponse,
   StartResponse,
   SubmitRequest,
@@ -106,6 +108,22 @@ export const useQuestionnaireStore = defineStore('questionnaire', () => {
     }
   }
 
+  async function fetchQuestion(questionId: string): Promise<ModuleQuestion | null> {
+    loading.value = true
+    error.value = null
+    try {
+      const res = await fetch(`${API_BASE}/question/${encodeURIComponent(questionId)}?lang=${locale.apiLang}`)
+      if (!res.ok) throw new Error(`question_http_${res.status}`)
+      const data = (await res.json()) as QuestionResponse
+      return data.question
+    } catch (e) {
+      error.value = e instanceof Error ? e.message : 'question_failed'
+      return null
+    } finally {
+      loading.value = false
+    }
+  }
+
   async function fetchResult(): Promise<Record<string, AnswerValue> | null> {
     if (!sessionId.value) return null
     loading.value = true
@@ -150,6 +168,7 @@ export const useQuestionnaireStore = defineStore('questionnaire', () => {
     init,
     loadModule,
     submit,
+    fetchQuestion,
     fetchResult,
     reset,
   }

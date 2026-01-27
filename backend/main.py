@@ -3,7 +3,7 @@ from pathlib import Path
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from .app.api.schemas import ModuleResponse, ResultResponse, StartResponse, SubmitAnswerRequest, SubmitResponse
+from .app.api.schemas import ModuleResponse, QuestionResponse, ResultResponse, StartResponse, SubmitAnswerRequest, SubmitResponse
 from .app.infra.loader import EngineLoader
 from .app.infra.store import SessionStore
 from .app.logic.evaluator import Evaluator
@@ -59,6 +59,12 @@ def submit_answer(req: SubmitAnswerRequest, lang: str | None = None) -> SubmitRe
 def result(session_id: str, lang: str | None = None) -> ResultResponse:
     parameters, conclusion = service.result(session_id, lang)
     return ResultResponse(parameters=parameters, conclusion=conclusion)
+
+
+@app.get("/question/{question_id}", response_model=QuestionResponse)
+def get_question(question_id: str, lang: str | None = None) -> QuestionResponse:
+    question = service.get_question(question_id, lang)
+    return QuestionResponse(question=question)
 
 
 @app.get("/health")

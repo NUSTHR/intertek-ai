@@ -28,9 +28,9 @@ const ui = computed(() =>
     ? {
         legalContext: '法律依据',
         reference: '参考',
-        articleTitle: '第6(1)(b)条',
-        articleDesc: '当附件 I 所列的适用协调立法要求第三方评估时，需要通知机构或外部合格评定。',
-        infoTip: '选择“是”将把系统归类为附件 I 下的高风险。',
+        articleTitle: '法规第6(1)(b)条',
+        articleDesc: '当法规附件 I 所列的适用协调立法要求第三方评估时，需要通知机构或外部合格评定。',
+        infoTip: '选择“是”将把系统归类为法规附件 I 下的高风险。',
         viewFullAct: '查看法规全文。',
         tip: '请核对行业法规是否要求通知机构参与。',
       }

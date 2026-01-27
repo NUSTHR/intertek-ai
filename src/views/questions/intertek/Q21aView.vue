@@ -28,12 +28,12 @@ const ui = computed(() =>
     ? {
         legalContext: '法律依据',
         reference: '参考',
-        articleTitle: 'GPAI范围',
+        articleTitle: 'AI系统定义',
         articleDesc:
-          '通用目的 AI 模型通常作为组件集成到下游系统中。',
+          '法规第3(1)条: 人工智能系统是一种基于机器的系统，设计为以不同程度的自主性运行，在部署后可能表现出适应性，并且为了明确或隐含的目标，从其接收的输入中推断如何生成可影响物理或虚拟环境的输出，如预测、内容、建议或决定',
         infoTip: '若产品为“模型”，在第五章下可能适用特定文档与透明度义务。',
         viewFullAct: '查看法规全文。',
-        tip: '不确定是组件还是系统？请对照附件 I 中 “AI 系统” 与 “GPAI 模型”的定义。',
+        tip: '不确定是组件还是系统？请对照法规中 “AI 系统” 与 “GPAI 模型”的定义。',
       }
     : {
         legalContext: 'Legal Context',

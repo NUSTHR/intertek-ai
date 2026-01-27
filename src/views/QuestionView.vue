@@ -462,11 +462,29 @@ function goPrev() {
     if (!entry) return
     historyIndex.value = nextIndex
     if (moduleId.value !== entry.moduleId) {
-      pendingQuestionId.value = entry.question.id
-      void router.push({ name: 'module', params: { id: entry.moduleId } })
+      void (async () => {
+        const fresh = await store.fetchQuestion(entry.question.id)
+        if (fresh) {
+          const nextHistory = [...questionHistory.value]
+          nextHistory[nextIndex] = { moduleId: entry.moduleId, question: fresh }
+          questionHistory.value = nextHistory
+        }
+        pendingQuestionId.value = entry.question.id
+        await router.push({ name: 'module', params: { id: entry.moduleId } })
+      })()
       return
     }
-    hydrateAnswers(entry.question)
+    void (async () => {
+      const fresh = await store.fetchQuestion(entry.question.id)
+      if (fresh) {
+        const nextHistory = [...questionHistory.value]
+        nextHistory[nextIndex] = { moduleId: entry.moduleId, question: fresh }
+        questionHistory.value = nextHistory
+        hydrateAnswers(fresh)
+        return
+      }
+      hydrateAnswers(entry.question)
+    })()
     return
   }
 }

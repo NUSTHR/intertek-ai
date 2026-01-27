@@ -28,7 +28,7 @@ const ui = computed(() =>
     ? {
         legalContext: '法律依据',
         reference: '参考',
-        articleTitle: '第50(4)条',
+        articleTitle: '法规第50(4)条',
         articleDesc:
           '使用生成或操纵构成深度伪造的图像、音频或视频内容的 AI 系统的使用者，应披露内容为人工生成或操纵。',
         infoTip: '该义务不适用于依法授权的执法用途，或内容属于明显艺术、创作或讽刺作品。',

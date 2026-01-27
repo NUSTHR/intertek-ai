@@ -24,6 +24,7 @@ class QuestionnaireService:
         session = self.store.create(engine.modules[0].module_id, lang_value)
         session.parameters = self.evaluator.compute_parameters(engine, session.answers)
         module = engine.modules_by_id[session.current_module_id]
+        self.store.save(session)
         return session.id, self.evaluator.module_payload(module, session.answers, session.parameters)
 
     def get_module(self, session_id: str, module_id: str, lang: str | None = None) -> dict[str, Any]:
@@ -34,6 +35,7 @@ class QuestionnaireService:
         module = engine.modules_by_id.get(module_id)
         if not module:
             raise HTTPException(status_code=404, detail="module_not_found")
+        self.store.save(session)
         return self.evaluator.module_payload(module, session.answers, session.parameters)
 
     def submit_answer(
@@ -92,6 +94,7 @@ class QuestionnaireService:
             session.current_module_id = None
             conclusion = self.evaluator.compute_conclusion(session.parameters)
             session.conclusion = conclusion
+        self.store.save(session)
         return {
             "session_id": session.id,
             "parameters": session.parameters,
@@ -109,7 +112,17 @@ class QuestionnaireService:
         session.parameters = self.evaluator.compute_parameters(engine, session.answers)
         conclusion = self.evaluator.compute_conclusion(session.parameters)
         session.conclusion = conclusion
+        self.store.save(session)
         return session.parameters, conclusion
+
+    def get_question(self, question_id: str, lang: str | None = None) -> dict[str, Any]:
+        lang_value = self._normalize_lang(lang)
+        engine = self._engine(lang_value)
+        for module in engine.modules:
+            question = module.questions_by_id.get(question_id)
+            if question:
+                return question.raw
+        raise HTTPException(status_code=404, detail="question_not_found")
 
     def _engine(self, lang: str) -> Engine:
         loader = self.loaders.get(lang) or self.loaders.get("en")

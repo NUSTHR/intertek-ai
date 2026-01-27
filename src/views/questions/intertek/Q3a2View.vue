@@ -28,7 +28,7 @@ const ui = computed(() =>
     ? {
         legalContext: '法律依据',
         reference: '参考',
-        articleTitle: '第2(10)条',
+        articleTitle: '法规第2(10)条',
         articleDesc: '本法规不适用于自然人仅为个人、非职业活动使用的 AI 系统。',
         infoTip: '“个人活动”排除范围很窄，仅在用户未从事任何商业或职业活动时适用。',
         viewFullAct: '查看法规全文。',

@@ -27,7 +27,7 @@ const ui = computed(() =>
     ? {
         legalContext: '法律依据',
         reference: '参考',
-        articleTitle: '第5(1)(c)条',
+        articleTitle: '法规第5(1)(c)条',
         articleDesc:
           '禁止将用于对自然人或群体在一段时间内基于其社会行为或已知、推断或预测的个人或人格特征进行评估或分类的 AI 系统投放市场、投入使用或使用。',
         infoTip: '社会评分系统被归类为“不可接受风险”，在欧盟被禁止。',

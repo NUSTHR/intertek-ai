@@ -27,7 +27,7 @@ const ui = computed(() =>
     ? {
         legalContext: '法律依据',
         reference: '参考',
-        articleTitle: '第50(4)条',
+        articleTitle: '法规第50(4)条',
         articleDesc:
           '生成并以公共利益事项为目的向公众发布的 AI 文本内容，提供者应确保该内容被清晰标注或以其他方式表明其由 AI 系统生成或操纵。',
         infoTip: '只要向公众发布内容，该义务即适用，无论系统是否为高风险。',

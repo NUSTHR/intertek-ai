@@ -34,6 +34,10 @@ export type ModuleResponse = {
   module: Module
 }
 
+export type QuestionResponse = {
+  question: ModuleQuestion
+}
+
 export type SubmitRequest = {
   session_id: string
   module_id?: string | null

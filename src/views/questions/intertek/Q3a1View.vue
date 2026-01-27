@@ -28,7 +28,7 @@ const ui = computed(() =>
     ? {
         legalContext: '法律依据',
         reference: '参考',
-        articleTitle: '第2(3)与第2(4)条',
+        articleTitle: '法规第2(3)与第2(4)条',
         articleDesc:
           '本法规不适用于仅用于军事、国防或国家安全目的的 AI 系统，也不适用于基于国际协议与欧盟开展司法或执法合作的系统。',
         infoTip: '成员国仍需确保此类系统符合现有国家安全框架与国际义务。',

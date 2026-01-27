@@ -28,15 +28,15 @@ const ui = computed(() =>
     ? {
         legalContext: '法律依据',
         reference: '参考',
-        articleTitleRisk: '第6(1)(a)条',
+        articleTitleRisk: '法规第6(1)(a)条',
         articleDescRisk:
-          '当 AI 系统作为附件 I 所列协调立法覆盖产品的安全组件，或其本身即为产品时，为高风险。',
-        articleTitleSafety: '第3(14)条',
+          '当 AI 系统作为法规附件 I 所列协调立法覆盖产品的安全组件，或其本身即为产品时，为高风险。',
+        articleTitleSafety: '法规第3(14)条',
         articleDescSafety:
           '“安全组件”是指履行安全功能的产品或系统部件，其失效或故障将危及人员健康安全或财产安全。',
         infoTip: '明确产品角色是判断是否适用第6(1)条分类的关键。',
         viewFullAct: '查看法规全文。',
-        tip: '安全组件指其失效会危及健康或安全，且落入附件 I 协调立法范围。',
+        tip: '安全组件指其失效会危及健康或安全，且落入法规附件 I 协调立法范围。',
       }
     : {
         legalContext: 'Legal Context',
@@ -59,7 +59,7 @@ const fallbackOptions = computed(() =>
         {
           value: 1,
           title: '独立产品',
-          description: 'AI 系统本身即为附件 I 所列协调立法覆盖的产品。',
+          description: 'AI 系统本身即为法规附件 I 所列协调立法覆盖的产品。',
           icon: 'inventory_2',
         },
         {
@@ -78,7 +78,7 @@ const fallbackOptions = computed(() =>
         {
           value: 0,
           title: '以上都不是',
-          description: 'AI 系统与附件 I 所列协调立法覆盖的产品无关。',
+          description: 'AI 系统与法规附件 I 所列协调立法覆盖的产品无关。',
           icon: 'block',
         },
       ]

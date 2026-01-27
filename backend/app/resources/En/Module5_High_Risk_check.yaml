@@ -201,7 +201,7 @@ questions:
         description: "Choose this if the law says an outside expert (like a certification agency) must check your product before you can sell it. [cite: 197]"
         value: 1
       - label: "No"
-        cite: "Art 6(1)(b): Logic inferred as not meeting the requirement for a third-party assessment. [cite: 197]"
+        cite: "It is not reuiqred to undergo a mandatory third-party assessment."
         description: "Choose this if you are allowed to check and certify the product's safety yourself without an outside agency. [cite: 197]"
         value: 0
 
