@@ -18,6 +18,7 @@ questions:
         description: "Select this if used by global bodies or non-EU authorities for police cooperation under EU agreements."
         value: 2
       - label: "No"
+        cite: "It is not exclusively for military, defense, or national security purposes, nor for international law enforcement cooperation."
         description: "Select this if the AI is for normal business, civil, or commercial use within the EU."
         value: 3
 
