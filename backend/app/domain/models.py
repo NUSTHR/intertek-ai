@@ -51,6 +51,7 @@ class ModuleDef:
 class Engine:
     modules: list[ModuleDef]
     modules_by_id: dict[str, ModuleDef]
+    questions_by_id: dict[str, QuestionDef]
 
 
 @dataclass

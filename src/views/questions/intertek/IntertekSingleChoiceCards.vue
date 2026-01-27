@@ -48,16 +48,9 @@ const emit = defineEmits<{
         <div :class="['flex justify-between items-center', props.titleRowClass ?? 'mb-2']">
           <h3 class="text-lg font-black text-slate-900 dark:text-white uppercase tracking-tight">{{ opt.title }}</h3>
           <div class="flex items-center gap-3">
-            <div class="relative group/info">
-              <span
-                class="material-symbols-outlined text-base text-slate-400 group-hover/info:text-intertek-yellow transition-colors"
-              >
-                info
-              </span>
-              <div
-                v-if="opt.cite"
-                class="absolute right-0 top-6 z-10 w-72 rounded bg-slate-900 text-white text-[10px] leading-relaxed px-3 py-2 shadow-lg opacity-0 invisible group-hover/info:visible group-hover/info:opacity-100 transition-opacity"
-              >
+            <div v-if="opt.cite" class="relative group/info">
+              <span class="material-symbols-outlined text-base text-slate-400 group-hover/info:text-intertek-yellow transition-colors">info</span>
+              <div class="absolute right-0 top-6 z-10 w-72 rounded bg-slate-900 text-white text-[10px] leading-relaxed px-3 py-2 shadow-lg opacity-0 invisible group-hover/info:visible group-hover/info:opacity-100 transition-opacity">
                 {{ opt.cite }}
               </div>
             </div>

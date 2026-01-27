@@ -60,12 +60,8 @@ class QuestionnaireService:
             session.current_module_id = active_module_id
         if replace:
             session.answers = {}
-        all_questions: dict[str, Any] = {}
-        for mod in engine.modules:
-            for q in mod.questions:
-                all_questions[q.id] = q
         for qid, value in answers.items():
-            question = all_questions.get(qid)
+            question = engine.questions_by_id.get(qid)
             if not question:
                 raise HTTPException(status_code=400, detail={"unknown_question": qid})
             session.answers[qid] = self.evaluator.validate_answer(question, value)
@@ -118,11 +114,10 @@ class QuestionnaireService:
     def get_question(self, question_id: str, lang: str | None = None) -> dict[str, Any]:
         lang_value = self._normalize_lang(lang)
         engine = self._engine(lang_value)
-        for module in engine.modules:
-            question = module.questions_by_id.get(question_id)
-            if question:
-                return question.raw
-        raise HTTPException(status_code=404, detail="question_not_found")
+        question = engine.questions_by_id.get(question_id)
+        if not question:
+            raise HTTPException(status_code=404, detail="question_not_found")
+        return question.raw
 
     def _engine(self, lang: str) -> Engine:
         loader = self.loaders.get(lang) or self.loaders.get("en")

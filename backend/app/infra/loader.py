@@ -27,9 +27,10 @@ class EngineLoader:
             raise RuntimeError("resources_dir_missing")
         files = sorted(self.data_dir.glob("*.yaml"))
         modules: list[ModuleDef] = []
+        questions_by_id: dict[str, QuestionDef] = {}
         for path in files:
             raw_text = path.read_text(encoding="utf-8")
-            raw_text = raw_text.replace("", "").replace("[cite_end]", "")
+            raw_text = raw_text.replace("[cite_end]", "")
             raw_text = re.sub(r"\[cite:[^\]]*\]", "", raw_text)
             raw = yaml.safe_load(raw_text) or {}
             module_id_raw = raw.get("module_id") or raw.get("module")
@@ -52,7 +53,7 @@ class EngineLoader:
                         raw=q,
                     )
                 )
-            questions_by_id = {q.id: q for q in questions}
+            questions_by_id_local = {q.id: q for q in questions}
             variables_raw = raw.get("variables") or []
             variables: list[VariableDef] = []
             for var in variables_raw:
@@ -95,14 +96,15 @@ class EngineLoader:
                     title=raw.get("title") or module_id,
                     description=raw.get("description"),
                     questions=questions,
-                    questions_by_id=questions_by_id,
+                    questions_by_id=questions_by_id_local,
                     variables=variables,
                     router=router,
                 )
             )
+            questions_by_id.update(questions_by_id_local)
         modules.sort(key=lambda m: m.module_num)
         modules_by_id = {m.module_id: m for m in modules}
-        return Engine(modules=modules, modules_by_id=modules_by_id)
+        return Engine(modules=modules, modules_by_id=modules_by_id, questions_by_id=questions_by_id)
 
     @staticmethod
     def _parse_module_number(module_id: Any, filename: str) -> int:

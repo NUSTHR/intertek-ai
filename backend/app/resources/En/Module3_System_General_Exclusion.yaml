@@ -32,7 +32,7 @@ questions:
         description: "Select this if you are an individual using AI for private tasks not related to a job or business."
         value: True
       - label: "No, I am using it for professional or commercial purposes."
-        cite: "Art 3(4): ‘deployer’ means a natural or legal person... using an AI system under its authority except where the AI system is used in the course of a personal non-professional activity." [cite: 68]
+        cite: "Should your activity entail any use other than purely personal and non-professional use, it shall not fall within the scope of the exemption set out in Article 2(10) of the Regulation."
         description: "Select this if used for work, for a company, or in a professional capacity."
         value: False
 
