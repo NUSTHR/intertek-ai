@@ -32,7 +32,7 @@ questions:
         cite: "Art 2(10): This Regulation does not apply to obligations of deployers who are natural persons using AI systems in the course of a purely personal non-professional activity." [cite: 59]
         description: "Select this if you are an individual using AI for private tasks not related to a job or business."
         value: True
-      - label: "No, I am not a natural person, or I am involved in the development, commercial supply, or professional use of this technology."
+      - label: "No, I am not a natural person, or I am involved in the development or professional use of this technology."
         cite: "Should your activity entail any use other than purely personal and non-professional use, it shall not fall within the scope of the exemption set out in Article 2(10) of the Regulation."
         description: "Select this if used for work, for a company, or you are not a pure user."
         value: False
