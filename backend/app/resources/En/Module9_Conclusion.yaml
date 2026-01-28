@@ -43,7 +43,7 @@ variables:
       - condition: "Real_world_Testing == True and AI_type == 2 and High_risk == False and Transparency_obligation == True"
         value: "Transparency Obligation Only (Real World Testing)"
       - condition: "Real_world_Testing == True and AI_type == 2 and High_risk == False and Transparency_obligation == False"
-        value: "Minimal Risk (Real World Testing)"
+        value: "Minimal Risk"
       - condition: "Real_world_Testing == True and AI_type == 1"
         value: "Theoretically Exempt (Real-World Testing Inapplicable to GPAI Models)"
 
@@ -192,9 +192,9 @@ variables:
         value: |
           While this testing phase does not require the submission of a formal testing plan under Article 60, the system involves interaction with natural persons or the generation of content, triggering the transparency obligations of Article 50. You must ensure that test subjects are clearly informed that they are interacting with an AI system or that the content they are viewing is artificially generated. Failure to provide this disclosure constitutes a breach of the Regulation even during the testing phase.
 
-      - condition: "Risk_level == 'Minimal Risk (Real World Testing)'"
-        value: |
-          The AI Act does not impose specific regulatory restrictions on the real-world testing of Minimal Risk systems. You may proceed with testing without submitting a plan to the Market Surveillance Authority. However, you remain subject to general consumer protection laws and the GDPR if personal data is processed. You are encouraged to voluntarily adopt the ethical standards outlined in Article 95 to ensure the trustworthiness of your system during this phase.
+      # - condition: "Risk_level == 'Minimal Risk'"
+      #   value: |
+      #     The AI Act does not impose specific regulatory restrictions on the real-world testing of Minimal Risk systems. You may proceed with testing without submitting a plan to the Market Surveillance Authority. However, you remain subject to general consumer protection laws and the GDPR if personal data is processed. You are encouraged to voluntarily adopt the ethical standards outlined in Article 95 to ensure the trustworthiness of your system during this phase.
 
       - condition: "Risk_level == 'Theoretically Exempt (Real-World Testing Inapplicable to GPAI Models)'"
         value: |

@@ -261,7 +261,7 @@ variables:
         value: "As a deployer of an AI system generating deep fakes, the transparency obligation applies (Art 50(4))"
 
       - condition: "Role == 'deployer' and q6.gateway_deployer contains 2 and q6.d.2.le_auth == False and q6.d.2.artistic == True"
-        value: "As a deployer of an AI system generating deep fakes (even in an artistic context, the obligation will be limited), the transparency obligation applies (Art 50(4))"
+        value: "As a deployer of an AI system generating deep fakes, the transparency obligation applies (Art 50(4)). But In an artistic context, this transparency obligation is limited to disclosing the existence of the deep fake in an appropriate manner that does not hamper the display or enjoyment of the work"
 
       - condition: "Role == 'deployer' and q6.gateway_deployer contains 3 and q6.d.3.le_auth == False and q6.d.3.human_review == False"
         value: "As a deployer publishing AI-generated text on matters of public interest without human editorial responsibility, the transparency obligation applies (Art 50(4))"

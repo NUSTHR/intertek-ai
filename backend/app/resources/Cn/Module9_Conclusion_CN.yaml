@@ -43,7 +43,7 @@ variables:
       - condition: "Real_world_Testing == True and AI_type == 2 and High_risk == False and Transparency_obligation == True"
         value: "Transparency Obligation Only (Real World Testing)"
       - condition: "Real_world_Testing == True and AI_type == 2 and High_risk == False and Transparency_obligation == False"
-        value: "Minimal Risk (Real World Testing)"
+        value: "Minimal Risk"
       - condition: "Real_world_Testing == True and AI_type == 1"
         value: "Theoretically Exempt (Real-World Testing Inapplicable to GPAI Models)"
 
@@ -122,8 +122,8 @@ variables:
         value: "高风险（真实世界测试）"
       - condition: "Risk_level == 'Transparency Obligation Only (Real World Testing)'"
         value: "仅透明度义务（真实世界测试）"
-      - condition: "Risk_level == 'Minimal Risk (Real World Testing)'"
-        value: "最小风险（真实世界测试）"
+      - condition: "Risk_level == 'Minimal Risk'"
+        value: "最小风险"
       - condition: "Risk_level == 'Theoretically Exempt (Real-World Testing Inapplicable to GPAI Models)'"
         value: "理论上豁免（真实世界测试不适用于 GPAI 模型）"
       - condition: "Risk_level == 'Systemic Risk GPAI'"
@@ -271,9 +271,9 @@ variables:
         value: |
           虽然此测试阶段不需要根据第 60 条提交正式测试计划，但系统涉及与自然人互动或生成内容，从而触发第 50 条的透明度义务。您必须确保向测试对象明确告知他们正在与 AI 系统互动，或者他们正在查看的内容是人工生成的。未能提供此披露即使在测试阶段也构成违反法规。
 
-      - condition: "Risk_level == 'Minimal Risk (Real World Testing)'"
-        value: |
-          《人工智能法》不对最小风险系统的真实世界测试施加特定的监管限制。您可以进行测试，无需向市场监管机构提交计划。但是，如果处理个人数据，您仍受一般消费者保护法和 GDPR 的约束。鼓励您自愿采用第 95 条所述的道德标准，以确保系统在此阶段的可信度。
+      # - condition: "Risk_level == 'Minimal Risk'"
+      #   value: |
+      #     《人工智能法》不对最小风险系统的真实世界测试施加特定的监管限制。您可以进行测试，无需向市场监管机构提交计划。但是，如果处理个人数据，您仍受一般消费者保护法和 GDPR 的约束。鼓励您自愿采用第 95 条所述的道德标准，以确保系统在此阶段的可信度。
 
       - condition: "Risk_level == 'Theoretically Exempt (Real-World Testing Inapplicable to GPAI Models)'"
         value: |
