@@ -182,7 +182,7 @@ variables:
       # ------------------------------------------------------------------------
       - condition: "Risk_level == 'High Risk with Transparency Obligation (Real World Testing)'"
         value: |
-          You are conducting real-world testing of a High-Risk AI System that also involves direct interaction with natural persons. Compliance requires adherence to Article 60 for testing governance and Article 50 for transparency. You must submit a real-world testing plan to the Market Surveillance Authority, ensure test subjects provide informed consent, and explicitly disclose that they are interacting with an AI system. Additionally, you must implement effective oversight and ensure the immediate reversibility of any decisions made by the system during the testing phase.
+          You are conducting real-world testing of a High-Risk AI System that also involves direct interaction with natural persons. Compliance requires adherence to Article 60 for testing governance and Article 50 for transparency. You must submit a real-world testing plan to the Market Surveillance Authority, ensure test subjects provide informed consent, and explicitly disclose that they are interacting with an AI system. Additionally, you must implement effective oversight, ensure the immediate reversibility of any decisions made by the system during the testing phase.
 
       - condition: "Risk_level == 'High Risk (Real World Testing)'"
         value: |
@@ -205,7 +205,7 @@ variables:
       # ------------------------------------------------------------------------
       - condition: "Risk_level == 'Systemic Risk GPAI' and Open_source == False"
         value: |
-          This model is classified as a General-Purpose AI Model with Systemic Risk under Article 51. Providers must strictly comply with the comprehensive obligations in Article 55, which include performing adversarial testing ('red-teaming') to identify vulnerabilities, assessing and mitigating systemic risks at the Union level, and ensuring high levels of cybersecurity. You are also required to document these processes in detail for the AI Office and report any serious incidents immediately.
+          This model is classified as a General-Purpose AI Model with Systemic Risk under Article 51. Providers must strictly comply with the comprehensive obligations in Article 55, which include performing adversarial testing ('red-teaming') to identify vulnerabilities, assessing and mitigating systemic risks at the Union level, ensuring high levels of cybersecurity and so forth. You are also required to document these processes in detail for the AI Office and report any serious incidents immediately.
 
       - condition: "Risk_level == 'Systemic Risk GPAI' and Open_source == True"
         value: |
@@ -213,7 +213,7 @@ variables:
 
       - condition: "Risk_level == 'Standard GPAI'"
         value: |
-          This is a General-Purpose AI Model subject to the requirements of Article 53. Providers must draw up and maintain detailed technical documentation as specified in Annex XI and provide sufficient information to downstream providers (Annex XII) to enable their compliance. Additionally, you must put in place a policy to respect Union copyright law and publish a detailed summary of the content used to train the model.
+          This is a General-Purpose AI Model subject to the requirements of Article 53. Providers must draw up and maintain detailed technical documentation as specified in Annex XI, provide sufficient information to downstream providers (Annex XII) to enable their compliance and so forth. Additionally, you must put in place a policy to respect Union copyright law and publish a detailed summary of the content used to train the model.
 
       - condition: "Risk_level == 'Standard GPAI (Open Source Exempt)'"
         value: |
@@ -224,11 +224,11 @@ variables:
       # ------------------------------------------------------------------------
       - condition: "Risk_level == 'High Risk with Transparency Obligations'"
         value: |
-          This system is classified as High-Risk and also triggers specific transparency requirements. Providers must comply with the full conformity regime of Chapter III, including establishing a Risk Management System (Art 9), ensuring Data Governance (Art 10), and undergoing Conformity Assessment (Art 43). Simultaneously, you must satisfy Article 50 by ensuring that the system is designed to inform natural persons that they are interacting with an AI or that the outputs are artificially generated.
+          This system is classified as High-Risk and also triggers specific transparency requirements. Providers must comply with the full conformity regime of Chapter III, including establishing a Risk Management System (Art 9), ensuring Data Governance (Art 10), undergoing Conformity Assessment (Art 43) and so forth. Simultaneously, you must satisfy Article 50 by ensuring that the system is designed to inform natural persons that they are interacting with an AI or that the outputs are artificially generated.
 
       - condition: "Risk_level == 'High Risk'"
         value: |
-          This system is classified as High-Risk under Article 6. Providers must strictly adhere to the obligations defined in Chapter III before placing the system on the market. This includes establishing a continuous risk management system (Art 9), ensuring training data is high-quality and unbiased (Art 10), maintaining comprehensive technical documentation (Annex IV), ensuring human oversight capabilities (Art 14), and completing the appropriate conformity assessment procedure (Art 43).
+          This system is classified as High-Risk under Article 6. Providers must strictly adhere to the obligations defined in Chapter III before placing the system on the market. This includes establishing a continuous risk management system (Art 9), ensuring training data is high-quality and unbiased (Art 10), maintaining comprehensive technical documentation (Annex IV), ensuring human oversight capabilities (Art 14), completing the appropriate conformity assessment procedure (Art 43) and so forth.
 
       - condition: "Risk_level == 'Transparency Obligation Only'"
         value: |

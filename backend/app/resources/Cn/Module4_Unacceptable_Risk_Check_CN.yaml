@@ -449,35 +449,35 @@ variables:
     rules:
       # 1. Manipulative Techniques
       - condition: "q4.1_a == True and q4.1_b == True and q4.1_c == True and q4.1_d == True"
-        value: "该系统使用隐藏或欺骗性技术，诱导人们做出本来不会做出的有害决定，违反了第 5(1)(a) 条关于操纵性做法的禁令。"
+        value: "该系统使用隐藏或欺骗性技术，诱导人们做出本来不会做出的有害决定，违反了第 5(1)(a) 条关于操纵性做法的禁令"
 
       # 2. Exploitation of Vulnerabilities
       - condition: "q4.2_a == True and q4.2_b == True and q4.2_c == True"
-        value: "该系统利用特定群体（如儿童、老年人或经济困难者）的弱点，对他们造成重大伤害，违反了第 5(1)(b) 条。"
+        value: "该系统利用特定群体（如儿童、老年人或经济困难者）的弱点，对他们造成重大伤害，违反了第 5(1)(b) 条"
 
       # 3. Social Scoring
       - condition: "q4.3_a == True and (q4.3_b == True or q4.3_c == True)"
-        value: "该系统作为一种‘社会评分’工具运行，根据人们的行为进行评判，从而以不公平或不成比例的方式拒绝与其无关的机会或服务，违反了第 5(1)(c) 条。"
+        value: "该系统作为一种‘社会评分’工具运行，根据人们的行为进行评判，从而以不公平或不成比例的方式拒绝与其无关的机会或服务，违反了第 5(1)(c) 条"
 
       # 4. Predictive Policing
       - condition: "q4.4_a == True and q4.4_b == True"
-        value: "该系统仅根据某人的个性或档案而非客观证据来评估其犯罪风险，执行被禁止的‘预测性警务’，违反了第 5(1)(d) 条。"
+        value: "该系统仅根据某人的个性或档案而非客观证据来评估其犯罪风险，执行被禁止的‘预测性警务’，违反了第 5(1)(d) 条"
 
       # 5. Facial Scraping
       - condition: "q4.5_a == True and q4.5_b == True"
-        value: "该系统通过从互联网或闭路电视大规模、无针对性地收集图像来创建或扩展面部识别数据库，这种做法被第 5(1)(e) 条严格禁止。"
+        value: "该系统通过从互联网或闭路电视大规模、无针对性地收集图像来创建或扩展面部识别数据库，这种做法被第 5(1)(e) 条严格禁止"
 
       # 6. Emotion Recognition
       - condition: "q4.6_a == True and q4.6_b == False"
-        value: "该系统用于在工作场所或学校内推测个人的情绪，而非出于医疗或安全原因，违反了第 5(1)(f) 条。"
+        value: "该系统用于在工作场所或学校内推测个人的情绪，而非出于医疗或安全原因，违反了第 5(1)(f) 条"
 
       # 7. Biometric Categorization
       - condition: "q4.7_a == True and q4.7_b == True and q4.7_c == False"
-        value: "该系统使用身体测量数据将人按种族、宗教或性取向等敏感特征进行分类，这在第 5(1)(g) 条下是被禁止的。"
+        value: "该系统使用身体测量数据将人按种族、宗教或性取向等敏感特征进行分类，这在第 5(1)(g) 条下是被禁止的"
 
       # 8. Real-time RBI
       - condition: "q4.8_a == True and q4.8_b == True and q4.8_c == False"
-        value: "该系统在公共场所对人进行即时识别以用于一般执法，但不符合第 5(1)(h) 条要求的严格、紧急的例外情况。"
+        value: "该系统在公共场所对人进行即时识别以用于一般执法，但不符合第 5(1)(h) 条要求的严格、紧急的例外情况"
 
       # Default
       - condition: "else"

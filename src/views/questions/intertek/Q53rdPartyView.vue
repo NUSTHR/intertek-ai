@@ -32,7 +32,7 @@ const ui = computed(() =>
         articleDesc: '当法规附件 I 所列的适用协调立法要求第三方评估时，需要通知机构或外部合格评定。',
         infoTip: '选择“是”将把系统归类为法规附件 I 下的高风险。',
         viewFullAct: '查看法规全文。',
-        tip: '请核对行业法规是否要求通知机构参与。',
+        tip: '请核对行业法规是否要求通知NB参与。',
       }
     : {
         legalContext: 'Legal Context',
