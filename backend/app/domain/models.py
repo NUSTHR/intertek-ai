@@ -52,6 +52,7 @@ class Engine:
     modules: list[ModuleDef]
     modules_by_id: dict[str, ModuleDef]
     questions_by_id: dict[str, QuestionDef]
+    constants: dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass

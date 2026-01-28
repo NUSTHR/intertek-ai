@@ -92,7 +92,7 @@ class Evaluator:
             if rule.condition and not self.eval_condition(rule.condition, answers, params_with_flag):
                 continue
             action_lower = (rule.action or "").lower()
-            if action_lower in {"jump", "next"}:
+            if action_lower in {"jump", "next", "else"}:
                 if not rule.target_module_id:
                     raise HTTPException(status_code=500, detail={"router_target_missing": rule.action})
                 return ("module", rule.target_module_id, rule.message)
@@ -101,7 +101,7 @@ class Evaluator:
         return ("module", module.module_id, None)
 
     def compute_parameters(self, engine: Engine, answers: dict[str, Any]) -> dict[str, Any]:
-        params: dict[str, Any] = {}
+        params: dict[str, Any] = dict(engine.constants)
         for module in engine.modules:
             for variable in module.variables:
                 value = (

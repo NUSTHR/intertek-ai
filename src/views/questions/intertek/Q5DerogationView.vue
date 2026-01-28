@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import type { AnswerScalar, AnswerValue, Module, ModuleQuestion } from '@/types/questionnaire'
 import IntertekLayout from './IntertekLayout.vue'
 import { buildOptions } from './optionUtils'
+import { computeQuestionTag } from './useQuestionCommon'
 import { useLocaleStore } from '@/stores/locale'
 
 type Option = {
@@ -123,11 +124,7 @@ const fallbackOptions = computed<Option[]>(() =>
       ],
 )
 const options = computed(() => buildOptions(props.question, fallbackOptions.value))
-const questionTag = computed(() => {
-  const id = props.question?.id ?? ''
-  if (!id) return ''
-  return locale.isZh ? `问题 ${id.replace(/^q/i, '').toUpperCase()}` : `Question ${id.replace(/^q/i, '').toUpperCase()}`
-})
+const questionTag = computed(() => computeQuestionTag(props.question?.id ?? '', locale.isZh))
 
 const selectedValues = () => (Array.isArray(props.modelValue) ? (props.modelValue as AnswerScalar[]) : [])
 

@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import type { AnswerValue, Module, ModuleQuestion } from '@/types/questionnaire'
 import IntertekLayout from './IntertekLayout.vue'
 import { buildOptions } from './optionUtils'
+import { computeQuestionTag } from './useQuestionCommon'
 import { useLocaleStore } from '@/stores/locale'
 
 const props = defineProps<{
@@ -37,7 +38,7 @@ const ui = computed(() =>
         legalContext: 'Legal Context',
         reference: 'REFERENCE',
         articleDesc:
-          'The EU AI Act provides specific exemptions for AI models and systems released under free and open-source licenses. This includes software and models where parameters, weights, and architecture are made publicly available. These exemptions do not apply if the model presents systemic risks or is used in high-risk AI systems.',
+          'The EU AI Act provides specific exemptions for AI models and systems released under free and open-source licenses. this may include software and models where parameters, weights, and architecture are made publicly available. These exemptions do not apply if the model presents systemic risks or is used in high-risk AI systems.',
         infoTip:
           'Licensing must allow for use, study, modification, and redistribution to qualify for certain documentation exemptions.',
         viewFullAct: 'View Full Act.',
@@ -78,11 +79,7 @@ const fallbackOptions = computed(() =>
       ],
 )
 const options = computed(() => buildOptions(props.question, fallbackOptions.value))
-const questionTag = computed(() => {
-  const id = props.question?.id ?? ''
-  if (!id) return ''
-  return locale.isZh ? `问题 ${id.replace(/^q/i, '').toUpperCase()}` : `Question ${id.replace(/^q/i, '').toUpperCase()}`
-})
+const questionTag = computed(() => computeQuestionTag(props.question?.id ?? '', locale.isZh))
 </script>
 
 <template>

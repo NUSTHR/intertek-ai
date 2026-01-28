@@ -4,6 +4,7 @@ import type { AnswerValue, Module, ModuleQuestion } from '@/types/questionnaire'
 import IntertekLayout from './IntertekLayout.vue'
 import IntertekSingleChoiceCards from './IntertekSingleChoiceCards.vue'
 import { buildOptions } from './optionUtils'
+import { computeQuestionTag } from './useQuestionCommon'
 import { useLocaleStore } from '@/stores/locale'
 
 const props = defineProps<{
@@ -154,11 +155,7 @@ const inputName = 'role_type'
 const labelId = 'q22a-label'
 const containerClass = 'max-h-[600px] overflow-y-auto pr-2'
 const titleRowClass = 'mb-1'
-const questionTag = computed(() => {
-  const id = props.question?.id ?? ''
-  if (!id) return ''
-  return locale.isZh ? `问题 ${id.replace(/^q/i, '').toUpperCase()}` : `Question ${id.replace(/^q/i, '').toUpperCase()}`
-})
+const questionTag = computed(() => computeQuestionTag(props.question?.id ?? '', locale.isZh))
 </script>
 
 <template>

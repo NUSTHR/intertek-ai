@@ -57,7 +57,7 @@ const ui = computed(() =>
     : {
         home: 'Home',
         restart: 'Restart',
-        helpCenter: 'Help Center',
+        helpCenter: 'Help',
         previous: 'Previous',
         next: 'Next Question',
         loadingFailed: 'Loading Failed',

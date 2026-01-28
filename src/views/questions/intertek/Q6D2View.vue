@@ -4,6 +4,7 @@ import type { AnswerValue, Module, ModuleQuestion } from '@/types/questionnaire'
 import IntertekLayout from './IntertekLayout.vue'
 import IntertekSingleChoiceCards from './IntertekSingleChoiceCards.vue'
 import { buildOptions } from './optionUtils'
+import { computeQuestionTag } from './useQuestionCommon'
 import { useLocaleStore } from '@/stores/locale'
 
 const props = defineProps<{
@@ -77,20 +78,16 @@ const fallbackOptions = computed(() =>
 const options = computed(() => buildOptions(props.question, fallbackOptions.value))
 const inputName = computed(() => props.question?.id?.replace(/[^a-zA-Z0-9]/g, '_') ?? 'q6_d')
 const labelId = computed(() => `${inputName.value}_label`)
-const questionTag = computed(() => {
-  const id = props.question?.id ?? ''
-  if (!id) return ''
-  return locale.isZh ? `问题 ${id.replace(/^q/i, '').toUpperCase()}` : `Question ${id.replace(/^q/i, '').toUpperCase()}`
-})
+const questionTag = computed(() => computeQuestionTag(props.question?.id ?? '', locale.isZh))
 const tipMap = computed<Record<string, string>>(() =>
   locale.isZh
     ? {
-        'q6.d.2': '若依法授权，则深度伪造披露义务不适用。',
-        'q6.d.5': '若依法授权，则公共利益文本披露义务不适用。',
+        'q6.d.2.le_auth': '若依法授权，则深度伪造披露义务不适用。',
+        'q6.d.3.le_auth': '若依法授权，则公共利益文本披露义务不适用。',
       }
     : {
-        'q6.d.2': 'If authorized by law, the disclosure obligation for deep fakes does not apply.',
-        'q6.d.5': 'If authorized by law, the public-interest text disclosure obligation does not apply.',
+        'q6.d.2.le_auth': 'If authorized by law, the disclosure obligation for deep fakes does not apply.',
+        'q6.d.3.le_auth': 'If authorized by law, the public-interest text disclosure obligation does not apply.',
       },
 )
 const tipCopy = computed(() => tipMap.value[props.question?.id ?? ''] ?? '')

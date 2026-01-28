@@ -371,7 +371,7 @@ questions:
         value: False
 
   - id: "q4.8_b"
-    text: "Is it used for the purposes of law enforcement?"
+    text: "Is this 'real-time' remote biometric identification system used for the purposes of law enforcement?"
     ref: "Art 5(1)(h): for the purposes of law enforcement, unless and in so far as such use is strictly necessary for one of the following objectives..."
     type: "single_choice"
     dependency: "q4.8_a == True"
@@ -386,7 +386,7 @@ questions:
         value: False
 
   - id: "q4.8_c"
-    text: "Is the use strictly necessary for: (i) searching for victims/missing persons, (ii) preventing imminent threat to life/terrorism, or (iii) identifying suspects of serious crimes (Annex II)?"
+    text: "Is this 'real-time' remote biometric identification system's use strictly necessary for: (i) searching for victims/missing persons, (ii) preventing imminent threat to life/terrorism, or (iii) identifying suspects of serious crimes (Annex II)?"
     ref: "Art 5(1)(h)(i)-(iii): (i) the targeted search for specific victims of abduction, trafficking in human beings or sexual exploitation of human beings, as well as the search for missing persons; (ii) the prevention of a specific, substantial and imminent threat to the life or physical safety of natural persons or a genuine and present or genuine and foreseeable threat of a terrorist attack; (iii) the localisation or identification of a person suspected of having committed a criminal offence referred to in Annex II..."
     type: "single_choice"
     dependency: "q4.8_b == True"

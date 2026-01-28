@@ -4,6 +4,7 @@ import type { AnswerValue, Module, ModuleQuestion } from '@/types/questionnaire'
 import IntertekLayout from './IntertekLayout.vue'
 import IntertekSingleChoiceCards from './IntertekSingleChoiceCards.vue'
 import { buildOptions } from './optionUtils'
+import { computeQuestionTag } from './useQuestionCommon'
 import { useLocaleStore } from '@/stores/locale'
 
 const props = defineProps<{
@@ -74,24 +75,19 @@ const fallbackOptions = computed(() =>
 const options = computed(() => buildOptions(props.question, fallbackOptions.value))
 const inputName = computed(() => props.question?.id?.replace(/[^a-zA-Z0-9]/g, '_') ?? 'q6')
 const labelId = computed(() => `${inputName.value}_label`)
-const questionTag = computed(() => {
-  const id = props.question?.id ?? ''
-  if (!id) return ''
-  return locale.isZh ? `问题 ${id.replace(/^q/i, '').toUpperCase()}` : `Question ${id.replace(/^q/i, '').toUpperCase()}`
-})
+const questionTag = computed(() => computeQuestionTag(props.question?.id ?? '', locale.isZh))
 const legalCopy = computed(() => props.question?.ref ?? '')
 const tipMap = computed<Record<string, string>>(() =>
   locale.isZh
     ? {
-        'q6.a.1': '确认在具体语境下，合理知情且细心的用户是否能明显识别 AI。',
-        'q6.a.2': '确认系统是否获得执法用途的法律授权，以及是否适用公开举报例外。',
-        'q6.a.3': '确认公众是否可使用该系统报告犯罪。',
+        'q6.p.1.obvious': '确认在具体语境下，合理知情且细心的用户是否能明显识别 AI。',
+        'q6.p.1.le_auth': '确认系统是否获得执法用途的法律授权。',
+        'q6.p.1.public_report': '确认公众是否可使用该系统报告犯罪。',
       }
     : {
-        'q6.a.1': 'Confirm whether the AI nature is obvious to a reasonably well-informed, observant user in context.',
-        'q6.a.2':
-          'Confirm whether the system is legally authorized for law enforcement and whether the public-reporting exception applies.',
-        'q6.a.3': 'Confirm whether the public can use the system to report criminal offences.',
+        'q6.p.1.obvious': 'Confirm whether the AI nature is obvious to a reasonably well-informed, observant user in context.',
+        'q6.p.1.le_auth': 'Confirm whether the system is legally authorized for law enforcement.',
+        'q6.p.1.public_report': 'Confirm whether the public can use the system to report criminal offences.',
       },
 )
 const tipCopy = computed(() => tipMap.value[props.question?.id ?? ''] ?? '')

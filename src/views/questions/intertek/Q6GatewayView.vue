@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import type { AnswerScalar, AnswerValue, Module, ModuleQuestion } from '@/types/questionnaire'
 import IntertekLayout from './IntertekLayout.vue'
 import { buildOptions } from './optionUtils'
+import { computeQuestionTag } from './useQuestionCommon'
 import { useLocaleStore } from '@/stores/locale'
 
 type Option = {
@@ -53,83 +54,136 @@ const ui = computed(() =>
         tip: 'If your system generates or manipulates content that could mislead users about authenticity, treat it as deep-fake content for Article 50 transparency duties.',
       },
 )
-const fallbackOptions = computed<Option[]>(() =>
-  locale.isZh
-    ? [
+const fallbackOptions = computed<Option[]>(() => {
+  const isProvider = props.question?.id === 'q6.gateway_provider'
+  const isDeployer = props.question?.id === 'q6.gateway_deployer'
+  if (locale.isZh) {
+    if (isProvider) {
+      return [
         {
           value: 1,
-          title: '直接交互',
+          title: '与自然人直接交互',
           description: 'AI 系统用于与自然人直接交互（如聊天机器人、虚拟助手）。',
           icon: 'forum',
         },
         {
           value: 2,
-          title: '生成/操纵合成内容',
-          description: 'AI 系统生成或操纵图像、音频或视频内容（如生成式模型）。',
+          title: '生成合成内容',
+          description: 'AI 系统生成合成音频、图像、视频或文本内容。',
           icon: 'auto_fix_high',
-        },
-        {
-          value: 3,
-          title: '生物特征/情绪分析',
-          description: 'AI 系统包含情绪识别或生物特征分类系统。',
-          icon: 'psychology_alt',
-        },
-        {
-          value: 4,
-          title: '内容发布（深度伪造）',
-          description: 'AI 系统生成或操纵文本并用于面向公众的公共利益发布。',
-          icon: 'movie_edit',
         },
         {
           value: 0,
           title: '以上都不是',
-          description: 'AI 系统不属于第 50 条定义的任何透明度敏感类别。',
+          description: '系统不属于第 50 条第(1)-(2)款规定的情形。',
           icon: 'block',
           exclusive: true,
         },
       ]
-    : [
+    }
+    if (isDeployer) {
+      return [
         {
           value: 1,
-          title: 'Direct Interaction',
-          description:
-            'The AI system is intended to interact directly with natural persons (e.g., chatbots, virtual assistants).',
-          icon: 'forum',
-        },
-        {
-          value: 2,
-          title: 'Synthetic Content Generation',
-          description: 'The AI system generates or manipulates image, audio, or video content (e.g., generative AI models).',
-          icon: 'auto_fix_high',
-        },
-        {
-          value: 3,
-          title: 'Biometric/Emotion Analysis',
-          description: 'The AI system includes an emotion recognition or a biometric categorization system.',
+          title: '情绪/生物特征分类',
+          description: '系统为情绪识别或生物特征分类系统。',
           icon: 'psychology_alt',
         },
         {
-          value: 4,
-          title: 'Content Publication (Deep Fakes)',
-          description:
-            'The AI system generates or manipulates text which is published with the intent to inform the public on matters of public interest.',
+          value: 2,
+          title: '深度伪造内容',
+          description: '系统生成或操纵构成深度伪造的图像、音频或视频内容。',
           icon: 'movie_edit',
         },
         {
+          value: 3,
+          title: '公共利益文本发布',
+          description: '系统生成/操纵文本并用于向公众发布公共利益信息。',
+          icon: 'campaign',
+        },
+        {
           value: 0,
-          title: 'None of the above',
-          description: 'The AI system does not fall into any of the transparency-sensitive categories defined in Article 50.',
+          title: '以上都不是',
+          description: '系统不属于第 50 条第(3)-(4)款规定的情形。',
           icon: 'block',
           exclusive: true,
         },
-      ],
-)
-const options = computed(() => buildOptions(props.question, fallbackOptions.value))
-const questionTag = computed(() => {
-  const id = props.question?.id ?? ''
-  if (!id) return ''
-  return locale.isZh ? `问题 ${id.replace(/^q/i, '').toUpperCase()}` : `Question ${id.replace(/^q/i, '').toUpperCase()}`
+      ]
+    }
+    return [
+      {
+        value: 0,
+        title: '以上都不是',
+        description: '系统不属于第 50 条规定的透明度义务场景。',
+        icon: 'block',
+        exclusive: true,
+      },
+    ]
+  }
+  if (isProvider) {
+    return [
+      {
+        value: 1,
+        title: 'Direct Interaction',
+        description: 'The AI system interacts directly with natural persons (e.g., chatbots).',
+        icon: 'forum',
+      },
+      {
+        value: 2,
+        title: 'Synthetic Content Generation',
+        description: 'The AI system generates synthetic audio, image, video, or text content.',
+        icon: 'auto_fix_high',
+      },
+      {
+        value: 0,
+        title: 'None of the above',
+        description: 'The system does not fall within Article 50(1)-(2) provider scenarios.',
+        icon: 'block',
+        exclusive: true,
+      },
+    ]
+  }
+  if (isDeployer) {
+    return [
+      {
+        value: 1,
+        title: 'Emotion/Biometric Analysis',
+        description: 'The system is an emotion recognition or biometric categorization system.',
+        icon: 'psychology_alt',
+      },
+      {
+        value: 2,
+        title: 'Deep Fake Content',
+        description: 'The system generates or manipulates image, audio, or video deep fakes.',
+        icon: 'movie_edit',
+      },
+      {
+        value: 3,
+        title: 'Public-Interest Text',
+        description: 'The system generates/manipulates text published to inform the public.',
+        icon: 'campaign',
+      },
+      {
+        value: 0,
+        title: 'None of the above',
+        description: 'The system does not fall within Article 50(3)-(4) deployer scenarios.',
+        icon: 'block',
+        exclusive: true,
+      },
+    ]
+  }
+  return [
+    {
+      value: 0,
+      title: 'None of the above',
+      description: 'The system does not trigger Article 50 transparency scenarios.',
+      icon: 'block',
+      exclusive: true,
+    },
+  ]
 })
+const options = computed(() => buildOptions(props.question, fallbackOptions.value))
+const questionTag = computed(() => computeQuestionTag(props.question?.id ?? '', locale.isZh))
 
 const selectedValues = () => (Array.isArray(props.modelValue) ? (props.modelValue as AnswerScalar[]) : [])
 

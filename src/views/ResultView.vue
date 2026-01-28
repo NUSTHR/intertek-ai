@@ -48,7 +48,7 @@ const ui = computed(() =>
       }
     : {
         home: 'Home',
-        helpCenter: 'Help Center',
+        helpCenter: 'Help',
         mapperVersion: 'Compliance Mapper v2.4',
         assessmentComplete: 'Assessment Complete',
         assessmentSummary:
@@ -74,7 +74,7 @@ const ui = computed(() =>
         specialistDesc: 'AI Compliance Engineer with extensive experience in AI field.',
         evaluateAnother: 'Evaluate Another System?',
         evaluateDesc: 'Clear all current session data and restart the regulatory mapping questionnaire.',
-        restart: 'Restart Questionnaire',
+        restart: 'Restart',
         disclaimer:"The EU AI Act Compliance Mapper provides automated, general guidance based on user inputs and Regulation (EU) 2024/1689. This tool is for informational purposes only and does not constitute legal advice. Intertek expressly disclaims all liability and warranties regarding the accuracy or completeness of the results. The final classification remains the sole responsibility of the user and must be verified by a qualified expert. Use of this tool does not establish a contractual relationship.",
         privacy: 'Privacy Policy',
         terms: 'Terms of Service',

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import re
+import time
 from pathlib import Path
 from typing import Any
 
@@ -10,12 +11,18 @@ from ..domain.models import Engine, ModuleDef, QuestionDef, RouterRuleDef, Varia
 
 
 class EngineLoader:
-    def __init__(self, data_dir: Path) -> None:
+    def __init__(self, data_dir: Path, cache_ttl_seconds: int = 0) -> None:
         self.data_dir = data_dir
         self._cache: tuple[tuple[tuple[str, float], ...], Engine] | None = None
+        self._cache_ttl_seconds = cache_ttl_seconds
+        self._last_checked = 0.0
 
     def get_engine(self) -> Engine:
+        now = time.time()
+        if self._cache and self._cache_ttl_seconds > 0 and (now - self._last_checked) < self._cache_ttl_seconds:
+            return self._cache[1]
         signature = tuple(sorted((p.name, p.stat().st_mtime) for p in self.data_dir.glob("*.yaml")))
+        self._last_checked = now
         if self._cache and self._cache[0] == signature:
             return self._cache[1]
         engine = self._load_engine()
@@ -26,6 +33,11 @@ class EngineLoader:
         if not self.data_dir.exists():
             raise RuntimeError("resources_dir_missing")
         files = sorted(self.data_dir.glob("*.yaml"))
+        constants: dict[str, Any] = {}
+        const_path = self.data_dir / "constants.yaml"
+        if const_path.exists():
+            const_raw = yaml.safe_load(const_path.read_text(encoding="utf-8")) or {}
+            constants = const_raw.get("constants") if isinstance(const_raw, dict) else {}
         modules: list[ModuleDef] = []
         questions_by_id: dict[str, QuestionDef] = {}
         for path in files:
@@ -104,7 +116,7 @@ class EngineLoader:
             questions_by_id.update(questions_by_id_local)
         modules.sort(key=lambda m: m.module_num)
         modules_by_id = {m.module_id: m for m in modules}
-        return Engine(modules=modules, modules_by_id=modules_by_id, questions_by_id=questions_by_id)
+        return Engine(modules=modules, modules_by_id=modules_by_id, questions_by_id=questions_by_id, constants=constants)
 
     @staticmethod
     def _parse_module_number(module_id: Any, filename: str) -> int:

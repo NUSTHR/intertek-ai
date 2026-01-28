@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import type { AnswerScalar, AnswerValue, Module, ModuleQuestion } from '@/types/questionnaire'
 import IntertekLayout from './IntertekLayout.vue'
 import { buildOptions } from './optionUtils'
+import { computeQuestionTag } from './useQuestionCommon'
 import { useLocaleStore } from '@/stores/locale'
 
 type Option = {
@@ -146,11 +147,7 @@ const ui = computed(() =>
         viewFullAct: 'View Full Act.',
       },
 )
-const questionTag = computed(() => {
-  const id = props.question?.id ?? ''
-  if (!id) return ''
-  return locale.isZh ? `问题 ${id.replace(/^q/i, '').toUpperCase()}` : `Question ${id.replace(/^q/i, '').toUpperCase()}`
-})
+const questionTag = computed(() => computeQuestionTag(props.question?.id ?? '', locale.isZh))
 const infoText = computed(() => {
   if (props.question?.id === 'q5.spec_b') {
     return locale.isZh

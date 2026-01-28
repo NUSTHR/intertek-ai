@@ -31,10 +31,8 @@ import Q6GatewayView from '@/views/questions/intertek/Q6GatewayView.vue'
 import Q6A1View from '@/views/questions/intertek/Q6A1View.vue'
 import Q6B1View from '@/views/questions/intertek/Q6B1View.vue'
 import Q6C1View from '@/views/questions/intertek/Q6C1View.vue'
-import Q6D1View from '@/views/questions/intertek/Q6D1View.vue'
 import Q6D2View from '@/views/questions/intertek/Q6D2View.vue'
 import Q6D3View from '@/views/questions/intertek/Q6D3View.vue'
-import Q6D4View from '@/views/questions/intertek/Q6D4View.vue'
 import Q6D6View from '@/views/questions/intertek/Q6D6View.vue'
 import Q71View from '@/views/questions/intertek/Q71View.vue'
 import Q81View from '@/views/questions/intertek/Q81View.vue'
@@ -97,19 +95,18 @@ const GLOBAL_QUESTION_SEQUENCE = [
   'q5.spec_jd',
   'q5.profiling',
   'q5.derogation',
-  'q6.gateway',
-  'q6.a.1',
-  'q6.a.2',
-  'q6.a.3',
-  'q6.b.1',
-  'q6.b.2',
-  'q6.c.1',
-  'q6.d.1',
-  'q6.d.2',
-  'q6.d.3',
-  'q6.d.4',
-  'q6.d.5',
-  'q6.d.6',
+  'q6.gateway_provider',
+  'q6.p.1.obvious',
+  'q6.p.1.le_auth',
+  'q6.p.1.public_report',
+  'q6.p.2.assistive',
+  'q6.p.2.le_auth',
+  'q6.gateway_deployer',
+  'q6.d.1.le_perm',
+  'q6.d.2.le_auth',
+  'q6.d.2.artistic',
+  'q6.d.3.le_auth',
+  'q6.d.3.human_review',
   'q7.1',
   'q8.1',
 ]
@@ -120,15 +117,16 @@ const localAnswers = reactive<Record<string, AnswerValue | undefined>>({})
 const questionHistory = ref<{ moduleId: string; question: ModuleQuestion }[]>([])
 const historyIndex = ref(0)
 const pendingQuestionId = ref<string | null>(null)
+const autoSkipModuleId = ref<string | null>(null)
 const currentQuestion = computed(() => {
-  if (questionHistory.value.length > 0) {
-    return (
-      questionHistory.value[historyIndex.value]?.question ??
-      questionHistory.value[questionHistory.value.length - 1]?.question ??
-      null
-    )
+  const module = moduleData.value
+  if (!module) return null
+  if (!module.questions || module.questions.length === 0) return null
+  const entry = questionHistory.value[historyIndex.value]
+  if (entry && entry.moduleId === module.id) {
+    return entry.question
   }
-  return moduleData.value?.questions?.[0] ?? null
+  return module.questions[0] ?? null
 })
 const intertekMap: Record<string, Component> = {
   'q1.1': Q11View,
@@ -181,19 +179,18 @@ const intertekMap: Record<string, Component> = {
   'q5.spec_jd': Q5SpecMultiView,
   'q5.profiling': Q5ProfilingView,
   'q5.derogation': Q5DerogationView,
-  'q6.gateway': Q6GatewayView,
-  'q6.a.1': Q6A1View,
-  'q6.a.2': Q6A1View,
-  'q6.a.3': Q6A1View,
-  'q6.b.1': Q6B1View,
-  'q6.b.2': Q6B1View,
-  'q6.c.1': Q6C1View,
-  'q6.d.1': Q6D1View,
-  'q6.d.2': Q6D2View,
-  'q6.d.3': Q6D3View,
-  'q6.d.4': Q6D4View,
-  'q6.d.5': Q6D2View,
-  'q6.d.6': Q6D6View,
+  'q6.gateway_provider': Q6GatewayView,
+  'q6.gateway_deployer': Q6GatewayView,
+  'q6.p.1.obvious': Q6A1View,
+  'q6.p.1.le_auth': Q6A1View,
+  'q6.p.1.public_report': Q6A1View,
+  'q6.p.2.assistive': Q6B1View,
+  'q6.p.2.le_auth': Q6B1View,
+  'q6.d.1.le_perm': Q6C1View,
+  'q6.d.2.le_auth': Q6D2View,
+  'q6.d.2.artistic': Q6D3View,
+  'q6.d.3.le_auth': Q6D2View,
+  'q6.d.3.human_review': Q6D6View,
   'q7.1': Q71View,
   'q8.1': Q81View,
 }
@@ -351,6 +348,22 @@ watch(
   () => moduleId.value,
   async (nextId) => {
     await ensureModuleLoaded(nextId)
+  },
+)
+
+watch(
+  () => moduleData.value,
+  (module) => {
+    if (!module) return
+    if (module.questions && module.questions.length > 0) {
+      if (autoSkipModuleId.value === module.id) {
+        autoSkipModuleId.value = null
+      }
+      return
+    }
+    if (autoSkipModuleId.value === module.id) return
+    autoSkipModuleId.value = module.id
+    void submitModule()
   },
 )
 

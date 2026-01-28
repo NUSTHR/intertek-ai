@@ -32,7 +32,7 @@ questions:
 
   - id: "q5.sector"
     text: "Which broad sector does the product belong to?"
-    ref: "Annex I: LIST OF UNION HARMONISATION LEGISLATION. This includes various EU Regulations and Directives covering machinery, toys, lifts, medical devices, and transport systems."
+    ref: "Annex I: LIST OF UNION HARMONISATION LEGISLATION. this may include various EU Regulations and Directives covering machinery, toys, lifts, medical devices, and transport systems."
     type: "single_choice"
     dependency: "q5.role in [1, 2]"
     options:
@@ -211,7 +211,7 @@ questions:
 
   - id: "q5.area_select"
     text: "Does your AI system operate in any of these sensitive areas?"
-    ref: "Annex III, Points 1-8: HIGH-RISK AI SYSTEMS REFERRED TO IN ARTICLE 6(2). This includes biometrics, critical infrastructure, education, employment, essential services, law enforcement, migration, and justice."
+    ref: "Annex III, Points 1-8: HIGH-RISK AI SYSTEMS REFERRED TO IN ARTICLE 6(2). this may include biometrics, critical infrastructure, education, employment, essential services, law enforcement, migration, and justice."
     description: "Select the broad area of intended use. If none apply, select 'None'."
     type: "single_choice"
     dependency: "q5.3rd_party != 1"
@@ -557,6 +557,9 @@ variables:
         value: "N/A"
 
 router:
-  - condition: "True" 
+  - condition: "(Role == 'provider') or (Role == 'deployer')" 
     action: "jump"
     target_module_id: 6
+  - condition: "else"
+    action: "else"
+    target_module_id: 8    

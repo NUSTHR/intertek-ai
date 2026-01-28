@@ -1,272 +1,270 @@
 module_id: 6
 title: "透明度义务检查"
-description: "确定该人工智能系统是否根据《欧盟人工智能法》第 50 条触发特定的透明度义务（互动、合成内容、情绪/生物特征、深度伪造）。"
+description: "根据用户角色（提供者或部署者），确定人工智能系统是否触发《欧盟人工智能法案》第 50 条规定的特定透明度义务。"
 
-# 1. QUESTIONS SECTION
+# 1. 问题部分
 questions:
-  - id: "q6.gateway"
-    text: "您的人工智能系统是否执行以下任何任务？"
-    ref: "法规第50 条：特定人工智能系统提供者和部署者的透明度义务。1. 提供者应确保旨在与自然人直接互动的 AI 系统在设计和开发时，能够让有关自然人获知其正在与 AI 系统进行互动…… 2. 生成合成音频、图像、视频或文本内容的 AI 系统（包括通用人工智能系统）的提供者，应确保 AI 系统的输出以机器可读的格式进行标记，并可检测为人工生成或操纵的…… 3. 情绪识别系统或生物特征分类系统的部署者应告知接触该系统的自然人该系统的运行情况…… 4. 生成或操纵明显类似于现有人员、物体、地点或其他实体或事件，并可能使人误认为是真实或真实的图像、音频或视频内容（‘深度伪造’）的 AI 系统部署者，应披露该内容是人工生成或操纵的。"
+  # ---------------------------------------------------------
+  # 提供者 (PROVIDER) 入口问题
+  # ---------------------------------------------------------
+  - id: "q6.gateway_provider"
+    text: "作为提供者 (Provider)，您的人工智能系统是否执行以下任何功能？"
+    ref: "第 50(1)-(2) 条：规定了提供者在与自然人交互及合成内容生成方面的义务。"
     type: "multi_choice"
+    dependency: "Role == 'provider'"
     options:
-      - label: "与人直接互动（例如聊天机器人）。"
-        cite: "法规第50(1) 条：提供者应确保旨在与自然人直接互动的 AI 系统在设计……时，能够让有关自然人获知其正在与 AI 系统进行互动。"
-        description: "如果您的 AI 与用户实时交谈或聊天，请选择此项。"
+      - label: "旨在直接与自然人交互（例如聊天机器人）。"
+        cite: "第 50(1) 条：提供者应确保旨在直接与自然人交互的人工智能系统在设计和开发时，能够告知相关自然人其正在与人工智能系统进行交互……"
+        description: "如果系统实时与用户交谈或聊天，请选择此项。"
         value: 1
-      - label: "生成合成图像、音频、视频或文本。"
-        cite: "法规第50(2) 条：生成合成音频、图像、视频或文本内容的 AI 系统……的提供者，应确保……输出以机器可读的格式进行标记，并可检测为人工生成。"
-        description: "如果系统创建人工媒体或写作，请选择此项。"
+      - label: "生成合成音频、图像、视频或文本内容。"
+        cite: "第 50(2) 条：生成合成音频、图像、视频或文本内容的人工智能系统的提供者，应确保人工智能系统的输出以机器可读的格式进行标记，并可被检测为人工生成或操纵的。"
+        description: "如果系统创建人工媒体或书面内容，请选择此项。"
         value: 2
-      - label: "识别情绪或根据身体特征对人进行分类。"
-        cite: "法规第50(3) 条：情绪识别系统或生物特征分类系统的部署者应告知接触该系统的自然人该系统的运行情况。"
-        description: "如果 AI 识别感受或根据身体或行为对人进行分组，请选择此项。"
-        value: 3
-      - label: "创建‘深度伪造’或公共新闻内容。"
-        cite: "法规第50(4) 条：生成或操纵……明显类似于现有人员……的内容（‘深度伪造’）的 AI 系统部署者，应披露该内容是人工生成或操纵的。"
-        description: "如果 AI 制作逼真但虚假的媒体或撰写公共利益报道，请选择此项。"
-        value: 4
       - label: "以上都不是"
-        cite: "法规第50 条：本条的具体透明度义务仅适用于第 1 至 4 款描述的系统或用途。"
-        description: "如果您的 AI 不执行上述任何任务，请选择此项。"
+        cite: "第 50 条"
+        description: "如果系统不执行上述特定功能，请选择此项。"
         value: 0
         exclusive: true
 
-  - id: "q6.a.1"
-    text: "对于普通人来说，他们正在与人工智能互动是否显而易见？"
-    ref: "法规第50(1) 条：……考虑到使用情况和背景，如果从一个消息灵通、观察敏锐且审慎的自然人的角度来看是显而易见的，则该义务也不适用。"
+  # --- 提供者路径 A：交互 (Art 50.1) ---
+  - id: "q6.p.1.obvious"
+    text: "对于一个消息灵通、观察敏锐且审慎的自然人来说，他们正在与该人工智能系统交互这一事实是否显而易见？"
+    ref: "第 50(1) 条：……除非从一个消息灵通、观察敏锐且审慎的自然人的角度来看，考虑到使用的情况和背景，这一点是显而易见的……"
     type: "single_choice"
-    dependency: "q6.gateway contains 1"
+    dependency: "q6.gateway_provider contains 1"
     options:
-      - label: "是"
-        cite: "法规第50(1) 条：告知用户的义务……考虑到使用情况和背景……如果显而易见则不适用。"
-        description: "如果环境或界面让任何人都能清楚地知道该系统不是人类，请选择此项。"
+      - label: "是，从上下文中显而易见。"
+        cite: "第 50(1) 条：……除非从一个消息灵通、观察敏锐且审慎的自然人的角度来看，考虑到使用的情况和背景，这一点是显而易见的。"
+        description: "如果场景或界面让任何人都能清楚地知道系统不是人类，请选择此项。"
         value: True
-      - label: "否"
-        cite: "法规第50(1) 条：除非显而易见……否则必须告知有关人员其正在与 AI 系统进行互动。"
-        description: "如果用户可能认为他们正在与真人交谈，请选择此项。"
+      - label: "否，可能不明显。"
+        cite: "第 50(1) 条：提供者应确保……告知相关自然人其正在与人工智能系统进行交互……"
+        description: "如果用户可能合理地认为他们正在与人类交流，请选择此项。"
         value: False
 
-  - id: "q6.a.2"
-    text: "该人工智能是否被法律授权用于警务工作或打击犯罪？"
-    ref: "法规第50(1) 条：……该义务不适用于法律授权用于侦查、预防、调查和起诉刑事犯罪的 AI 系统，但须对第三方的权利和自由采取适当的保障措施……"
+  - id: "q6.p.1.le_auth"
+    text: "该交互式人工智能系统是否获得法律授权，用于侦查、预防、调查或起诉刑事犯罪？"
+    ref: "第 50(1) 条：此义务不应适用于法律授权用于侦查、预防、调查或起诉刑事犯罪的人工智能系统……"
     type: "single_choice"
-    dependency: "q6.gateway contains 1 and q6.a.1 == False"
+    dependency: "q6.gateway_provider contains 1 and q6.p.1.obvious == False"
     options:
       - label: "是"
-        cite: "法规第50(1) 条：该义务不适用于法律授权用于侦查、预防、调查和起诉刑事犯罪的 AI 系统。"
-        description: "如果系统在法律授权下由执法部门使用，请选择此项。"
+        cite: "第 50(1) 条：此义务不应适用于法律授权用于侦查、预防、调查或起诉刑事犯罪的人工智能系统……"
+        description: "如果系统由执法部门根据法律授权使用，请选择此项。"
         value: True
       - label: "否"
-        cite: "法规第50(1) 条：透明度规则适用于系统，除非它们被明确豁免用于执法或者是显而易见的。"
+        cite: "第 50(1) 条：……须受到适当保障措施的约束……（适用一般规则）。"
         description: "如果是商业、业务或一般公众用途，请选择此项。"
         value: False
 
-  - id: "q6.a.3"
-    text: "公众是否可以使用该系统举报犯罪？"
-    ref: "法规第50(1) 条：……除非这些系统可供公众用于举报刑事犯罪。"
+  - id: "q6.p.1.public_report"
+    text: "该交互式人工智能系统是否可供公众用于举报刑事犯罪？"
+    ref: "第 50(1) 条：……除非这些系统可供公众用于举报刑事犯罪。"
     type: "single_choice"
-    dependency: "q6.a.2 == True"
+    dependency: "q6.p.1.le_auth == True"
     options:
       - label: "是"
-        cite: "法规第50(1) 条：如果这些系统可供公众用于举报刑事犯罪，则执法豁免不适用。"
-        description: "如果 AI 充当犯罪的公共举报门户，请选择此项。"
+        cite: "第 50(1) 条：……除非这些系统可供公众用于举报刑事犯罪。"
+        description: "如果该人工智能作为公众犯罪举报门户，请选择此项。"
         value: True
       - label: "否"
-        cite: "法规第50(1) 条：如果执法系统不被公众用于举报犯罪，则豁免有效。"
-        description: "如果系统仅供警方内部使用，请选择此项。"
+        cite: "第 50(1) 条：（执法豁免适用）。"
+        description: "如果系统仅供内部使用或用于其他目的，请选择此项。"
         value: False
 
-  - id: "q6.b.1"
-    text: "该人工智能是否仅执行不改变含义的微小编辑？"
-    ref: "法规第50(2) 条：……该义务不适用于执行标准编辑辅助功能或未实质性改变部署者提供的输入数据或其语义的 AI 系统……"
+  # --- 提供者路径 B：合成内容 (Art 50.2) ---
+  - id: "q6.p.2.assistive"
+    text: "该合成内容生成系统是否仅执行标准编辑的辅助功能，或者未实质性改变输入数据？"
+    ref: "第 50(2) 条：在人工智能系统执行标准编辑的辅助功能，或未实质性改变部署者提供的输入数据或其语义的范围内，此义务不应适用……"
     type: "single_choice"
-    dependency: "q6.gateway contains 2"
+    dependency: "q6.gateway_provider contains 2"
     options:
-      - label: "是"
-        cite: "法规第50(2) 条：该义务不适用于执行标准编辑辅助功能……或未实质性改变输入数据的 AI 系统。"
-        description: "如果是拼写检查器、简单过滤器或基本降噪等工具，请选择此项。"
+      - label: "是（例如：标准编辑、微小清理）"
+        cite: "第 50(2) 条：在人工智能系统执行标准编辑的辅助功能，或未实质性改变部署者提供的输入数据或其语义的范围内，此义务不应适用……"
+        description: "如果是拼写检查、简单滤镜或基础降噪等工具，请选择此项。"
         value: True
-      - label: "否"
-        cite: "法规第50(2) 条：除非系统仅执行辅助编辑或微小更改，否则标记内容的义务适用。"
-        description: "如果 AI 生成新内容或改变输入的含义，请选择此项。"
+      - label: "否（实质性改变或生成新内容）"
+        cite: "第 50(2) 条：……确保人工智能系统的输出被标记……（适用一般规则）。"
+        description: "如果人工智能生成新内容或改变了输入的含义，请选择此项。"
         value: False
 
-  - id: "q6.b.2"
-    text: "该人工智能是否被法律授权用于警务工作或打击犯罪？"
-    ref: "法规第50(2) 条：……或法律授权用于侦查、预防、调查和起诉刑事犯罪的 AI 系统。"
+  - id: "q6.p.2.le_auth"
+    text: "该内容生成系统的使用是否获得法律授权，用于侦查、预防、调查或起诉刑事犯罪？"
+    ref: "第 50(2) 条：……或法律授权用于侦查、预防、调查或起诉刑事犯罪的情况。"
     type: "single_choice"
-    dependency: "q6.gateway contains 2 and q6.b.1 == False"
+    dependency: "q6.gateway_provider contains 2 and q6.p.2.assistive == False"
     options:
       - label: "是"
-        cite: "法规第50(2) 条：标记义务不适用……于法律授权用于侦查、预防、调查和起诉刑事犯罪的 AI 系统。"
-        description: "如果系统被警方用于授权调查，请选择此项。"
+        cite: "第 50(2) 条：……或法律授权用于侦查、预防、调查或起诉刑事犯罪的情况。"
+        description: "如果系统由警方用于授权调查，请选择此项。"
         value: True
       - label: "否"
-        cite: "法规第50(2) 条：除非属于编辑或执法豁免，否则生成内容的 AI 提供者必须标记输出。"
+        cite: "第 50(2) 条：（适用一般规则）。"
         description: "如果是商业、艺术或个人内容工具，请选择此项。"
         value: False
 
-  - id: "q6.c.1"
-    text: "该使用是否被法律允许用于帮助警方侦破案件？"
-    ref: "法规第50(3) 条：……该义务不适用于法律允许用于侦查、预防和调查刑事犯罪的情绪识别和生物特征分类 AI 系统……"
+  # ---------------------------------------------------------
+  # 部署者 (DEPLOYER) 入口问题
+  # ---------------------------------------------------------
+  - id: "q6.gateway_deployer"
+    text: "作为部署者 (Deployer)，您的人工智能系统是否执行以下任何功能？"
+    ref: "第 50(3)-(4) 条：规定了部署者在情绪识别、生物特征分类、深度伪造和公共利益文本方面的义务。"
+    type: "multi_choice"
+    dependency: "Role == 'deployer'"
+    options:
+      - label: "它是情绪识别系统或生物特征分类系统。"
+        cite: "第 50(3) 条：情绪识别系统或生物特征分类系统的部署者，应告知受其影响的自然人该系统的运行情况……"
+        description: "如果人工智能基于身体/行为特征识别情绪或对人进行分类，请选择此项。"
+        value: 1
+      - label: "它生成/操纵构成“深度伪造”的图像、音频或视频内容。"
+        cite: "第 50(4) 条：生成或操纵构成深度伪造的图像、音频或视频内容的人工智能系统的部署者，应披露该内容是人工生成或操纵的。"
+        description: "如果是逼真的换脸、声音克隆或伪造视频，请选择此项。"
+        value: 2
+      - label: "它生成/操纵发布的文本，旨在就公共利益事项告知公众。"
+        cite: "第 50(4) 条：生成或操纵旨在就公共利益事项告知公众的发布文本的人工智能系统的部署者，应披露该文本是人工生成或操纵的。"
+        description: "如果人工智能撰写关于健康、政治或新闻的公开报告，请选择此项。"
+        value: 3
+      - label: "以上都不是"
+        cite: "第 50 条"
+        description: "如果系统不执行上述特定功能，请选择此项。"
+        value: 0
+        exclusive: true
+
+  # --- 部署者路径 C：情绪/生物特征 (Art 50.3) ---
+  - id: "q6.d.1.le_perm"
+    text: "法律是否允许使用该情绪识别或生物特征分类系统来侦查、预防或调查刑事犯罪？"
+    ref: "第 50(3) 条：此义务不应适用于法律允许用于侦查、预防或调查刑事犯罪的……人工智能系统……"
     type: "single_choice"
-    dependency: "q6.gateway contains 3"
+    dependency: "q6.gateway_deployer contains 1"
     options:
       - label: "是"
-        cite: "法规第50(3) 条：该义务不适用于……法律允许用于侦查、预防和调查刑事犯罪的 AI 系统。"
-        description: "如果用于合法的警察调查，请选择此项。"
+        cite: "第 50(3) 条：此义务不应适用于法律允许用于侦查、预防或调查刑事犯罪的生物特征分类和情绪识别人工智能系统……"
+        description: "如果是用于合法的警方调查，请选择此项。"
         value: True
       - label: "否"
-        cite: "法规第50(3) 条：除非用于合法打击犯罪，否则部署者必须告知接触情绪或生物特征系统的人员。"
-        description: "如果是在商店、工作场所或学校使用，请选择此项。"
+        cite: "第 50(3) 条：（适用一般规则）。"
+        description: "如果是用于商店、工作场所、学校或营销，请选择此项。"
         value: False
 
-  - id: "q6.d.1"
-    text: "该人工智能是否制作看起来非常逼真的虚假媒体（‘深度伪造’）？"
-    ref: "法规第3(60) 条：‘深度伪造’是指人工生成或操纵的图像、音频或视频内容，明显类似于现有人员……并可能使人误认为是真实或真实的。第 50(4) 条：部署者……应披露该内容是人工生成或操纵的。"
+  # --- 部署者路径 D：深度伪造 (Art 50.4) ---
+  - id: "q6.d.2.le_auth"
+    text: "法律是否授权使用该深度伪造生成系统来侦查、预防、调查或起诉刑事犯罪？"
+    ref: "第 50(4) 条：在法律授权用于侦查、预防、调查或起诉刑事犯罪的情况下，此义务不应适用。"
     type: "single_choice"
-    dependency: "q6.gateway contains 4"
+    dependency: "q6.gateway_deployer contains 2"
     options:
       - label: "是"
-        cite: "法规第50(4) 条：生成或操纵……‘深度伪造’的 AI 系统部署者，应披露该内容是人工生成的。"
-        description: "如果是逼真的换脸、声音克隆或虚假视频，请选择此项。"
+        cite: "第 50(4) 条：在法律授权用于侦查、预防、调查或起诉刑事犯罪的情况下，此义务不应适用。"
+        description: "如果深度伪造是合法调查的一部分，请选择此项。"
         value: True
       - label: "否"
-        cite: "法规第3(60) 条：只有当内容明显类似于真实实体并错误地显得真实时，才属于深度伪造。"
-        description: "如果内容明显是计算机生成的或不打算看起来真实，请选择此项。"
-        value: False
-
-  - id: "q6.d.2"
-    text: "该使用是否被法律授权用于警察调查？"
-    ref: "法规第50(4) 条：……如果该使用被法律授权用于侦查、预防、调查或起诉刑事犯罪，则第一款规定的义务不适用。"
-    type: "single_choice"
-    dependency: "q6.d.1 == True"
-    options:
-      - label: "是"
-        cite: "法规第50(4) 条：如果该使用被法律授权用于侦查、预防、调查或起诉刑事犯罪，披露义务……不适用。"
-        description: "如果深度伪造是法律调查的一部分，请选择此项。"
-        value: True
-      - label: "否"
-        cite: "法规第50(4) 条：除非用于执法，否则必须披露深度伪造是人工生成的。"
+        cite: "第 50(4) 条：（适用一般规则）。"
         description: "如果是娱乐、广告或新闻，请选择此项。"
         value: False
 
-  - id: "q6.d.3"
-    text: "内容是否属于电影或模仿作品等创意作品的一部分？"
-    ref: "法规第50(4) 条：……如果内容构成明显的艺术、创意、讽刺、虚构或类似作品或节目的一部分，透明度义务……仅限于以不通过妨碍作品展示或欣赏的适当方式进行披露。"
+  - id: "q6.d.2.artistic"
+    text: "该深度伪造内容是否构成明显的艺术、创意、讽刺、虚构或类似作品的一部分？"
+    ref: "第 50(4) 条：如果内容构成明显的艺术……作品的一部分……本款规定的透明度义务仅限于披露……且不应妨碍作品的展示或欣赏……"
     type: "single_choice"
-    dependency: "q6.d.1 == True and q6.d.2 == False"
+    dependency: "q6.gateway_deployer contains 2 and q6.d.2.le_auth == False"
     options:
       - label: "是"
-        cite: "法规第50(4) 条：如果内容构成明显的艺术、创意、讽刺……作品的一部分，义务仅限于……不妨碍作品欣赏的披露。"
-        description: "如果是电影、艺术或讽刺作品，标签不应打断观看，请选择此项。"
+        cite: "第 50(4) 条：如果内容构成明显的艺术、创意、讽刺、虚构或类似作品或节目的一部分，本款规定的透明度义务仅限于披露……"
+        description: "如果是电影、艺术或讽刺作品，且标签不应打断观看，请选择此项。"
         value: True
       - label: "否"
-        cite: "法规第50(4) 条：如果深度伪造不属于创意或讽刺作品的一部分，则需要标准披露。"
+        cite: "第 50(4) 条：（适用标准披露义务）。"
         description: "如果是新闻、信息或商业内容，请选择此项。"
         value: False
 
-  - id: "q6.d.4"
-    text: "该系统是否编写文本以向公众通报重要新闻？"
-    ref: "法规第50(4) 条：……该义务……也适用于 AI 系统生成或操纵的、以向公众通报公共利益事项为目的而发布的文本……"
+  # --- 部署者路径 E：公共利益文本 (Art 50.4) ---
+  - id: "q6.d.3.le_auth"
+    text: "法律是否授权发布该人工智能生成的文本，用于侦查、预防、调查或起诉刑事犯罪？"
+    ref: "第 50(4) 条：在法律授权用于侦查、预防、调查或起诉刑事犯罪的情况下，此义务不应适用……"
     type: "single_choice"
-    dependency: "q6.gateway contains 4 and q6.d.1 == False"
+    dependency: "q6.gateway_deployer contains 3"
     options:
       - label: "是"
-        cite: "法规第50(4) 条：该义务……适用于以向公众通报公共利益事项为目的而发布的文本。"
-        description: "如果 AI 撰写关于健康、政治或新闻的公开报告，请选择此项。"
-        value: True
-      - label: "否"
-        cite: "法规第50(4) 条：此规则仅适用于通报公共利益事项的文本。"
-        description: "如果是私人、内部或非公开主题，请选择此项。"
-        value: False
-
-  - id: "q6.d.5"
-    text: "该使用是否被法律授权用于警察调查？"
-    ref: "法规第50(4) 条：……除非 AI 生成的内容经过了人工审查过程……"
-    type: "single_choice"
-    dependency: "q6.d.4 == True"
-    options:
-      - label: "是"
-        cite: "法规第50(4) 条：法律授权的执法用途免于这些披露规则。"
+        cite: "第 50(4) 条：在法律授权用于侦查、预防、调查或起诉刑事犯罪的情况下，此义务不应适用……"
         description: "如果文本用于合法的打击犯罪任务，请选择此项。"
         value: True
       - label: "否"
-        cite: "法规第50(4) 条：AI 生成的公共利益文本必须披露，除非经过人工审查。"
-        description: "如果是一般公共新闻或信息，请选择此项。"
+        cite: "第 50(4) 条：（适用一般规则）。"
+        description: "如果是用于一般公共新闻或信息，请选择此项。"
         value: False
 
-  - id: "q6.d.6"
-    text: "是否有人类编辑审查并对文本负责？"
-    ref: "法规第50(4) 条：……除非 AI 生成的内容经过了人工审查或编辑控制过程，并且有自然人或法人对发布内容承担编辑责任……"
+  - id: "q6.d.3.human_review"
+    text: "该公共利益文本是否经过了人工审查/编辑控制，并由自然人或法人对该内容承担编辑责任？"
+    ref: "第 50(4) 条：……或人工智能生成的内容经过了人工审查或编辑控制程序，且自然人或法人持有编辑责任……"
     type: "single_choice"
-    dependency: "q6.d.4 == True and q6.d.5 == False"
+    dependency: "q6.gateway_deployer contains 3 and q6.d.3.le_auth == False"
     options:
       - label: "是"
-        cite: "法规第50(4) 条：如果 AI 生成的内容经过了……人工审查或编辑控制，并且有人承担编辑责任，则不需要披露。"
-        description: "如果有人检查文本并对其承担法律责任，请选择此项。"
+        cite: "第 50(4) 条：……或人工智能生成的内容经过了人工审查或编辑控制程序，且自然人或法人对内容的发布持有编辑责任。"
+        description: "如果有人检查文本并为此承担法律责任，请选择此项。"
         value: True
       - label: "否"
-        cite: "法规第50(4) 条：如果 AI 直接发布文本而没有人工编辑监督，则必须披露。"
-        description: "如果 AI 自动发布文本，请选择此项。"
+        cite: "第 50(4) 条：（适用一般规则）。"
+        description: "如果人工智能自动发布文本，请选择此项。"
         value: False
-        
+
 variables:
   - name: "Transparency_obligation"
     type: "boolean"
     initial_value: False
     rules:
-      # Track A: Gateway=1 AND Not Obvious AND NOT(Law Enf exempt)
-      - condition: "q6.gateway contains 1 and q6.a.1 == False and not (q6.a.2 == True and q6.a.3 == False)"
-        value: True
-      
-      # Track B: Gateway=2 AND Not Assistive AND NOT(Law Enf exempt)
-      - condition: "q6.gateway contains 2 and q6.b.1 == False and q6.b.2 == False"
-        value: True
-      
-      # Track C: Gateway=3 AND NOT(Law Enf exempt)
-      - condition: "q6.gateway contains 3 and q6.c.1 == False"
+      # --- 提供者规则 (PROVIDER RULES) ---
+      # 1. 交互：提供者 + 交互 + 不明显 + (非执法 或 公众举报)
+      - condition: "Role == 'provider' and q6.gateway_provider contains 1 and q6.p.1.obvious == False and (q6.p.1.le_auth == False or q6.p.1.public_report == True)"
         value: True
 
-      # Track D1: Deep Fakes AND NOT(Law Enf exempt) -> (Artistic applies limited obligation, still counts as obligation apply)
-      - condition: "q6.d.1 == True and q6.d.2 == False"
+      # 2. 合成内容：提供者 + 合成 + 非辅助 + 非执法
+      - condition: "Role == 'provider' and q6.gateway_provider contains 2 and q6.p.2.assistive == False and q6.p.2.le_auth == False"
         value: True
 
-      # Track D2: Public Text AND NOT(Law Enf exempt) AND NOT(Human Review)
-      - condition: "q6.d.4 == True and q6.d.5 == False and q6.d.6 == False"
+      # --- 部署者规则 (DEPLOYER RULES) ---
+      # 3. 情绪/生物特征：部署者 + 功能 + 非执法
+      - condition: "Role == 'deployer' and q6.gateway_deployer contains 1 and q6.d.1.le_perm == False"
         value: True
 
+      # 4. 深度伪造：部署者 + 深度伪造 + 非执法
+      # 注意：即使是艺术作品 (q6.d.2.artistic == True)，义务依然存在（有限披露），因此仍为 True。
+      - condition: "Role == 'deployer' and q6.gateway_deployer contains 2 and q6.d.2.le_auth == False"
+        value: True
+
+      # 5. 公共文本：部署者 + 公共文本 + 非执法 + 无人工审查
+      - condition: "Role == 'deployer' and q6.gateway_deployer contains 3 and q6.d.3.le_auth == False and q6.d.3.human_review == False"
+        value: True
+
+      # 默认情况
       - condition: "else"
         value: False
 
   - name: "Transparency_Reasons"
     type: "list"
     initial_value: []
-    description: "Collects all reasons for transparency obligations."
+    description: "收集透明度义务的原因。"
     rules:
-      # 1. Interaction
-      - condition: "q6.gateway contains 1 and q6.a.1 == False and not (q6.a.2 == True and q6.a.3 == False)"
-        value: "AI 直接与可能未意识到自己正在与机器交谈的用户互动，需要明确通知该系统是人工的（第 50(1) 条）。"
+      # 提供者原因 (Provider Reasons)
+      - condition: "Role == 'provider' and q6.gateway_provider contains 1 and q6.p.1.obvious == False and (q6.p.1.le_auth == False or q6.p.1.public_report == True)"
+        value: "作为旨在与自然人直接交互（且该交互不显而易见）的人工智能系统的提供者，适用透明度义务 (第 50(1) 条)"
 
-      # 2. Synthetic Content Marking
-      - condition: "q6.gateway contains 2 and q6.b.1 == False and q6.b.2 == False"
-        value: "系统创建可能被误认为是真实的合成媒体（如图像或音频），因此必须以计算机可识别的方式将其标记为 AI 制作（第 50(2) 条）。"
+      - condition: "Role == 'provider' and q6.gateway_provider contains 2 and q6.p.2.assistive == False and q6.p.2.le_auth == False"
+        value: "作为生成合成内容的人工智能系统的提供者，适用透明度义务 (第 50(2) 条)"
 
-      # 3. Emotion/Biometric
-      - condition: "q6.gateway contains 3 and q6.c.1 == False"
-        value: "AI 旨在感知情绪或通过身体特征对人进行分组，这要求您告知人们他们正在被分析（第 50(3) 条）。"
+      # 部署者原因 (Deployer Reasons)
+      - condition: "Role == 'deployer' and q6.gateway_deployer contains 1 and q6.d.1.le_perm == False"
+        value: "作为情绪识别系统或生物特征分类系统的部署者，适用透明度义务 (第 50(3) 条)"
 
-      # 4a. Deep Fake (Standard)
-      - condition: "q6.d.1 == True and q6.d.2 == False and q6.d.3 == False"
-        value: "AI 制作‘深度伪造’——高度逼真但虚假的图像或视频——必须清楚地标记，以免误导人们（第 50(4) 条）。"
+      - condition: "Role == 'deployer' and q6.gateway_deployer contains 2 and q6.d.2.le_auth == False and q6.d.2.artistic == False"
+        value: "作为生成深度伪造内容的人工智能系统的部署者，适用透明度义务 (第 50(4) 条)"
 
-      # 4b. Deep Fake (Artistic Exemption)
-      - condition: "q6.d.1 == True and q6.d.2 == False and q6.d.3 == True"
-        value: "虽然 AI 出于艺术或讽刺目的制作虚假媒体，但您仍必须以不打断作品的方式披露它是人工的（第 50(4) 条）。"
+      - condition: "Role == 'deployer' and q6.gateway_deployer contains 2 and q6.d.2.le_auth == False and q6.d.2.artistic == True"
+        value: "作为生成深度伪造内容的人工智能系统的部署者（即使在艺术背景下，义务会有所减轻），适用透明度义务 (第 50(4) 条)"
 
-      # 5. Public Interest Text
-      - condition: "q6.d.4 == True and q6.d.5 == False and q6.d.6 == False"
-        value: "系统撰写新闻或公共利益文本而没有人工编辑检查，因此必须告知读者内容是 AI 生成的（第 50(4) 条）。"
+      - condition: "Role == 'deployer' and q6.gateway_deployer contains 3 and q6.d.3.le_auth == False and q6.d.3.human_review == False"
+        value: "作为在没有人工编辑责任的情况下发布关于公共利益事项的人工智能生成文本的部署者，适用透明度义务 (第 50(4) 条)"
 
 router:
   - condition: "True"

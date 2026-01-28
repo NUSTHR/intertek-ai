@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends
 
-from .schemas import ModuleResponse, QuestionResponse, ResultResponse, StartResponse, SubmitAnswerRequest, SubmitResponse
-from ..container import get_service
-from ..services.questionnaire import QuestionnaireService
+from ..schemas import ModuleResponse, QuestionResponse, ResultResponse, StartResponse, SubmitAnswerRequest, SubmitResponse
+from ...container import get_service
+from ...services.questionnaire import QuestionnaireService
 
 router = APIRouter()
 
@@ -48,8 +48,3 @@ def result(
 def get_question(question_id: str, lang: str | None = None, service: QuestionnaireService = Depends(get_service)) -> QuestionResponse:
     question = service.get_question(question_id, lang)
     return QuestionResponse(question=question)
-
-
-@router.get("/health")
-def health() -> dict[str, str]:
-    return {"status": "ok"}

@@ -32,7 +32,7 @@ questions:
 
   - id: "q5.sector"
     text: "产品属于哪个广泛的领域？"
-    ref: "附件 I：欧盟协调立法清单。这包括涵盖机械、玩具、电梯、医疗器械和运输系统的各种欧盟法规和指令。"
+    ref: "附件 I：欧盟协调立法清单。这可能包括涵盖机械、玩具、电梯、医疗器械和运输系统的各种欧盟法规和指令。"
     type: "single_choice"
     dependency: "q5.role in [1, 2]"
     options:
@@ -211,7 +211,7 @@ questions:
 
   - id: "q5.area_select"
     text: "您的人工智能系统是否在以下任何敏感领域运行？"
-    ref: "附件 III，第 1-8 点：第 6(2) 条所指的高风险人工智能系统。这包括生物特征识别、关键基础设施、教育、就业、基本服务、执法、移民和司法。"
+    ref: "附件 III，第 1-8 点：第 6(2) 条所指的高风险人工智能系统。这可能包括生物特征识别、关键基础设施、教育、就业、基本服务、执法、移民和司法。"
     description: "选择预期的广泛领域。如果不适用，请选择‘无’。"
     type: "single_choice"
     dependency: "q5.3rd_party != 1"
@@ -502,11 +502,11 @@ questions:
         cite: "法规第6(3) 条，第二款 (b) 项：该 AI 系统旨在改善先前完成的人类活动的结果。"
         description: "如果 AI 只是检查人已经完成的工作中的拼写错误或小错误，请选择此项。"
         value: 2
-      - label: "旨在检测决策模式或偏离先前模式的情况，并非旨在取代或影响先前完成的人类评估，且没有适当的人类审查"
+      - label: "该人工智能系统旨在检测决策模式或与先前决策模式的偏差，且并非旨在未经适当的人类审查即取代或影响先前已完成的人类评估"
         cite: "法规第6(3) 条，第二款 (c) 项：该 AI 系统旨在检测决策模式或偏差……且没有适当的人类审查。"
         description: "如果 AI 仅高亮显示异常决定以供审查，但不试图改变人们决定事情的方式，请选择此项。"
         value: 3
-      - label: "旨在执行评估的预备性任务，该评估与附件 III 所列用例的目的相关"
+      - label: "该人工智能系统旨在执行一项准备性任务，以服务于与附件 III 所列用例目的（如招聘、教育、执法等）相关的评估"
         cite: "法规第6(3) 条，第二款 (d) 项：该 AI 系统旨在执行评估的预备性任务。"
         description: "如果 AI 仅准备数据（如扫描文档）以供人员做出实际决定，请选择此项。"
         value: 4
@@ -557,6 +557,9 @@ variables:
         value: "不适用"
 
 router:
-  - condition: "True" 
+  - condition: "(Role == 'provider') or (Role == 'deployer')" 
     action: "jump"
     target_module_id: 6
+  - condition: "else"
+    action: "jump"
+    target_module_id: 8

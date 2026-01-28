@@ -37,7 +37,7 @@ variables:
       
       # Group 2: Real World Testing (RWT) overrides
       - condition: "Real_world_Testing == True and AI_type == 2 and High_risk == True and Transparency_obligation == True"
-        value: "High Risk with Transparency Obligation (Real World Testing)"
+        value: "High Risk with Additional Transparency Obligation (Real World Testing)"
       - condition: "Real_world_Testing == True and AI_type == 2 and High_risk == True and Transparency_obligation == False"
         value: "High Risk (Real World Testing)"
       - condition: "Real_world_Testing == True and AI_type == 2 and High_risk == False and Transparency_obligation == True"
@@ -57,7 +57,7 @@ variables:
 
       # Group 4: AI Systems Market Placement
       - condition: "AI_type == 2 and High_risk == True and Transparency_obligation == True"
-        value: "High Risk with Transparency Obligations"
+        value: "High Risk with Additional Transparency Obligations"
       - condition: "AI_type == 2 and High_risk == True and Transparency_obligation == False"
         value: "High Risk"
       - condition: "AI_type == 2 and High_risk == False and Transparency_obligation == True"
@@ -180,7 +180,7 @@ variables:
       # ------------------------------------------------------------------------
       # PRIORITY 4: REAL WORLD TESTING (Specific RWT Regimes)
       # ------------------------------------------------------------------------
-      - condition: "Risk_level == 'High Risk with Transparency Obligation (Real World Testing)'"
+      - condition: "Risk_level == 'High Risk with Additional Transparency Obligation (Real World Testing)'"
         value: |
           You are conducting real-world testing of a High-Risk AI System that also involves direct interaction with natural persons. Compliance requires adherence to Article 60 for testing governance and Article 50 for transparency. You must submit a real-world testing plan to the Market Surveillance Authority, ensure test subjects provide informed consent, and explicitly disclose that they are interacting with an AI system. Additionally, you must implement effective oversight, ensure the immediate reversibility of any decisions made by the system during the testing phase.
 
@@ -222,17 +222,17 @@ variables:
       # ------------------------------------------------------------------------
       # PRIORITY 6: AI SYSTEMS MARKET PLACEMENT
       # ------------------------------------------------------------------------
-      - condition: "Risk_level == 'High Risk with Transparency Obligations'"
+      - condition: "Risk_level == 'High Risk with Additional Transparency Obligations'"
         value: |
           This system is classified as High-Risk and also triggers specific transparency requirements. Providers must comply with the full conformity regime of Chapter III, including establishing a Risk Management System (Art 9), ensuring Data Governance (Art 10), undergoing Conformity Assessment (Art 43) and so forth. Simultaneously, you must satisfy Article 50 by ensuring that the system is designed to inform natural persons that they are interacting with an AI or that the outputs are artificially generated.
 
       - condition: "Risk_level == 'High Risk'"
         value: |
-          This system is classified as High-Risk under Article 6. Providers must strictly adhere to the obligations defined in Chapter III before placing the system on the market. This includes establishing a continuous risk management system (Art 9), ensuring training data is high-quality and unbiased (Art 10), maintaining comprehensive technical documentation (Annex IV), ensuring human oversight capabilities (Art 14), completing the appropriate conformity assessment procedure (Art 43) and so forth.
+          This system is classified as High-Risk under Article 6. Providers must strictly adhere to the obligations defined in Chapter III before placing the system on the market. this may include establishing a continuous risk management system (Art 9), ensuring training data is high-quality and unbiased (Art 10), maintaining comprehensive technical documentation (Annex IV), ensuring human oversight capabilities (Art 14), completing the appropriate conformity assessment procedure (Art 43) and so forth.
 
       - condition: "Risk_level == 'Transparency Obligation Only'"
         value: |
-          This system falls under the Limited Risk category, which is governed primarily by the transparency obligations of Article 50. While exempt from the heavy compliance burden of High-Risk systems, you must ensure that users are explicitly informed of the AI's nature. Depending on the system's function, this includes disclosing that they are interacting with a chatbot, that content is deep-faked, or that they are being exposed to emotion recognition technology.
+          This system falls under the Limited Risk category, which is governed primarily by the transparency obligations of Article 50. While exempt from the heavy compliance burden of High-Risk systems, you must ensure that users are explicitly informed of the AI's nature. Depending on the system's function, this may include disclosing that they are interacting with a chatbot, that content is deep-faked, or that they are being exposed to emotion recognition technology and so forth.
 
       - condition: "Risk_level == 'Minimal Risk'"
         value: |

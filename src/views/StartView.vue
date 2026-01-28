@@ -4,7 +4,6 @@ import { useRouter } from 'vue-router'
 import { useQuestionnaireStore } from '@/stores/questionnaire'
 import { useLocaleStore } from '@/stores/locale'
 import NavBar from '@/components/NavBar.vue'
-import logoUrl from '@/assets/images/logo/b9d2336ed590ab1e2a8d517d7f555f72.png'
 
 const router = useRouter()
 const store = useQuestionnaireStore()
@@ -50,7 +49,7 @@ const ui = computed(() =>
       }
     : {
         navHome: 'Home',
-        navHelp: 'Help Center',
+        navHelp: 'Help',
         navStart: 'Start Assessment',
         heroTitle: 'EU AI Act',
         heroSubtitle: 'Compliance Mapper',
@@ -244,13 +243,7 @@ function goHome() {
     <footer id="contact" class="bg-white py-12 border-t border-[#E5E7EB]">
       <div class="container mx-auto px-6 lg:px-12 flex flex-col md:flex-row items-center justify-between gap-8">
         <div class="flex items-center gap-3">
-          <a href="https://www.intertek.com/">
-            <img
-              alt="Intertek Logo"
-              class="w-8 h-8 rounded-md"
-              :src="logoUrl"
-            />
-          </a>
+
         </div>
         <div class="flex flex-wrap justify-center gap-10 text-xs font-semibold uppercase tracking-widest text-[#4B5563]">
           <a class="hover:text-[#111111] transition-colors" href="https://www.intertek.com/privacy/">{{ ui.privacy }}</a>

@@ -1,272 +1,270 @@
 module_id: 6
 title: "Transparency Obligation Check"
-description: "Determines if the AI system triggers specific transparency obligations under Article 50 of the EU AI Act (Interaction, Synthetic Content, Emotion/Biometric, Deep Fakes)."
+description: "Determines if the AI system triggers specific transparency obligations under Article 50 of the EU AI Act based on the user's Role (Provider or Deployer)."
 
 # 1. QUESTIONS SECTION
 questions:
-  - id: "q6.gateway"
-    text: "Does your AI system perform any of the following tasks?"
-    ref: "Art 50: Transparency obligations for providers and deployers of certain AI systems. 1. Providers shall ensure that AI systems intended to interact directly with natural persons are designed and developed in such a way that the natural persons concerned are informed that they are interacting with an AI system... 2. Providers of AI systems, including GPAI systems, generating synthetic audio, image, video or text content, shall ensure that the outputs of the AI system are marked in a machine-readable format and detectable as artificially generated or manipulated... 3. Deployers of an emotion recognition system or a biometric categorisation system shall inform the natural persons exposed thereto of the operation of the system... 4. Deployers of an AI system that generates or manipulates image, audio or video content that appreciably resembles existing persons, objects, places or other entities or events and would falsely appear to a person to be authentic or truthful (‘deep fake’), shall disclose that the content has been artificially generated or manipulated."
+  # ---------------------------------------------------------
+  # PROVIDER GATEWAY
+  # ---------------------------------------------------------
+  - id: "q6.gateway_provider"
+    text: "As a Provider, does your AI system perform any of the following functions?"
+    ref: "Art 50(1)-(2): Specifies obligations for providers regarding interaction with natural persons and synthetic content generation."
     type: "multi_choice"
+    dependency: "Role == 'provider'"
     options:
-      - label: "It interacts directly with people (e.g., a chatbot)."
-        cite: "Art 50(1): Providers shall ensure that AI systems intended to interact directly with natural persons are designed... so that the natural persons concerned are informed that they are interacting with an AI system."
-        description: "Select this if your AI talks or chats with users in real-time."
+      - label: "It is intended to interact directly with natural persons (e.g., chatbots)."
+        cite: "Art 50(1): Providers shall ensure that AI systems intended to interact directly with natural persons are designed and developed in such a way that the natural persons concerned are informed that they are interacting with an AI system..."
+        description: "Select this if the system talks or chats with users in real-time."
         value: 1
-      - label: "It generates synthetic images, audio, video, or text."
-        cite: "Art 50(2): Providers of AI systems... generating synthetic audio, image, video or text content, shall ensure that the outputs... are marked in a machine-readable format and detectable as artificially generated."
+      - label: "It generates synthetic audio, image, video, or text content."
+        cite: "Art 50(2): Providers of AI systems... generating synthetic audio, image, video or text content, shall ensure that the outputs of the AI system are marked in a machine-readable format and detectable as artificially generated or manipulated."
         description: "Select this if the system creates artificial media or writing."
         value: 2
-      - label: "It recognizes emotions or categorizes people by physical traits."
-        cite: "Art 50(3): Deployers of an emotion recognition system or a biometric categorisation system shall inform the natural persons exposed thereto of the operation of the system."
-        description: "Select this if the AI identifies feelings or groups people based on their body or behavior."
-        value: 3
-      - label: "It creates 'deep fakes' or public news content."
-        cite: "Art 50(4): Deployers of an AI system that generates or manipulates... content that appreciably resembles existing persons... ('deep fake'), shall disclose that the content has been artificially generated."
-        description: "Select this if the AI makes realistic but fake media or writes public interest reports."
-        value: 4
       - label: "None of the above"
-        cite: "Art 50: The specific transparency obligations of this Article only apply to the systems or uses described in paragraphs 1 to 4."
-        description: "Select this if your AI does not perform any of the tasks listed above."
+        cite: "Art 50"
+        description: "Select this if the system does not perform these specific functions."
         value: 0
         exclusive: true
 
-  - id: "q6.a.1"
-    text: "Is it obvious to a normal person that they are interacting with an AI?"
-    ref: "Art 50(1): ...That obligation shall also not apply where it is obvious from the points of view of a reasonably well-informed, observant and circumspect natural person, taking into account the circumstances and the context of use."
+  # --- PROVIDER TRACK A: Interaction (Art 50.1) ---
+  - id: "q6.p.1.obvious"
+    text: "Is it obvious to a reasonably well-informed, observant, and circumspect natural person that they are interacting with this AI system?"
+    ref: "Art 50(1): ...unless this is obvious from the point of view of a natural person who is reasonably well-informed, observant and circumspect..."
     type: "single_choice"
-    dependency: "q6.gateway contains 1"
+    dependency: "q6.gateway_provider contains 1"
     options:
-      - label: "Yes"
-        cite: "Art 50(1): The obligation to inform users... shall not apply where it is obvious... taking into account the circumstances and the context of use."
+      - label: "Yes, it is obvious from the context."
+        cite: "Art 50(1): ...unless this is obvious from the point of view of a natural person who is reasonably well-informed, observant and circumspect, taking into account the circumstances and the context of use."
         description: "Select this if the setting or interface makes it clear to anyone that the system is not human."
         value: True
-      - label: "No"
-        cite: "Art 50(1): Unless it is obvious... persons concerned must be informed that they are interacting with an AI system."
-        description: "Select this if a user might think they are talking to a real person."
+      - label: "No, it might not be obvious."
+        cite: "Art 50(1): Providers shall ensure... natural persons concerned are informed that they are interacting with an AI system..."
+        description: "Select this if a user might reasonably think they are communicating with a human."
         value: False
 
-  - id: "q6.a.2"
-    text: "Is this AI legally used for police work or fighting crime?"
-    ref: "Art 50(1): ...This obligation shall not apply to AI systems authorised by law to detect, prevent, investigate and prosecute criminal offences, subject to appropriate safeguards for the rights and freedoms of third parties..."
+  - id: "q6.p.1.le_auth"
+    text: "Is this interactive AI system authorised by law to detect, prevent, investigate or prosecute criminal offences?"
+    ref: "Art 50(1): This obligation shall not apply to AI systems authorised by law to detect, prevent, investigate or prosecute criminal offences..."
     type: "single_choice"
-    dependency: "q6.gateway contains 1 and q6.a.1 == False"
+    dependency: "q6.gateway_provider contains 1 and q6.p.1.obvious == False"
     options:
       - label: "Yes"
-        cite: "Art 50(1): This obligation shall not apply to AI systems authorised by law to detect, prevent, investigate and prosecute criminal offences."
+        cite: "Art 50(1): This obligation shall not apply to AI systems authorised by law to detect, prevent, investigate or prosecute criminal offences..."
         description: "Select this if the system is used by law enforcement under a legal mandate."
         value: True
       - label: "No"
-        cite: "Art 50(1): The transparency rules apply to systems unless they are specifically exempted for law enforcement or are obvious."
+        cite: "Art 50(1): ...subject to appropriate safeguards... (General rule applies)."
         description: "Select this for commercial, business, or general public uses."
         value: False
 
-  - id: "q6.a.3"
-    text: "Can the public use this system to report a crime?"
+  - id: "q6.p.1.public_report"
+    text: "Is this interactive AI system available for the public to report a criminal offence?"
     ref: "Art 50(1): ...unless those systems are available for the public to report a criminal offence."
     type: "single_choice"
-    dependency: "q6.a.2 == True"
+    dependency: "q6.p.1.le_auth == True"
     options:
       - label: "Yes"
-        cite: "Art 50(1): The law enforcement exemption does not apply if those systems are available for the public to report a criminal offence."
+        cite: "Art 50(1): ...unless those systems are available for the public to report a criminal offence."
         description: "Select this if the AI acts as a public reporting portal for crimes."
         value: True
       - label: "No"
-        cite: "Art 50(1): The exemption stands if the law enforcement system is not used by the public to report offences."
-        description: "Select this if the system is used only internally by the police."
+        cite: "Art 50(1): (Exemption for law enforcement applies)."
+        description: "Select this if the system is used only internally or for other purposes."
         value: False
 
-  - id: "q6.b.1"
-    text: "Does the AI only perform minor editing that doesn't change the meaning?"
-    ref: "Art 50(2): ...This obligation shall not apply to AI systems that perform an assistive function for standard editing or do not substantially alter the input data provided by the deployer or the semantics thereof..."
+  # --- PROVIDER TRACK B: Synthetic Content (Art 50.2) ---
+  - id: "q6.p.2.assistive"
+    text: "Does this synthetic content generation system only perform an assistive function for standard editing or not substantially alter the input data?"
+    ref: "Art 50(2): This obligation shall not apply to the extent the AI systems perform an assistive function for standard editing..."
     type: "single_choice"
-    dependency: "q6.gateway contains 2"
+    dependency: "q6.gateway_provider contains 2"
     options:
-      - label: "Yes"
-        cite: "Art 50(2): This obligation shall not apply to AI systems that perform an assistive function for standard editing... or do not substantially alter the input data."
+      - label: "Yes (e.g., standard editing, minor cleanup)"
+        cite: "Art 50(2): This obligation shall not apply to the extent the AI systems perform an assistive function for standard editing or do not substantially alter the input data provided by the deployer or the semantics thereof..."
         description: "Select this for tools like spell-checkers, simple filters, or basic noise reduction."
         value: True
-      - label: "No"
-        cite: "Art 50(2): The obligation to mark content applies unless the system only performs assistive editing or minor alterations."
+      - label: "No (substantially alters or generates new content)"
+        cite: "Art 50(2): ...ensure that the outputs of the AI system are marked... (General rule applies)."
         description: "Select this if the AI generates new content or changes the meaning of the input."
         value: False
 
-  - id: "q6.b.2"
-    text: "Is this AI legally used for police work or fighting crime?"
-    ref: "Art 50(2): ...or to AI systems authorised by law to detect, prevent, investigate and prosecute criminal offences."
+  - id: "q6.p.2.le_auth"
+    text: "Is the use of this content generation system authorised by law to detect, prevent, investigate or prosecute criminal offences?"
+    ref: "Art 50(2): ...or where authorised by law to detect, prevent, investigate or prosecute criminal offences."
     type: "single_choice"
-    dependency: "q6.gateway contains 2 and q6.b.1 == False"
+    dependency: "q6.gateway_provider contains 2 and q6.p.2.assistive == False"
     options:
       - label: "Yes"
-        cite: "Art 50(2): The marking obligation does not apply... to AI systems authorised by law to detect, prevent, investigate and prosecute criminal offences."
+        cite: "Art 50(2): ...or where authorised by law to detect, prevent, investigate or prosecute criminal offences."
         description: "Select this if the system is used by the police for authorized investigations."
         value: True
       - label: "No"
-        cite: "Art 50(2): Providers of content-generating AI must mark outputs unless they fall under editing or law enforcement exemptions."
+        cite: "Art 50(2): (General rule applies)."
         description: "Select this for business, artistic, or personal content tools."
         value: False
 
-  - id: "q6.c.1"
-    text: "Is the use allowed by law to help the police solve crimes?"
-    ref: "Art 50(3): ...This obligation shall not apply to AI systems used for emotion recognition and biometric categorisation, which are permitted by law to detect, prevent and investigate criminal offences..."
+  # ---------------------------------------------------------
+  # DEPLOYER GATEWAY
+  # ---------------------------------------------------------
+  - id: "q6.gateway_deployer"
+    text: "As a Deployer, does your AI system perform any of the following functions?"
+    ref: "Art 50(3)-(4): Specifies obligations for deployers regarding emotion recognition, biometric categorisation, deep fakes, and public interest text."
+    type: "multi_choice"
+    dependency: "Role == 'deployer'"
+    options:
+      - label: "It is an emotion recognition system or a biometric categorisation system."
+        cite: "Art 50(3): Deployers of an emotion recognition system or a biometric categorisation system shall inform the natural persons exposed thereto of the operation of the system..."
+        description: "Select this if the AI identifies feelings or groups people based on physical/behavioral traits."
+        value: 1
+      - label: "It generates/manipulates image, audio, or video content constituting a 'deep fake'."
+        cite: "Art 50(4): Deployers of an AI system that generates or manipulates image, audio or video content constituting a deep fake, shall disclose that the content has been artificially generated or manipulated."
+        description: "Select this for realistic face-swaps, voice clones, or fake videos."
+        value: 2
+      - label: "It generates/manipulates text published to inform the public on matters of public interest."
+        cite: "Art 50(4): Deployers of an AI system that generates or manipulates text which is published with the purpose of informing the public on matters of public interest shall disclose that the text has been artificially generated or manipulated."
+        description: "Select this if the AI writes public reports on health, politics, or news."
+        value: 3
+      - label: "None of the above"
+        cite: "Art 50"
+        description: "Select this if the system does not perform these specific functions."
+        value: 0
+        exclusive: true
+
+  # --- DEPLOYER TRACK C: Emotion/Biometric (Art 50.3) ---
+  - id: "q6.d.1.le_perm"
+    text: "Is the use of this emotion recognition or biometric categorisation system permitted by law to detect, prevent or investigate criminal offences?"
+    ref: "Art 50(3): This obligation shall not apply... which are permitted by law to detect, prevent or investigate criminal offences..."
     type: "single_choice"
-    dependency: "q6.gateway contains 3"
+    dependency: "q6.gateway_deployer contains 1"
     options:
       - label: "Yes"
-        cite: "Art 50(3): This obligation shall not apply to AI systems... permitted by law to detect, prevent and investigate criminal offences."
+        cite: "Art 50(3): This obligation shall not apply to AI systems used for biometric categorisation and emotion recognition, which are permitted by law to detect, prevent or investigate criminal offences..."
         description: "Select this if used for legal police investigations."
         value: True
       - label: "No"
-        cite: "Art 50(3): Deployers must inform persons exposed to emotion or biometric systems unless used for legal crime fighting."
-        description: "Select this for uses in stores, workplaces, or schools."
+        cite: "Art 50(3): (General rule applies)."
+        description: "Select this for uses in stores, workplaces, schools, or marketing."
         value: False
 
-  - id: "q6.d.1"
-    text: "Does the AI make fake media that looks very real ('Deep Fake')?"
-    ref: "Art 3(60): ‘deep fake’ means AI-generated or manipulated image, audio or video content that appreciably resembles existing persons... and would falsely appear to a person to be authentic or truthful. Art 50(4): Deployers... shall disclose that the content has been artificially generated or manipulated."
+  # --- DEPLOYER TRACK D: Deep Fakes (Art 50.4) ---
+  - id: "q6.d.2.le_auth"
+    text: "Is the use of this deep fake generation system authorised by law to detect, prevent, investigate or prosecute criminal offences?"
+    ref: "Art 50(4): This obligation shall not apply where the use is authorised by law to detect, prevent, investigate or prosecute criminal offence."
     type: "single_choice"
-    dependency: "q6.gateway contains 4"
+    dependency: "q6.gateway_deployer contains 2"
     options:
       - label: "Yes"
-        cite: "Art 50(4): Deployers of an AI system that generates or manipulates... a ‘deep fake’, shall disclose that the content has been artificially generated."
-        description: "Select this for realistic face-swaps, voice clones, or fake videos."
-        value: True
-      - label: "No"
-        cite: "Art 3(60): Content is only a deep fake if it appreciably resembles real entities and falsely appears authentic."
-        description: "Select this if the content is clearly computer-generated or not meant to look real."
-        value: False
-
-  - id: "q6.d.2"
-    text: "Is this use allowed by law for police investigations?"
-    ref: "Art 50(4): ...The obligation set out in the first subparagraph shall not apply where the use is authorised by law to detect, prevent, investigate or prosecute criminal offences."
-    type: "single_choice"
-    dependency: "q6.d.1 == True"
-    options:
-      - label: "Yes"
-        cite: "Art 50(4): The disclosure obligation... shall not apply where the use is authorised by law to detect, prevent, investigate or prosecute criminal offences."
+        cite: "Art 50(4): This obligation shall not apply where the use is authorised by law to detect, prevent, investigate or prosecute criminal offence."
         description: "Select this if the deep fake is part of a legal investigation."
         value: True
       - label: "No"
-        cite: "Art 50(4): Unless used for law enforcement, deep fakes must be disclosed as artificially generated."
+        cite: "Art 50(4): (General rule applies)."
         description: "Select this for entertainment, ads, or news."
         value: False
 
-  - id: "q6.d.3"
-    text: "Is the content part of a creative work like a movie or parody?"
-    ref: "Art 50(4): ...Where the content forms part of an evidently artistic, creative, satirical, fictional or analogous work or programme, the transparency obligations... are limited to disclosure... in an appropriate manner that does not hamper the display or enjoyment of the work."
+  - id: "q6.d.2.artistic"
+    text: "Does this deep fake content form part of an evidently artistic, creative, satirical, fictional or analogous work?"
+    ref: "Art 50(4): Where the content forms part of an evidently artistic... work... the transparency obligations... are limited to disclosure... that does not hamper the display or enjoyment..."
     type: "single_choice"
-    dependency: "q6.d.1 == True and q6.d.2 == False"
+    dependency: "q6.gateway_deployer contains 2 and q6.d.2.le_auth == False"
     options:
       - label: "Yes"
-        cite: "Art 50(4): Where the content forms part of an evidently artistic, creative, satirical... work, the obligations are limited to disclosure... that does not hamper the enjoyment of the work."
+        cite: "Art 50(4): Where the content forms part of an evidently artistic, creative, satirical, fictional or analogous work or programme, the transparency obligations set out in this paragraph are limited to disclosure..."
         description: "Select this for films, art, or satire where labels shouldn't interrupt the view."
         value: True
       - label: "No"
-        cite: "Art 50(4): Standard disclosure is required if the deep fake is not part of a creative or satirical work."
+        cite: "Art 50(4): (Standard disclosure obligation applies)."
         description: "Select this for news, informational, or business content."
         value: False
 
-  - id: "q6.d.4"
-    text: "Does the system write text to inform the public about important news?"
-    ref: "Art 50(4): ...The obligation... shall also apply to text generated or manipulated by an AI system which is published with the purpose of informing the public on matters of public interest..."
+  # --- DEPLOYER TRACK E: Public Interest Text (Art 50.4) ---
+  - id: "q6.d.3.le_auth"
+    text: "Is the publication of this AI-generated text authorised by law to detect, prevent, investigate or prosecute criminal offences?"
+    ref: "Art 50(4): This obligation shall not apply where the use is authorised by law to detect, prevent, investigate or prosecute criminal offences..."
     type: "single_choice"
-    dependency: "q6.gateway contains 4 and q6.d.1 == False"
+    dependency: "q6.gateway_deployer contains 3"
     options:
       - label: "Yes"
-        cite: "Art 50(4): The obligation... applies to text... published with the purpose of informing the public on matters of public interest."
-        description: "Select this if the AI writes public reports on health, politics, or news."
-        value: True
-      - label: "No"
-        cite: "Art 50(4): This rule only applies to text informing the public on matters of public interest."
-        description: "Select this for private, internal, or non-public topics."
-        value: False
-
-  - id: "q6.d.5"
-    text: "Is this use allowed by law for police investigations?"
-    ref: "Art 50(4): ...unless the AI-generated content has undergone a process of human review..."
-    type: "single_choice"
-    dependency: "q6.d.4 == True"
-    options:
-      - label: "Yes"
-        cite: "Art 50(4): Law enforcement uses authorized by law are exempt from these disclosure rules."
+        cite: "Art 50(4): This obligation shall not apply where the use is authorised by law to detect, prevent, investigate or prosecute criminal offences..."
         description: "Select this if the text is for legal crime-fighting tasks."
         value: True
       - label: "No"
-        cite: "Art 50(4): AI-generated public interest text must be disclosed unless human-reviewed."
+        cite: "Art 50(4): (General rule applies)."
         description: "Select this for general public news or information."
         value: False
 
-  - id: "q6.d.6"
-    text: "Has a human editor reviewed and taken responsibility for the text?"
-    ref: "Art 50(4): ...unless the AI-generated content has undergone a process of human review or editorial control and a natural or legal person holds editorial responsibility for the publication..."
+  - id: "q6.d.3.human_review"
+    text: "Has this public interest text undergone human review/editorial control, and does a person hold editorial responsibility for it?"
+    ref: "Art 50(4): ...or where the AI-generated content has undergone a process of human review or editorial control and where a natural or legal person holds editorial responsibility..."
     type: "single_choice"
-    dependency: "q6.d.4 == True and q6.d.5 == False"
+    dependency: "q6.gateway_deployer contains 3 and q6.d.3.le_auth == False"
     options:
       - label: "Yes"
-        cite: "Art 50(4): Disclosure is not required if the AI-generated content has undergone... human review or editorial control and a person holds editorial responsibility."
+        cite: "Art 50(4): ...or where the AI-generated content has undergone a process of human review or editorial control and where a natural or legal person holds editorial responsibility for the publication of the content."
         description: "Select this if a person checks the text and takes legal responsibility for it."
         value: True
       - label: "No"
-        cite: "Art 50(4): If the AI publishes text directly without human editorial oversight, disclosure is mandatory."
+        cite: "Art 50(4): (General rule applies)."
         description: "Select this if the AI publishes the text automatically."
         value: False
-        
+
 variables:
   - name: "Transparency_obligation"
     type: "boolean"
     initial_value: False
     rules:
-      # Track A: Gateway=1 AND Not Obvious AND NOT(Law Enf exempt)
-      - condition: "q6.gateway contains 1 and q6.a.1 == False and not (q6.a.2 == True and q6.a.3 == False)"
-        value: True
-      
-      # Track B: Gateway=2 AND Not Assistive AND NOT(Law Enf exempt)
-      - condition: "q6.gateway contains 2 and q6.b.1 == False and q6.b.2 == False"
-        value: True
-      
-      # Track C: Gateway=3 AND NOT(Law Enf exempt)
-      - condition: "q6.gateway contains 3 and q6.c.1 == False"
+      # --- PROVIDER RULES ---
+      # 1. Interaction: Provider + Interactive + Not Obvious + (Not LE OR Public Report)
+      - condition: "Role == 'provider' and q6.gateway_provider contains 1 and q6.p.1.obvious == False and (q6.p.1.le_auth == False or q6.p.1.public_report == True)"
         value: True
 
-      # Track D1: Deep Fakes AND NOT(Law Enf exempt) -> (Artistic applies limited obligation, still counts as obligation apply)
-      - condition: "q6.d.1 == True and q6.d.2 == False"
+      # 2. Synthetic Content: Provider + Synthetic + Not Assistive + Not LE
+      - condition: "Role == 'provider' and q6.gateway_provider contains 2 and q6.p.2.assistive == False and q6.p.2.le_auth == False"
         value: True
 
-      # Track D2: Public Text AND NOT(Law Enf exempt) AND NOT(Human Review)
-      - condition: "q6.d.4 == True and q6.d.5 == False and q6.d.6 == False"
+      # --- DEPLOYER RULES ---
+      # 3. Emotion/Biometric: Deployer + Function + Not LE
+      - condition: "Role == 'deployer' and q6.gateway_deployer contains 1 and q6.d.1.le_perm == False"
         value: True
 
+      # 4. Deep Fake: Deployer + Deep Fake + Not LE
+      # Note: Even if it is artistic (q6.d.2.artistic == True), the obligation exists (limited disclosure), so it remains True.
+      - condition: "Role == 'deployer' and q6.gateway_deployer contains 2 and q6.d.2.le_auth == False"
+        value: True
+
+      # 5. Public Text: Deployer + Public Text + Not LE + Not Human Review
+      - condition: "Role == 'deployer' and q6.gateway_deployer contains 3 and q6.d.3.le_auth == False and q6.d.3.human_review == False"
+        value: True
+
+      # Fallback
       - condition: "else"
         value: False
 
   - name: "Transparency_Reasons"
     type: "list"
     initial_value: []
-    description: "Collects all reasons for transparency obligations."
+    description: "Collects reasons for the transparency obligations."
     rules:
-      # 1. Interaction
-      - condition: "q6.gateway contains 1 and q6.a.1 == False and not (q6.a.2 == True and q6.a.3 == False)"
-        value: "The AI interacts directly with users who might not realize they are talking to a machine, requiring a clear notice that the system is artificial (Article 50(1))."
+      # Provider Reasons
+      - condition: "Role == 'provider' and q6.gateway_provider contains 1 and q6.p.1.obvious == False and (q6.p.1.le_auth == False or q6.p.1.public_report == True)"
+        value: "As a provider of an AI system intended to interact directly with natural persons (where it is not obvious), the transparency obligation applies (Art 50(1))"
 
-      # 2. Synthetic Content Marking
-      - condition: "q6.gateway contains 2 and q6.b.1 == False and q6.b.2 == False"
-        value: "The system creates synthetic media (like images or audio) that could be mistaken for real, so it must be marked as AI-made in a way that computers can recognize (Article 50(2))."
+      - condition: "Role == 'provider' and q6.gateway_provider contains 2 and q6.p.2.assistive == False and q6.p.2.le_auth == False"
+        value: "As a provider of an AI system generating synthetic content, the transparency obligation applies (Art 50(2))"
 
-      # 3. Emotion/Biometric
-      - condition: "q6.gateway contains 3 and q6.c.1 == False"
-        value: "The AI is designed to sense emotions or group people by their physical features, which requires you to tell people they are being analyzed (Article 50(3))."
+      # Deployer Reasons
+      - condition: "Role == 'deployer' and q6.gateway_deployer contains 1 and q6.d.1.le_perm == False"
+        value: "As a deployer of an emotion recognition system or a biometric categorisation system, the transparency obligation applies (Art 50(3))"
 
-      # 4a. Deep Fake (Standard)
-      - condition: "q6.d.1 == True and q6.d.2 == False and q6.d.3 == False"
-        value: "The AI produces 'Deep Fakes'—highly realistic but fake images or videos—which must be clearly labeled so people aren't misled (Article 50(4))."
+      - condition: "Role == 'deployer' and q6.gateway_deployer contains 2 and q6.d.2.le_auth == False and q6.d.2.artistic == False"
+        value: "As a deployer of an AI system generating deep fakes, the transparency obligation applies (Art 50(4))"
 
-      # 4b. Deep Fake (Artistic Exemption)
-      - condition: "q6.d.1 == True and q6.d.2 == False and q6.d.3 == True"
-        value: "While the AI makes fake media for artistic or satirical purposes, you must still disclose that it is artificial in a way that doesn't interrupt the work (Article 50(4))."
+      - condition: "Role == 'deployer' and q6.gateway_deployer contains 2 and q6.d.2.le_auth == False and q6.d.2.artistic == True"
+        value: "As a deployer of an AI system generating deep fakes (even in an artistic context, the obligation will be limited), the transparency obligation applies (Art 50(4))"
 
-      # 5. Public Interest Text
-      - condition: "q6.d.4 == True and q6.d.5 == False and q6.d.6 == False"
-        value: "The system writes news or public interest text without a human editor checking it, so readers must be told the content is AI-generated (Article 50(4))."
+      - condition: "Role == 'deployer' and q6.gateway_deployer contains 3 and q6.d.3.le_auth == False and q6.d.3.human_review == False"
+        value: "As a deployer publishing AI-generated text on matters of public interest without human editorial responsibility, the transparency obligation applies (Art 50(4))"
 
 router:
   - condition: "True"

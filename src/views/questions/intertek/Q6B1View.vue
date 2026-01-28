@@ -4,6 +4,7 @@ import type { AnswerValue, Module, ModuleQuestion } from '@/types/questionnaire'
 import IntertekLayout from './IntertekLayout.vue'
 import IntertekSingleChoiceCards from './IntertekSingleChoiceCards.vue'
 import { buildOptions } from './optionUtils'
+import { computeQuestionTag } from './useQuestionCommon'
 import { useLocaleStore } from '@/stores/locale'
 
 const props = defineProps<{
@@ -74,21 +75,17 @@ const fallbackOptions = computed(() =>
 const options = computed(() => buildOptions(props.question, fallbackOptions.value))
 const inputName = computed(() => props.question?.id?.replace(/[^a-zA-Z0-9]/g, '_') ?? 'q6')
 const labelId = computed(() => `${inputName.value}_label`)
-const questionTag = computed(() => {
-  const id = props.question?.id ?? ''
-  if (!id) return ''
-  return locale.isZh ? `问题 ${id.replace(/^q/i, '').toUpperCase()}` : `Question ${id.replace(/^q/i, '').toUpperCase()}`
-})
+const questionTag = computed(() => computeQuestionTag(props.question?.id ?? '', locale.isZh))
 const legalCopy = computed(() => props.question?.ref ?? '')
 const tipMap = computed<Record<string, string>>(() =>
   locale.isZh
     ? {
-        'q6.b.1': '确认系统仅执行标准编辑或轻微修改。',
-        'q6.b.2': '确认系统是否获得执法用途的法律授权。',
+        'q6.p.2.assistive': '确认系统仅执行标准编辑或轻微修改。',
+        'q6.p.2.le_auth': '确认系统是否获得执法用途的法律授权。',
       }
     : {
-        'q6.b.1': 'Confirm whether the system only performs standard editing or minor alteration.',
-        'q6.b.2': 'Confirm whether the system is legally authorized for law enforcement purposes.',
+        'q6.p.2.assistive': 'Confirm whether the system only performs standard editing or minor alteration.',
+        'q6.p.2.le_auth': 'Confirm whether the system is legally authorized for law enforcement purposes.',
       },
 )
 const tipCopy = computed(() => tipMap.value[props.question?.id ?? ''] ?? '')
