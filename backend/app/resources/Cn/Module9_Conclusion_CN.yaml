@@ -121,7 +121,7 @@ variables:
       - condition: "Risk_level == 'High Risk (Real World Testing)'"
         value: "高风险（真实世界测试）"
       - condition: "Risk_level == 'Transparency Obligation Only'"
-        value: "仅透明度义务（真实世界测试）"
+        value: "仅透明度义务"
       - condition: "Risk_level == 'Minimal Risk'"
         value: "最小风险"
       - condition: "Risk_level == 'Theoretically Exempt (Real-World Testing Inapplicable to GPAI Models)'"
