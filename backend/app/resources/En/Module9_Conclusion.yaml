@@ -41,7 +41,7 @@ variables:
       - condition: "Real_world_Testing == True and AI_type == 2 and High_risk == True and Transparency_obligation == False"
         value: "High Risk (Real World Testing)"
       - condition: "Real_world_Testing == True and AI_type == 2 and High_risk == False and Transparency_obligation == True"
-        value: "Transparency Obligation Only (Real World Testing)"
+        value: "Transparency Obligation Only"
       - condition: "Real_world_Testing == True and AI_type == 2 and High_risk == False and Transparency_obligation == False"
         value: "Minimal Risk"
       - condition: "Real_world_Testing == True and AI_type == 1"
@@ -188,7 +188,7 @@ variables:
         value: |
           You are conducting real-world testing of a High-Risk AI System, which triggers the governance requirements of Article 60. You are legally required to submit a detailed testing plan to the Market Surveillance Authority in your Member State and obtain informed consent from all test subjects prior to participation. The testing environment must be subject to effective human oversight, and you must ensure that all personal data collected is deleted immediately once the testing concludes, unless specific retention conditions are met.
 
-      - condition: "Risk_level == 'Transparency Obligation Only (Real World Testing)'"
+      - condition: "Risk_level == ('Transparency Obligation Only') and (Real_world_Testing == True)"
         value: |
           While this testing phase does not require the submission of a formal testing plan under Article 60, the system involves interaction with natural persons or the generation of content, triggering the transparency obligations of Article 50. You must ensure that test subjects are clearly informed that they are interacting with an AI system or that the content they are viewing is artificially generated. Failure to provide this disclosure constitutes a breach of the Regulation even during the testing phase.
 
