@@ -157,10 +157,10 @@ router:
     target_module_id: 9 
 
   # 2. Termination: No Applicable Role
-  - condition: "Role == 'none'"
-    #"Based on your inputs, your entity does not hold a regulated role under the AI Act for this product."
-    action: "jump"
-    target_module_id: 9
+  # - condition: "Role == 'none'"
+  #   #"Based on your inputs, your entity does not hold a regulated role under the AI Act for this product."
+  #   action: "jump"
+  #   target_module_id: 9
 
   # 3. Path for AI Systems -> System Exclusion Check
   - condition: "AI_type == 2"
