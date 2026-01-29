@@ -36,7 +36,7 @@ const ui = computed(() =>
         articleDescGpai:
           '“通用目的 AI 模型”是指通常在规模化自监督训练下具备显著通用性，能胜任多种任务，可集成到多类下游系统或应用的 AI 模型。',
         viewFullAct: '查看法规全文。',
-        tip: '对于集成了自定义AI模型的AI系统，根据法规序言第97条，系统本身及底层模型均负有相应义务。因此，必须针对这两个主体分别使用 EU AI ACT COMPLIANCE MAPPER 进行评估。',
+        tip: '对于集成了通用AI模型的AI系统，根据法规序言第97条，系统本身及底层模型均负有相应义务。因此，必须针对这两个主体分别使用 EU AI ACT COMPLIANCE MAPPER 进行评估。',
       }
     : {
         legalContext: 'Legal Context',
