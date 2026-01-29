@@ -546,13 +546,13 @@ variables:
     initial_value: ""
     rules:
       - condition: "q5.3rd_party == 1"
-        value: "该 AI 系统是法律（附件 I）要求进行外部安全审计的安全部件或独立产品，根据第 6(1) 条属于高风险。"
+        value: "该 AI 系统是法律（附件 I）要求进行外部安全审计的安全部件或独立产品，根据第 6(1) 条属于高风险"
       - condition: "Annex_III_Hit == True and q5.profiling == 1"
-        value: "该系统用于敏感的公共或私营部门（附件 III）并对个人进行特征分析，根据第 6(3) 条自动归类为高风险。"
+        value: "该系统用于敏感的公共或私营部门（附件 III）并对个人进行特征分析，根据第 6(3) 条自动归类为高风险"
       - condition: "Annex_III_Hit == True and q5.profiling == 0 and (0 in q5.derogation)"
-        value: "该系统在敏感领域（附件 III）运行，并在决策中发挥重要作用，不符合‘次要任务’豁免条件，根据第 6(2) 条属于高风险。"
+        value: "该系统在敏感领域（附件 III）运行，并在决策中发挥重要作用，不符合‘次要任务’豁免条件，根据第 6(2) 条属于高风险"
       - condition: "Annex_III_Hit == True and q5.profiling == 0 and (0 not in q5.derogation)"
-        value: "该系统免于高风险状态，因为根据第 6(3) 条，其功能仅限于狭窄的、预备性的或纯粹程序性的任务，不会造成重大伤害风险。"
+        value: "该系统免于高风险状态，因为根据第 6(3) 条，其功能仅限于狭窄的、预备性的或纯粹程序性的任务，不会造成重大伤害风险"
       - condition: "else"
         value: "不适用"
 
