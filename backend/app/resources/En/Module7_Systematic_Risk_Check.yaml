@@ -44,7 +44,7 @@ variables:
       - condition: "q7.1 == 2"
         value: "The model is officially designated as having systemic risk by a European Commission decision, due to its significant market reach or capabilities equivalent to high-impact models under Article 51(1)(b)."
       - condition: "else"
-        value: "N/A"
+        value: "None of the specific systematic risk conditions were met"
 
 router:
   # Always proceed to Module 8 after this check

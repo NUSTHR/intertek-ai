@@ -4,7 +4,7 @@ description: "根据第 2024/1689 号条例（欧盟），将参数状态映射�
 
 # ==============================================================================
 # VARIABLES SECTION
-# Determines Type, Risk_level, and View dynamically based on logic.
+# Determines Type， Risk_level， and View dynamically based on logic.
 # ==============================================================================
 
 variables:
@@ -44,9 +44,6 @@ variables:
         value: "Transparency Obligation Only"
       - condition: "Real_world_Testing == True and AI_type == 2 and High_risk == False and Transparency_obligation == False"
         value: "Minimal Risk"
-      - condition: "Real_world_Testing == True and AI_type == 1"
-        value: "Theoretically Exempt (Real-World Testing Inapplicable to GPAI Models)"
-
       # Group 3: GPAI Market Placement
       - condition: "AI_type == 1 and Systematic_risk == True"
         value: "Systemic Risk GPAI"
@@ -124,8 +121,6 @@ variables:
         value: "仅透明度义务"
       - condition: "Risk_level == 'Minimal Risk'"
         value: "最小风险"
-      - condition: "Risk_level == 'Theoretically Exempt (Real-World Testing Inapplicable to GPAI Models)'"
-        value: "理论上豁免（真实世界测试不适用于 GPAI 模型）"
       - condition: "Risk_level == 'Systemic Risk GPAI'"
         value: "具有系统风险的通用人工智能模型"
       - condition: "Risk_level == 'Standard GPAI'"
@@ -153,45 +148,43 @@ variables:
     type: "string"
     initial_value: "Reason undetermined."
     rules:
-      # Group 1: Hard Stops (Extracts from Modules 1, 3, 4)
+      # 第 1 组：硬性排除（提取自模块 1、3、4）
       - condition: "Totally_excluded == True"
-        value: "{{Exclusion_reason}}" 
+        value: "此活动不属于《人工智能法案》的适用范围。原因：{{Exclusion_reason}}" 
       - condition: "System_excluded == True"
-        value: "{{Exclusion_Reason}}" # From Module 3 variable
+        value: "该系统属于法规明确豁免的对象。原因：{{Exclusion_Reason}}" 
       - condition: "Unacceptable_risk == True"
-        value: "{{Prohibited_reason}}" # From Module 4 variable
+        value: "此人工智能实践被归类为“不可接受风险”，受到严格禁止。原因：{{Prohibited_reason}}" 
       - condition: "AI_type == 3"
-        value: "该软件不符合第 3 条定义的‘人工智能系统’或‘通用人工智能模型’的法律定义。"
+        value: "该软件不在此法规管辖范围内，因为它不符合第 3 条中关于“人工智能系统”或“通用人工智能模型”的法律定义。"
 
-      # Group 2: Real World Testing (RWT) overrides
+      # 第 2 组：真实世界测试（RWT）覆盖规则
       - condition: "Real_world_Testing == True and AI_type == 2 and High_risk == True"
-        value: "高风险系统的真实世界测试（原因：{{High_risk_reason}}）触发第 60 条治理要求。"
+        value: "您正在对高风险人工智能系统进行真实世界测试。该高风险状态适用的原因是：{{High_risk_reason}}。因此，该测试受第 60 条治理要求的管辖。"
       - condition: "Real_world_Testing == True and AI_type == 2 and High_risk == False and Transparency_obligation == True"
-        value: "真实世界测试涉及与人互动或内容生成（原因：{{Transparency_Reasons}}），触发第 50 条透明度义务。"
+        value: "您正在对涉及人机交互或内容生成的系统进行真实世界测试。这触发了透明度义务，原因是：{{Transparency_Reasons}}。即使在测试期间，您也必须遵守第 50 条的规定。"
       - condition: "Real_world_Testing == True and AI_type == 2 and High_risk == False and Transparency_obligation == False"
-        value: "最小风险系统的真实世界测试不受特定《人工智能法》测试义务的限制。"
-      - condition: "Real_world_Testing == True and AI_type == 1"
-        value: "真实世界测试规则（第 60 条）适用于人工智能系统，而非原始通用人工智能模型；公开测试模型构成将其投放市场。"
+        value: "您正在对归类为最小风险的系统进行真实世界测试。此状态适用是因为该系统不满足不可接受风险、高风险或透明度义务的任何条件。因此，《人工智能法案》未对此测试施加特定的监管要求。"
 
-      # Group 3: GPAI Market Placement (Extracts from Module 7)
+      # 第 3 组：通用人工智能模型（GPAI）市场投放（提取自模块 7）
       - condition: "AI_type == 1 and Systematic_risk == True"
-        value: "{{Systematic_reason}}" # From Module 7 variable
+        value: "此模型被归类为具有系统性风险的通用人工智能模型。原因：{{Systematic_reason}}" 
       - condition: "AI_type == 1 and Systematic_risk == False"
-        value: "该模型未达到系统风险的阈值（原因：{{Systematic_reason}}），被视为标准通用人工智能模型。"
+        value: "此模型被归类为标准通用人工智能模型。它未达到系统性风险的阈值，因为：{{Systematic_reason}}。"
 
-      # Group 4: AI Systems Market Placement (Extracts from Module 5 & 6)
+      # 第 4 组：人工智能系统市场投放（提取自模块 5 和 6）
       - condition: "AI_type == 2 and High_risk == True and Transparency_obligation == True"
-        value: "该系统属于高风险，因为 {{High_risk_reason}}，并触发透明度义务，因为 {{Transparency_Reasons}}。"
+        value: "此系统被归类为高风险，原因是：{{High_risk_reason}}。此外，它还需履行透明度义务，原因是：{{Transparency_Reasons}}。"
       - condition: "AI_type == 2 and High_risk == True and Transparency_obligation == False"
-        value: "{{High_risk_reason}}"
+        value: "此系统被归类为高风险。原因：{{High_risk_reason}}"
       - condition: "AI_type == 2 and High_risk == False and Transparency_obligation == True"
-        value: "{{Transparency_Reasons}}"
+        value: "此系统被归类为有限风险，并须履行透明度义务。原因：{{Transparency_Reasons}}"
       - condition: "AI_type == 2 and High_risk == False and Transparency_obligation == False"
-        value: "该系统不属于本法规定义的任何高风险或透明度类别。"
+        value: "此系统被归类为最小风险，因为它不满足法规中定义的不可接受风险、高风险或透明度义务的任何条件。"
 
-      # Fallback
+      # 回退选项
       - condition: "else"
-        value: "无法根据先前的模块确定具体的分类原因。"
+        value: "无法根据提供的输入确定具体的风险分类原因。"
 
   - name: "Role_Description"
     type: "string"
@@ -221,108 +214,167 @@ variables:
       - condition: "Type == 'General-Purpose AI Model'"
         value: "根据第 3(63) 条，这是一种显示出显著通用性、能够胜任广泛的独特任务，并可以集成到各种下游系统或应用中的 AI 模型。"
       - condition: "Type == 'Non-regulated products'"
-        value: "该软件不符合第 3(1) 条下人工智能系统或第 3(63) 条下通用人工智能模型的定义，因此不属于《人工智能法》的适用范围。"
+        value: "根据用户输入，该软件不符合第 3(1) 条下人工智能系统或第 3(63) 条下通用人工智能模型的定义，因此不属于《人工智能法》的适用范围。"
 
   - name: "View"
     type: "string"
     initial_value: ""
     rules:
       # ------------------------------------------------------------------------
-      # PRIORITY 1: HARD EXCLUSIONS (Regulation does not apply)
+      # PRIORITY 1: HARD EXCLUSIONS (绝对排除 - 法规不适用)
       # ------------------------------------------------------------------------
       - condition: "Totally_excluded == True"
         value: |
-          此活动被归类为不属于《人工智能法》的受监管范围，这意味着该项目目前免于本法规规定的强制性法律义务、风险管理标准或监管监督。
+          该活动不属于《人工智能法案》的监管范围。只要该项目保持在特定界限内（例如纯粹的科学研究与开发，或投放市场前的研发活动），目前无需履行本法规规定的强制性法律义务、风险管理标准或接受监管监督。
+          如果想了解更全面的法规细节，建议您参考条款 Article 2(6) (研究豁免)， Article 2(8) (投放市场前的研发)。
 
       - condition: "System_excluded == True"
         value: |
-          该系统根据第 2 条有资格获得特定豁免，因为其专门用于军事、国防或国家安全目的，或在国际执法合作框架内使用。因此，只要其使用严格限于这些豁免目的，该系统就不受《人工智能法》要求的约束；任何转用于民用或商业用途的行为都将立即使该系统进入本法规的适用范围。
+          该系统符合第 2 条规定的特定豁免条件。若系统专用于军事、国防或国家安全目的，或者由第三国公共当局在充分保障措施下用于国际执法合作，则适用此豁免。请注意，“军民两用”系统（即同时用于民用和军用）不符合军事豁免条件。
+          如果想了解更全面的法规细节，建议您参考条款 Article 2(3) (军事/国家安全)， Article 2(4) (第三国执法)。
 
       - condition: "Type == 'Non-regulated products'"
         value: |
-          该软件不符合‘人工智能系统’（第 3(1) 条）或‘通用人工智能模型’（第 3(63) 条）的法律定义。因此，它不属于《人工智能法》的监管范围。您应严格监控软件的开发，确保其不会演变为人工智能系统，并继续遵守通用产品安全法规和 GDPR 等适用框架。
+          该软件不符合第 3(1) 条关于“人工智能系统”或第 3(63) 条关于“通用人工智能模型”的法律定义。因此，它不在《人工智能法案》的监管范围内。您应严格监控软件的开发，确保其性质未发生改变从而演变为人工智能系统（例如，增加了自主性或推理能力），并继续遵守《通用产品安全法规》等适用框架。
+          如果想了解更全面的法规细节，建议您参考条款 Article 3(1) (AI系统定义)， Article 3(63) (GPAI模型定义)。
 
       # ------------------------------------------------------------------------
-      # PRIORITY 2: PROHIBITIONS (Regulation bans the activity)
+      # PRIORITY 2: PROHIBITIONS (禁止行为 - 法规禁止该活动)
       # ------------------------------------------------------------------------
       - condition: "Unacceptable_risk == True"
         value: |
-          这种 AI 做法被归类为不可接受的风险，根据《人工智能法》第 5 条被严格禁止。禁止在欧盟内将此系统投放市场、投入使用或使用，违者将面临重大处罚。您必须立即停止此活动，或从根本上改变系统的设计和预期目的，以消除被禁止的功能，如操纵技术、社会评分、无针对性的面部抓取或敏感特征的生物特征分类。
+          该人工智能实践被归类为“不可接受风险”，根据《人工智能法案》第 5 条被严格禁止。被禁止的做法包括潜意识操纵技术、利用弱点、社会评分、无针对性的面部图像抓取以及在工作场所/学校进行情绪识别。包括提供者，部署着，分销商和进口商在内的所有相关运营者均不得将此系统投放市场或投入使用。
+          如果想了解更全面的法规细节，建议您参考条款 Article 5 (禁止的人工智能实践)。
 
       # ------------------------------------------------------------------------
-      # PRIORITY 3: ROLE CHECK (Cannot determine obligations without role)
+      # PRIORITY 3: ROLE CHECK (角色核查)
       # ------------------------------------------------------------------------
       - condition: "Role == 'Undetermined'"
         value: |
-          根据提供的输入，您的实体目前不符合第 3 条定义的受监管经济运营商（如提供者、部署者、进口商或分销商）的定义。由于《人工智能法》严格按照这些特定角色分配法律义务和责任，因此现阶段无法确定合规要求。建议您重新审查第 3 条的定义，以确认您与系统的商业关系，特别是如果您计划以自己的名义或商标将其投放市场或投入使用。
+          您的实体目前不符合受监管经济运营者（如提供者、部署者、进口商、分销商或授权代表）的定义。请仔细审查第 25 条，确保您未以自己的名义或商标将 AI 系统投放市场，因为这种行为会导致您被视为“产品制造商”并承担提供者的义务。
+          如果想了解更全面的法规细节，建议您参考条款 Article 3 (定义)， Article 25 (AI价值链中的责任)。
 
       # ------------------------------------------------------------------------
-      # PRIORITY 4: REAL WORLD TESTING (Specific RWT Regimes)
+      # PRIORITY 3: REAL WORLD TESTING (EXPANDED) (真实世界测试 - 扩展)
       # ------------------------------------------------------------------------
-      - condition: "Risk_level == 'High Risk with Additional Transparency Obligation (Real World Testing)'"
+      - condition: "(Risk_level == 'High Risk with Additional Transparency Obligation (Real World Testing)') and (Role == 'provider')"
         value: |
-          您正在对高风险人工智能系统进行真实世界测试，该系统还涉及与自然人的直接互动。合规要求遵守第 60 条的测试治理和第 50 条的透明度规定。您必须向市场监管机构提交真实世界测试计划，确保测试对象提供知情同意，并明确披露他们正在与 AI 系统互动。此外，您必须实施有效的监督，并确保在测试阶段系统做出的任何决定均可立即逆转。
+          作为提供者 (Provider)，您必须向市场监管机构提交真实世界测试计划，在欧盟数据库中注册该测试，并获得受试者的知情同意。此外，您还必须确保受影响的人员能够察觉该系统是人工智能。
+          如果想了解更全面的法规细节，建议您参考条款 Article 60 (真实世界测试)， Article 61 (知情同意)， Article 50 (透明度)， Article 71 (注册)。
 
-      - condition: "Risk_level == 'High Risk (Real World Testing)'"
+      - condition: "(Risk_level == 'High Risk with Additional Transparency Obligation (Real World Testing)') and (Role != 'provider')"
         value: |
-          您正在对高风险人工智能系统进行真实世界测试，这触发了第 60 条的治理要求。您在法律上必须向成员国的市场监管机构提交详细的测试计划，并在参与前获得所有测试对象的知情同意。测试环境必须接受有效的人类监督，并且您必须确保在测试结束后立即删除收集的所有个人数据，除非满足特定的保留条件。
+          您可能是潜在部署者 (Prospective Deployer) 或合作伙伴。您必须与提供者签署协议，明确规定双方的角色和责任。您必须确保受试者被告知其正在与人工智能互动。如果您是授权代表，您可能需要协助进行注册。
+          如果想了解更全面的法规细节，建议您参考条款 Article 60 (测试条件)， Article 61 (知情同意)， Article 50 (透明度)。
 
-      - condition: "(Risk_level == 'Transparency Obligation Only') and (Real_world_Testing == True)"
+      - condition: "(Risk_level == 'High Risk (Real World Testing)') and (Role == 'provider')"
         value: |
-          虽然此测试阶段不需要根据第 60 条提交正式测试计划，但系统涉及与自然人互动或生成内容，从而触发第 50 条的透明度义务。您必须确保向测试对象明确告知他们正在与 AI 系统互动，或者他们正在查看的内容是人工生成的。未能提供此披露即使在测试阶段也构成违反法规。
+          作为提供者 (Provider)，您必须制定并向市场监管机构提交测试计划。您必须在欧盟数据库中注册该测试，并确保获得所有受试者的知情同意。
+          如果想了解更全面的法规细节，建议您参考条款 Article 60 (真实世界测试)， Article 61 (知情同意)， Article 71 (欧盟数据库)。
 
-      # - condition: "Risk_level == 'Minimal Risk'"
-      #   value: |
-      #     《人工智能法》不对最小风险系统的真实世界测试施加特定的监管限制。您可以进行测试，无需向市场监管机构提交计划。但是，如果处理个人数据，您仍受一般消费者保护法和 GDPR 的约束。鼓励您自愿采用第 95 条所述的道德标准，以确保系统在此阶段的可信度。
-
-      - condition: "Risk_level == 'Theoretically Exempt (Real-World Testing Inapplicable to GPAI Models)'"
+      - condition: "(Risk_level == 'High Risk (Real World Testing)') and (Role != 'provider')"
         value: |
-          ‘真实世界测试’制度（第 60 条）专门适用于‘人工智能系统’，而非独立的‘通用人工智能模型’。除非将原始模型集成到触发高风险规则的系统中，否则测试原始模型符合‘上市前研发’豁免（第 2(8) 条）。关键是，将模型公开进行测试构成‘投放市场’，立即导致研发豁免失效并触发全面的 GPAI 义务。
-
-      # ------------------------------------------------------------------------
-      # PRIORITY 5: GPAI MARKET PLACEMENT
-      # ------------------------------------------------------------------------
-      - condition: "Risk_level == 'Systemic Risk GPAI' and Open_source == False"
-        value: |
-          根据第 51 条，该模型被归类为具有系统风险的通用人工智能模型。提供者必须严格遵守第 55 条中的综合义务，其中包括进行对抗性测试（‘红队测试’）以识别漏洞，在联盟层面评估和减轻系统风险，并确保高水平的网络安全等其他相关要求。您还需要为人工智能办公室详细记录这些过程，并立即报告任何严重事件。
-
-      - condition: "Risk_level == 'Systemic Risk GPAI' and Open_source == True"
-        value: |
-          尽管该模型是根据开源许可证发布的，但其被归类为具有‘系统风险 GPAI’将覆盖第 53(2) 条中的标准开源豁免。您必须完全遵守第 55 条的义务，包括进行对抗性评估、减轻系统风险以及向人工智能办公室报告严重事件等其他相关要求。关于版权政策和发布训练数据摘要的透明度要求也仍然完全适用。
-
-      - condition: "Risk_level == 'Standard GPAI'"
-        value: |
-          这是受第 53 条要求约束的通用人工智能模型。提供者必须根据附件 XI 制定并维护详细的技术文件，并向下游提供者提供充分的信息（附件 XII）以使其能够合规。此外，您必须制定尊重联盟版权法的政策，并发布用于训练模型的内容的详细摘要。
-
-      - condition: "Risk_level == 'Standard GPAI (Open Source Exempt)'"
-        value: |
-          作为根据免费和开源许可证发布的非系统性通用人工智能模型，该模型有资格获得第 53(2) 条中的豁免。您不需要维护附件 XI 技术文件或提供下游信息。但是，您必须严格遵守其余义务：实施尊重联盟版权法的政策，并发布用于训练模型的内容的详细摘要等其他相关要求。
+          作为潜在部署者 (Prospective Deployer) 或合作伙伴，您必须严格遵守与提供者签署的协议，并确保遵循使用说明。您必须对测试环境进行监督以保障受试者的安全。
+          如果想了解更全面的法规细节，建议您参考条款 Article 60 (测试条件)， Article 61 (知情同意)。
 
       # ------------------------------------------------------------------------
-      # PRIORITY 6: AI SYSTEMS MARKET PLACEMENT
+      # PRIORITY 4: GENERAL-PURPOSE AI (GPAI) (通用人工智能)
       # ------------------------------------------------------------------------
-      - condition: "Risk_level == 'High Risk with Additional Transparency Obligations'"
+      - condition: "(Risk_level == 'Systemic Risk GPAI' and Open_source == False) and (Role == 'provider')"
         value: |
-          该系统被归类为高风险，同时也触发了特定的透明度要求。提供者必须遵守第三章的完整符合性制度，包括建立风险管理系统（第 9 条）、确保数据治理（第 10 条）以及进行符合性评估（第 43 条）和其他相关要求。同时，您必须满足第 50 条的要求，确保系统设计为告知自然人他们正在与 AI 互动，或者输出是人工生成的。
+          作为具有系统性风险的通用人工智能模型的提供者 (Provider)，您必须向欧盟委员会通报您的系统性风险状态，维护技术文档，进行对抗性测试（红队测试），并确保网络安全。
+          如果想了解更全面的法规细节，建议您参考条款 Article 52 (通报)， Article 53 (文档)， Article 55 (系统性风险义务)。
 
-      - condition: "Risk_level == 'High Risk'"
+      - condition: "(Risk_level == 'Systemic Risk GPAI' and Open_source == False) and (Role != 'provider')"
         value: |
-          根据第 6 条，该系统被归类为高风险。提供者在将系统投放市场之前必须严格遵守第三章定义的义务。这可能包括建立持续的风险管理系统（第 9 条）、确保训练数据高质量且无偏见（第 10 条）、维护全面的技术文件（附件 IV）、确保人类监督能力（第 14 条）以及完成适当的符合性评估程序（第 43 条）等。
+          授权代表 (Authorised Representatives) 必须持有授权书以验证文档并配合人工智能办公室的工作。集成该模型的进口商和下游提供者必须确保原提供者已履行其义务；如果您将此模型集成到高风险系统中，您将承担该系统的提供者义务。
+          如果想了解更全面的法规细节，建议您参考条款 Article 54 (授权代表)， Article 25 (价值链)。
 
-      - condition: "Risk_level == 'Transparency Obligation Only'"
+      - condition: "(Risk_level == 'Systemic Risk GPAI' and Open_source == True) and (Role == 'provider')"
         value: |
-          该系统属于有限风险类别，主要受第 50 条透明度义务的管辖。虽然免除了高风险系统的繁重合规负担，但您必须确保明确告知用户 AI 的性质。根据系统的功能，这可能包括披露他们正在与聊天机器人互动、内容是深度伪造的，或者他们正接触情绪识别技术等。
+          作为提供者 (Provider)，“系统性风险”的分类使得通常的开源豁免不再适用。您必须评估模型，减轻系统性风险，并报告严重事故。
+          如果想了解更全面的法规细节，建议您参考条款 Article 53(2) (例外限制)， Article 55 (系统性风险义务)。
 
+      - condition: "(Risk_level == 'Systemic Risk GPAI' and Open_source == True) and (Role != 'provider')"
+        value: |
+          授权代表必须协助非欧盟提供者确保合规。尽管采用开源许可，下游提供者仍需将其视为受监管模型，确保集成该模型的自有系统符合合规要求。
+          如果想了解更全面的法规细节，建议您参考条款 Article 54 (授权代表)， Article 55 (系统性风险义务)。
+
+      - condition: "(Risk_level == 'Standard GPAI') and (Role == 'provider')"
+        value: |
+          作为标准通用人工智能模型的提供者 (Provider)，您必须维护技术文档，向下游提供者提供信息，遵守版权法，并发布训练内容摘要。
+          如果想了解更全面的法规细节，建议您参考条款 Article 53 (GPAI提供者义务)。
+
+      - condition: "(Risk_level == 'Standard GPAI') and (Role != 'provider')"
+        value: |
+          授权代表必须验证技术文档是否已制定，并保存副本以供人工智能办公室查阅。下游提供者需依据提供的文档来确保自身的合规性。
+          如果想了解更全面的法规细节，建议您参考条款 Article 54 (授权代表)， Article 53 (下游信息)。
+
+      - condition: "(Risk_level == 'Standard GPAI (Open Source Exempt)') and (Role == 'provider')"
+        value: |
+          作为基于免费和开源许可的标准 GPAI 模型提供者 (Provider)，您可免除大多数文档义务。但是，您仍必须制定政策以尊重版权法，并发布用于训练的内容摘要。
+          如果想了解更全面的法规细节，建议您参考条款 Article 53(2) (开源豁免)， Article 53(1)(c)-(d) (版权与摘要)。
+
+      - condition: "(Risk_level == 'Standard GPAI (Open Source Exempt)') and (Role != 'provider')"
+        value: |
+          对于开源非系统性风险模型，通常不需要授权代表。下游提供者应验证版权合规政策是否到位。
+          如果想了解更全面的法规细节，建议您参考条款 Article 54(4) (授权代表豁免)， Article 53(1)(c) (版权)。
+
+      # ------------------------------------------------------------------------
+      # PRIORITY 5: HIGH RISK & TRANSPARENCY (高风险与透明度)
+      # ------------------------------------------------------------------------
+      - condition: "(Risk_level == 'High Risk with Additional Transparency Obligations') and (Role == 'provider')"
+        value: |
+          作为提供者 (Provider)，您必须履行所有高风险义务（符合性评估、质量管理体系）。此外，您必须设计系统以确保自然人知晓其正在与人工智能互动（例如情绪识别系统）。
+          如果想了解更全面的法规细节，建议您参考条款 Article 16 (提供者义务)， Article 50 (透明度)。
+
+      - condition: "(Risk_level == 'High Risk with Additional Transparency Obligations') and (Role == 'deployer')"
+        value: |
+          作为部署者 (Deployer)，您必须监控系统并确保人为监督。您直接负责告知暴露于系统（例如情绪识别受试者）的人员系统的运行情况。
+          如果想了解更全面的法规细节，建议您参考条款 Article 26 (部署者义务)， Article 50(3) (情绪识别披露)。
+
+      - condition: "(Risk_level == 'High Risk with Additional Transparency Obligations') and ((Role != 'provider') and (Role != 'deployer'))"
+        value: |
+          进口商和分销商必须在系统上市前验证其是否带有必要的标记和说明。授权代表必须验证符合性声明 (Declaration of Conformity)。以自己名义投放 AI 的产品制造商需承担提供者义务。
+          如果想了解更全面的法规细节，建议您参考条款 Article 23 (进口商)， Article 24 (分销商)， Article 22 (授权代表)， Article 25 (制造商)。
+
+      - condition: "(Risk_level == 'High Risk') and (Role == 'provider')"
+        value: |
+          作为高风险 AI 系统的提供者 (Provider)，您必须建立风险管理系统，确保数据治理，起草技术文档，并进行符合性评估。
+          如果想了解更全面的法规细节，建议您参考条款 Article 9 (风险管理)， Article 16 (提供者义务)， Article 43 (符合性)。
+
+      - condition: "(Risk_level == 'High Risk') and (Role == 'deployer')"
+        value: |
+          作为高风险 AI 系统的部署者 (Deployer)，您必须按照说明使用系统，保持人为监督，在某些情况下还需进行基本权利影响评估 (FRIA)。
+          如果想了解更全面的法规细节，建议您参考条款 Article 26 (部署者义务)， Article 27 (FRIA)。
+
+      - condition: "(Risk_level == 'High Risk') and ((Role != 'provider') and (Role != 'deployer'))"
+        value: |
+          进口商必须确保提供者已完成符合性评估并指定了代表。分销商必须验证 CE 标志和文档。授权代表充当欧盟联络点并持有文档。集成 AI 的产品制造商若以其名义销售，则成为提供者。
+          如果想了解更全面的法规细节，建议您参考条款 Article 23 (进口商)， Article 24 (分销商)， Article 22 (授权代表)， Article 25 (制造商)。
+
+      - condition: "(Risk_level == 'Transparency Obligation Only') and (Role == 'provider')"
+        value: |
+          作为提供者 (Provider)，您必须设计系统，使其输出以机器可读格式进行标记，并可被检测为人工生成（例如深度伪造）。您必须确保系统允许部署者履行其披露义务。
+          如果想了解更全面的法规细节，建议您参考条款 Article 50 (透明度义务)。
+
+      - condition: "(Risk_level == 'Transparency Obligation Only') and (Role == 'deployer')"
+        value: |
+          作为聊天机器人、深度伪造或情绪识别系统的部署者 (Deployer)，您有责任向受影响的自然人披露内容或互动的人工智能性质。
+          如果想了解更全面的法规细节，建议您参考条款 Article 50 (透明度义务)。
+
+      - condition: "(Risk_level == 'Transparency Obligation Only') and (Role != 'provider' and Role != 'deployer')"
+        value: |
+          分销商和进口商在提供系统之前，必须验证系统是否带有履行第 50 条所需的标记或文档。集成此类工具的产品制造商必须确保最终产品保留这些透明度功能。
+          如果想了解更全面的法规细节，建议您参考条款 Article 50 (透明度)， Article 23-24 (一般验证责任)。
+
+      # ------------------------------------------------------------------------
+      # PRIORITY 6: MINIMAL RISK (最低风险)
+      # ------------------------------------------------------------------------
       - condition: "Risk_level == 'Minimal Risk'"
         value: |
-          该系统被归类为最小风险，不受《人工智能法》强制性要求的约束。您可以在不进行符合性评估的情况下将系统投放市场。但是，您仍受现行国家和欧盟法律（如 GDPR 和通用产品安全法规）的约束。为了建立信任，鼓励您通过第 95 条所述的行为准则自愿应用可信人工智能的要求。
-
-      # ------------------------------------------------------------------------
-      # FALLBACK
-      # ------------------------------------------------------------------------
-      - condition: "else"
-        value: |
-          合规逻辑无法根据提供的输入确定确切的类别。您应系统地审查模块 2（分类）和模块 5（高风险）中提供的输入，以确保正确识别系统的特征和您实体的角色。如果没有明确的分类，就无法确定适用于您项目的具体法律义务。
+          该系统属于最低风险类别。人工智能法案对此类系统不强制规定义务。但是，鼓励提供者和部署者自愿遵守行为准则，以促进可信赖的人工智能。
+          如果想了解更全面的法规细节，建议您参考条款 Article 95 (行为准则)。
 
 router:
   - condition: "True"

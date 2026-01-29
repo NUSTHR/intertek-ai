@@ -261,7 +261,7 @@ variables:
         value: "作为生成深度伪造内容的人工智能系统的部署者，适用透明度义务 (第 50(4) 条)"
 
       - condition: "Role == 'deployer' and q6.gateway_deployer contains 2 and q6.d.2.le_auth == False and q6.d.2.artistic == True"
-        value: "作为生成深度伪造内容的人工智能系统的部署者，适用透明度义务 (第 50(4) 条)，但在艺术背景下，部署者可以采用一种“适当的方式”进行披露其内容的深度伪造性质，以确保不会妨碍作品的展示或受众的欣赏体验"
+        value: "作为生成深度伪造内容的人工智能系统的部署者，适用透明度义务 (第 50(4) 条)，尽管在艺术背景下，部署者可以采用一种“适当的方式”进行披露其内容的深度伪造性质，以确保不会妨碍作品的展示或受众的欣赏体验"
 
       - condition: "Role == 'deployer' and q6.gateway_deployer contains 3 and q6.d.3.le_auth == False and q6.d.3.human_review == False"
         value: "作为在没有人工编辑责任的情况下发布关于公共利益事项的人工智能生成文本的部署者，适用透明度义务 (第 50(4) 条)"

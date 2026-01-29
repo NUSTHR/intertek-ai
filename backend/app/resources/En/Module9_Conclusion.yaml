@@ -44,9 +44,6 @@ variables:
         value: "Transparency Obligation Only"
       - condition: "Real_world_Testing == True and AI_type == 2 and High_risk == False and Transparency_obligation == False"
         value: "Minimal Risk"
-      - condition: "Real_world_Testing == True and AI_type == 1"
-        value: "Theoretically Exempt (Real-World Testing Inapplicable to GPAI Models)"
-
       # Group 3: GPAI Market Placement
       - condition: "AI_type == 1 and Systematic_risk == True"
         value: "Systemic Risk GPAI"
@@ -76,43 +73,41 @@ variables:
     rules:
       # Group 1: Hard Stops (Extracts from Modules 1, 3, 4)
       - condition: "Totally_excluded == True"
-        value: "{{Exclusion_reason}}" 
+        value: "This activity is excluded from the scope of the AI Act. Reason: {{Exclusion_reason}}" 
       - condition: "System_excluded == True"
-        value: "{{Exclusion_Reason}}" # From Module 3 variable
+        value: "This system is specifically exempt from the Regulation. Reason: {{Exclusion_Reason}}" 
       - condition: "Unacceptable_risk == True"
-        value: "{{Prohibited_reason}}" # From Module 4 variable (implied need to ensure M4 exports this)
+        value: "This AI practice is classified as 'Unacceptable Risk' and is strictly prohibited. Reason: {{Prohibited_reason}}" 
       - condition: "AI_type == 3"
-        value: "The software does not meet the legal definition of an AI System or General-Purpose AI Model under Article 3."
+        value: "This software falls outside the scope of the Regulation because it does not meet the legal definition of an 'AI System' or a 'General-Purpose AI Model' under Article 3."
 
       # Group 2: Real World Testing (RWT) overrides
       - condition: "Real_world_Testing == True and AI_type == 2 and High_risk == True"
-        value: "Real-world testing of a High-Risk system (Reason: {{High_risk_reason}}) triggers Article 60 governance requirements."
+        value: "You are conducting real-world testing on a High-Risk AI System. This high-risk status applies because {{High_risk_reason}}. Therefore, the testing is subject to the governance requirements of Article 60."
       - condition: "Real_world_Testing == True and AI_type == 2 and High_risk == False and Transparency_obligation == True"
-        value: "Real-world testing involves interaction with persons or content generation (Reason: {{Transparency_Reasons}}), triggering Article 50 transparency obligations."
+        value: "You are conducting real-world testing on a system that interacts with persons or generates content. This triggers transparency obligations because {{Transparency_Reasons}}. You must comply with Article 50 even during testing."
       - condition: "Real_world_Testing == True and AI_type == 2 and High_risk == False and Transparency_obligation == False"
-        value: "Real-world testing of minimal risk systems is not restricted by specific AI Act testing obligations."
-      - condition: "Real_world_Testing == True and AI_type == 1"
-        value: "Real-world testing rules (Article 60) apply to AI Systems, not raw GPAI models; public testing of a model constitutes placing it on the market."
+        value: "You are conducting real-world testing on a system classified as Minimal Risk. This status applies because the system meets none of the conditions for Unacceptable Risk, High-Risk, or Transparency Obligations. Therefore, the AI Act does not impose specific regulatory requirements on this testing."
 
       # Group 3: GPAI Market Placement (Extracts from Module 7)
       - condition: "AI_type == 1 and Systematic_risk == True"
-        value: "{{Systematic_reason}}" # From Module 7 variable
+        value: "This model is classified as a General-Purpose AI Model with Systemic Risk. Reason: {{Systematic_reason}}" 
       - condition: "AI_type == 1 and Systematic_risk == False"
-        value: "The model does not meet the threshold for systemic risk (Reason: {{Systematic_reason}}) and is considered a Standard GPAI model."
+        value: "This model is classified as a Standard General-Purpose AI Model. It does not meet the threshold for systemic risk because {{Systematic_reason}}."
 
       # Group 4: AI Systems Market Placement (Extracts from Module 5 & 6)
       - condition: "AI_type == 2 and High_risk == True and Transparency_obligation == True"
-        value: "The system is High-Risk because {{High_risk_reason}}, and triggers transparency obligations because {{Transparency_Reasons}}."
+        value: "This system is classified as High-Risk because {{High_risk_reason}}. Additionally, it is subject to transparency obligations because {{Transparency_Reasons}}."
       - condition: "AI_type == 2 and High_risk == True and Transparency_obligation == False"
-        value: "{{High_risk_reason}}"
+        value: "This system is classified as High-Risk. Reason: {{High_risk_reason}}"
       - condition: "AI_type == 2 and High_risk == False and Transparency_obligation == True"
-        value: "{{Transparency_Reasons}}"
+        value: "This system is classified as Limited Risk and is subject to transparency obligations. Reason: {{Transparency_Reasons}}"
       - condition: "AI_type == 2 and High_risk == False and Transparency_obligation == False"
-        value: "The system does not fall under any High-Risk or Transparency categories defined in the Regulation."
+        value: "This system is classified as Minimal Risk because it meets none of the conditions for Unacceptable Risk, High-Risk, or Transparency Obligations defined in the Regulation."
 
       # Fallback
       - condition: "else"
-        value: "Specific classification reason could not be determined from prior modules."
+        value: "A specific risk classification reason could not be determined from the provided inputs."
 
   - name: "Role_Description"
     type: "string"
@@ -142,7 +137,7 @@ variables:
       - condition: "Type == 'General-Purpose AI Model'"
         value: "Per Article 3(63), this is an AI model that displays significant generality, is capable of competently performing a wide range of distinct tasks, and can be integrated into a variety of downstream systems or applications."
       - condition: "Type == 'Non-regulated products'"
-        value: "The software does not meet the definition of an AI system under Article 3(1) or a general-purpose AI model under Article 3(63) and is therefore outside the scope of the AI Act."
+        value: "Based on the user input, the software does not meet the definition of an AI system under Article 3(1) or a general-purpose AI model under Article 3(63) and is therefore outside the scope of the AI Act."
 
   - name: "View"
     type: "string"
@@ -153,97 +148,156 @@ variables:
       # ------------------------------------------------------------------------
       - condition: "Totally_excluded == True"
         value: |
-          This activity is classified as falling outside the regulated scope of the AI Act, meaning the project is currently exempt from the mandatory legal obligations, risk management standards, or regulatory oversight otherwise established by this Regulation.
+          This activity is classified as falling outside the regulated scope of the AI Act[cite: 52, 55]. The project is exempt from mandatory obligations, provided it remains within specific boundaries such as pure scientific research and development or pre-market research activities[cite: 52, 55].
+          For more details, please refer to Article 2(6) (Research Exemption) [cite: 52], Article 2(8) (Pre-market R&D)[cite: 55].
 
       - condition: "System_excluded == True"
         value: |
-          This system qualifies for a specific exemption under Article 2 due to its exclusive intended purpose for military, defense, or national security, or its use within the framework of international law enforcement cooperation. Consequently, the system is not subject to the requirements of the AI Act, provided its use remains strictly limited to these exempted purposes; any repurposing for civilian or commercial applications would immediately bring the system within the scope of the Regulation.
+          This system qualifies for an exemption under Article 2. This applies if the system is exclusively for military, defence, or national security purposes [cite: 48], or if it is used by public authorities in a third country for international law enforcement cooperation under adequate safeguards[cite: 50]. Note that "dual-use" systems (civilian and military) do not qualify for the military exemption[cite: 48].
+          For more details, please refer to Article 2(3) (Military/National Security) [cite: 48], Article 2(4) (Third Country Law Enforcement)[cite: 50].
 
       - condition: "Type == 'Non-regulated products'"
         value: |
-          The software does not meet the legal definition of an 'AI System' (Article 3(1)) or a 'General-Purpose AI Model' (Article 3(63)). Therefore, it falls outside the regulatory scope of the AI Act. You should strictly monitor the software's development to ensuring it does not evolve into an AI system, and continue to comply with applicable frameworks such as the General Product Safety Regulation and GDPR.
+          The software does not meet the legal definition of an 'AI System' [cite: 65] or a 'General-Purpose AI Model'[cite: 141]. Therefore, it falls outside the regulatory scope. You should strictly monitor the software's development to ensure it does not evolve into an AI system (e.g., by adding varying levels of autonomy or inference capabilities)[cite: 65].
+          For more details, please refer to Article 3(1) (Definition of AI System) [cite: 65], Article 3(63) (Definition of GPAI Model)[cite: 141].
 
       # ------------------------------------------------------------------------
       # PRIORITY 2: PROHIBITIONS (Regulation bans the activity)
       # ------------------------------------------------------------------------
       - condition: "Unacceptable_risk == True"
         value: |
-          This AI practice is classified as an Unacceptable Risk and is strictly prohibited under Article 5 of the AI Act. Placing this system on the market, putting it into service, or using it within the Union is forbidden and carries significant penalties. You must immediately cease this activity or fundamentally alter the system's design and intended purpose to eliminate prohibited capabilities such as manipulative techniques, social scoring, untargeted facial scraping, or biometric categorization of sensitive traits.
+          This AI practice is strictly prohibited under Article 5[cite: 152]. Banned practices include manipulative techniques [cite: 154], exploitation of vulnerabilities [cite: 155], social scoring [cite: 156], untargeted facial scraping [cite: 161], and emotion recognition in workplaces/schools[cite: 162]. Placing this system on the market is forbidden for all operators, including providers, deployers, distributors, importers and so forth.
+          For more details, please refer to Article 5 (Prohibited Practices)[cite: 152].
 
       # ------------------------------------------------------------------------
-      # PRIORITY 3: ROLE CHECK (Cannot determine obligations without role)
+      # PRIORITY 3: ROLE CHECK
       # ------------------------------------------------------------------------
       - condition: "Role == 'Undetermined'"
         value: |
-          Based on the provided inputs, your entity does not currently fit the definition of a regulated economic operator (such as a Provider, Deployer, Importer, or Distributor) as defined in Article 3. Since the AI Act assigns legal obligations and liability strictly according to these specific roles, no compliance requirements can be determined at this stage. You are advised to re-examine Article 3 definitions to confirm your commercial relationship to the system, particularly if you plan to place it on the market or put it into service under your own name or trademark.
+          Your entity does not fit the definition of a regulated economic operator (Provider, Deployer, Importer, Distributor, or Authorized Representative)[cite: 67, 68, 69, 70, 71]. Review Article 25 to ensure you are not a 'Product Manufacturer' placing AI on the market under your name, which would reclassify you as a Provider[cite: 476].
+          For more details, please refer to Article 3 (Definitions) [cite: 63], Article 25 (Responsibilities along the AI value chain)[cite: 468].
 
       # ------------------------------------------------------------------------
-      # PRIORITY 4: REAL WORLD TESTING (Specific RWT Regimes)
+      # PRIORITY 3: REAL WORLD TESTING (EXPANDED)
       # ------------------------------------------------------------------------
-      - condition: "Risk_level == 'High Risk with Additional Transparency Obligation (Real World Testing)'"
+      - condition: "(Risk_level == 'High Risk with Additional Transparency Obligation (Real World Testing)') and (Role == 'provider')"
         value: |
-          You are conducting real-world testing of a High-Risk AI System that also involves direct interaction with natural persons. Compliance requires adherence to Article 60 for testing governance and Article 50 for transparency. You must submit a real-world testing plan to the Market Surveillance Authority, ensure test subjects provide informed consent, and explicitly disclose that they are interacting with an AI system. Additionally, you must implement effective oversight, ensure the immediate reversibility of any decisions made by the system during the testing phase.
+          As a provider, you must submit a real-world testing plan to the market surveillance authority [cite: 1003], register the testing in the EU database [cite: 1007], and obtain informed consent from subjects[cite: 1016]. You must also ensure the system is detectable as AI to affected persons[cite: 783].
+          For more details, please refer to Article 60 (Real World Testing) [cite: 994], Article 61 (Informed Consent) [cite: 1027], Article 50 (Transparency) [cite: 783], Article 71 (Registration)[cite: 1178].
 
-      - condition: "Risk_level == 'High Risk (Real World Testing)'"
+      - condition: "(Risk_level == 'High Risk with Additional Transparency Obligation (Real World Testing)') and (Role != 'provider')"
         value: |
-          You are conducting real-world testing of a High-Risk AI System, which triggers the governance requirements of Article 60. You are legally required to submit a detailed testing plan to the Market Surveillance Authority in your Member State and obtain informed consent from all test subjects prior to participation. The testing environment must be subject to effective human oversight, and you must ensure that all personal data collected is deleted immediately once the testing concludes, unless specific retention conditions are met.
+          If you are a deployer, prospective deployer or partner. You must conclude an agreement with the provider specifying roles[cite: 1015]. You must ensure subjects are informed they are interacting with AI[cite: 783]. If you are an Authorised Representative, you may need to facilitate registration[cite: 1007].
+          For more details, please refer to Article 60 (Testing Conditions) [cite: 1014], Article 61 (Informed Consent) [cite: 1027], Article 50 (Transparency)[cite: 783].
 
-      - condition: "Risk_level == ('Transparency Obligation Only') and (Real_world_Testing == True)"
+      - condition: "(Risk_level == 'High Risk (Real World Testing)') and (Role == 'provider')"
         value: |
-          While this testing phase does not require the submission of a formal testing plan under Article 60, the system involves interaction with natural persons or the generation of content, triggering the transparency obligations of Article 50. You must ensure that test subjects are clearly informed that they are interacting with an AI system or that the content they are viewing is artificially generated. Failure to provide this disclosure constitutes a breach of the Regulation even during the testing phase.
+          As a provider, you must draw up and submit a testing plan to the market surveillance authority[cite: 1003]. You must register the testing in the EU database [cite: 1007] and ensure informed consent is obtained from all subjects[cite: 1016].
+          For more details, please refer to Article 60 (Real World Testing) [cite: 994], Article 61 (Informed Consent) [cite: 1027], Article 71 (EU Database)[cite: 1178].
 
-      # - condition: "Risk_level == 'Minimal Risk'"
-      #   value: |
-      #     The AI Act does not impose specific regulatory restrictions on the real-world testing of Minimal Risk systems. You may proceed with testing without submitting a plan to the Market Surveillance Authority. However, you remain subject to general consumer protection laws and the GDPR if personal data is processed. You are encouraged to voluntarily adopt the ethical standards outlined in Article 95 to ensure the trustworthiness of your system during this phase.
-
-      - condition: "Risk_level == 'Theoretically Exempt (Real-World Testing Inapplicable to GPAI Models)'"
+      - condition: "(Risk_level == 'High Risk (Real World Testing)') and (Role != 'provider')"
         value: |
-          The 'Real World Testing' regime (Article 60) applies exclusively to 'AI Systems,' not standalone 'General-Purpose AI Models.' Testing a raw model qualifies for the 'Pre-market R&D' exemption (Article 2(8)) unless it is integrated into a system, which triggers High-Risk rules. Critically, Making a model publicly available for testing constitutes 'placing on the market,' immediately voiding the R&D exemption and triggering full GPAI obligations.
-
-      # ------------------------------------------------------------------------
-      # PRIORITY 5: GPAI MARKET PLACEMENT
-      # ------------------------------------------------------------------------
-      - condition: "Risk_level == 'Systemic Risk GPAI' and Open_source == False"
-        value: |
-          This model is classified as a General-Purpose AI Model with Systemic Risk under Article 51. Providers must strictly comply with the comprehensive obligations in Article 55, which include performing adversarial testing ('red-teaming') to identify vulnerabilities, assessing and mitigating systemic risks at the Union level, ensuring high levels of cybersecurity and so forth. You are also required to document these processes in detail for the AI Office and report any serious incidents immediately.
-
-      - condition: "Risk_level == 'Systemic Risk GPAI' and Open_source == True"
-        value: |
-          Although this model is released under an open-source license, its classification as posing 'Systemic Risk GPAI' overrides the standard open-source exemptions in Article 53(2). You must fully comply with Article 55 obligations, including conducting adversarial evaluations, mitigating systemic risks, and reporting serious incidents to the AI Office. The transparency requirements regarding copyright policy and the publication of a training data summary also remain fully applicable.
-
-      - condition: "Risk_level == 'Standard GPAI'"
-        value: |
-          This is a General-Purpose AI Model subject to the requirements of Article 53. Providers must draw up and maintain detailed technical documentation as specified in Annex XI, provide sufficient information to downstream providers (Annex XII) to enable their compliance and so forth. Additionally, you must put in place a policy to respect Union copyright law and publish a detailed summary of the content used to train the model.
-
-      - condition: "Risk_level == 'Standard GPAI (Open Source Exempt)'"
-        value: |
-          As a non-systemic General-Purpose AI Model released under a free and open-source license, this model qualifies for the exemption in Article 53(2). You are not required to maintain Annex XI technical documentation or provide downstream information. However, you must strictly adhere to the remaining obligations: implementing a policy to respect Union copyright law and publishing a detailed summary of the content used for training the model.
+          As a prospective deployer or partner, you must strictly adhere to the agreement concluded with the provider [cite: 1015] and ensure the instructions for use are followed[cite: 1014]. You must maintain oversight to protect subject safety[cite: 1017].
+          For more details, please refer to Article 60 (Testing Conditions) [cite: 1014], Article 61 (Informed Consent)[cite: 1027].
 
       # ------------------------------------------------------------------------
-      # PRIORITY 6: AI SYSTEMS MARKET PLACEMENT
+      # PRIORITY 4: GENERAL-PURPOSE AI (GPAI)
       # ------------------------------------------------------------------------
-      - condition: "Risk_level == 'High Risk with Additional Transparency Obligations'"
+      - condition: "(Risk_level == 'Systemic Risk GPAI' and Open_source == False) and (Role == 'provider')"
         value: |
-          This system is classified as High-Risk and also triggers specific transparency requirements. Providers must comply with the full conformity regime of Chapter III, including establishing a Risk Management System (Art 9), ensuring Data Governance (Art 10), undergoing Conformity Assessment (Art 43) and so forth. Simultaneously, you must satisfy Article 50 by ensuring that the system is designed to inform natural persons that they are interacting with an AI or that the outputs are artificially generated.
+          As a provider, you must notify the Commission of your systemic risk status [cite: 814], maintain technical documentation [cite: 831], perform adversarial testing (red-teaming) [cite: 868], and ensure cybersecurity[cite: 871].
+          For more details, please refer to Article 52 (Notification) [cite: 814], Article 53 (Documentation) [cite: 831], Article 55 (Systemic Risk Obligations)[cite: 865].
 
-      - condition: "Risk_level == 'High Risk'"
+      - condition: "(Risk_level == 'Systemic Risk GPAI' and Open_source == False) and (Role != 'provider')"
         value: |
-          This system is classified as High-Risk under Article 6. Providers must strictly adhere to the obligations defined in Chapter III before placing the system on the market. this may include establishing a continuous risk management system (Art 9), ensuring training data is high-quality and unbiased (Art 10), maintaining comprehensive technical documentation (Annex IV), ensuring human oversight capabilities (Art 14), completing the appropriate conformity assessment procedure (Art 43) and so forth.
+          Authorised Representatives must hold the mandate to verify documentation and cooperate with the AI Office[cite: 854]. Importers and Downstream Providers integrating the model must ensure the provider has met their obligations; if you integrate this model into a high-risk system, you assume provider obligations[cite: 469].
+          For more details, please refer to Article 54 (Authorised Reps) [cite: 849], Article 25 (Value Chain)[cite: 469].
 
-      - condition: "Risk_level == 'Transparency Obligation Only'"
+      - condition: "(Risk_level == 'Systemic Risk GPAI' and Open_source == True) and (Role == 'provider')"
         value: |
-          This system falls under the Limited Risk category, which is governed primarily by the transparency obligations of Article 50. While exempt from the heavy compliance burden of High-Risk systems, you must ensure that users are explicitly informed of the AI's nature. Depending on the system's function, this may include disclosing that they are interacting with a chatbot, that content is deep-faked, or that they are being exposed to emotion recognition technology and so forth.
+          As a provider, the "Systemic Risk" classification overrides the open-source exemption[cite: 840]. You must evaluate the model, mitigate systemic risks, and report incidents[cite: 867].
+          For more details, please refer to Article 53(2) (Exception Limit) [cite: 840], Article 55 (Systemic Risk Obligations)[cite: 865].
 
+      - condition: "(Risk_level == 'Systemic Risk GPAI' and Open_source == True) and (Role != 'provider')"
+        value: |
+          Authorised Representatives must facilitate compliance for non-EU providers[cite: 862]. Downstream Providers must treat this as a regulated model despite the license, ensuring their own systems integrating it are compliant.
+          For more details, please refer to Article 54 (Authorised Reps) [cite: 862], Article 55 (Systemic Risk Obligations)[cite: 865].
+
+      - condition: "(Risk_level == 'Standard GPAI') and (Role == 'provider')"
+        value: |
+          As a provider, you must maintain technical documentation [cite: 831], make information available to downstream providers [cite: 832], comply with copyright law [cite: 837], and publish a summary of training content[cite: 838].
+          For more details, please refer to Article 53 (Obligations for GPAI Providers)[cite: 829].
+
+      - condition: "(Risk_level == 'Standard GPAI') and (Role != 'provider')"
+        value: |
+          Authorised Representatives must verify the technical documentation is drawn up and keep copies available for the AI Office[cite: 855, 856]. Downstream Providers rely on the provided documentation to ensure their own compliance[cite: 834].
+          For more details, please refer to Article 54 (Authorised Reps) [cite: 849], Article 53 (Information for Downstream)[cite: 833].
+
+      - condition: "(Risk_level == 'Standard GPAI (Open Source Exempt)') and (Role == 'provider')"
+        value: |
+          As a provider, you are exempt from most documentation obligations[cite: 839]. However, you must still put in place a policy to respect copyright law [cite: 837] and publish a summary of the training content[cite: 838].
+          For more details, please refer to Article 53(2) (Open Source Exemption) [cite: 839], Article 53(1)(c)-(d) (Copyright & Summary)[cite: 837, 838].
+
+      - condition: "(Risk_level == 'Standard GPAI (Open Source Exempt)') and (Role != 'provider')"
+        value: |
+          Authorised Representatives are generally not required for open-source non-systemic models[cite: 862]. Downstream Providers should verify copyright compliance policies are in place.
+          For more details, please refer to Article 54(4) (Auth Rep Exemption) [cite: 862], Article 53(1)(c) (Copyright)[cite: 837].
+
+      # ------------------------------------------------------------------------
+      # PRIORITY 5: HIGH RISK & TRANSPARENCY
+      # ------------------------------------------------------------------------
+      - condition: "(Risk_level == 'High Risk with Additional Transparency Obligations') and (Role == 'provider')"
+        value: |
+          As a provider, you must fulfill all High-Risk obligations (Conformity Assessment, QMS)[cite: 367]. Additionally, you must design the system to inform natural persons they are interacting with AI (e.g., emotion recognition)[cite: 783, 788].
+          For more details, please refer to Article 16 (Provider Obligations) [cite: 366], Article 50 (Transparency)[cite: 782].
+
+      - condition: "(Risk_level == 'High Risk with Additional Transparency Obligations') and (Role == 'deployer')"
+        value: |
+          As a Deployer, you must monitor the system and ensure human oversight[cite: 488]. You are directly responsible for informing persons exposed to the system (e.g., emotion recognition subjects) of its operation[cite: 788].
+          For more details, please refer to Article 26 (Deployer Obligations) [cite: 486], Article 50(3) (Emotion Recognition Disclosure)[cite: 788].
+
+      - condition: "(Risk_level == 'High Risk with Additional Transparency Obligations') and ((Role != 'provider') and (Role != 'deployer'))"
+        value: |
+          Importers and Distributors must verify the system bears the required markings and instructions before making it available[cite: 447, 459]. Authorised Representatives must verify the declaration of conformity[cite: 434]. Product Manufacturers placing the AI under their name assume provider obligations[cite: 476].
+          For more details, please refer to Article 23 (Importers) [cite: 443], Article 24 (Distributors) [cite: 458], Article 22 (Authorised Reps) [cite: 428], Article 25 (Manufacturers)[cite: 476].
+
+      - condition: "(Risk_level == 'High Risk') and (Role == 'provider')"
+        value: |
+          As a provider, you must establish a Risk Management System [cite: 246], ensure Data Governance [cite: 271], draw up Technical Documentation [cite: 296], and undergo Conformity Assessment[cite: 373].
+          For more details, please refer to Article 9 (Risk Management) [cite: 245], Article 16 (Provider Obligations) [cite: 366], Article 43 (Conformity)[cite: 690].
+
+      - condition: "(Risk_level == 'High Risk') and (Role == 'deployer')"
+        value: |
+          As a Deployer, you must use the system according to instructions [cite: 487], assign human oversight [cite: 488], and in some cases conduct a Fundamental Rights Impact Assessment[cite: 518].
+          For more details, please refer to Article 26 (Deployer Obligations) [cite: 486], Article 27 (FRIA)[cite: 517].
+
+      - condition: "(Risk_level == 'High Risk') and ((Role != 'provider') and (Role != 'deployer'))"
+        value: |
+          Importers must ensure the provider has completed conformity assessment and appointed a representative[cite: 445, 448]. Distributors must verify CE markings and documentation[cite: 459]. Authorised Representatives act as the EU contact point and hold documentation[cite: 435]. Product Manufacturers incorporating the AI become providers if they market it under their name[cite: 476].
+          For more details, please refer to Article 23 (Importers) [cite: 443], Article 24 (Distributors) [cite: 458], Article 22 (Authorised Reps) [cite: 428], Article 25 (Manufacturers)[cite: 476].
+
+      - condition: "(Risk_level == 'Transparency Obligation Only') and (Role == 'provider')"
+        value: |
+          As a provider, you must design the system so outputs are machine-readable and marked as artificially generated (e.g., deep fakes)[cite: 785]. You must ensure the system allows deployers to fulfill their disclosure obligations.
+          For more details, please refer to Article 50 (Transparency Obligations)[cite: 782].
+
+      - condition: "(Risk_level == 'Transparency Obligation Only') and (Role == 'deployer')"
+        value: |
+          As a Deployer of a chatbot, deep fake, or emotion recognition system, you are responsible for disclosing the AI nature of the content or interaction to the affected natural persons[cite: 788, 790].
+          For more details, please refer to Article 50 (Transparency Obligations)[cite: 782].
+
+      - condition: "(Risk_level == 'Transparency Obligation Only') and (Role != 'provider' and Role != 'deployer')"
+        value: |
+          Distributors and Importers must verify the system bears the necessary markings or documentation to fulfill Article 50 before making it available. Product Manufacturers integrating such tools must ensure the final product retains these transparency capabilities.
+          For more details, please refer to Article 50 (Transparency) [cite: 782], Article 23-24 (General verification duties)[cite: 443, 458].
+
+      # ------------------------------------------------------------------------
+      # PRIORITY 6: MINIMAL RISK
+      # ------------------------------------------------------------------------
       - condition: "Risk_level == 'Minimal Risk'"
         value: |
-          This system is classified as Minimal Risk and is not subject to the mandatory requirements of the AI Act. You may place the system on the market without a conformity assessment. However, you remain subject to existing national and EU laws such as the GDPR and the General Product Safety Regulation. To foster trust, you are encouraged to voluntarily apply the requirements for trustworthy AI through Codes of Conduct as described in Article 95.
-
-      # ------------------------------------------------------------------------
-      # FALLBACK
-      # ------------------------------------------------------------------------
-      - condition: "else"
-        value: |
-          The compliance logic could not determine a definitive category based on the provided inputs. You should systematically review the inputs provided in Module 2 (Classification) and Module 5 (High-Risk) to ensure that the system's features and your entity's role are correctly identified. Without a clear classification, it is impossible to determine the specific legal obligations applicable to your project.
+          This system falls into the Minimal Risk category. The AI Act imposes no mandatory obligations. However, Providers and Deployers are encouraged to voluntarily adhere to Codes of Conduct[cite: 1446].
+          For more details, please refer to Article 95 (Codes of Conduct)[cite: 1446].
 
 router:
   - condition: "True"
