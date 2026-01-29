@@ -42,7 +42,9 @@ variables:
         value: "High Risk (Real World Testing)"
       - condition: "Real_world_Testing == True and AI_type == 2 and High_risk == False and Transparency_obligation == True"
         value: "Transparency Obligation Only"
-      - condition: "Real_world_Testing == True and AI_type == 2 and High_risk == False and Transparency_obligation == False"
+      - condition: "Real_world_Testing == True and AI_type == 2 and High_risk == False and Transparency_obligation == False and Open_source == True"
+        value: "Minimal Risk (Open Source)"      
+      - condition: "Real_world_Testing == True and AI_type == 2 and High_risk == False and Transparency_obligation == False and Open_source == False"
         value: "Minimal Risk"
       # Group 3: GPAI Market Placement
       - condition: "AI_type == 1 and Systematic_risk == True"
@@ -59,7 +61,9 @@ variables:
         value: "High Risk"
       - condition: "AI_type == 2 and High_risk == False and Transparency_obligation == True"
         value: "Transparency Obligation Only"
-      - condition: "AI_type == 2 and High_risk == False and Transparency_obligation == False"
+      - condition: "AI_type == 2 and High_risk == False and Transparency_obligation == False and Open_source == True"
+        value: "Minimal Risk (Open Source)"
+      - condition: "AI_type == 2 and High_risk == False and Transparency_obligation == False and Open_source == False"
         value: "Minimal Risk"
       - condition: "Role == 'Undetermined'"
         value: "No Regulated Role Identified"
@@ -121,6 +125,8 @@ variables:
         value: "仅透明度义务"
       - condition: "Risk_level == 'Minimal Risk'"
         value: "最小风险"
+      - condition: "Risk_level == 'Minimal Risk (Open Source)'"
+        value: "最小风险（开源豁免）"
       - condition: "Risk_level == 'Systemic Risk GPAI'"
         value: "具有系统风险的通用人工智能模型"
       - condition: "Risk_level == 'Standard GPAI'"
@@ -133,8 +139,6 @@ variables:
         value: "高风险"
       - condition: "Risk_level == 'Transparency Obligation Only'"
         value: "仅透明度义务"
-      - condition: "Risk_level == 'Minimal Risk'"
-        value: "最小风险"
       - condition: "Risk_level == 'No Regulated Role Identified'"
         value: "未识别出受监管角色"
       - condition: "else"
@@ -163,9 +167,6 @@ variables:
         value: "您正在对高风险人工智能系统进行真实世界测试。该高风险状态适用的原因是：{{High_risk_reason}}。因此，该测试受第 60 条治理要求的管辖。"
       - condition: "Real_world_Testing == True and AI_type == 2 and High_risk == False and Transparency_obligation == True"
         value: "您正在对涉及人机交互或内容生成的系统进行真实世界测试。这触发了透明度义务，原因是：{{Transparency_Reasons}}。即使在测试期间，您也必须遵守第 50 条的规定。"
-      - condition: "Real_world_Testing == True and AI_type == 2 and High_risk == False and Transparency_obligation == False"
-        value: "您正在对归类为最小风险的系统进行真实世界测试。此状态适用是因为该系统不满足不可接受风险、高风险或透明度义务的任何条件。因此，《人工智能法案》未对此测试施加特定的监管要求。"
-
       # 第 3 组：通用人工智能模型（GPAI）市场投放（提取自模块 7）
       - condition: "AI_type == 1 and Systematic_risk == True"
         value: "此模型被归类为具有系统性风险的通用人工智能模型。原因：{{Systematic_reason}}" 
@@ -179,9 +180,10 @@ variables:
         value: "此系统被归类为高风险。原因：{{High_risk_reason}}"
       - condition: "AI_type == 2 and High_risk == False and Transparency_obligation == True"
         value: "此系统被归类为有限风险，并须履行透明度义务。原因：{{Transparency_Reasons}}"
-      - condition: "AI_type == 2 and High_risk == False and Transparency_obligation == False"
-        value: "此系统被归类为最小风险，因为它不满足法规中定义的不可接受风险、高风险或透明度义务的任何条件。"
-
+      - condition: "AI_type == 2 and High_risk == False and Transparency_obligation == False and Open_source == False"
+        value: "本系统被归类为“最小风险”，因其未触及本法规所定义的不可接受风险、高风险或透明度义务的相关条件。"
+      - condition: "AI_type == 2 and High_risk == False and Transparency_obligation == False and Open_source == True"
+        value: "本系统被归类为“最小风险（开源豁免）”。因此系统依据免费及开源许可发布，且因未触及“禁止的人工智能实践”、“高风险人工智能系统”或“受透明度义务约束的系统”之认定标准，故不属于本法规的适用范围。"
       # 回退选项
       - condition: "else"
         value: "无法根据提供的输入确定具体的风险分类原因。"
@@ -264,7 +266,7 @@ variables:
 
       - condition: "(Risk_level == 'High Risk with Additional Transparency Obligation (Real World Testing)') and (Role != 'provider')"
         value: |
-          您可能是潜在部署者 (Prospective Deployer) 或合作伙伴。您必须与提供者签署协议，明确规定双方的角色和责任。您必须确保受试者被告知其正在与人工智能互动。如果您是授权代表，您可能需要协助进行注册。
+          您可能是部署者（deployer），潜在部署者 (Prospective Deployer) 或合作伙伴。您必须与提供者签署协议，明确规定双方的角色和责任。您必须确保受试者被告知其正在与人工智能互动。如果您是授权代表，您可能需要协助进行注册。
           如果想了解更全面的法规细节，建议您参考条款 Article 60 (测试条件)， Article 61 (知情同意)， Article 50 (透明度)。
 
       - condition: "(Risk_level == 'High Risk (Real World Testing)') and (Role == 'provider')"
@@ -274,7 +276,7 @@ variables:
 
       - condition: "(Risk_level == 'High Risk (Real World Testing)') and (Role != 'provider')"
         value: |
-          作为潜在部署者 (Prospective Deployer) 或合作伙伴，您必须严格遵守与提供者签署的协议，并确保遵循使用说明。您必须对测试环境进行监督以保障受试者的安全。
+         如果您是部署者（deployer），潜在部署者 (Prospective Deployer) 或合作伙伴，您必须严格遵守与提供者签署的协议，并确保遵循使用说明。您必须对测试环境进行监督以保障受试者的安全。
           如果想了解更全面的法规细节，建议您参考条款 Article 60 (测试条件)， Article 61 (知情同意)。
 
       # ------------------------------------------------------------------------
@@ -375,6 +377,11 @@ variables:
         value: |
           该系统属于最低风险类别。人工智能法案对此类系统不强制规定义务。但是，鼓励提供者和部署者自愿遵守行为准则，以促进可信赖的人工智能。
           如果想了解更全面的法规细节，建议您参考条款 Article 95 (行为准则)。
+      - condition: "Risk_level == 'Minimal Risk (Open Source)'"
+        value: |
+          本系统属于“最小风险”类别，且系依据免费及开源许可发布。根据法案第2条第12款，除高风险、被禁止或受透明度义务约束的系统外，本法规不适用于依据免费及开源许可发布的AI系统 [cite: 61]。因此，本系统明确豁免于本法规的强制性义务。
+          尽管如此，仍鼓励自愿遵守相关的“行为准则”。如果您想了解法规的更多细节，请参考第2条（适用范围）及第95条（行为准则）。
+
 
 router:
   - condition: "True"

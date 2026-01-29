@@ -42,7 +42,9 @@ variables:
         value: "High Risk (Real World Testing)"
       - condition: "Real_world_Testing == True and AI_type == 2 and High_risk == False and Transparency_obligation == True"
         value: "Transparency Obligation Only"
-      - condition: "Real_world_Testing == True and AI_type == 2 and High_risk == False and Transparency_obligation == False"
+      - condition: "Real_world_Testing == True and AI_type == 2 and High_risk == False and Transparency_obligation == False and Open_source == True"
+        value: "Minimal Risk (Open Source)"      
+      - condition: "Real_world_Testing == True and AI_type == 2 and High_risk == False and Transparency_obligation == False and Open_source == False"
         value: "Minimal Risk"
       # Group 3: GPAI Market Placement
       - condition: "AI_type == 1 and Systematic_risk == True"
@@ -59,7 +61,9 @@ variables:
         value: "High Risk"
       - condition: "AI_type == 2 and High_risk == False and Transparency_obligation == True"
         value: "Transparency Obligation Only"
-      - condition: "AI_type == 2 and High_risk == False and Transparency_obligation == False"
+      - condition: "AI_type == 2 and High_risk == False and Transparency_obligation == False and Open_source == True"
+        value: "Minimal Risk (Open Source)"
+      - condition: "AI_type == 2 and High_risk == False and Transparency_obligation == False and Open_source == False"
         value: "Minimal Risk"
       - condition: "Role == 'Undetermined'"
         value: "No Regulated Role Identified"
@@ -86,9 +90,6 @@ variables:
         value: "You are conducting real-world testing on a High-Risk AI System. This high-risk status applies because {{High_risk_reason}}. Therefore, the testing is subject to the governance requirements of Article 60."
       - condition: "Real_world_Testing == True and AI_type == 2 and High_risk == False and Transparency_obligation == True"
         value: "You are conducting real-world testing on a system that interacts with persons or generates content. This triggers transparency obligations because {{Transparency_Reasons}}. You must comply with Article 50 even during testing."
-      - condition: "Real_world_Testing == True and AI_type == 2 and High_risk == False and Transparency_obligation == False"
-        value: "You are conducting real-world testing on a system classified as Minimal Risk. This status applies because the system meets none of the conditions for Unacceptable Risk, High-Risk, or Transparency Obligations. Therefore, the AI Act does not impose specific regulatory requirements on this testing."
-
       # Group 3: GPAI Market Placement (Extracts from Module 7)
       - condition: "AI_type == 1 and Systematic_risk == True"
         value: "This model is classified as a General-Purpose AI Model with Systemic Risk. Reason: {{Systematic_reason}}" 
@@ -102,8 +103,10 @@ variables:
         value: "This system is classified as High-Risk. Reason: {{High_risk_reason}}"
       - condition: "AI_type == 2 and High_risk == False and Transparency_obligation == True"
         value: "This system is classified as Limited Risk and is subject to transparency obligations. Reason: {{Transparency_Reasons}}"
-      - condition: "AI_type == 2 and High_risk == False and Transparency_obligation == False"
+      - condition: "AI_type == 2 and High_risk == False and Transparency_obligation == False and Open_source == False"
         value: "This system is classified as Minimal Risk because it meets none of the conditions for Unacceptable Risk, High-Risk, or Transparency Obligations defined in the Regulation."
+      - condition: "AI_type == 2 and High_risk == False and Transparency_obligation == False and Open_source == True"
+        value: "This system is classified as Minimal Risk (Open Source). It is released under a free and open-source licence and falls outside the scope of the Regulation, as it does not meet the criteria for Prohibited AI Practices, High-Risk AI Systems, or systems subject to Transparency Obligations."
 
       # Fallback
       - condition: "else"
@@ -197,7 +200,7 @@ variables:
 
       - condition: "(Risk_level == 'High Risk (Real World Testing)') and (Role != 'provider')"
         value: |
-          As a prospective deployer or partner, you must strictly adhere to the agreement concluded with the provider [cite: 1015] and ensure the instructions for use are followed[cite: 1014]. You must maintain oversight to protect subject safety[cite: 1017].
+          If you are a deployer, prospective deployer or partner, you must strictly adhere to the agreement concluded with the provider [cite: 1015] and ensure the instructions for use are followed[cite: 1014]. You must maintain oversight to protect subject safety[cite: 1017].
           For more details, please refer to Article 60 (Testing Conditions) [cite: 1014], Article 61 (Informed Consent)[cite: 1027].
 
       # ------------------------------------------------------------------------
@@ -298,6 +301,13 @@ variables:
         value: |
           This system falls into the Minimal Risk category. The AI Act imposes no mandatory obligations. However, Providers and Deployers are encouraged to voluntarily adhere to Codes of Conduct[cite: 1446].
           For more details, please refer to Article 95 (Codes of Conduct)[cite: 1446].
+      
+      - condition: "Risk_level == 'Minimal Risk (Open Source)'"
+        value: |
+          This system falls into the Minimal Risk category and is released under a free and open-source licence.
+          Pursuant to Article 2(12), the Regulation does not apply to AI systems released under free and open-source licences unless they are high-risk, prohibited, or subject to transparency obligations[cite: 61]. Therefore, this system is explicitly exempt from the Regulation's mandatory obligations.
+          However, adherence to voluntary Codes of Conduct is still encouraged[cite: 1446].
+          For more details, please refer to Article 2 (Scope) and Article 95 (Codes of Conduct)[cite: 1446].
 
 router:
   - condition: "True"
