@@ -18,6 +18,8 @@ variables:
         value: "General-Purpose AI Model"
       - condition: "AI_type == 2"
         value: "AI System"
+      - condition: "AI_type == 0"
+        value: "Undetermined"
       - condition: "else"
         value: "Undetermined"
 
@@ -217,6 +219,8 @@ variables:
         value: "根据第 3(63) 条，这是一种显示出显著通用性、能够胜任广泛的独特任务，并可以集成到各种下游系统或应用中的 AI 模型。"
       - condition: "Type == 'Non-regulated products'"
         value: "根据用户输入，该软件不符合第 3(1) 条下人工智能系统或第 3(63) 条下通用人工智能模型的定义，因此不属于《人工智能法》的适用范围。"
+      - condition: "else"
+        value: "根据用户输入，产品的具体类别仍未定义，无法确定《人工智能法》下的具体义务范围"
 
   - name: "View"
     type: "string"

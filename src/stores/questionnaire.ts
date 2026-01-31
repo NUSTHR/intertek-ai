@@ -15,6 +15,27 @@ import { useLocaleStore } from '@/stores/locale'
 
 const API_BASE = import.meta.env.VITE_API_BASE ?? (import.meta.env.DEV ? '/api' : '')
 const SESSION_KEY = 'questionnaire_session_id'
+const LOG_LEVEL = import.meta.env.VITE_LOG_LEVEL ?? (import.meta.env.DEV ? 'info' : 'error')
+const LOG_INFO = LOG_LEVEL === 'info' || LOG_LEVEL === 'debug'
+const logInfo = (...args: unknown[]) => {
+  if (LOG_INFO) console.info(...args)
+}
+const logError = (...args: unknown[]) => {
+  console.error(...args)
+}
+async function fetchWithLog(url: string, options: RequestInit | undefined, label: string) {
+  const start = performance.now()
+  try {
+    const res = await fetch(url, options)
+    const durationMs = performance.now() - start
+    logInfo('api_response', { label, url, status: res.status, durationMs: Number(durationMs.toFixed(2)) })
+    return res
+  } catch (err) {
+    const durationMs = performance.now() - start
+    logError('api_error', { label, url, durationMs: Number(durationMs.toFixed(2)), err })
+    throw err
+  }
+}
 
 export const useQuestionnaireStore = defineStore('questionnaire', () => {
   const locale = useLocaleStore()
@@ -32,7 +53,7 @@ export const useQuestionnaireStore = defineStore('questionnaire', () => {
     loading.value = true
     error.value = null
     try {
-      const res = await fetch(`${API_BASE}/start?lang=${locale.apiLang}`, { method: 'POST' })
+      const res = await fetchWithLog(`${API_BASE}/start?lang=${locale.apiLang}`, { method: 'POST' }, 'start')
       if (!res.ok) throw new Error(`init_http_${res.status}`)
       const data = (await res.json()) as StartResponse
       sessionId.value = data.session_id
@@ -57,8 +78,10 @@ export const useQuestionnaireStore = defineStore('questionnaire', () => {
     loading.value = true
     error.value = null
     try {
-      const res = await fetch(
+      const res = await fetchWithLog(
         `${API_BASE}/module/${encodeURIComponent(moduleId)}?session_id=${sessionId.value}&lang=${locale.apiLang}`,
+        undefined,
+        'module',
       )
       if (!res.ok) throw new Error(`module_http_${res.status}`)
       const data = (await res.json()) as ModuleResponse
@@ -83,11 +106,11 @@ export const useQuestionnaireStore = defineStore('questionnaire', () => {
         answers: payloadAnswers,
         replace: true,
       }
-      const res = await fetch(`${API_BASE}/submit-answer?lang=${locale.apiLang}`, {
+      const res = await fetchWithLog(`${API_BASE}/submit-answer?lang=${locale.apiLang}`, {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify(payload),
-      })
+      }, 'submit-answer')
       if (!res.ok) {
         const detail = await res.json().catch(() => null)
         throw new Error(JSON.stringify(detail ?? { status: res.status }))
@@ -112,7 +135,11 @@ export const useQuestionnaireStore = defineStore('questionnaire', () => {
     loading.value = true
     error.value = null
     try {
-      const res = await fetch(`${API_BASE}/question/${encodeURIComponent(questionId)}?lang=${locale.apiLang}`)
+      const res = await fetchWithLog(
+        `${API_BASE}/question/${encodeURIComponent(questionId)}?lang=${locale.apiLang}`,
+        undefined,
+        'question',
+      )
       if (!res.ok) throw new Error(`question_http_${res.status}`)
       const data = (await res.json()) as QuestionResponse
       return data.question
@@ -129,7 +156,11 @@ export const useQuestionnaireStore = defineStore('questionnaire', () => {
     loading.value = true
     error.value = null
     try {
-      const res = await fetch(`${API_BASE}/result?session_id=${sessionId.value}&lang=${locale.apiLang}`)
+      const res = await fetchWithLog(
+        `${API_BASE}/result?session_id=${sessionId.value}&lang=${locale.apiLang}`,
+        undefined,
+        'result',
+      )
       if (!res.ok) throw new Error(`result_http_${res.status}`)
       const data = (await res.json()) as ResultResponse
       parameters.value = data.parameters

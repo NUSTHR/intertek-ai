@@ -18,6 +18,8 @@ variables:
         value: "General-Purpose AI Model"
       - condition: "AI_type == 2"
         value: "AI System"
+      - condition: "AI_type == 0"
+        value: "Undetermined"
       - condition: "else"
         value: "Undetermined"
 
@@ -141,6 +143,8 @@ variables:
         value: "Per Article 3(63), this is an AI model that displays significant generality, is capable of competently performing a wide range of distinct tasks, and can be integrated into a variety of downstream systems or applications."
       - condition: "Type == 'Non-regulated products'"
         value: "Based on the user input, the software does not meet the definition of an AI system under Article 3(1) or a general-purpose AI model under Article 3(63) and is therefore outside the scope of the AI Act."
+      - condition: "else"
+        value: "Based on the user input, the specific category of the product remains undefined, preveting the determination of  Tthe precise scope of obligations under the AI Act."
 
   - name: "View"
     type: "string"
@@ -161,7 +165,7 @@ variables:
 
       - condition: "Type == 'Non-regulated products'"
         value: |
-          The software does not meet the legal definition of an 'AI System' [cite: 65] or a 'General-Purpose AI Model'[cite: 141]. Therefore, it falls outside the regulatory scope. You should strictly monitor the software's development to ensure it does not evolve into an AI system (e.g., by adding varying levels of autonomy or inference capabilities)[cite: 65].
+          The software meet the conditions of Exclusion or does not meet the legal definition of an 'AI System' [cite: 65] or a 'General-Purpose AI Model'[cite: 141]. Therefore, it falls outside the regulatory scope. You should strictly monitor the software's development to ensure it does not evolve into an AI system (e.g., by adding varying levels of autonomy or inference capabilities)[cite: 65].
           For more details, please refer to Article 3(1) (Definition of AI System) [cite: 65], Article 3(63) (Definition of GPAI Model)[cite: 141].
 
       # ------------------------------------------------------------------------

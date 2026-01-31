@@ -1,0 +1,153 @@
+适用系统：Alibaba Cloud Linux 3.21.04
+目标：保持当前项目结构，部署前后端并长期运行（多 worker + Redis）
+版本要求：
+Node.js 22.x
+Python 3.9+
+Redis 6.x 或 7.x
+Nginx 1.20+
+Git 2.31+
+
+重要安全提示：
+请立即修改服务器密码并删除任何聊天记录中的密码信息。
+说明：当前无域名，仅使用公网 IP 通过 HTTP 访问。
+
+一、登录服务器
+ssh root@43.99.55.100
+
+二、更新系统与基础工具
+dnf -y update
+dnf -y install git curl tar
+git --version
+curl --version
+
+三、开放必要端口
+systemctl enable firewalld
+systemctl start firewalld
+firewall-cmd --permanent --add-service=ssh
+firewall-cmd --permanent --add-service=http
+firewall-cmd --permanent --add-service=https
+firewall-cmd --reload
+阿里云控制台安全组也必须放行 22、80、443 端口
+
+四、安装运行环境
+1) 安装 Node.js 22
+curl -fsSL https://rpm.nodesource.com/setup_22.x | bash -
+dnf -y install nodejs
+node -v
+npm -v
+
+2) 安装 Python 与虚拟环境
+dnf -y install python3 python3-pip
+python3 -V
+pip3 -V
+
+3) 安装并启动 Redis
+dnf -y install redis
+systemctl enable redis
+systemctl start redis
+redis-cli ping
+redis-server --version
+
+五、拉取项目代码
+mkdir -p /srv/ai-questionaire
+cd /srv/ai-questionaire
+git clone <你的仓库地址> .
+
+六、后端部署（FastAPI + Uvicorn + systemd，多 worker）
+1) 创建虚拟环境
+python3 -m venv backend/.venv
+
+2) 安装依赖
+source backend/.venv/bin/activate
+pip install --upgrade pip
+pip install -r backend/requirements.txt
+deactivate
+
+3) 创建后端服务
+cat > /etc/systemd/system/aiq-backend.service << EOF
+[Unit]
+Description=AI Questionnaire Backend
+After=network.target redis.service
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/srv/ai-questionaire
+Environment=REDIS_URL=redis://127.0.0.1:6379/0
+Environment=ENGINE_CACHE_TTL_SECONDS=30
+ExecStart=/srv/ai-questionaire/backend/.venv/bin/python -m uvicorn backend.main:app --host 127.0.0.1 --port 8000 --workers 2
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+4) 启动服务
+systemctl daemon-reload
+systemctl enable aiq-backend
+systemctl start aiq-backend
+systemctl status aiq-backend
+
+七、前端部署（Vite 构建）
+cd /srv/ai-questionaire
+npm ci
+VITE_API_BASE=/api npm run build
+
+八、Nginx 反向代理与静态站点
+1) 安装 Nginx
+dnf -y install nginx
+systemctl enable nginx
+systemctl start nginx
+nginx -v
+
+2) 配置站点
+cat > /etc/nginx/conf.d/ai-questionaire.conf << EOF
+server {
+    listen 80;
+    server_name 43.99.55.100;
+
+    root /srv/ai-questionaire/dist;
+    index index.html;
+
+    location /api/ {
+        proxy_pass http://127.0.0.1:8000/;
+        proxy_http_version 1.1;
+        proxy_set_header Host \$host;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto \$scheme;
+    }
+
+    location /health {
+        proxy_pass http://127.0.0.1:8000/health;
+    }
+
+    location / {
+        try_files \$uri /index.html;
+    }
+}
+EOF
+
+3) 重载 Nginx
+nginx -t
+systemctl restart nginx
+
+九、验证部署
+1) 后端健康检查
+curl http://127.0.0.1:8000/health
+
+2) 外网访问
+浏览器打开 http://43.99.55.100
+
+十、常用维护命令
+1) 查看后端日志
+journalctl -u aiq-backend -f
+
+2) 更新代码并重启
+cd /srv/ai-questionaire
+git pull
+npm ci
+VITE_API_BASE=/api npm run build
+systemctl restart aiq-backend
+systemctl restart nginx

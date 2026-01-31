@@ -161,13 +161,15 @@ async function goHome() {
       @action="restart"
     />
     <main class="max-w-7xl mx-auto px-8 pt-20 pb-32 flex-grow w-full">
-      <section class="mb-24">
+      <section class="mb-20">
+      <!-- <section class="mb-24"> -->
         <div class="flex flex-col items-start gap-6 mb-12">
           <div class="flex items-center gap-3">
             <span class="h-px w-8 bg-[#FAD400]"></span>
             <span class="text-xs font-black tracking-[0.3em] uppercase text-gray-500">{{ ui.assessmentComplete }}</span>
           </div>
-          <h1 class="text-2xl font-light max-w-2xl leading-relaxed text-gray-600">
+          <!-- <h1 class="text-xl font-light max-w-2xl leading-relaxed text-gray-600"> -->
+          <h1 class="text-xl font-light max-w-2xl leading-relaxed text-gray-500">
             {{ ui.assessmentSummary }}
           </h1>
           <div v-if="store.error" class="text-sm text-red-600">{{ store.error }}</div>
@@ -177,13 +179,13 @@ async function goHome() {
           <span class="block text-xs font-black tracking-[0.5em] mb-6 text-[#FAD400] uppercase">{{ ui.regulatoryStatus }}</span>
           <h2
             v-if="!locale.isZh"
-            class="text-[clamp(3rem,9vw,10rem)] leading-[0.9] font-black tracking-tighter uppercase mb-4 break-words"
+            class="text-[clamp(2.2rem,5.5vw,4.5rem)] leading-[1] font-extrabold tracking-tighter uppercase mb-8 break-words"
           >
             {{ statusTitle.split(' ').slice(0, 2).join(' ') }}
             <br class="hidden md:block" />
             {{ statusTitle.split(' ').slice(2).join(' ') }}<span class="text-[#FAD400]">.</span>
           </h2>
-          <h2 v-else class="text-[clamp(3rem,9vw,10rem)] leading-[0.9] font-black tracking-tighter mb-4 break-words">
+          <h2 v-else class="text-[clamp(2.2rem,5.5vw,4.5rem)] leading-[1] font-extrabold tracking-tighter mb-8 break-words">
             {{ statusTitle }}<span class="text-[#FAD400]">。</span>
           </h2>
           <div class="flex items-center gap-4">
@@ -322,3 +324,4 @@ async function goHome() {
     </footer>
   </div>
 </template>
+late>
