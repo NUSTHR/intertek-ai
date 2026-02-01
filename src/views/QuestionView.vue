@@ -128,6 +128,8 @@ const currentQuestion = computed(() => {
   }
   return module.questions[0] ?? null
 })
+const lastResolvedModule = ref<Module | null>(null)
+const lastResolvedQuestion = ref<ModuleQuestion | null>(null)
 const intertekMap: Record<string, Component> = {
   'q1.1': Q11View,
   'q1.2': Q12View,
@@ -194,11 +196,19 @@ const intertekMap: Record<string, Component> = {
   'q7.1': Q71View,
   'q8.1': Q81View,
 }
-const intertekComponent = computed(() => {
-  const id = currentQuestion.value?.id
+const displayModule = computed(() => moduleData.value ?? lastResolvedModule.value)
+const displayQuestion = computed(() => currentQuestion.value ?? lastResolvedQuestion.value)
+const displayIntertekComponent = computed(() => {
+  const id = displayQuestion.value?.id
   if (!id) return null
   return intertekMap[id] ?? null
 })
+const showLoadingOverlay = computed(() => !currentQuestion.value && !!lastResolvedQuestion.value && store.loading)
+const loadingUi = computed(() =>
+  locale.isZh
+    ? { loadingPrev: '正在加载...', loading: '加载中', back: '返回' }
+    : { loadingPrev: 'Loading...', loading: 'Loading', back: 'Back' },
+)
 
 function isAnswerValid(question: ModuleQuestion, value: AnswerValue | undefined) {
   if (question.type === 'multi_choice' || question.type === 'multiple_choice') {
@@ -402,6 +412,16 @@ watch(
     }
   },
 )
+watch(
+  () => [moduleData.value, currentQuestion.value] as const,
+  ([module, question]) => {
+    if (module && question) {
+      lastResolvedModule.value = module
+      lastResolvedQuestion.value = question
+    }
+  },
+  { immediate: true },
+)
 
 function toggleMulti(q: ModuleQuestion, value: AnswerScalar, checked: boolean) {
   const current = Array.isArray(localAnswers[q.id]) ? [...(localAnswers[q.id] as AnswerScalar[])] : []
@@ -476,12 +496,6 @@ function goPrev() {
     historyIndex.value = nextIndex
     if (moduleId.value !== entry.moduleId) {
       void (async () => {
-        const fresh = await store.fetchQuestion(entry.question.id)
-        if (fresh) {
-          const nextHistory = [...questionHistory.value]
-          nextHistory[nextIndex] = { moduleId: entry.moduleId, question: fresh }
-          questionHistory.value = nextHistory
-        }
         pendingQuestionId.value = entry.question.id
         await router.push({ name: 'module', params: { id: entry.moduleId } })
       })()
@@ -521,42 +535,69 @@ async function restart() {
 </script>
 
 <template>
-  <component
-    v-if="moduleData && currentQuestion && intertekComponent"
-    :is="intertekComponent"
-    :module="moduleData"
-    :question="currentQuestion"
-    :model-value="localAnswers[currentQuestion.id]"
-    :error="store.error"
-    :message="store.lastMessage"
-    :loading="store.loading"
-    :can-submit="canSubmit"
-    @update:modelValue="updateAnswer(currentQuestion.id, $event)"
-    @next="goNext"
-    @prev="goPrev"
-    @restart="restart"
-  />
+  <div v-if="displayModule && displayQuestion" class="relative">
+    <component
+      v-if="displayIntertekComponent"
+      :is="displayIntertekComponent"
+      :module="displayModule"
+      :question="displayQuestion"
+      :model-value="localAnswers[displayQuestion.id]"
+      :error="store.error"
+      :message="store.lastMessage"
+      :loading="store.loading"
+      :can-submit="canSubmit"
+      @update:modelValue="updateAnswer(displayQuestion.id, $event)"
+      @next="goNext"
+      @prev="goPrev"
+      @restart="restart"
+    />
 
-  <DefaultQuestionView
-    v-else-if="moduleData && currentQuestion"
-    :module="{ id: moduleData.id, title: moduleData.title, description: moduleData.description, questions: [currentQuestion] }"
-    :answers="localAnswers"
-    :error="store.error"
-    :message="store.lastMessage"
-    :can-submit="canSubmit"
-    :loading="store.loading"
-    @update-answer="updateAnswer($event.id, $event.value)"
-    @toggle-multi="handleToggleMulti"
-    @submit="submitModule"
-    @prev="goPrev"
-    @restart="restart"
-  />
+    <DefaultQuestionView
+      v-else
+      :module="{ id: displayModule.id, title: displayModule.title, description: displayModule.description, questions: [displayQuestion] }"
+      :answers="localAnswers"
+      :error="store.error"
+      :message="store.lastMessage"
+      :can-submit="canSubmit"
+      :loading="store.loading"
+      @update-answer="updateAnswer($event.id, $event.value)"
+      @toggle-multi="handleToggleMulti"
+      @submit="submitModule"
+      @prev="goPrev"
+      @restart="restart"
+    />
 
-  <section v-else class="card">
-    <div v-if="store.error" class="error">Loading Failed {{ store.error }}</div>
-    <div v-else class="muted">Loading…</div>
-    <div class="actions">
-      <button type="button" @click="restart">返回</button>
+    <div
+      v-if="showLoadingOverlay"
+      class="absolute inset-0 bg-white/80 backdrop-blur-[1px] flex items-center justify-center z-50"
+    >
+      <div class="bg-white border border-slate-200 shadow-sm px-8 py-6 flex flex-col items-center gap-4">
+        <div class="flex items-center gap-2">
+          <span class="h-2 w-2 rounded-full bg-intertek-yellow animate-bounce"></span>
+          <span class="h-2 w-2 rounded-full bg-intertek-yellow animate-bounce [animation-delay:150ms]"></span>
+          <span class="h-2 w-2 rounded-full bg-intertek-yellow animate-bounce [animation-delay:300ms]"></span>
+        </div>
+        <div class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">{{ loadingUi.loadingPrev }}</div>
+      </div>
+    </div>
+  </div>
+
+  <section v-else class="min-h-screen bg-[#f3f4f6] font-display text-slate-900 flex items-center justify-center p-6">
+    <div class="bg-white border border-slate-200 shadow-sm px-8 py-10 w-full max-w-md text-center">
+      <div class="flex items-center justify-center gap-2 mb-5">
+        <span class="h-2 w-2 rounded-full bg-intertek-yellow animate-pulse"></span>
+        <span class="h-2 w-2 rounded-full bg-intertek-yellow animate-pulse [animation-delay:150ms]"></span>
+        <span class="h-2 w-2 rounded-full bg-intertek-yellow animate-pulse [animation-delay:300ms]"></span>
+      </div>
+      <div class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 mb-4">{{ loadingUi.loading }}</div>
+      <div v-if="store.error" class="text-sm text-red-600 mb-6">{{ store.error }}</div>
+      <button
+        type="button"
+        class="px-8 py-3 bg-intertek-yellow text-black font-black uppercase tracking-widest text-[10px] hover:bg-intertek-dark hover:text-white transition-all"
+        @click="restart"
+      >
+        {{ loadingUi.back }}
+      </button>
     </div>
   </section>
 </template>

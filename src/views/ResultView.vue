@@ -173,7 +173,16 @@ async function goHome() {
             {{ ui.assessmentSummary }}
           </h1>
           <div v-if="store.error" class="text-sm text-red-600">{{ store.error }}</div>
-          <div v-else-if="summaryRows.length === 0" class="text-sm text-gray-500">{{ ui.loading }}</div>
+          <div v-else-if="summaryRows.length === 0" class="flex items-center">
+            <div class="bg-white border border-slate-200 shadow-sm px-6 py-4 flex items-center gap-4">
+              <div class="flex items-center gap-2">
+                <span class="h-2 w-2 rounded-full bg-intertek-yellow animate-bounce"></span>
+                <span class="h-2 w-2 rounded-full bg-intertek-yellow animate-bounce [animation-delay:150ms]"></span>
+                <span class="h-2 w-2 rounded-full bg-intertek-yellow animate-bounce [animation-delay:300ms]"></span>
+              </div>
+              <div class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">{{ ui.loading }}</div>
+            </div>
+          </div>
         </div>
         <div class="relative py-4">
           <span class="block text-xs font-black tracking-[0.5em] mb-6 text-[#FAD400] uppercase">{{ ui.regulatoryStatus }}</span>
