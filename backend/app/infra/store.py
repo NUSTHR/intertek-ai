@@ -6,6 +6,7 @@ from typing import Any
 from uuid import uuid4
 import os
 import json
+import logging
 
 from fastapi import HTTPException
 
@@ -14,6 +15,7 @@ from ..domain.models import Session
 
 class SessionStore:
     def __init__(self, ttl_seconds: int = 7200, cleanup_interval: int = 300) -> None:
+        self._logger = logging.getLogger("aiq.session_store")
         self._ttl_seconds = ttl_seconds
         self._cleanup_interval = cleanup_interval
         self._lock = threading.Lock()
@@ -25,9 +27,12 @@ class SessionStore:
             try:
                 import redis
                 self._redis = redis.Redis.from_url(url, decode_responses=True)
+                self._logger.info("redis_enabled=true url=%s", url)
             except Exception:
                 self._redis = None
+                self._logger.exception("redis_connect_failed url=%s", url)
         if not self._redis:
+            self._logger.info("redis_enabled=false")
             self._cleanup_thread = threading.Thread(target=self._cleanup_loop, daemon=True)
             self._cleanup_thread.start()
 
@@ -50,12 +55,14 @@ class SessionStore:
             with self._lock:
                 self._sessions[session_id] = session
                 self._last_access[session_id] = time.time()
+        self._logger.info("session_create id=%s module=%s lang=%s", session_id, first_module_id, lang)
         return session
 
     def get(self, session_id: str) -> Session:
         if self._redis:
             raw = self._redis.get(self._key(session_id))
             if not raw:
+                self._logger.warning("session_not_found id=%s backend=redis", session_id)
                 raise HTTPException(status_code=404, detail="session_not_found")
             session = self._load(raw)
             self._redis.expire(self._key(session_id), self._ttl_seconds)
@@ -64,6 +71,7 @@ class SessionStore:
             with self._lock:
                 session = self._sessions.get(session_id)
                 if not session:
+                    self._logger.warning("session_not_found id=%s backend=memory", session_id)
                     raise HTTPException(status_code=404, detail="session_not_found")
                 self._last_access[session_id] = time.time()
                 return session
@@ -79,6 +87,13 @@ class SessionStore:
             with self._lock:
                 self._sessions[session.id] = session
                 self._last_access[session.id] = time.time()
+        self._logger.info(
+            "session_save id=%s module=%s answers=%d params=%d",
+            session.id,
+            session.current_module_id,
+            len(session.answers),
+            len(session.parameters),
+        )
 
     def _key(self, session_id: str) -> str:
         return f"aiq:sessions:{session_id}"

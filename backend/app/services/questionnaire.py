@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from typing import Any
+import logging
 
 from fastapi import HTTPException
 
@@ -12,6 +13,7 @@ from ..logic.evaluator import Evaluator
 
 class QuestionnaireService:
     def __init__(self, loaders: dict[str, EngineLoader], evaluator: Evaluator, store: SessionStore) -> None:
+        self._logger = logging.getLogger("aiq.service")
         self.loaders = loaders
         self.evaluator = evaluator
         self.store = store
@@ -25,6 +27,7 @@ class QuestionnaireService:
         session.parameters = self.evaluator.compute_parameters(engine, session.answers)
         module = engine.modules_by_id[session.current_module_id]
         self.store.save(session)
+        self._logger.info("start session=%s module=%s lang=%s", session.id, session.current_module_id, lang_value)
         return session.id, self.evaluator.module_payload(module, session.answers, session.parameters)
 
     def get_module(self, session_id: str, module_id: str, lang: str | None = None) -> dict[str, Any]:
@@ -36,6 +39,7 @@ class QuestionnaireService:
         if not module:
             raise HTTPException(status_code=404, detail="module_not_found")
         self.store.save(session)
+        self._logger.info("module_get session=%s module=%s lang=%s", session_id, module_id, lang_value)
         return self.evaluator.module_payload(module, session.answers, session.parameters)
 
     def submit_answer(
@@ -91,6 +95,15 @@ class QuestionnaireService:
             conclusion = self.evaluator.compute_conclusion(session.parameters)
             session.conclusion = conclusion
         self.store.save(session)
+        self._logger.info(
+            "submit session=%s module=%s next=%s next_module=%s complete=%s answers=%d",
+            session_id,
+            active_module_id,
+            next_type,
+            next_module_id,
+            complete,
+            len(answers),
+        )
         return {
             "session_id": session.id,
             "parameters": session.parameters,
@@ -109,6 +122,7 @@ class QuestionnaireService:
         conclusion = self.evaluator.compute_conclusion(session.parameters)
         session.conclusion = conclusion
         self.store.save(session)
+        self._logger.info("result session=%s lang=%s", session_id, lang_value)
         return session.parameters, conclusion
 
     def get_question(self, question_id: str, lang: str | None = None) -> dict[str, Any]:
