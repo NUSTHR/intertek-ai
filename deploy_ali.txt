@@ -6,148 +6,195 @@ Python 3.9+
 Redis 6.x 或 7.x
 Nginx 1.20+
 Git 2.31+
+这份文档是针对你的项目（Vue + FastAPI + Redis）在 Linux 服务器上的**标准部署全流程**。
 
-重要安全提示：
-请立即修改服务器密码并删除任何聊天记录中的密码信息。
-说明：当前无域名，仅使用公网 IP 通过 HTTP 访问。
+既然网络和防火墙问题已解决，我们专注于**应用本身的构建与运行**。每一步我都标注了其核心含义，帮助你理解为什么要这么做。
 
-一、登录服务器
-ssh root@43.99.55.100
+---
 
-二、更新系统与基础工具
-dnf -y update
-dnf -y install git curl tar
-git --version
-curl --version
+### 第一阶段：基础环境与数据层
 
-三、开放必要端口
-systemctl enable firewalld
-systemctl start firewalld
-firewall-cmd --permanent --add-service=ssh
-firewall-cmd --permanent --add-service=http
-firewall-cmd --permanent --add-service=https
-firewall-cmd --reload
-阿里云控制台安全组也必须放行 22、80、443 端口
+**目标**：为代码运行准备好“地基”和“记忆存储”。
 
-四、安装运行环境
-1) 安装 Node.js 22
-curl -fsSL https://rpm.nodesource.com/setup_22.x | bash -
-dnf -y install nodejs
-node -v
-npm -v
+#### 1. 准备 Python 虚拟环境 (Conda)
 
-2) 安装 Python 与虚拟环境
-dnf -y install python3 python3-pip
-python3 -V
-pip3 -V
+* **操作**：
+```bash
+conda create -n aienv python=3.10 -y
+conda activate aienv
 
-3) 安装并启动 Redis
-dnf -y install redis
-systemctl enable redis
-systemctl start redis
-redis-cli ping
-redis-server --version
+```
 
-五、拉取项目代码
-mkdir -p /srv/ai-questionaire
-cd /srv/ai-questionaire
-git clone <你的仓库地址> .
 
-六、后端部署（FastAPI + Uvicorn + systemd，多 worker）
-1) 创建虚拟环境
-python3 -m venv backend/.venv
+* **含义**：
+创建了一个名为 `aienv` 的**独立沙盒**。
+* **为什么？** 服务器自带的 Python 可能被系统工具占用，直接安装库容易引发冲突。独立环境保证了你的项目依赖（如 FastAPI 版本）是干净且可控的。
 
-2) 安装依赖
-source backend/.venv/bin/activate
-pip install --upgrade pip
-pip install -r backend/requirements.txt
-deactivate
 
-3) 创建后端服务
-cat > /etc/systemd/system/aiq-backend.service << EOF
-[Unit]
-Description=AI Questionnaire Backend
-After=network.target redis.service
 
+#### 2. 安装与启动 Redis
+
+* **操作**：
+```bash
+yum install -y redis
+systemctl enable redis --now
+
+```
+
+
+* **含义**：
+启动**内存数据库**。
+* **为什么？** 你的问卷系统需要记住用户的答题进度（Session）。后端代码会将 `session_id` 和用户的答案暂存在 Redis 里。如果不启动它，用户点“开始”后，后端无法保存状态，就会报错或无限 Loading。
+
+
+
+---
+
+### 第二阶段：后端部署 (The Brain)
+
+**目标**：让 Python 逻辑代码在后台持续运行，处理业务请求。
+
+#### 1. 安装项目依赖
+
+* **操作**：
+```bash
+cd /home/admin/intertek-ai
+pip install -r requirements.txt
+
+```
+
+
+* **含义**：
+根据“说明书”（requirements.txt）下载所有必要的零件（如 `fastapi`, `uvicorn`, `redis-py`）。
+
+#### 2. 关键代码配置 (main.py)
+
+* **操作**：确保 `SessionMiddleware` 配置正确。
+```python
+app.add_middleware(
+    SessionMiddleware,
+    # ... 其他配置
+    https_only=False  # 允许 HTTP (IP访问)
+)
+
+```
+
+
+* **含义**：
+告诉后端程序：“现在的环境不是加密的 HTTPS，请允许在普通 HTTP 连接中收发 Session Cookie”。如果没有这一步，浏览器会因为安全策略拒绝接收 Cookie，导致无法登录。
+
+#### 3. 配置 Systemd 守护进程
+
+* **操作**：创建 `/etc/systemd/system/aiq-backend.service`。
+```ini
 [Service]
-Type=simple
-User=root
-WorkingDirectory=/srv/ai-questionaire
-Environment=REDIS_URL=redis://127.0.0.1:6379/0
-Environment=ENGINE_CACHE_TTL_SECONDS=30
-ExecStart=/srv/ai-questionaire/backend/.venv/bin/python -m uvicorn backend.main:app --host 127.0.0.1 --port 8000 --workers 2
+# 核心启动命令
+ExecStart=/root/miniconda3/envs/aienv/bin/python -m uvicorn backend.main:app --host 127.0.0.1 --port 8000 --workers 1
 Restart=always
-RestartSec=3
 
-[Install]
-WantedBy=multi-user.target
-EOF
+```
 
-4) 启动服务
+
+* **含义**：
+将 Python 脚本注册为**系统服务**。
+* **守护进程**：哪怕服务器重启，或者代码偶尔崩溃，Systemd 都会自动帮你把服务重新拉起来。
+* **Workers=1**：指定开启 1 个工作进程。对于 1GB 内存的服务器，1 个进程既能满足性能需求，又能最节省内存资源。
+
+
+
+#### 4. 启动后端服务
+
+* **操作**：
+```bash
 systemctl daemon-reload
-systemctl enable aiq-backend
-systemctl start aiq-backend
-systemctl status aiq-backend
+systemctl restart aiq-backend
 
-七、前端部署（Vite 构建）
-cd /srv/ai-questionaire
+```
+
+
+* **含义**：让 Systemd 读取最新配置并把 Python 进程跑起来。此时，后端开始在内部的 `8000` 端口监听。
+
+---
+
+### 第三阶段：前端部署 (The Face)
+
+**目标**：将源代码编译成浏览器能看懂的静态文件。
+
+#### 1. 安装依赖与构建
+
+* **操作**：
+```bash
+cd /home/admin/intertek-ai
 npm ci
 VITE_API_BASE=/api npm run build
 
-八、Nginx 反向代理与静态站点
-1) 安装 Nginx
-dnf -y install nginx
-systemctl enable nginx
-systemctl start nginx
-nginx -v
+```
 
-2) 配置站点
-cat > /etc/nginx/conf.d/ai-questionaire.conf << EOF
+
+* **含义**：
+* `npm ci`：精准安装 `package-lock.json` 里锁定的依赖版本。
+* `npm run build`：**编译过程**。它把你的 `.vue`、`.ts` 代码“翻译”并压缩成 `.html`、`.css` 和 `.js` 文件，输出到 `dist` 目录。
+* `VITE_API_BASE=/api`：**注入环境变量**。告诉前端代码：“以后发请求时，统一加 `/api` 前缀（例如 `/api/start`）”，这是为了配合 Nginx 的转发规则。
+
+
+
+---
+
+### 第四阶段：Nginx 反向代理 (The Traffic Controller)
+
+**目标**：对外暴露唯一的入口（80端口），并分发流量。
+
+#### 1. 配置 Nginx
+
+* **操作**：编辑 `/etc/nginx/conf.d/ai-questionaire.conf`。
+```nginx
 server {
-    listen 80;
-    server_name 43.99.55.100;
+    listen 80; # 监听对外端口
 
-    root /srv/ai-questionaire/dist;
-    index index.html;
-
-    location /api/ {
-        proxy_pass http://127.0.0.1:8000/;
-        proxy_http_version 1.1;
-        proxy_set_header Host \$host;
-        proxy_set_header X-Real-IP \$remote_addr;
-        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto \$scheme;
-    }
-
-    location /health {
-        proxy_pass http://127.0.0.1:8000/health;
-    }
-
+    # 规则1：前端页面
     location / {
-        try_files \$uri /index.html;
+        root /home/admin/intertek-ai/dist; # 指向编译好的静态文件
+        try_files $uri $uri/ /index.html;  # 路由兜底，防止刷新报404
+    }
+
+    # 规则2：后端接口
+    location /api/ {
+        proxy_pass http://127.0.0.1:8000/; # 转发给 Python 后端
     }
 }
-EOF
 
-3) 重载 Nginx
-nginx -t
+```
+
+
+* **含义**：
+Nginx 是**流量总管**。
+* 当用户访问页面（如 `http://IP/`）时，Nginx 直接把 `dist` 文件夹里的图片和 HTML 递给用户。
+* 当用户点击按钮（发送 `http://IP/api/start`）时，Nginx 看到 `/api`，就会把请求转交给在 8000 端口等待的 Python 后端。
+
+
+
+#### 2. 重启 Nginx
+
+* **操作**：
+```bash
 systemctl restart nginx
 
-九、验证部署
-1) 后端健康检查
-curl http://127.0.0.1:8000/health
+```
 
-2) 外网访问
-浏览器打开 http://43.99.55.100
 
-十、常用维护命令
-1) 查看后端日志
-journalctl -u aiq-backend -f
+* **含义**：应用新的路由规则，使网站对外生效。
 
-2) 更新代码并重启
-cd /srv/ai-questionaire
-git pull
-npm ci
-VITE_API_BASE=/api npm run build
-systemctl restart aiq-backend
-systemctl restart nginx
+---
+
+### ✅ 总结：一套完整的请求是如何跑通的？
+
+当你点击浏览器上的“开始”按钮时，整个流程是这样的：
+
+1. **浏览器** 发出请求：`POST http://43.99.55.100/api/start`。
+2. **Nginx (80端口)** 收到请求，识别出 `/api` 前缀，将请求转发给内部的 `127.0.0.1:8000`。
+3. **Systemd 管理的 Python 后端 (8000端口)** 收到请求。
+4. **后端代码** 生成 Session ID，连接 **Redis** 存储数据。
+5. **后端** 返回 Session ID 给 **Nginx**，Nginx 再转回给 **浏览器**。
+6. **前端代码** 拿到 ID，跳转到下一页。
+
+这就是整个部署架构的运行逻辑。
