@@ -1,0 +1,97 @@
+适用系统：Windows Server 2019/2022（x64）
+目标：保持当前项目结构，部署前后端并长期运行（多 worker + Redis）
+版本要求：
+Node.js 20.19+ 或 22.12+
+Python 3.9+
+Redis 6.x/7.x（Windows 推荐 Memurai 或 Docker 方式）
+Nginx 1.20+
+Git 2.31+
+项目路径示例：D:\intertek-ai
+第一阶段：基础服务与 Redis（自动启动）
+安装 Redis 并设为服务
+
+方案 A（推荐）：安装 Memurai 并作为 Windows 服务运行
+验证：打开 services.msc，确认 Redis 或 Memurai 服务正在运行并且启动类型为 自动
+验证命令：redis-cli ping，返回 PONG
+
+安装 NSSM（服务管家）
+
+解压 NSSM，将 win64\nssm.exe 复制到 C:\Windows\System32
+作用：系统重启时自动拉起 Python 后端和 Nginx
+第二阶段：后端代码部署（环境固化）
+创建 Python 虚拟环境
+
+PowerShell
+cd D:\intertek-ai
+python -m venv venv
+.\venv\Scripts\activate
+pip install -r backend\requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+注册后端服务（AIQBackend），以管理员身份运行 CMD：
+
+DOS
+nssm install AIQBackend
+
+Application 选项卡：
+Path: D:\intertek-ai\venv\Scripts\python.exe
+Startup directory: D:\intertek-ai
+Arguments: -m uvicorn backend.main:app --host 127.0.0.1 --port 8000 --workers 2
+
+Environment 选项卡：
+PYTHONUNBUFFERED=1
+REDIS_URL=redis://127.0.0.1:6379/0
+
+I/O 选项卡：
+Output (stdout): D:\intertek-ai\logs\backend_out.log
+Error (stderr): D:\intertek-ai\logs\backend_err.log
+
+启动后端服务：
+nssm start AIQBackend
+第三阶段：前端构建（静态编译）
+环境变量 VITE_API_BASE 仅在编译时生效
+
+PowerShell
+cd D:\intertek-ai
+npm ci
+$env:VITE_API_BASE="/api"; npm run build
+验证：D:\intertek-ai\dist 目录已生成
+第四阶段：Nginx 服务化
+解压 Nginx 到 C:\nginx（路径无空格无中文）
+
+修改配置（C:\nginx\conf\nginx.conf）
+
+Nginx
+server {
+    listen       80;
+    server_name  localhost;
+
+    location / {
+        root   D:/intertek-ai/dist;
+        index  index.html;
+        try_files $uri $uri/ /index.html;
+    }
+
+    location /api/ {
+        proxy_pass http://127.0.0.1:8000/;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+
+注册 Nginx 服务（AIQWeb），管理员 CMD 运行：
+nssm install AIQWeb
+
+Application 选项卡：
+Path: C:\nginx\nginx.exe
+Startup directory: C:\nginx
+
+启动 Nginx：
+nssm start AIQWeb
+第五阶段：防火墙与验证
+开放 80 端口
+Win+R 输入 wf.msc → 入站规则 → 新建规则 → 端口 → 80 → 允许连接
+
+最终验证
+浏览器访问 http://localhost 或 http://公网IP
+能进入首页并完成问卷即部署成功
