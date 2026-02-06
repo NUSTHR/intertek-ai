@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 import logging
+from logging.handlers import RotatingFileHandler
 import os
 import time
 import uuid
@@ -8,10 +9,34 @@ import uuid
 from .api.routers import router as api_router
 
 
-def create_app() -> FastAPI:
+def _setup_logging() -> logging.Logger:
     log_level = os.environ.get("LOG_LEVEL", "INFO").upper()
-    logging.basicConfig(level=log_level, format="%(asctime)s %(levelname)s %(name)s %(message)s")
-    logger = logging.getLogger("aiq")
+    log_file = os.environ.get("LOG_FILE", "logs/app.log").strip()
+    max_bytes = int(os.environ.get("LOG_MAX_BYTES", "10485760"))
+    backup_count = int(os.environ.get("LOG_BACKUP_COUNT", "5"))
+    log_format = "%(asctime)s %(levelname)s %(name)s %(message)s"
+    logging.basicConfig(level=log_level, format=log_format)
+    if log_file:
+        log_dir = os.path.dirname(log_file)
+        if log_dir:
+            os.makedirs(log_dir, exist_ok=True)
+        file_handler = RotatingFileHandler(
+            log_file,
+            maxBytes=max_bytes,
+            backupCount=backup_count,
+            encoding="utf-8",
+        )
+        file_handler.setLevel(log_level)
+        file_handler.setFormatter(logging.Formatter(log_format))
+        for logger_name in ("aiq", "uvicorn.error", "uvicorn.access", "uvicorn.asgi"):
+            target = logging.getLogger(logger_name)
+            if not any(isinstance(h, RotatingFileHandler) and getattr(h, "baseFilename", None) == file_handler.baseFilename for h in target.handlers):
+                target.addHandler(file_handler)
+    return logging.getLogger("aiq")
+
+
+def create_app() -> FastAPI:
+    logger = _setup_logging()
     app = FastAPI(title="AI Act Questionnaire API", version="1.0.0")
     app.add_middleware(
         CORSMiddleware,

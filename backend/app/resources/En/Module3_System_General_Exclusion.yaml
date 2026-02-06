@@ -23,18 +23,18 @@ questions:
         value: 3
 
   - id: "q3a.2"
-    text: "Are you a natural person acting exclusively as a user of this AI system for a purely personal, non-professional activity?"
+    text: "Are you a natural person using this AI system exclusively for a purely personal, non-professional activity?"
     ref: "Art 2(10): This Regulation does not apply to obligations of deployers (pure users) who are natural persons using AI systems in the course of a purely personal non-professional activity." [cite: 59]
     type: "single_choice"
-    dependency: "q3a.1 == 3"
+    dependency: "(q3a.1 == 3) and (Role == 'deployer')"
     options:
-      - label: "Yes, I am acting solely as a user and use it strictly for a purely personal, non-professional activity."
+      - label: "Yes, exclusively for personal, non-professional use."
         cite: "Art 2(10): This Regulation does not apply to obligations of deployers who are natural persons using AI systems in the course of a purely personal non-professional activity." [cite: 59]
-        description: "Select this if you are an individual using AI for private tasks not related to a job or business."
+        description: "Select this if you are an individual using the AI for private purposes (e.g., leisure, household) unrelated to any business, employment, or commercial activity."
         value: True
-      - label: "No, I am not a natural person, or I am involved in the development or professional use of this technology."
+      - label: "No, for professional, commercial, or organizational use."
         cite: "Should your activity entail any use other than purely personal and non-professional use, it shall not fall within the scope of the exemption set out in Article 2(10) of the Regulation."
-        description: "Select this if used for work, for a company, or you are not a pure user."
+        description: "Select this if you represent a legal entity (e.g., a company) or if the AI is used for work, business operations, or any professional context."
         value: False
 
 variables:
@@ -58,7 +58,7 @@ variables:
       - condition: "q3a.1 == 1"
         value: "The AI system is used exclusively for military, defense, or national security purposes, placing it entirely outside the scope of this Regulation as per Article 2(3)."
       - condition: "q3a.1 == 2"
-        value: "The system is operated by third-country public authorities or international organizations under a law enforcement cooperation agreement with the Union, qualifying for the exclusion under Article 2(11)."
+        value: "The system is operated by third-country public authorities or international organizations under a law enforcement cooperation agreement with the Union, qualifying for the exclusion under Article 2(4)."
       - condition: "q3a.2 == True"
         value: "The system is used by a natural person for purely personal, non-professional activities, exempting the user from deployer obligations under Article 2(10)"
       - condition: "else"

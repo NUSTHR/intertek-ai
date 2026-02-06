@@ -28,12 +28,12 @@ const ui = computed(() =>
     ? {
         legalContext: '法律依据',
         reference: '参考',
-        annexTitle: '附件 III 第 1-8 点',
+        annexTitle: '法案附件 III 第 1-8 点',
         annexDesc:
           '列出因对基本权利、健康或安全产生潜在影响而被视为高风险的具体领域。落入这些类别的系统需要严格遵守第 9-15 条。',
-        infoTip: '判断系统是否属于附件 III 是路径 2 高风险评估的关键步骤。',
+        infoTip: '判断系统是否属于法案附件 III 是路径 2 高风险评估的关键步骤。',
         viewFullAct: '查看法规全文。',
-        tip: '若系统用于此处列出的任一附件 III 行业，可能被认定为高风险并需满足第 9–15 条要求。',
+        tip: '若系统用于此处列出的任一法案附件 III 行业，可能被认定为高风险并需满足第 9–15 条要求。',
       }
     : {
         legalContext: 'Legal Context',
@@ -101,7 +101,7 @@ const fallbackOptions = computed(() =>
         {
           value: 0,
           title: '以上都不是',
-          description: '我的 AI 系统不涉及这些敏感的附件 III 领域。',
+          description: '我的 AI 系统不涉及这些敏感的法案附件 III 领域。',
           icon: 'block',
           span: 'md:col-span-2',
         },

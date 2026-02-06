@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import { useQuestionnaireStore } from '@/stores/questionnaire'
 import { useLocaleStore } from '@/stores/locale'
 import NavBar from '@/components/NavBar.vue'
+import LoadingCard from '@/components/LoadingCard.vue'
 import logoUrl from '@/assets/images/logo/b9d2336ed590ab1e2a8d517d7f555f72.png'
 import portraitUrl from '@/assets/images/self-portrait/03ada209733101dff56722826aeaa67f.png'
 
@@ -174,14 +175,11 @@ async function goHome() {
           </h1>
           <div v-if="store.error" class="text-sm text-red-600">{{ store.error }}</div>
           <div v-else-if="summaryRows.length === 0" class="flex items-center">
-            <div class="bg-white border border-slate-200 shadow-sm px-8 py-6 flex items-center gap-4">
-              <div class="flex items-center gap-2">
-                <span class="h-2 w-2 rounded-full bg-intertek-yellow animate-pulse"></span>
-                <span class="h-2 w-2 rounded-full bg-intertek-yellow animate-pulse [animation-delay:150ms]"></span>
-                <span class="h-2 w-2 rounded-full bg-intertek-yellow animate-pulse [animation-delay:300ms]"></span>
-              </div>
-              <div class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">{{ ui.loading }}</div>
-            </div>
+            <LoadingCard
+              :loading="true"
+              :loading-text="ui.loading"
+              :failed-text="ui.loading"
+            />
           </div>
         </div>
         <div class="relative py-4">

@@ -383,31 +383,32 @@ questions:
         exclusive: true
 
   # --- Area 6: Law Enforcement ---
+# --- Area 6: Law Enforcement ---
   - id: "q5.spec_le"
     text: "Identify the law enforcement use cases:"
-    ref: "Annex III, Point 6: 6. Law enforcement, in so far as their use is permitted under relevant Union or national law: (a) AI systems intended to be used by law enforcement authorities or on their behalf to assess the risk of a natural person becoming a victim... (b) AI systems intended to be used as polygraphs... (c) AI systems intended to be used to detect deep fakes... (d) AI systems intended to be used to evaluate the reliability of evidence... (e) AI systems intended to be used for assessing the risk of a person offending or re-offending based on profiling..."
+    ref: "Annex III, Point 6: 6. Law enforcement... (a) risk of victimization... (b) polygraphs... (c) reliability of evidence... (d) risk of offending... (e) profiling..."
     type: "multi_choice"
     dependency: "q5.area_select == 6"
     options:
       - label: "Assessing the risk of a person becoming a victim of criminal offences"
-        cite: "Annex III, Point 6(a): AI systems intended to be used... to assess the risk of a natural person becoming the victim of criminal offences. [cite: 1734]"
-        description: "Choose this if the AI predicts who might be at risk of having a crime committed against them. [cite: 1734]"
+        cite: "Annex III, Point 6(a): AI systems intended to be used... to assess the risk of a natural person becoming the victim of criminal offences. "
+        description: "Choose this if the AI predicts who might be at risk of having a crime committed against them. "
         value: 1
       - label: "Polygraphs (lie detectors) and similar tools"
-        cite: "Annex III, Point 6(b): AI systems intended to be used... as polygraphs or similar tools. [cite: 1735]"
-        description: "Choose this if the AI is used to judge if someone is telling the truth during a police interview. [cite: 1735]"
+        cite: "Annex III, Point 6(b): AI systems intended to be used... as polygraphs or similar tools. "
+        description: "Choose this if the AI is used to judge if someone is telling the truth during a police interview. "
         value: 2
-      - label: "Detecting deep fakes (unless for investigation of crimes or error prevention)"
-        cite: "Article 50 & Annex III, Point 6: Relationship between transparency rules and law enforcement use cases. [cite: 1733, 790]"
-        description: "Choose this if the AI identifies fake or manipulated videos and photos for law enforcement. [cite: 790]"
+      - label: "Evaluating the reliability of evidence during investigation or prosecution"
+        cite: "Annex III, Point 6(c): AI systems intended to be used... to evaluate the reliability of evidence in the course of the investigation or prosecution. "
+        description: "Choose this if the AI helps check if evidence is trustworthy. "
         value: 3
-      - label: "Evaluating reliability of evidence or individual profiling during investigation/prosecution"
-        cite: "Annex III, Point 6(c) & (e): AI systems intended to be used... to evaluate the reliability of evidence... or for profiling. [cite: 1736, 1738]"
-        description: "Choose this if the AI helps check if evidence is trustworthy or creates profiles of suspects. [cite: 1736, 1738]"
+      - label: "Assessing the risk of a person offending or re-offending"
+        cite: "Annex III, Point 6(d): AI systems intended to be used... for assessing the risk of a natural person offending or re-offending. "
+        description: "Choose this if the AI predicts how likely it is that someone will commit a crime, not based solely on profiling. "
         value: 4
-      - label: "Assessing the risk of a person offending based on profiling or personality traits"
-        cite: "Annex III, Point 6(d): AI systems intended to be used... for assessing the risk of a natural person offending or re-offending. [cite: 1737]"
-        description: "Choose this if the AI predicts how likely it is that someone will commit a crime. [cite: 1737]"
+      - label: "Profiling natural persons during detection, investigation or prosecution"
+        cite: "Annex III, Point 6(e): AI systems intended to be used... for the profiling of natural persons as referred to in Article 3(4) of Directive (EU) 2016/680. "
+        description: "Choose this if the AI creates profiles of suspects or individuals during criminal investigations. "
         value: 5
       - label: "None of the above"
         cite: "Annex III, Point 6: Exclusion for basic police paperwork or logistics. [cite: 1733]"
@@ -475,7 +476,7 @@ questions:
     ref: "Art 6(3): An AI system referred to in Annex III shall in any event be considered to be high-risk where the AI system performs profiling of natural persons. Art 3(58): ‘profiling’ means profiling as defined in Article 4, point (4), of Regulation (EU) 2016/679."
     description: "Does your AI use a person's data to evaluate their personality, behavior, health, or economic situation automatically? [cite: 206]"
     type: "single_choice"
-    dependency: "(q5.spec_bi and 0 not in q5.spec_bi) or (q5.spec_ci and 0 not in q5.spec_ci) or (q5.spec_ed and 0 not in q5.spec_ed) or (q5.spec_em and 0 not in q5.spec_em) or (q5.spec_es and 0 not in q5.spec_es) or (q5.spec_le and 0 not in q5.spec_le) or (q5.spec_mi and 0 not in q5.spec_mi) or (q5.spec_jd and 0 not in q5.spec_jd)"
+    dependency: "(q5.spec_bi and 0 not in q5.spec_bi) or (q5.spec_ci and 0 not in q5.spec_ci) or (q5.spec_ed and 0 not in q5.spec_ed) or (q5.spec_em and 0 not in q5.spec_em) or (q5.spec_es and 0 not in q5.spec_es) or (q5.spec_le and 0 not in q5.spec_le and 5 not in q5.spec_le) or (q5.spec_mi and 0 not in q5.spec_mi) or (q5.spec_jd and 0 not in q5.spec_jd)"
     options:
       - label: "Yes"
         cite: "Art 6(3): AI system... shall always be considered to be high-risk where [it] performs profiling. [cite: 206]"
@@ -492,7 +493,7 @@ questions:
     ref: "Art 6(3): ...an AI system referred to in Annex III shall not be considered to be high-risk if it does not pose a significant risk of harm... where any of the following conditions is fulfilled: (a) it is intended to perform a narrow procedural task; (b) it is intended to improve the result of a previously completed human activity; (c) it is intended to detect decision-making patterns or deviations... and is not meant to replace or influence the previously completed human assessment... (d) it is intended to perform a preparatory task..."
     description: "Meeting these specific conditions might mean your AI is not High-Risk, even if it is in a sensitive area. [cite: 199]"
     type: "multi_choice"
-    dependency: "q5.profiling == 0"
+    dependency: "q5.profiling == 0 and (5 not in q5.spec_le)"
     options:
       - label: "It is intended to perform a narrow procedural task"
         cite: "Art 6(3), second subparagraph, (a): the AI system is intended to perform a narrow procedural task. [cite: 201]"
@@ -534,7 +535,7 @@ variables:
     rules:
       - condition: "q5.3rd_party == 1" 
         value: True
-      - condition: "Annex_III_Hit == True and q5.profiling == 1" 
+      - condition: "Annex_III_Hit == True and (q5.profiling == 1 or (q5.spec_le and 5 in q5.spec_le))"
         value: True
       - condition: "Annex_III_Hit == True and q5.profiling == 0 and (0 in q5.derogation)" 
         value: True
@@ -547,7 +548,7 @@ variables:
     rules:
       - condition: "q5.3rd_party == 1"
         value: "The AI system is a safety component or a standalone product that requires an external safety audit by law (Annex I), making it High-Risk under Article 6(1)."
-      - condition: "Annex_III_Hit == True and q5.profiling == 1"
+      - condition: "Annex_III_Hit == True and (q5.profiling == 1 or (q5.spec_le and 5 in q5.spec_le))"
         value: "The system is used in a sensitive public or private sector (Annex III) and performs individual profiling, which automatically classifies it as High-Risk under Article 6(3)."
       - condition: "Annex_III_Hit == True and q5.profiling == 0 and (0 in q5.derogation)"
         value: "The system operates in a sensitive area (Annex III) and performs a significant role in decision-making that does not qualify for a 'minor task' exemption, making it High-Risk under Article 6(2)."

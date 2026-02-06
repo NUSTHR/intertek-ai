@@ -34,7 +34,7 @@ questions:
         value: 6
       - label: "Biometric categorization of sensitive traits"
         cite: "Art 5(1)(g): 'biometric categorisation systems that categorise individually natural persons based on their biometric data to deduce or infer their race, political opinions, trade union membership, religious or philosophical beliefs, sex life or sexual orientation;' [cite: 163]"
-        description: "Choose this if the system uses body measurements (like faces or fingerprints) to sort people by sensitive traits like race, religion, or sexual orientation. [cite: 163]"
+        description: "Choose this if the system uses body measurements (like faces or fingerprints) to sort people by sensitive traits like race, religion, sexual orientation,political opinions or trade union membership. [cite: 163]"
         value: 7
       - label: "Real-time remote biometric identification (RBI)"
         cite: "Art 5(1)(h): 'the use of ‘real-time’ remote biometric identification systems in publicly accessible spaces for the purposes of law enforcement...' [cite: 165]"
@@ -235,7 +235,7 @@ questions:
         value: True
       - label: "No, It supports human assessment based on objective/verifiable facts"
         cite: "Art 5(1)(d): 'this prohibition shall not apply to AI systems used to support the human assessment... based on objective and verifiable facts directly linked to a criminal activity;' [cite: 160]"
-        description: "The AI helps a human officer look at real, proven facts about a crime that has already happened. [cite: 160]"
+        description: "The assessment relies on objective facts (not just personality/profiling) or supports a human officer assessing involvement in a crime based on verifiable facts. [cite: 159, 160]"
         value: False
 
   # -------------------------------------------------------------------------
@@ -386,14 +386,14 @@ questions:
         value: False
 
   - id: "q4.8_c"
-    text: "Is this 'real-time' remote biometric identification system's use strictly necessary for: (i) searching for victims/missing persons, (ii) preventing imminent threat to life/terrorism, or (iii) identifying suspects of serious crimes (Annex II)?"
+    text: "Is this 'real-time' remote biometric identification system's use strictly necessary for: (i) searching for victims/missing persons, (ii) preventing imminent threat to life/terrorism, or (iii) identifying suspects of serious crimes (AI Act Annex II)  ?"
     ref: "Art 5(1)(h)(i)-(iii): (i) the targeted search for specific victims of abduction, trafficking in human beings or sexual exploitation of human beings, as well as the search for missing persons; (ii) the prevention of a specific, substantial and imminent threat to the life or physical safety of natural persons or a genuine and present or genuine and foreseeable threat of a terrorist attack; (iii) the localisation or identification of a person suspected of having committed a criminal offence referred to in Annex II..."
     type: "single_choice"
     dependency: "q4.8_b == True"
     options:
       - label: "Yes"
         cite: "Art 5(1)(h)(i-iii): 'strictly necessary for... search for missing persons; prevention of a terrorist attack; localisation of a person suspected of... criminal offence referred to in Annex II...' [cite: 166, 167, 168]"
-        description: "The system is being used for an emergency, like finding a kidnapped child or stopping a terror attack. [cite: 166, 167, 168]"
+        description: "The system is used for one of the specific emergency objectives, or to identify a suspect of a serious crime (Annex II) with a maximum sentence of at least 4 years. [cite: 166, 167, 168]"
         value: True
       - label: "No"
         cite: "N/A: Use is for general policing or non-excepted offenses. [cite: 166, 167, 168]"

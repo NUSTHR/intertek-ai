@@ -82,7 +82,7 @@ function onPrev() {
 <template>
   <section class="bg-[#f3f4f6] dark:bg-background-dark font-display text-slate-900 dark:text-white min-h-screen flex flex-col intertek-scope">
     <div class="header-accent w-full"></div>
-    <header class="flex items-center justify-between whitespace-nowrap bg-white dark:bg-slate-900 px-6 py-4 sticky top-0 z-50 shadow-sm">
+    <header class="flex items-center justify-between md:whitespace-nowrap bg-white dark:bg-slate-900 px-4 md:px-6 py-3 md:py-4 sticky top-0 z-50 shadow-sm">
       <div class="flex items-center gap-6">
         <div class="flex items-center gap-3">
           <a href="https://www.intertek.com/">
@@ -139,7 +139,7 @@ function onPrev() {
         </div>
       </div>
     </header>
-    <main class="flex-1 w-full max-w-7xl mx-auto p-6 md:p-10 flex flex-col gap-10">
+    <main class="flex-1 w-full max-w-7xl mx-auto p-4 md:p-10 flex flex-col gap-6 md:gap-10">
       <section class="flex flex-col gap-5 bg-white dark:bg-slate-900 p-6 shadow-sm border border-slate-200 dark:border-slate-800">
         <div class="flex items-center justify-between">
           <div class="flex flex-col gap-1">
@@ -161,8 +161,8 @@ function onPrev() {
         </div>
       </section>
       <div class="flex flex-col lg:flex-row gap-10 items-start">
-        <div class="flex-1 flex flex-col gap-8 w-full">
-          <div class="bg-white dark:bg-slate-900 p-8 md:p-12 shadow-sm border border-slate-200 dark:border-slate-800">
+        <div class="flex-1 flex flex-col gap-6 md:gap-8 w-full">
+          <div class="bg-white dark:bg-slate-900 p-5 md:p-12 shadow-sm border border-slate-200 dark:border-slate-800">
             <div class="mb-10">
               <span class="inline-block px-4 py-1.5 bg-intertek-dark text-white text-[10px] font-black tracking-[0.3em] uppercase mb-6">
                 {{ props.questionTag }}
@@ -175,10 +175,10 @@ function onPrev() {
               </p>
             </div>
             <slot></slot>
-            <div class="flex items-center justify-between pt-10 mt-10 border-t border-slate-100 dark:border-slate-800">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 pt-6 md:pt-10 mt-6 md:mt-10 border-t border-slate-100 dark:border-slate-800">
               <button
                 type="button"
-                class="flex items-center gap-2 px-8 py-4 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-200 font-black uppercase tracking-widest text-[11px] hover:bg-slate-50 dark:hover:bg-slate-800 transition-all"
+                class="flex items-center gap-2 px-6 md:px-8 py-3 md:py-4 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-200 font-black uppercase tracking-widest text-[11px] hover:bg-slate-50 dark:hover:bg-slate-800 transition-all"
                 @click="onPrev"
               >
                 <span class="material-symbols-outlined text-sm">west</span>
@@ -186,7 +186,7 @@ function onPrev() {
               </button>
               <button
                 type="button"
-                class="flex items-center gap-3 px-12 py-4 bg-intertek-yellow text-black font-black uppercase tracking-[0.2em] text-[11px] hover:bg-intertek-dark hover:text-white transition-all shadow-md active:translate-y-0.5"
+                class="flex items-center gap-3 px-10 md:px-12 py-3 md:py-4 bg-intertek-yellow text-black font-black uppercase tracking-[0.2em] text-[11px] hover:bg-intertek-dark hover:text-white transition-all shadow-md active:translate-y-0.5"
                 :disabled="props.disableNext"
                 @click="emit('next')"
               >
@@ -199,7 +199,7 @@ function onPrev() {
           </div>
         </div>
         <aside class="w-full lg:w-[320px] flex-shrink-0">
-          <div class="sticky top-28 flex flex-col gap-6">
+          <div class="relative md:sticky md:top-28 flex flex-col gap-6">
             <slot name="sidebar"></slot>
             <slot name="tip"></slot>
           </div>

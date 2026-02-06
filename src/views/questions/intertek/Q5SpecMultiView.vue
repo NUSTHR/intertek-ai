@@ -135,8 +135,8 @@ const ui = computed(() =>
     ? {
         legalContext: '法律依据',
         reference: '参考',
-        annexTitle: '法规附件 I / 附件 III',
-        annexDesc: '选择与系统行业或使用场景匹配的法规附件 I 或附件 III 类别。',
+        annexTitle: '法规AI法案附件 I / 法案附件 III',
+        annexDesc: '选择与系统行业或使用场景匹配的法规AI法案附件 I 或法案附件 III 类别。',
         viewFullAct: '查看法规全文。',
       }
     : {
@@ -161,7 +161,7 @@ const infoText = computed(() => {
 const tipText = computed(() => {
   if (props.question?.id === 'q5.spec_b') {
     return locale.isZh
-      ? '符合 MDR 或 IVDR 且需第三方评估的医疗器械在法规附件 I 下被归类为高风险。'
+      ? '符合 MDR 或 IVDR 且需第三方评估的医疗器械在法规AI法案附件 I 下被归类为高风险。'
       : 'Medical devices covered by MDR or IVDR that require third-party assessment are classified as high-risk under Annex I.'
   }
   return locale.isZh ? '请选择与系统预期用途相符的所有类别。' : 'Select all categories that apply to your system’s intended use.'

@@ -16,8 +16,10 @@ from ..domain.models import Session
 class SessionStore:
     def __init__(self, ttl_seconds: int = 7200, cleanup_interval: int = 300) -> None:
         self._logger = logging.getLogger("aiq.session_store")
-        self._ttl_seconds = ttl_seconds
-        self._cleanup_interval = cleanup_interval
+        env_ttl = os.environ.get("SESSION_TTL_SECONDS")
+        env_cleanup = os.environ.get("SESSION_CLEANUP_INTERVAL")
+        self._ttl_seconds = int(env_ttl) if env_ttl and env_ttl.isdigit() else ttl_seconds
+        self._cleanup_interval = int(env_cleanup) if env_cleanup and env_cleanup.isdigit() else cleanup_interval
         self._lock = threading.Lock()
         self._sessions: dict[str, Session] = {}
         self._last_access: dict[str, float] = {}

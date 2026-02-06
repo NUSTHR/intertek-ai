@@ -1,522 +1,523 @@
 module_id: 5 #"05_high_risk_check"
 title: "高风险人工智能系统检查"
-description: "根据第 6 条路径（法规附件 I 或附件 III），使用严格的法律定义和自动逻辑确定系统是否为高风险。"
+description: "使用严格的法律定义和自动化逻辑，确定系统根据第6条路径（附件I或附件III）是否属于高风险。"
 
 questions:
   # =========================================================================
-  # PATHWAY 1: Safety Components of Regulated Products (Article 6(1))
+  # 路径 1：受管制产品的安全组件（第6(1)条）
   # =========================================================================
   
   - id: "q5.role"
     text: "您的人工智能系统在产品中扮演什么角色？"
-    ref: "法规第6(1)(a) 条：该 AI 系统旨在用作产品的安全部件，或者该 AI 系统本身就是法规附件 I 所列欧盟协调立法涵盖的产品；第 3(14) 条：‘安全部件’是指产品或系统的一个组件，该组件为该产品或系统履行安全功能，或者该组件的故障或失灵会危及人员或财产的健康和安全；"
+    ref: "第6(1)(a)条：人工智能系统旨在用作附件I所列欧盟协调立法涵盖的产品的安全组件，或者人工智能系统本身就是该产品；第3(14)条：‘安全组件’是指产品或系统的组件，该组件为该产品或系统执行安全功能，或者其故障或故障会危及人员或财产的健康和安全；"
     description: "定义您的人工智能系统的集成性质或独立功能。"
     type: "single_choice"
     options:
-      - label: "独立产品：AI 系统本身即为产品（例如，医疗器械软件）。"
-        cite: "法规第6(1)(a) 条：该 AI 系统本身就是法规附件 I 所列欧盟协调立法涵盖的产品。"
-        description: "如果 AI 软件是您销售的主要产品，例如独立的医疗应用程序，请选择此项。"
+      - label: "独立产品：AI系统本身就是产品（例如医疗设备软件）。"
+        cite: "第6(1)(a)条：人工智能系统本身就是附件I所列欧盟协调立法涵盖的产品。"
+        description: "如果您销售的主要产品是AI软件（例如独立的医疗应用程序），请选择此项。"
         value: 1
-      - label: "安全部件：AI 集成到另一产品中并执行安全功能。"
-        cite: "法规第3(14) 条：‘安全部件’是指产品的一个组件……该组件为该产品履行安全功能……或者该组件的故障或失灵会危及人员或财产的健康和安全。"
-        description: "如果 AI 是大型机器的一部分，其工作是保护人员安全或防止事故，请选择此项。"
+      - label: "安全组件：AI集成到另一个产品中并执行安全功能。"
+        cite: "第3(14)条：‘安全组件’是指产品的组件...为该产品执行安全功能...或其故障或故障会危及人员或财产的健康和安全。"
+        description: "如果AI是较大型机器的一部分，且其工作是保障人员安全或防止事故，请选择此项。"
         value: 2
-      - label: "非安全部件：AI 是产品的组件，但不执行安全功能。"
-        cite: "法规第3(14) 条：通过逻辑推断为不履行第 3(14) 条定义的安全功能。"
-        description: "如果 AI 是机器的一部分，但不处理关键安全任务，例如车内的音乐屏幕，请选择此项。"
+      - label: "非安全组件：AI是产品的组件，但不执行安全功能。"
+        cite: "第3(14)条：根据第3(14)条推断的逻辑，即不执行安全功能。"
+        description: "如果AI是机器的一部分但不处理关键安全任务（例如汽车中的音乐屏幕），请选择此项。"
         value: 3
       - label: "以上都不是"
-        cite: "上面的描述均不适用"
-        description: "如果您的 AI 与物理机器或列出的任何产品类别无关，请选择此项。"
+        cite: "以上描述均不适用"
+        description: "如果您的人工智能与物理机器或所列的任何产品类别无关，请选择此项。"
         value: 0
 
   - id: "q5.sector"
-    text: "产品属于哪个广泛的领域？"
-    ref: "附件 I：欧盟协调立法清单。这可能包括涵盖机械、玩具、电梯、医疗器械和运输系统的各种欧盟法规和指令。"
+    text: "该产品属于哪个广泛的领域？"
+    ref: "附件I：欧盟协调立法清单。这可能包括涵盖机械、玩具、电梯、医疗器械和运输系统的各种欧盟法规和指令。"
     type: "single_choice"
     dependency: "q5.role in [1, 2]"
     options:
       - label: "交通运输（航空、公路、海运、铁路、特种车辆）"
-        cite: "附件 I，B 部分：涵盖航空、机动车辆、海运和铁路系统的欧盟协调立法清单。"
+        cite: "附件I，B部分：涵盖航空、机动车辆、海运和铁路系统的欧盟协调立法清单。"
         description: "包括汽车、飞机、火车、船舶或用于安全操作它们的设备。"
         value: "A"
-      - label: "健康（医疗器械与体外诊断）"
-        cite: "附件 I，A 部分 (11, 12)：关于医疗器械的条例 (EU) 2017/745 和关于体外诊断医疗器械的条例 (EU) 2017/746。"
+      - label: "健康（医疗器械及体外诊断）"
+        cite: "附件I，A部分 (11, 12)：关于医疗器械的条例 (EU) 2017/745 和关于体外诊断医疗器械的条例 (EU) 2017/746。"
         description: "涵盖用于医疗、患者检测或健康诊断的软件或设备。"
         value: "B"
-      - label: "工业与特殊基础设施（机械、电梯、压力设备、防爆设备、燃气具）"
-        cite: "附件 I，A 部分 (1, 4, 5, 7, 10)：涵盖机械、电梯、爆炸性环境、压力设备和燃气具的立法。"
+      - label: "工业及特殊基础设施（机械、电梯、压力设备、ATEX防爆、燃气）"
+        cite: "附件I，A部分 (1, 4, 5, 7, 10)：涵盖机械、电梯、爆炸性环境、压力设备和燃气具的立法。"
         description: "包括电梯、工厂机械以及用于重型或高压工业环境的设备。"
         value: "C"
-      - label: "人身安全与一般消费品（玩具、个人防护装备、无线电设备、索道）"
-        cite: "附件 I，A 部分 (2, 6, 8, 9)：涵盖玩具、个人防护装备、无线电设备和索道的立法。"
-        description: "包括儿童玩具、头盔等安全装备和无线通信设备。"
+      - label: "人身安全及一般消费品（玩具、个人防护装备、无线电、索道）"
+        cite: "附件I，A部分 (2, 6, 8, 9)：涵盖玩具、个人防护装备、无线电设备和索道的立法。"
+        description: "包括儿童玩具、头盔等安全装备以及无线通信设备。"
         value: "D"
       - label: "以上都不是"
-        cite: "法规第6(1) 条：排除在法规附件 I 高风险路径之外的行业。"
-        description: "如果产品不属于任何这些特定的欧洲安全法律管辖范围，请选择此项。"
+        cite: "第6(1)条：附件I高风险路径的行业排除。"
+        description: "如果产品不属于这些特定的欧洲安全法律管辖范围，请选择此项。"
         value: "E"
 
   # --- Sector A: Transport Specifics ---
   - id: "q5.spec_a"
-    text: "确定具体的运输类别："
-    ref: "附件 I：(13) 条例 (EC) No 300/2008；(20) 条例 (EU) 2018/1139；(18) 条例 (EU) 2018/858；(19) 条例 (EU) 2019/2144；(15) 条例 (EU) No 167/2013；(14) 条例 (EU) No 168/2013；(16) 指令 2014/90/EU；(3) 指令 2013/53/EU；(17) 指令 (EU) 2016/797。"
+    text: "确定具体的交通运输类别："
+    ref: "Annex I: (13) Regulation (EC) No 300/2008; (20) Regulation (EU) 2018/1139; (18) Regulation (EU) 2018/858; (19) Regulation (EU) 2019/2144; (15) Regulation (EU) No 167/2013; (14) Regulation (EU) No 168/2013; (16) Directive 2014/90/EU; (3) Directive 2013/53/EU; (17) Directive (EU) 2016/797."
     type: "multi_choice"
     dependency: "q5.sector == 'A'"
     options:
-      - label: "民用航空保安 (Reg. 300/2008)"
-        cite: "附件 I，B 部分 (1)：关于民用航空保安领域共同规则的条例 (EC) No 300/2008。"
-        description: "如果 AI 用于机场安检、旅客筛查或行李检查，请选择此项。"
+      - label: "民航安保 (Reg. 300/2008)"
+        cite: "附件I，B部分 (1)：关于民航安保领域共同规则的条例 (EC) No 300/2008。"
+        description: "如果AI用于机场安保、旅客筛查或行李检查，请选择此项。"
         value: 13
-      - label: "民用航空安全 (Reg. 2018/1139) 包括无人驾驶航空器"
-        cite: "附件 I，B 部分 (9)：关于民用航空安全领域共同规则的条例 (EU) 2018/1139。"
-        description: "如果是飞行安全系统、无人机或用于远程驾驶航空器的设备，请选择此项。"
+      - label: "民航安全 (Reg. 2018/1139) 包括无人机"
+        cite: "附件I，B部分 (9)：关于民航安全领域共同规则的条例 (EU) 2018/1139。"
+        description: "适用于飞行安全系统、无人机或用于远程操作飞机的设备。"
         value: 20
-      - label: "机动车辆及其挂车 (Reg. 2018/858)"
-        cite: "附件 I，B 部分 (6)：关于机动车辆及其挂车批准的条例 (EU) 2018/858。"
-        description: "如果 AI 是标准汽车、卡车或挂车的一部分，请选择此项。"
+      - label: "机动车辆及拖车 (Reg. 2018/858)"
+        cite: "附件I，B部分 (6)：关于机动车辆及其拖车批准的条例 (EU) 2018/858。"
+        description: "如果AI是标准汽车、卡车或拖车的一部分，请选择此项。"
         value: 18
       - label: "车辆型式认证 - 一般安全 (Reg. 2019/2144)"
-        cite: "附件 I，B 部分 (7)：关于机动车辆一般安全型式认证要求的条例 (EU) 2019/2144。"
-        description: "如果是法律要求的车辆特定安全功能以在欧盟销售，请选择此项。"
+        cite: "附件I，B部分 (7)：关于机动车辆一般安全型式认证要求的条例 (EU) 2019/2144。"
+        description: "适用于法律要求在欧盟销售车辆必须具备的特定安全功能。"
         value: 19
       - label: "农林车辆 (Reg. 167/2013)"
-        cite: "附件 I，B 部分 (3)：关于农林车辆批准的条例 (EU) No 167/2013。"
-        description: "如果 AI 用于拖拉机或其他农林机械，请选择此项。"
+        cite: "附件I，B部分 (3)：关于农林车辆批准的条例 (EU) No 167/2013。"
+        description: "如果AI用于拖拉机或其他农林机械，请选择此项。"
         value: 15
       - label: "两轮或三轮车辆及四轮摩托车 (Reg. 168/2013)"
-        cite: "附件 I，B 部分 (2)：关于两轮或三轮车辆批准的条例 (EU) No 168/2013。"
-        description: "如果是摩托车、轻便摩托车或小型四轮休闲车辆，请选择此项。"
+        cite: "附件I，B部分 (2)：关于两轮或三轮车辆批准的条例 (EU) No 168/2013。"
+        description: "适用于摩托车、轻便摩托车或小型四轮休闲车辆。"
         value: 14
       - label: "船用设备 (Dir. 2014/90/EU)"
-        cite: "附件 I，B 部分 (4)：关于船用设备的指令 2014/90/EU。"
-        description: "如果是用于大型商船或船只的安全设备，请选择此项。"
+        cite: "附件I，B部分 (4)：关于船用设备的指令 2014/90/EU。"
+        description: "适用于大型商船或船只上使用的安全设备。"
         value: 16
       - label: "游艇和个人水上航行器 (Dir. 2013/53/EU)"
-        cite: "附件 I，A 部分 (3)：关于游艇和个人水上航行器的指令 2013/53/EU。"
-        description: "如果是私人船只、喷气式滑雪板或其他休闲水上航行器，请选择此项。"
+        cite: "附件I，A部分 (3)：关于游艇和个人水上航行器的指令 2013/53/EU。"
+        description: "适用于私人船只、喷气式滑雪板或其他休闲水上航行器。"
         value: 3
-      - label: "铁路系统的互操作性 (Dir. 2016/797)"
-        cite: "附件 I，B 部分 (5)：关于铁路系统互操作性的指令 (EU) 2016/797。"
-        description: "如果是用于火车或铁路轨道及基础设施的系统，请选择此项。"
+      - label: "铁路系统互操作性 (Dir. 2016/797)"
+        cite: "附件I，B部分 (5)：关于铁路系统互操作性的指令 (EU) 2016/797。"
+        description: "适用于火车、铁路轨道及基础设施中使用的系统。"
         value: 17
       - label: "以上都不是"
-        cite: "法规第6(1) 条：特定的运输子行业排除。"
-        description: "如果这些特定的运输规则均不适用于您的 AI，请选择此项。"
+        cite: "第6(1)条：特定运输子行业排除。"
+        description: "如果这些特定的运输规则均不适用于您的AI，请选择此项。"
         value: 0
         exclusive: true
 
   # --- Sector B: Health Specifics ---
   - id: "q5.spec_b"
-    text: "确定医疗类别："
-    ref: "附件 I：(11) 关于医疗器械的条例 (EU) 2017/745；(12) 关于体外诊断医疗器械的条例 (EU) 2017/746。"
+    text: "确定具体的医疗类别："
+    ref: "Annex I: (11) Regulation (EU) 2017/745 on medical devices; (12) Regulation (EU) 2017/746 on in vitro diagnostic medical devices."
     type: "multi_choice"
     dependency: "q5.sector == 'B'"
     options:
       - label: "医疗器械 (Reg. 2017/745)"
-        cite: "附件 I，A 部分 (11)：关于医疗器械的条例 (EU) 2017/745。"
-        description: "如果 AI 是用于治疗或监控患者的医疗工具或软件的一部分，请选择此项。"
+        cite: "附件I，A部分 (11)：关于医疗器械的条例 (EU) 2017/745。"
+        description: "如果AI是用于治疗或监护患者的医疗工具或软件的一部分，请选择此项。"
         value: 11
       - label: "体外诊断医疗器械 (Reg. 2017/746)"
-        cite: "附件 I，A 部分 (12)：关于体外诊断医疗器械的条例 (EU) 2017/746。"
-        description: "如果 AI 用于实验室测试，如分析血液样本或其他体液，请选择此项。"
+        cite: "附件I，A部分 (12)：关于体外诊断医疗器械的条例 (EU) 2017/746。"
+        description: "适用于实验室测试中使用的AI，例如分析血液样本或其他体液。"
         value: 12
       - label: "以上都不是"
-        cite: "法规第6(1) 条：一般健康子行业排除。"
-        description: "如果您的健康产品不在这些特定的医疗器械法律范围内，请选择此项。"
+        cite: "第6(1)条：一般健康子行业排除。"
+        description: "如果您的健康产品不在这些特定的医疗器械法律涵盖范围内，请选择此项。"
         value: 0
         exclusive: true
 
   # --- Sector C: Industrial Specifics ---
   - id: "q5.spec_c"
-    text: "确定工业/基础设施类别："
-    ref: "附件 I：(1) 指令 2006/42/EC；(4) 指令 2014/33/EU；(5) 指令 2014/34/EU；(7) 指令 2014/68/EU；(10) 条例 (EU) 2016/426。"
+    text: "确定具体的工业/基础设施类别："
+    ref: "Annex I: (1) Directive 2006/42/EC; (4) Directive 2014/33/EU; (5) Directive 2014/34/EU; (7) Directive 2014/68/EU; (10) Regulation (EU) 2016/426."
     type: "multi_choice"
     dependency: "q5.sector == 'C'"
     options:
       - label: "机械 (Dir. 2006/42/EC)"
-        cite: "附件 I，A 部分 (1)：关于机械的指令 2006/42/EC。"
-        description: "如果 AI 用于工厂机器或制造工具，请选择此项。"
+        cite: "附件I，A部分 (1)：关于机械的指令 2006/42/EC。"
+        description: "适用于工厂机器或制造工具中使用的AI。"
         value: 1
       - label: "电梯 (Dir. 2014/33/EU)"
-        cite: "附件 I，A 部分 (4)：关于电梯和电梯安全部件的指令 2014/33/EU。"
-        description: "如果 AI 用于控制或保护运载人员或货物的电梯，请选择此项。"
+        cite: "附件I，A部分 (4)：关于电梯及电梯安全组件的指令 2014/33/EU。"
+        description: "适用于控制或保障人员或货物电梯安全的AI。"
         value: 4
-      - label: "潜在爆炸性环境用设备 (ATEX) (Dir. 2014/34/EU)"
-        cite: "附件 I，A 部分 (5)：关于潜在爆炸性环境用设备的指令 2014/34/EU。"
-        description: "如果设备用于石油钻井平台或矿山等具有高爆炸风险的场所，请选择此项。"
+      - label: "爆炸性环境用设备 (ATEX) (Dir. 2014/34/EU)"
+        cite: "附件I，A部分 (5)：关于在潜在爆炸性环境中使用的设备的指令 2014/34/EU。"
+        description: "适用于石油钻井平台或矿山等具有高爆炸风险场所的设备。"
         value: 5
       - label: "压力设备 (Dir. 2014/68/EU)"
-        cite: "附件 I，A 部分 (7)：关于压力设备的指令 2014/68/EU。"
-        description: "如果 AI 管理高压容器、管道或安全阀，请选择此项。"
+        cite: "附件I，A部分 (7)：关于压力设备的指令 2014/68/EU。"
+        description: "适用于管理高压容器、管道或安全阀的AI。"
         value: 7
-      - label: "燃烧气体燃料的器具 (Reg. 2016/426)"
-        cite: "附件 I，A 部分 (10)：关于燃烧气体燃料的器具的条例 (EU) 2016/426。"
-        description: "如果 AI 用于烹饪、加热或照明的燃气设备，请选择此项。"
+      - label: "燃气具 (Reg. 2016/426)"
+        cite: "附件I，A部分 (10)：关于燃烧气体燃料的器具的条例 (EU) 2016/426。"
+        description: "适用于烹饪、供暖或照明用燃气设备中的AI。"
         value: 10
       - label: "以上都不是"
-        cite: "法规第6(1) 条：一般工业子行业排除。"
-        description: "如果您的工业 AI 不属于这些特定类别，请选择此项。"
+        cite: "第6(1)条：一般工业子行业排除。"
+        description: "如果您的工业AI不属于这些特定类别，请选择此项。"
         value: 0
         exclusive: true
 
   # --- Sector D: Personal Safety & General Specifics ---
   - id: "q5.spec_d"
     text: "确定具体的消费品类别："
-    ref: "附件 I：(2) 指令 2009/48/EC；(9) 条例 (EU) 2016/425；(6) 指令 2014/53/EU；(8) 条例 (EU) 2016/424。"
+    ref: "Annex I: (2) Directive 2009/48/EC; (9) Regulation (EU) 2016/425; (6) Directive 2014/53/EU; (8) Regulation (EU) 2016/424."
     type: "multi_choice"
     dependency: "q5.sector == 'D'"
     options:
       - label: "玩具安全 (Dir. 2009/48/EC)"
-        cite: "附件 I，A 部分 (2)：关于玩具安全的指令 2009/48/EC。"
-        description: "如果 AI 内置于玩具或其他供儿童玩耍的产品中，请选择此项。"
+        cite: "附件I，A部分 (2)：关于玩具安全的指令 2009/48/EC。"
+        description: "适用于内置于玩具或其他供儿童玩耍产品中的AI。"
         value: 2
       - label: "个人防护装备 (PPE) (Reg. 2016/425)"
-        cite: "附件 I，A 部分 (9)：关于个人防护装备的条例 (EU) 2016/425。"
-        description: "如果 AI 用于安全装备，如智能头盔或高科技防护背心，请选择此项。"
+        cite: "附件I，A部分 (9)：关于个人防护装备的条例 (EU) 2016/425。"
+        description: "适用于安全装备（如智能头盔或高科技防护背心）中的AI。"
         value: 9
       - label: "无线电设备 (Dir. 2014/53/EU)"
-        cite: "附件 I，A 部分 (6)：关于无线电设备的指令 2014/53/EU。"
-        description: "如果 AI 用于使用无线电波通信的设备，如智能手机或专用传感器，请选择此项。"
+        cite: "附件I，A部分 (6)：关于无线电设备的指令 2014/53/EU。"
+        description: "适用于利用无线电波通信的设备（如智能手机或专用传感器）中的AI。"
         value: 6
       - label: "索道装置 (Reg. 2016/424)"
-        cite: "附件 I，A 部分 (8)：关于索道装置的条例 (EU) 2016/424。"
-        description: "如果 AI 用于滑雪缆车、缆车或吊船，请选择此项。"
+        cite: "附件I，A部分 (8)：关于索道装置的条例 (EU) 2016/424。"
+        description: "适用于滑雪缆车、吊船或缆车中使用的AI。"
         value: 8
       - label: "以上都不是"
-        cite: "法规第6(1) 条：一般消费品子行业排除。"
-        description: "如果消费产品不在这些特定的安全规则范围内，请选择此项。"
+        cite: "第6(1)条：一般消费品子行业排除。"
+        description: "如果该消费品不属于这些特定的安全规则管辖，请选择此项。"
         value: 0
         exclusive: true
 
   - id: "q5.3rd_party"
     text: "该产品是否需要第三方符合性评估？"
-    ref: "法规第6(1)(b) 条：以 AI 系统为安全部件的产品，或作为产品的 AI 系统本身，在根据法规附件 I 所列的欧盟协调立法投放市场或投入使用前，必须进行第三方符合性评估。"
-    description: "适用法律是否强制要求由公告机构进行外部评估？"
+    ref: "第6(1)(b)条：其安全组件为人工智能系统的产品，或作为产品的人工智能系统本身，必须根据附件I所列的欧盟协调立法进行第三方符合性评估，以便将该产品投放市场或投入使用。"
+    description: "适用法律是否强制要求由公告机构（Notified Body）进行外部评估？"
     type: "single_choice"
     dependency: "(q5.spec_a and 0 not in q5.spec_a) or (q5.spec_b and 0 not in q5.spec_b) or (q5.spec_c and 0 not in q5.spec_c) or (q5.spec_d and 0 not in q5.spec_d)"
     options:
       - label: "是"
-        cite: "法规第6(1)(b) 条：产品……必须根据法规附件 I 所列的欧盟协调立法进行第三方符合性评估。"
-        description: "如果法律规定在销售产品前必须由外部专家（如认证机构）检查产品的安全性，请选择此项。"
+        cite: "第6(1)(b)条：该产品...必须根据附件I所列的欧盟协调立法进行第三方符合性评估。"
+        description: "如果法律规定外部专家（如认证机构）必须在您销售产品前对其进行检查，请选择此项。"
         value: 1
       - label: "否"
-        cite: "法规未要求必须经过第三方评定"
-        description: "如果您被允许自己检查并认证产品的安全性，而无需外部机构，请选择此项。"
+        cite: "不需要进行强制性第三方评估。"
+        description: "如果您被允许在没有外部机构的情况下自行检查和认证产品的安全性，请选择此项。"
         value: 0
 
   # =========================================================================
-  # PATHWAY 2: Annex III Critical Areas (Article 6(2))
+  # 路径 2：附件III 关键领域（第6(2)条）
   # =========================================================================
 
   - id: "q5.area_select"
     text: "您的人工智能系统是否在以下任何敏感领域运行？"
-    ref: "附件 III，第 1-8 点：第 6(2) 条所指的高风险人工智能系统。这可能包括生物特征识别、关键基础设施、教育、就业、基本服务、执法、移民和司法。"
-    description: "选择预期的广泛领域。如果不适用，请选择‘无’。"
+    ref: "附件III，第1-8点：第6(2)条所指的高风险人工智能系统。这可能包括生物识别、关键基础设施、教育、就业、基本服务、执法、移民和司法。"
+    description: "选择预期的广泛使用领域。如果都不适用，请选择“以上都不是”。"
     type: "single_choice"
     dependency: "q5.3rd_party != 1"
     options:
-      - label: "生物特征识别"
-        cite: "附件 III，第 1 点：生物特征识别领域的人工智能系统。"
-        description: "如果 AI 根据面部、指纹或声音等身体特征来识别或分类人员，请选择此项。"
+      - label: "生物识别"
+        cite: "附件III，第1点：生物识别领域的人工智能系统。"
+        description: "如果AI根据面部、指纹或声音等身体特征识别或分类人员，请选择此项。"
         value: 1
       - label: "关键基础设施"
-        cite: "附件 III，第 2 点：关键基础设施领域的人工智能系统。"
-        description: "如果 AI 管理电网、供水或城市交通等基本服务，请选择此项。"
+        cite: "附件III，第2点：关键基础设施领域的人工智能系统。"
+        description: "如果AI管理基本服务，如电网、供水或城市交通，请选择此项。"
         value: 2
       - label: "教育和职业培训"
-        cite: "附件 III，第 3 点：教育和职业培训领域的人工智能系统。"
-        description: "如果 AI 在学校中用于招生、给学生评分或监考，请选择此项。"
+        cite: "附件III，第3点：教育和职业培训领域的人工智能系统。"
+        description: "适用于学校中用于招生、学生评分或监考作弊的AI。"
         value: 3
       - label: "就业和工人管理"
-        cite: "附件 III，第 4 点：就业、工人管理和自雇机会领域的人工智能系统。"
-        description: "如果 AI 用于招聘人员、监控员工工作或决定晋升和解雇，请选择此项。"
+        cite: "附件III，第4点：就业、工人管理和获得自雇机会领域的人工智能系统。"
+        description: "适用于用于招聘人员、监控员工工作或决定晋升和解雇的AI。"
         value: 4
       - label: "基本的私人和公共服务"
-        cite: "附件 III，第 5 点：获取和享受基本的私人服务以及基本的公共服务和福利领域的人工智能系统。"
-        description: "如果 AI 用于信用评分、保险定价或管理 112 等紧急服务，请选择此项。"
+        cite: "附件III，第5点：获得和享有基本的私人服务以及基本的公共服务和福利领域的人工智能系统。"
+        description: "适用于用于信用评分、保险定价或管理112等紧急服务的AI。"
         value: 5
       - label: "执法"
-        cite: "附件 III，第 6 点：执法领域的人工智能系统。"
-        description: "如果警方使用 AI 来分析证据或预测犯罪风险，请选择此项。"
+        cite: "附件III，第6点：执法领域的人工智能系统。"
+        description: "适用于警方用于分析证据或预测犯罪风险等事务的AI。"
         value: 6
-      - label: "移民、庇护和边境控制"
-        cite: "附件 III，第 7 点：移民、庇护和边境控制管理领域的人工智能系统。"
-        description: "如果 AI 用于边境、签证申请或处理寻求庇护者，请选择此项。"
+      - label: "移民、庇护和边境管制"
+        cite: "附件III，第7点：移民、庇护和边境管制管理领域的人工智能系统。"
+        description: "适用于边境、签证申请或处理寻求庇护者的AI。"
         value: 7
-      - label: "司法和民主管理"
-        cite: "附件 III，第 8 点：司法和民主程序管理领域的人工智能系统。"
-        description: "如果 AI 协助法官做出决定或在选举期间使用，请选择此项。"
+      - label: "司法和民主进程的管理"
+        cite: "附件III，第8点：司法和民主进程管理领域的人工智能系统。"
+        description: "适用于帮助法官做决定或在选举期间使用的AI。"
         value: 8
       - label: "以上都不是"
-        cite: "附件 III：一般排除关键领域高风险路径。"
-        description: "如果您的 AI 不用于任何这些主要的公共或政府部门，请选择此项。"
+        cite: "附件III：一般排除在关键领域高风险路径之外。"
+        description: "如果您的AI不用于任何这些主要的公共或政府部门，请选择此项。"
         value: 0
 
   # --- Area 1: Biometrics ---
   - id: "q5.spec_bi"
-    text: "确定具体的生物特征识别用例："
-    ref: "附件 III，第 1 点：1. 生物特征识别，只要相关欧盟或国家法律允许使用：(a) 远程生物特征识别系统…… (b) 旨在根据敏感或受保护的特征对自然人进行分类的 AI 系统…… (c) 旨在用于情绪识别的 AI 系统。"
+    text: "确定具体的生物识别用例："
+    ref: "Annex III, Point 1: 1. Biometrics, in so far as their use is permitted under relevant Union or national law: (a) Remote biometric identification systems... (b) AI systems intended to be used to categorise natural persons according to sensitive or protected characteristics... (c) AI systems intended to be used for emotion recognition."
     type: "multi_choice"
     dependency: "q5.area_select == 1"
     options:
-      - label: "远程生物特征识别系统（实时和事后识别，不包括仅用于验证/认证的系统）"
-        cite: "附件 III，第 1(a) 点：远程生物特征识别系统。"
-        description: "如果系统在人群中远距离识别人员，无论是实时还是通过旧录像，请选择此项。"
+      - label: "远程生物识别系统（实时和事后识别，不包括仅用于验证/认证的系统）"
+        cite: "附件III，第1(a)点：远程生物识别系统。"
+        description: "如果系统在人群中远距离识别人员，无论是实时还是从旧录像中识别，请选择此项。"
         value: 1
       - label: "推断敏感/受保护属性（种族、政治、宗教、性生活等）的生物特征分类"
-        cite: "附件 III，第 1(b) 点：旨在根据敏感或受保护的属性进行生物特征分类的 AI 系统。"
+        cite: "附件III，第1(b)点：旨在根据敏感或受保护属性进行生物特征分类的人工智能系统。"
         description: "如果系统根据种族或宗教等敏感特征将人分类，请选择此项。"
         value: 2
       - label: "情绪识别系统"
-        cite: "附件 III，第 1(c) 点：旨在用于情绪识别的 AI 系统。"
-        description: "如果 AI 旨在通过外表弄清楚一个人的情绪或感受，请选择此项。"
+        cite: "附件III，第1(c)点：旨在用于情绪识别的人工智能系统。"
+        description: "如果AI旨在通过身体外观判断一个人的情绪或感受，请选择此项。"
         value: 3
       - label: "以上都不是"
-        cite: "附件 III，第 1 点：仅以生物特征验证 (1:1) 为目的的排除。"
-        description: "如果您仅使用生物识别技术执行简单的任务，例如让特定用户解锁自己的设备，请选择此项。"
+        cite: "附件III，第1点：仅用于生物特征验证(1:1)目的的排除。"
+        description: "如果您仅将生物识别用于简单的任务，例如让特定用户解锁自己的设备，请选择此项。"
         value: 0
         exclusive: true
 
   # --- Area 2: Critical Infrastructure ---
   - id: "q5.spec_ci"
     text: "确定关键基础设施安全功能："
-    ref: "附件 III，第 2 点：2. 关键基础设施：(a) 旨在用作关键数字基础设施管理和运营、道路交通以及水、气、供热和电力供应中的安全部件的 AI 系统。"
+    ref: "Annex III, Point 2: 2. Critical infrastructure: (a) AI systems intended to be used as safety components in the management and operation of critical digital infrastructure, road traffic and the supply of water, gas, heating and electricity."
     type: "multi_choice"
     dependency: "q5.area_select == 2"
     options:
-      - label: "道路交通管理或水、气、供热或电力供应中的安全部件"
-        cite: "附件 III，第 2 点：旨在用作……道路交通以及水、气、供热和电力供应中的安全部件的 AI 系统。"
-        description: "如果 AI 帮助防止水路或道路等物理网络中的事故或公用事业故障，请选择此项。"
+      - label: "道路交通管理或水、气、热、电供应中的安全组件"
+        cite: "附件III，第2点：旨在用作...道路交通管理以及水、气、热、电供应中安全组件的人工智能系统。"
+        description: "如果AI有助于防止水务或道路等物理网络中的事故或公用设施故障，请选择此项。"
         value: 1
-      - label: "关键数字基础设施管理和运营中的安全部件"
-        cite: "附件 III，第 2 点：旨在用作关键数字基础设施管理和运营中的安全部件的 AI 系统。"
-        description: "如果 AI 保持基本的互联网系统和数字通信安全运行，请选择此项。"
+      - label: "关键数字基础设施管理和运营中的安全组件"
+        cite: "附件III，第2点：旨在用作关键数字基础设施管理和运营中安全组件的人工智能系统。"
+        description: "如果AI保障基本互联网系统和数字通信的安全运行，请选择此项。"
         value: 2
       - label: "以上都不是"
-        cite: "附件 III，第 2 点：非安全相关基础设施管理的排除。"
-        description: "如果 AI 不处理这些公用事业网络的安全关键任务，请选择此项。"
+        cite: "附件III，第2点：非安全相关的基础设施管理排除。"
+        description: "如果AI不处理这些公用设施网络的安全关键任务，请选择此项。"
         value: 0
         exclusive: true
 
   # --- Area 3: Education ---
   - id: "q5.spec_ed"
     text: "确定教育用例："
-    ref: "附件 III，第 3 点：3. 教育和职业培训：(a) 旨在用于确定入学或分配自然人进入各级教育和职业培训机构的 AI 系统；(b) 旨在用于评估学习成果的 AI 系统，包括可能用于指导学习过程的系统…… (c) 旨在用于监控和检测学生在考试期间违规行为的 AI 系统。"
+    ref: "Annex III, Point 3: 3. Education and vocational training: (a) AI systems intended to be used to determine access or admission or to assign natural persons to educational and vocational training institutions at all levels; (b) AI systems intended to be used to evaluate learning outcomes, including those that may be used to steer the learning process... (c) AI systems intended to be used for monitoring and detecting prohibited behaviour of students during tests."
     type: "multi_choice"
     dependency: "q5.area_select == 3"
     options:
-      - label: "确定入学、录取或将个人分配到教育和职业培训机构"
-        cite: "附件 III，第 3(a) 点：旨在用于确定入学或录取或分配自然人的 AI 系统。"
-        description: "如果 AI 决定哪些学生进入学校或被分配到哪个班级，请选择此项。"
+      - label: "决定进入、录取或分配个人至各级教育和职业培训机构"
+        cite: "附件III，第3(a)点：旨在用于决定进入或录取或将自然人分配至...的人工智能系统。"
+        description: "如果AI决定哪些学生可以入学或分班，请选择此项。"
         value: 1
-      - label: "评估学习成果，包括针对可能被分配到特定教育水平的人员"
-        cite: "附件 III，第 3(b) 点：旨在用于评估学习成果的 AI 系统。"
-        description: "如果 AI 给学生评分或判断他们的学术进步和技能，请选择此项。"
+      - label: "评估学习成果，包括可能用于被分配到特定教育水平的人员"
+        cite: "附件III，第3(b)点：旨在用于评估学习成果的人工智能系统。"
+        description: "如果AI为学生评分或评判其学业进步和技能，请选择此项。"
         value: 2
       - label: "评估适当的教育水平或指导个人的学习过程"
-        cite: "附件 III，第 3(b) & (c) 点：旨在用于……指导学习过程……或评估适当教育水平的 AI 系统。"
-        description: "如果 AI 指导学生的学习方式或决定他们应该学习什么难度级别，请选择此项。"
+        cite: "附件III，第3(b) & (c)点：旨在用于...指导学习过程...或评估适当教育水平的人工智能系统。"
+        description: "如果AI指导学生如何学习或决定其应学习的难度等级，请选择此项。"
         value: 3
-      - label: "监控和检测学生在考试期间的违规行为"
-        cite: "附件 III，第 3(d) 点：旨在用于监控和检测学生在考试期间违规行为的 AI 系统。"
-        description: "如果 AI 在考试期间监视学生以发现作弊或异常行为，请选择此项。"
+      - label: "在考试期间监控和检测学生的违规行为"
+        cite: "附件III，第3(d)点：旨在用于在考试期间监控和检测学生违规行为的人工智能系统。"
+        description: "如果AI在考试期间监视学生以捕捉作弊或异常行为，请选择此项。"
         value: 4
       - label: "以上都不是"
-        cite: "附件 III，第 3 点：纯行政教育工具的排除。"
-        description: "如果 AI 用于不直接影响学生成绩或录取的常规任务，请选择此项。"
+        cite: "附件III，第3点：纯行政教育工具的排除。"
+        description: "如果AI用于不直接影响学生成绩或录取的常规任务，请选择此项。"
         value: 0
         exclusive: true
 
   # --- Area 4: Employment ---
   - id: "q5.spec_em"
     text: "确定就业用例："
-    ref: "附件 III，第 4 点：4. 就业、工人管理和自雇机会：(a) 旨在用于招聘或选拔自然人的 AI 系统…… (b) 旨在用于做出影响工作关系条款、晋升以及终止工作相关合同关系的决定，分配任务……以及监控和评估此类关系中人员的绩效和行为的 AI 系统。"
+    ref: "Annex III, Point 4: 4. Employment, workers management and access to self-employment: (a) AI systems intended to be used for recruitment or selection of natural persons... (b) AI systems intended to be used to make decisions affecting terms of work-related relationships, the promotion and as well as the termination of work-related contractual relationships, to allocate tasks... and to monitor and evaluate performance and behaviour of persons in such relationships."
     type: "multi_choice"
     dependency: "q5.area_select == 4"
     options:
       - label: "招聘或选拔（发布招聘广告、筛选申请、评估候选人）"
-        cite: "附件 III，第 4(a) 点：旨在用于招聘或选拔自然人的 AI 系统。"
-        description: "如果 AI 通过筛选简历或给求职者评分来帮助寻找新员工，请选择此项。"
+        cite: "附件III，第4(a)点：旨在用于招聘或选拔自然人的人工智能系统。"
+        description: "如果AI通过过滤简历或为求职者评分来帮助寻找新员工，请选择此项。"
         value: 1
-      - label: "根据行为或特征做出关于晋升、解雇或任务分配的决定"
-        cite: "附件 III，第 4(b) 点：旨在用于做出影响……晋升或终止……或分配任务的决定的 AI 系统。"
-        description: "如果 AI 决定谁获得晋升、谁被解雇或谁被分配特定工作任务，请选择此项。"
+      - label: "根据行为或特征做出影响工作关系条款、晋升、终止合同或任务分配的决定"
+        cite: "附件III，第4(b)点：旨在用于做出影响...晋升或终止...或分配任务的决定的人工智能系统。"
+        description: "如果AI决定谁获得晋升、谁被解雇或谁被分配特定的工作任务，请选择此项。"
         value: 2
-      - label: "监控和评估雇佣关系中人员的绩效和行为"
-        cite: "附件 III，第 4(b) 点：旨在用于……监控和评估人员绩效和行为的 AI 系统。"
-        description: "如果 AI 跟踪员工的工作表现或他们在工作中的行为，请选择此项。"
+      - label: "监控和评估雇佣关系中人员的表现和行为"
+        cite: "附件III，第4(b)点：旨在用于...监控和评估人员的表现和行为的人工智能系统。"
+        description: "如果AI跟踪员工的工作表现或工作中的行为，请选择此项。"
         value: 3
       - label: "以上都不是"
-        cite: "附件 III，第 4 点：行政任务（如工资单或一般排班）的排除。"
-        description: "如果 AI 处理简单的任务，如支付员工工资或设定基本时间表，请选择此项。"
+        cite: "附件III，第4点：工资单或一般排班等行政任务的排除。"
+        description: "如果AI处理简单的任务，如支付员工工资或设定基本排班，请选择此项。"
         value: 0
         exclusive: true
 
   # --- Area 5: Essential Services ---
   - id: "q5.spec_es"
     text: "确定基本服务用例："
-    ref: "附件 III，第 5 点：5. 获取和享受基本的私人服务以及基本的公共服务和福利：(a) 公共当局旨在用于……确定公共援助福利和服务资格的 AI 系统…… (b) 旨在用于评估自然人信用度的 AI 系统…… (c) 旨在用于评估和分类紧急呼叫的 AI 系统…… (d) 旨在用于人寿和健康保险风险评估和定价的 AI 系统。"
+    ref: "Annex III, Point 5: 5. Access to and enjoyment of essential private services and essential public services and benefits: (a) AI systems intended to be used by public authorities... to determine eligibility for public assistance benefits and services... (b) AI systems intended to be used to evaluate the creditworthiness of natural persons... (c) AI systems intended to be used to evaluate and classify emergency calls... (d) AI systems intended to be used for risk assessment and pricing in relation to natural persons in the case of life and health insurance."
     type: "multi_choice"
     dependency: "q5.area_select == 5"
     options:
       - label: "确定公共援助福利和服务的资格"
-        cite: "附件 III，第 5(a) 点：旨在用于……评估自然人是否有资格获得基本公共援助福利的 AI 系统。"
-        description: "如果 AI 决定谁获得政府帮助，如社会保障或公共住房，请选择此项。"
+        cite: "附件III，第5(a)点：旨在用于...评估自然人获得基本公共援助福利资格的人工智能系统。"
+        description: "如果AI决定谁获得政府帮助，如社会保障或公共住房，请选择此项。"
         value: 1
       - label: "信用评分或评估信用度（不包括欺诈/金融犯罪预防）"
-        cite: "附件 III，第 5(b) 点：旨在用于评估自然人信用度的 AI 系统。"
-        description: "如果 AI 决定某人是否可靠以获得银行贷款或信用卡，请选择此项。"
+        cite: "附件III，第5(b)点：旨在用于评估自然人信用度的人工智能系统。"
+        description: "如果AI决定一个人是否足够可靠以获得银行贷款或信用卡，请选择此项。"
         value: 2
-      - label: "人寿和健康保险的评估和定价"
-        cite: "附件 III，第 5(c) 点：旨在用于……人寿和健康保险风险评估和定价的 AI 系统。"
-        description: "如果 AI 计算某人应该支付多少保险费或他们是否可以获得保险，请选择此项。"
+      - label: "人寿和健康保险的风险评估和定价"
+        cite: "附件III，第5(c)点：旨在用于人寿和健康保险的风险评估和定价...的人工智能系统。"
+        description: "如果AI计算某人应支付多少保险费或是否可以获得保险，请选择此项。"
         value: 3
-      - label: "评估、分类和优先处理紧急呼叫（例如，调度消防、医疗、警察）"
-        cite: "附件 III，第 5(d) 点：旨在评估和分类紧急呼叫……或用于调度紧急急救服务的 AI 系统。"
-        description: "如果 AI 对 112/紧急呼叫进行分类并决定应多快发送帮助，请选择此项。"
+      - label: "评估、分类和优先处理紧急呼叫（例如调度消防、医疗、警察）"
+        cite: "附件III，第5(d)点：旨在评估和分类紧急呼叫...或用于调度紧急第一响应服务的人工智能系统。"
+        description: "如果AI对112/紧急呼叫进行分类并决定应多快发送救援，请选择此项。"
         value: 4
       - label: "以上都不是"
-        cite: "附件 III，第 5 点：非评估性客户服务或纯欺诈检查的排除。"
-        description: "如果您的 AI 仅用于基本客户帮助或捕捉简单的支付欺诈，请选择此项。"
+        cite: "附件III，第5点：非评估性客户服务或纯粹欺诈检查的排除。"
+        description: "如果您的AI仅用于基本客户帮助或捕捉简单的支付欺诈，请选择此项。"
         value: 0
         exclusive: true
 
   # --- Area 6: Law Enforcement ---
+# --- Area 6: Law Enforcement ---
   - id: "q5.spec_le"
     text: "确定执法用例："
-    ref: "附件 III，第 6 点：6. 执法，只要相关欧盟或国家法律允许使用：(a) 执法当局旨在用于或代表其评估自然人成为受害者风险的 AI 系统…… (b) 旨在用作测谎仪的 AI 系统…… (c) 旨在用于检测深度伪造的 AI 系统…… (d) 旨在用于评估证据可靠性的 AI 系统…… (e) 旨在根据特征分析评估某人犯罪或再次犯罪风险的 AI 系统……"
+    ref: "Annex III, Point 6: 6. Law enforcement... (a) risk of victimization... (b) polygraphs... (c) reliability of evidence... (d) risk of offending... (e) profiling..."
     type: "multi_choice"
     dependency: "q5.area_select == 6"
     options:
-      - label: "评估一个人成为刑事犯罪受害者的风险"
-        cite: "附件 III，第 6(a) 点：旨在用于……评估自然人成为刑事犯罪受害者风险的 AI 系统。"
-        description: "如果 AI 预测谁可能面临犯罪侵害的风险，请选择此项。"
+      - label: "评估个人成为刑事犯罪受害者的风险"
+        cite: "附件III，第6(a)点：旨在用于...评估自然人成为刑事犯罪受害者风险的人工智能系统。"
+        description: "如果AI预测谁可能面临被犯罪侵害的风险，请选择此项。"
         value: 1
-      - label: "测谎仪及类似工具"
-        cite: "附件 III，第 6(b) 点：旨在用作……测谎仪或类似工具的 AI 系统。"
-        description: "如果 AI 用于在警察讯问期间判断某人是否说真话，请选择此项。"
+      - label: "测谎仪（谎言探测器）及类似工具"
+        cite: "附件III，第6(b)点：旨在用作...测谎仪或类似工具的人工智能系统。"
+        description: "如果AI用于在警方讯问期间判断某人是否说实话，请选择此项。"
         value: 2
-      - label: "检测深度伪造（除非用于调查犯罪或预防错误）"
-        cite: "法规第50 条和附件 III，第 6 点：透明度规则与执法用例之间的关系。"
-        description: "如果 AI 为执法部门识别虚假或被操纵的视频和照片，请选择此项。"
+      - label: "在调查或起诉期间评估证据的可靠性"
+        cite: "附件III，第6(c)点：旨在用于...在调查或起诉过程中评估证据可靠性的人工智能系统。"
+        description: "如果AI有助于检查证据是否可信，请选择此项。"
         value: 3
-      - label: "在调查/起诉期间评估证据的可靠性或进行个人特征分析"
-        cite: "附件 III，第 6(c) & (e) 点：旨在用于……评估证据可靠性……或进行特征分析的 AI 系统。"
-        description: "如果 AI 帮助检查证据是否值得信赖或创建嫌疑人档案，请选择此项。"
+      - label: "评估个人犯罪或再次犯罪的风险"
+        cite: "附件III，第6(d)点：旨在用于...评估自然人犯罪或再次犯罪风险的人工智能系统。"
+        description: "如果AI预测某人犯罪的可能性（不仅仅基于特征分析），请选择此项。"
         value: 4
-      - label: "根据特征分析或性格特征评估某人的犯罪风险"
-        cite: "附件 III，第 6(d) 点：旨在用于……评估自然人犯罪或再次犯罪风险的 AI 系统。"
-        description: "如果 AI 预测某人犯罪的可能性有多大，请选择此项。"
+      - label: "在侦查、调查或起诉期间对自然人进行特征分析（Profiling）"
+        cite: "附件III，第6(e)点：旨在用于...根据指令 (EU) 2016/680 第3(4)条对自然人进行特征分析的人工智能系统。"
+        description: "如果AI在刑事调查期间创建嫌疑人或个人的档案，请选择此项。"
         value: 5
       - label: "以上都不是"
-        cite: "附件 III，第 6 点：基本警务文书工作或后勤的排除。"
-        description: "如果 AI 用于标准办公室工作或组织警察轮班，请选择此项。"
+        cite: "附件III，第6点：基本警方文书工作或后勤的排除。"
+        description: "如果AI用于标准办公室工作或组织警察轮班，请选择此项。"
         value: 0
         exclusive: true
 
   # --- Area 7: Migration ---
   - id: "q5.spec_mi"
-    text: "确定移民和边境控制用例："
-    ref: "附件 III，第 7 点：7. 移民、庇护和边境控制管理，只要相关欧盟或国家法律允许使用：(a) 旨在用作测谎仪的 AI 系统…… (b) 旨在用于……评估风险的 AI 系统…… (c) 旨在用于……审查庇护、签证和居留许可申请的 AI 系统…… (d) 旨在用于检测、识别或定位自然人的 AI 系统……"
+    text: "确定移民和边境管制用例："
+    ref: "Annex III, Point 7: 7. Migration, asylum and border control management, in so far as their use is permitted under relevant Union or national law: (a) AI systems intended to be used as polygraphs... (b) AI systems intended to be used... to assess a risk... (c) AI systems intended to be used... to examine applications for asylum, visa and residence permits... (d) AI systems intended to be used for the purpose of detecting, identifying or locating natural persons..."
     type: "multi_choice"
     dependency: "q5.area_select == 7"
     options:
-      - label: "在移民背景下使用的测谎仪或类似工具"
-        cite: "附件 III，第 7(a) 点：旨在用作……测谎仪或类似工具的 AI 系统。"
-        description: "如果 AI 用于在边境检查期间检查旅客是否诚实，请选择此项。"
+      - label: "移民语境下使用的测谎仪或类似工具"
+        cite: "附件III，第7(a)点：旨在用作...测谎仪或类似工具的人工智能系统。"
+        description: "如果AI用于在边境检查期间检查旅客是否诚实，请选择此项。"
         value: 1
       - label: "评估进入欧盟人员的风险（安全、健康、非法移民）"
-        cite: "附件 III，第 7(b) 点：旨在用于……评估……打算入境的自然人所构成风险的 AI 系统。"
-        description: "如果 AI 在边境标记可能构成安全或健康威胁的人员，请选择此项。"
+        cite: "附件III，第7(b)点：旨在用于...评估...打算进入的自然人构成的风险的人工智能系统。"
+        description: "如果AI在边境标记可能构成安全或健康威胁的人员，请选择此项。"
         value: 2
       - label: "评估庇护、签证和居留许可申请"
-        cite: "附件 III，第 7(c) 点：旨在用于……协助……审查庇护、签证或居留许可申请的 AI 系统。"
-        description: "如果 AI 帮助决定谁获得签证或在某些国家居留的权利，请选择此项。"
+        cite: "附件III，第7(c)点：旨在用于...协助...审查庇护、签证或居留许可申请的人工智能系统。"
+        description: "如果AI帮助决定谁获得签证或在相应国家停留的权利，请选择此项。"
         value: 3
-      - label: "在边境控制背景下检测、识别或定位人员"
-        cite: "附件 III，第 7(d) 点：旨在用于……检测、认出或识别自然人的 AI 系统。"
-        description: "如果 AI 用于追踪或发现国家边境或附近的人员，请选择此项。"
+      - label: "在边境管制语境下检测、识别或定位人员"
+        cite: "附件III，第7(d)点：旨在用于...检测、识别或定位自然人目的的人工智能系统。"
+        description: "如果AI用于追踪或发现国家边境处或附近的人员，请选择此项。"
         value: 4
       - label: "以上都不是"
-        cite: "附件 III，第 7 点：与人员识别无关的机场后勤排除。"
-        description: "如果是用于管理机场交通或移动行李等简单事情，请选择此项。"
+        cite: "附件III，第7点：与人员识别无关的机场后勤排除。"
+        description: "适用于管理机场交通或移动行李等简单事务。"
         value: 0
         exclusive: true
 
   # --- Area 8: Justice & Democracy ---
   - id: "q5.spec_jd"
     text: "确定司法和民主用例："
-    ref: "附件 III，第 8 点：8. 司法和民主程序的管理：(a) 司法当局旨在用于或代表其协助司法当局研究和解释事实与法律的 AI 系统…… (b) 旨在用于影响选举或公投结果或自然人投票行为的 AI 系统……"
+    ref: "Annex III, Point 8: 8. Administration of justice and democratic processes: (a) AI systems intended to be used by a judicial authority or on their behalf to assist a judicial authority in researching and interpreting facts and the law... (b) AI systems intended to be used for influencing the outcome of an election or referendum or the voting behaviour of natural persons..."
     type: "multi_choice"
     dependency: "q5.area_select == 8"
     options:
-      - label: "协助司法当局研究和解释事实与法律"
-        cite: "附件 III，第 8(a) 点：司法当局旨在用于……协助……研究和解释事实与法律的 AI 系统。"
-        description: "如果 AI 帮助法官或法院研究法律案件和证据，请选择此项。"
+      - label: "协助司法机关研究和解释事实与法律"
+        cite: "附件III，第8(a)点：旨在由司法机关使用...以协助...研究和解释事实与法律的人工智能系统。"
+        description: "如果AI帮助法官或法院研究法律案件和证据，请选择此项。"
         value: 1
       - label: "影响选举/公投结果或投票行为"
-        cite: "附件 III，第 8(b) 点：旨在用于影响选举结果……或投票行为的 AI 系统。"
-        description: "如果 AI 用于针对选民或管理人们在选举中的投票方式，请选择此项。"
+        cite: "附件III，第8(b)点：旨在用于影响选举结果...或投票行为的人工智能系统。"
+        description: "如果AI用于针对选民或管理人们在选举中的投票方式，请选择此项。"
         value: 2
       - label: "以上都不是"
-        cite: "附件 III，第 8 点：法院或竞选活动中行政后勤的排除。"
-        description: "如果 AI 仅处理法庭日程安排或组织政治竞选后勤，请选择此项。"
+        cite: "附件III，第8点：法院或竞选活动中的行政后勤排除。"
+        description: "如果AI仅处理法庭日程表或组织政治竞选后勤，请选择此项。"
         value: 0
         exclusive: true
 
   # =========================================================================
-  # EXEMPTION & PROFILING CHECKS (Article 6(3))
+  # 豁免与特征分析检查（第6(3)条）
   # =========================================================================
 
   - id: "q5.profiling"
-    text: "该人工智能系统是否对自然人进行‘特征分析’（profiling）？"
-    cite: "法规第6(3) 条：如果附件 III 所指的 AI 系统对自然人进行特征分析，则在任何情况下都应被视为高风险。"
-    ref: "法规第6(3) 条：如果附件 III 所指的 AI 系统对自然人进行特征分析，则在任何情况下都应被视为高风险。第 3(58) 条：‘特征分析’是指条例 (EU) 2016/679 第 4 条第 (4) 点定义的特征分析。"
-    description: "您的 AI 是否使用某人的数据来自动评估其性格、行为、健康或经济状况？"
+    text: "该人工智能系统是否对自然人进行“特征分析”（Profiling）？"
+    cite: "第6(3)条：如果附件III中提及的人工智能系统对自然人进行特征分析，则无论如何均应被视为高风险。"
+    ref: "Art 6(3): An AI system referred to in Annex III shall in any event be considered to be high-risk where the AI system performs profiling of natural persons. Art 3(58): ‘profiling’ means profiling as defined in Article 4, point (4), of Regulation (EU) 2016/679."
+    description: "您的AI是否使用个人数据自动评估其个性、行为、健康或经济状况？"
     type: "single_choice"
-    dependency: "(q5.spec_bi and 0 not in q5.spec_bi) or (q5.spec_ci and 0 not in q5.spec_ci) or (q5.spec_ed and 0 not in q5.spec_ed) or (q5.spec_em and 0 not in q5.spec_em) or (q5.spec_es and 0 not in q5.spec_es) or (q5.spec_le and 0 not in q5.spec_le) or (q5.spec_mi and 0 not in q5.spec_mi) or (q5.spec_jd and 0 not in q5.spec_jd)"
+    dependency: "(q5.spec_bi and 0 not in q5.spec_bi) or (q5.spec_ci and 0 not in q5.spec_ci) or (q5.spec_ed and 0 not in q5.spec_ed) or (q5.spec_em and 0 not in q5.spec_em) or (q5.spec_es and 0 not in q5.spec_es) or (q5.spec_le and 0 not in q5.spec_le and 5 not in q5.spec_le) or (q5.spec_mi and 0 not in q5.spec_mi) or (q5.spec_jd and 0 not in q5.spec_jd)"
     options:
       - label: "是"
-        cite: "法规第6(3) 条：AI 系统……如果进行特征分析，应始终被视为高风险。"
+        cite: "第6(3)条：执行特征分析的AI系统...应始终被视为高风险。"
         description: "如果您的系统尝试使用个人的数据来预测或判断其个人生活或特征，请选择此项。"
         value: 1
       - label: "否"
-        cite: "法规第6(3) 条：如果没有进行特征分析，则可能获得豁免的条件。"
-        description: "如果 AI 不创建或使用个人档案来判断特定人员，请选择此项。"
+        cite: "第6(3)条：如果不存在特征分析，则可能获得豁免的条件。"
+        description: "如果AI不创建或使用个人档案来判断特定人员，请选择此项。"
         value: 0
 
   - id: "q5.derogation"
     text: "该人工智能系统是否满足以下任何操作条件？"
-    cite: "法规第6(3) 条，第二款：附件 III 系统不属于高风险的具体条件。"
-    ref: "法规第6(3) 条：……附件 III 所指的 AI 系统如果不造成重大伤害风险……且满足以下任何条件，则不应被视为高风险：(a) 旨在执行狭窄的程序性任务；(b) 旨在改善先前完成的人类活动的结果；(c) 旨在检测决策模式或偏差……并非旨在取代或影响先前完成的人类评估…… (d) 旨在执行预备性任务……"
-    description: "满足这些特定条件可能意味着您的 AI 不是高风险，即使它处于敏感领域。"
+    cite: "第6(3)条第二款：附件III系统不属于高风险的具体条件。"
+    ref: "Art 6(3): ...an AI system referred to in Annex III shall not be considered to be high-risk if it does not pose a significant risk of harm... where any of the following conditions is fulfilled: (a) it is intended to perform a narrow procedural task; (b) it is intended to improve the result of a previously completed human activity; (c) it is intended to detect decision-making patterns or deviations... and is not meant to replace or influence the previously completed human assessment... (d) it is intended to perform a preparatory task..."
+    description: "满足这些特定条件可能意味着您的AI不是高风险，即使它处于敏感领域。"
     type: "multi_choice"
-    dependency: "q5.profiling == 0"
+    dependency: "q5.profiling == 0 and (5 not in q5.spec_le)"
     options:
-      - label: "旨在执行狭窄的程序性任务"
-        cite: "法规第6(3) 条，第二款 (a) 项：该 AI 系统旨在执行狭窄的程序性任务。"
-        description: "如果 AI 仅处理诸如更改数据格式或组织列表之类的小步骤，请选择此项。"
+      - label: "旨在执行狭窄的过程性任务"
+        cite: "第6(3)条第二款(a)：AI系统旨在执行狭窄的过程性任务。"
+        description: "如果AI仅处理更改数据格式或组织列表等小步骤，请选择此项。"
         value: 1
-      - label: "旨在改善先前完成的人类活动的结果"
-        cite: "法规第6(3) 条，第二款 (b) 项：该 AI 系统旨在改善先前完成的人类活动的结果。"
-        description: "如果 AI 只是检查人已经完成的工作中的小错误（如：拼写错误），请选择此项。"
+      - label: "旨在改善先前已完成的人类活动的结果"
+        cite: "第6(3)条第二款(b)：AI系统旨在改善先前已完成的人类活动的结果。"
+        description: "如果AI仅检查人工已完成工作中的拼写错误或小错误，请选择此项。"
         value: 2
-      - label: "该人工智能系统旨在检测决策模式或与先前决策模式的偏差，且并非旨在未经适当的人类审查即取代或影响先前已完成的人类评估"
-        cite: "法规第6(3) 条，第二款 (c) 项：该 AI 系统旨在检测决策模式或偏差……且没有适当的人类审查。"
-        description: "如果 AI 仅高亮显示异常决定以供审查，但不试图改变人们决定事情的方式，请选择此项。"
+      - label: "旨在检测决策模式或与其偏离的情况，且无意取代或影响先前已完成的人类评估（未经适当的人工审查）"
+        cite: "第6(3)条第二款(c)：AI系统旨在检测决策模式或偏差...未经适当的人工审查。"
+        description: "如果AI仅标记异常决策以供审查，但不尝试改变人们的决策方式，请选择此项。"
         value: 3
-      - label: "该人工智能系统旨在执行一项准备性任务，以服务于与附件 III 所列用例目的（如招聘、教育、执法等）相关的评估"
-        cite: "法规第6(3) 条，第二款 (d) 项：该 AI 系统旨在执行评估的预备性任务。"
-        description: "如果 AI 仅准备数据（如扫描文档）以供人员做出实际决定，请选择此项。"
+      - label: "旨在执行附件III所列用例评估的准备任务"
+        cite: "第6(3)条第二款(d)：AI系统旨在执行评估的准备任务。"
+        description: "如果AI仅准备数据（如扫描文档）供人做出实际决定，请选择此项。"
         value: 4
       - label: "以上都不是"
-        cite: "法规第6(3) 条：未能满足任何减损条件导致高风险状态。"
-        description: "如果您的 AI 在决策中发挥主要作用，且不符合这些次要任务描述，请选择此项。"
+        cite: "第6(3)条：未能满足任何减损条件导致高风险状态。"
+        description: "如果您的AI在决策中起主要作用，且不符合这些次要任务的描述，请选择此项。"
         value: 0
         exclusive: true
 # =========================================================================
-# INTERNAL LOGIC ENGINE
+# 内部逻辑引擎
 # =========================================================================
 variables:
   - name: "Annex_III_Hit"
@@ -534,7 +535,7 @@ variables:
     rules:
       - condition: "q5.3rd_party == 1" 
         value: True
-      - condition: "Annex_III_Hit == True and q5.profiling == 1" 
+      - condition: "Annex_III_Hit == True and (q5.profiling == 1 or (q5.spec_le and 5 in q5.spec_le))"
         value: True
       - condition: "Annex_III_Hit == True and q5.profiling == 0 and (0 in q5.derogation)" 
         value: True
@@ -546,13 +547,13 @@ variables:
     initial_value: ""
     rules:
       - condition: "q5.3rd_party == 1"
-        value: "该 AI 系统是法律（附件 I）要求进行外部安全审计的安全部件或独立产品，根据第 6(1) 条属于高风险"
-      - condition: "Annex_III_Hit == True and q5.profiling == 1"
-        value: "该系统用于敏感的公共或私营部门（附件 III）并对个人进行特征分析，根据第 6(3) 条自动归类为高风险"
+        value: "该AI系统是法律（附件I）要求进行外部安全审计的安全组件或独立产品，根据第6(1)条属于高风险。"
+      - condition: "Annex_III_Hit == True and (q5.profiling == 1 or (q5.spec_le and 5 in q5.spec_le))"
+        value: "该系统用于敏感的公共或私营部门（附件III）并执行个人特征分析，根据第6(3)条自动归类为高风险。"
       - condition: "Annex_III_Hit == True and q5.profiling == 0 and (0 in q5.derogation)"
-        value: "该系统在敏感领域（附件 III）运行，并在决策中发挥重要作用，不符合‘次要任务’豁免条件，根据第 6(2) 条属于高风险"
+        value: "该系统在敏感领域（附件III）运行，并在决策中发挥重要作用，不符合'次要任务'豁免条件，根据第6(2)条属于高风险。"
       - condition: "Annex_III_Hit == True and q5.profiling == 0 and (0 not in q5.derogation)"
-        value: "该系统免于高风险状态，因为根据第 6(3) 条，其功能仅限于狭窄的、预备性的或纯粹程序性的任务，不会造成重大伤害风险"
+        value: "该系统免于高风险状态，因为根据第6(3)条，其功能仅限于狭窄的、准备性的或纯粹的过程性任务，不会造成重大伤害风险。"
       - condition: "else"
         value: "不适用"
 
@@ -561,5 +562,5 @@ router:
     action: "jump"
     target_module_id: 6
   - condition: "else"
-    action: "jump"
+    action: "else"
     target_module_id: 8
