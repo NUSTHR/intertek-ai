@@ -233,7 +233,7 @@ variables:
         value: |
           Authorised Representatives are required for non-EU providers because the model presents systemic risk (overriding the open-source exception for Reps). They must verify compliance and keep documentation for 10 years.
           Downstream Providers must receive full documentation from the provider and generally treat this as a regulated model.
-          For more details, please refer to AI Act Article 54(6) (Authorised Rep Exception Override).
+          For more details, please refer to AI Act Article 54 (Authorised Rep).
 
       - condition: "(Risk_level == 'Standard GPAI') and (Role == 'provider')"
         value: |
