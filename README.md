@@ -65,6 +65,15 @@
 - 前端默认由 Vite 决定（如 `5173`）
 - 局域网访问：后端需要 `--host 0.0.0.0`；前端开发模式如需被其它设备访问，需以 `--host 0.0.0.0` 启动（可参阅 Vite CLI 文档）
 
+## 后端环境变量
+- `REDIS_URL`：启用 Redis 会话存储（未设置则使用进程内内存）
+- `LOG_LEVEL`：日志级别（默认 INFO）
+- `LOG_FILE`：日志输出文件（默认 `logs/app.log`）
+- `LOG_MAX_BYTES`：单个日志文件大小上限（默认 10485760）
+- `LOG_BACKUP_COUNT`：日志轮转保留数量（默认 5）
+- `SESSION_TTL_SECONDS`：会话存活秒数（默认 7200）
+- `SESSION_CLEANUP_INTERVAL`：内存会话清理间隔秒数（默认 300）
+
 ## 规则引擎说明（简要）
 - 规则通过 YAML 定义，后端加载后以数据驱动执行
 - 变量类型支持：`boolean`、`string`、`list`（或 `string_list`）

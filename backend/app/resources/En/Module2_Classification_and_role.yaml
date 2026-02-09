@@ -172,7 +172,7 @@ router:
     action: "jump"
     target_module_id: 3 #"Module 3 (System Exclusion Check)"
 
-  # 4. Path for GPAI Models -> Systematic Risk Check
+  # 4. Path for GPAI Models -> Systemic Risk Check
   - condition: "AI_type == 1"
     action: "jump"
-    target_module_id: 7 #"Module 7 (GPAI Systematic Risk Check)"
+    target_module_id: 7 #"Module 7 (GPAI Systemic Risk Check)"

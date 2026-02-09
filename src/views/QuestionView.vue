@@ -337,7 +337,12 @@ async function ensureModuleLoaded(targetId: string) {
       (targetId ? store.currentModule.questions.find((q) => q.id === targetId) : null) ??
       store.currentModule.questions[0]
     if (targetQuestion) {
-      pushQuestion(store.currentModule, targetQuestion)
+      const currentEntry = questionHistory.value[historyIndex.value]
+      if (currentEntry && currentEntry.moduleId === store.currentModule.id && currentEntry.question.id === targetQuestion.id) {
+        replaceCurrentQuestion(store.currentModule, targetQuestion)
+      } else {
+        pushQuestion(store.currentModule, targetQuestion)
+      }
       hydrateAnswers(targetQuestion)
     }
   }
@@ -387,7 +392,15 @@ watch(
     const targetQuestion =
       (activeId ? module.questions.find((q) => q.id === activeId) : null) ?? module.questions[0] ?? null
     if (targetQuestion) {
-      replaceCurrentQuestion(module, targetQuestion)
+      const idx = historyIndex.value
+      const entry = questionHistory.value[idx]
+      if (entry && entry.moduleId === module.id) {
+        const nextHistory = [...questionHistory.value]
+        nextHistory[idx] = { moduleId: module.id, question: targetQuestion }
+        questionHistory.value = nextHistory
+      } else {
+        replaceCurrentQuestion(module, targetQuestion)
+      }
       hydrateAnswers(targetQuestion)
     }
   },
@@ -407,6 +420,7 @@ watch(
   () => moduleData.value?.questions?.[0],
   (question) => {
     if (question && moduleData.value) {
+      if (questionHistory.value.length > 0) return
       pushQuestion(moduleData.value, question)
       hydrateAnswers(question)
     }

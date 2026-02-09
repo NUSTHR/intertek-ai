@@ -63,7 +63,7 @@ const ui = computed(() =>
         retry: 'Retry',
         trusted: 'Intertek is trusted by 1000+ global enterprises',
         methodologyTitle: 'How the Compliance Mapper Works',
-        methodologyDesc: 'Follow our systematic three-step process to ensure your AI systems meet strict EU regulatory standards.',
+        methodologyDesc: 'Follow our Systemic three-step process to ensure your AI systems meet strict EU regulatory standards.',
         step1Title: '1. Scope Determination',
         step1Desc:
           'Identify if your AI system falls under the jurisdiction of the EU AI Act based on its market placement and usage.',

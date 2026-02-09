@@ -49,11 +49,11 @@ variables:
       - condition: "Real_world_Testing == True and AI_type == 2 and High_risk == False and Transparency_obligation == False and Open_source == False"
         value: "Minimal Risk"
       # Group 3: GPAI Market Placement
-      - condition: "AI_type == 1 and Systematic_risk == True"
+      - condition: "AI_type == 1 and Systemic_risk == True"
         value: "Systemic Risk GPAI"
-      - condition: "AI_type == 1 and Systematic_risk == False and Open_source == False"
+      - condition: "AI_type == 1 and Systemic_risk == False and Open_source == False"
         value: "Standard GPAI"
-      - condition: "AI_type == 1 and Systematic_risk == False and Open_source == True"
+      - condition: "AI_type == 1 and Systemic_risk == False and Open_source == True"
         value: "Standard GPAI (Open Source Exempt)"
 
       # Group 4: AI Systems Market Placement
@@ -170,10 +170,10 @@ variables:
       - condition: "Real_world_Testing == True and AI_type == 2 and High_risk == False and Transparency_obligation == True"
         value: "您正在对涉及人机交互或内容生成的系统进行真实世界测试。这触发了透明度义务，原因是：{{Transparency_Reasons}}。即使在测试期间，您也必须遵守第 50 条的规定。"
       # 第 3 组：通用人工智能模型（GPAI）市场投放（提取自模块 7）
-      - condition: "AI_type == 1 and Systematic_risk == True"
-        value: "此模型被归类为具有系统性风险的通用人工智能模型。原因：{{Systematic_reason}}" 
-      - condition: "AI_type == 1 and Systematic_risk == False"
-        value: "此模型被归类为标准通用人工智能模型。它未达到系统性风险的阈值，因为：{{Systematic_reason}}。"
+      - condition: "AI_type == 1 and Systemic_risk == True"
+        value: "此模型被归类为具有系统性风险的通用人工智能模型。原因：{{Systemic_reason}}" 
+      - condition: "AI_type == 1 and Systemic_risk == False"
+        value: "此模型被归类为标准通用人工智能模型。它未达到系统性风险的阈值，因为：{{Systemic_reason}}。"
 
       # 第 4 组：人工智能系统市场投放（提取自模块 5 和 6）
       - condition: "AI_type == 2 and High_risk == True and Transparency_obligation == True"

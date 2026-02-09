@@ -190,7 +190,7 @@ questions:
         exclusive: true
 
   - id: "q5.3rd_party"
-    text: "该产品是否需要第三方符合性评估？"
+    text: "根据行业监管规定，该产品是否需要进行第三方合格评定？"
     ref: "第6(1)(b)条：其安全组件为人工智能系统的产品，或作为产品的人工智能系统本身，必须根据附件I所列的欧盟协调立法进行第三方符合性评估，以便将该产品投放市场或投入使用。"
     description: "适用法律是否强制要求由公告机构（Notified Body）进行外部评估？"
     type: "single_choice"

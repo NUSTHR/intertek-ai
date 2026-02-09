@@ -190,7 +190,7 @@ questions:
         exclusive: true
 
   - id: "q5.3rd_party"
-    text: "Is a third-party conformity assessment required for this product?"
+    text: "Is a third-party conformity assessment required for this product under sectoral regulations?"
     ref: "Art 6(1)(b): the product whose safety component is the AI system, or the AI system itself as a product, is required to undergo a third-party conformity assessment, with a view to the placing on the market or putting into service of that product pursuant to the Union harmonisation legislation listed in Annex I."
     description: "Does the applicable law mandate external assessment by a Notified Body?"
     type: "single_choice"

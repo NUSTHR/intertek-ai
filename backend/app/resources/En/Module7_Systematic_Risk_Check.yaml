@@ -25,7 +25,7 @@ questions:
 # INTERNAL LOGIC ENGINE
 # =========================================================================
 variables:
-  - name: "Systematic_risk"
+  - name: "Systemic_risk"
     type: "boolean"
     initial_value: False
     rules:
@@ -35,7 +35,7 @@ variables:
       - condition: "else"
         value: False
 
-  - name: "Systematic_reason"
+  - name: "Systemic_reason"
     type: "string"
     initial_value: ""
     rules:
@@ -44,7 +44,7 @@ variables:
       - condition: "q7.1 == 2"
         value: "The model is officially designated as having systemic risk by a European Commission decision, due to its significant market reach or capabilities equivalent to high-impact models under Article 51(1)(b)."
       - condition: "else"
-        value: "None of the specific systematic risk conditions were met"
+        value: "None of the specific Systemic risk conditions were met"
 
 router:
   # Always proceed to Module 8 after this check

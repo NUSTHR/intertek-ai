@@ -25,7 +25,7 @@ questions:
 # INTERNAL LOGIC ENGINE
 # =========================================================================
 variables:
-  - name: "Systematic_risk"
+  - name: "Systemic_risk"
     type: "boolean"
     initial_value: False
     rules:
@@ -35,7 +35,7 @@ variables:
       - condition: "else"
         value: False
 
-  - name: "Systematic_reason"
+  - name: "Systemic_reason"
     type: "string"
     initial_value: ""
     rules:

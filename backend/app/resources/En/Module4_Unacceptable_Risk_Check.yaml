@@ -16,9 +16,9 @@ questions:
         cite: "Art 5(1)(b): 'the placing on the market, the putting into service or the use of an AI system that exploits any of the vulnerabilities of a natural person or a specific group of persons due to their age, disability or a specific social or economic situation...' [cite: 155]"
         description: "Choose this if the system takes advantage of people because of their age, a disability, or their financial situation to change how they act. [cite: 155]"
         value: 2
-      - label: "Social scoring or evaluation of trustworthiness"
+      - label: "Social scoring or classification"
         cite: "Art 5(1)(c): 'AI systems for the evaluation or classification of natural persons or groups of persons over a certain period of time based on their social behaviour or known, inferred or predicted personal or personality characteristics...' [cite: 156]"
-        description: "Choose this if the system gives people a 'trust score' or ranks them based on their social behavior, leading to unfair treatment later. [cite: 156]"
+        description: "Choose this if the system gives people a 'social score' or ranks them based on their social behavior, leading to unfair treatment later. [cite: 156]"
         value: 3
       - label: "Risk assessment for criminal offenses (Predictive Policing)"
         cite: "Art 5(1)(d): 'the use of an AI system for making risk assessments of natural persons in order to assess or predict the risk of a natural person committing a criminal offence...' [cite: 159]"

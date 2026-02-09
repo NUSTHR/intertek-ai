@@ -49,11 +49,11 @@ variables:
       - condition: "Real_world_Testing == True and AI_type == 2 and High_risk == False and Transparency_obligation == False and Open_source == False"
         value: "Minimal Risk"
       # Group 3: GPAI Market Placement
-      - condition: "AI_type == 1 and Systematic_risk == True"
+      - condition: "AI_type == 1 and Systemic_risk == True"
         value: "Systemic Risk GPAI"
-      - condition: "AI_type == 1 and Systematic_risk == False and Open_source == False"
+      - condition: "AI_type == 1 and Systemic_risk == False and Open_source == False"
         value: "Standard GPAI"
-      - condition: "AI_type == 1 and Systematic_risk == False and Open_source == True"
+      - condition: "AI_type == 1 and Systemic_risk == False and Open_source == True"
         value: "Standard GPAI (Open Source Exempt)"
 
       # Group 4: AI Systems Market Placement
@@ -93,10 +93,10 @@ variables:
       - condition: "Real_world_Testing == True and AI_type == 2 and High_risk == False and Transparency_obligation == True"
         value: "You are conducting real-world testing on a system that interacts with persons or generates content. This triggers transparency obligations because {{Transparency_Reasons}}. You must comply with Article 50 even during testing."
       # Group 3: GPAI Market Placement (Extracts from Module 7)
-      - condition: "AI_type == 1 and Systematic_risk == True"
-        value: "This model is classified as a General-Purpose AI Model with Systemic Risk. Reason: {{Systematic_reason}}" 
-      - condition: "AI_type == 1 and Systematic_risk == False"
-        value: "This model is classified as a Standard General-Purpose AI Model. It does not meet the threshold for systemic risk because {{Systematic_reason}}."
+      - condition: "AI_type == 1 and Systemic_risk == True"
+        value: "This model is classified as a General-Purpose AI Model with Systemic Risk. Reason: {{Systemic_reason}}" 
+      - condition: "AI_type == 1 and Systemic_risk == False"
+        value: "This model is classified as a Standard General-Purpose AI Model. It does not meet the threshold for systemic risk because {{Systemic_reason}}."
 
       # Group 4: AI Systems Market Placement (Extracts from Module 5 & 6)
       - condition: "AI_type == 2 and High_risk == True and Transparency_obligation == True"
@@ -144,7 +144,7 @@ variables:
       - condition: "Type == 'Non-regulated products'"
         value: "Based on the user input, the software does not meet the definition of an AI system under Article 3(1) or a general-purpose AI model under Article 3(63) and is therefore outside the scope of the AI Act."
       - condition: "else"
-        value: "Based on the user input, the specific category of the product remains undefined, preveting the determination of  Tthe precise scope of obligations under the AI Act."
+        value: "Based on the user input, the specific category of the product remains undefined, preveting the determination of  theprecise scope of obligations under the AI Act."
 
   - name: "View"
     type: "string"
