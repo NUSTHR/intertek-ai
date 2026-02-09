@@ -48,10 +48,10 @@ const ui = computed(() =>
         reference: 'REFERENCE',
         articleTitle: 'ARTICLE 50 REFERENCE',
         articleDesc:
-          'Article 50 outlines specific transparency obligations for certain AI systems to ensure that individuals are aware they are interacting with an AI or being subjected to certain AI techniques.',
+          'AI Act Article 50 outlines specific transparency obligations for certain AI systems to ensure that individuals are aware they are interacting with an AI or being subjected to certain AI techniques.',
         infoTip: 'These transparency rules apply regardless of whether the AI system is classified as high-risk.',
         viewFullAct: 'View Full Act.',
-        tip: 'If your system generates or manipulates content that could mislead users about authenticity, treat it as deep-fake content for Article 50 transparency duties.',
+        tip: 'If your system generates or manipulates content that could mislead users about authenticity, treat it as deep-fake content for AI Act Article 50 transparency duties.',
       },
 )
 const fallbackOptions = computed<Option[]>(() => {
@@ -137,7 +137,7 @@ const fallbackOptions = computed<Option[]>(() => {
       {
         value: 0,
         title: 'None of the above',
-        description: 'The system does not fall within Article 50(1)-(2) provider scenarios.',
+        description: 'The system does not fall within AI Act Article 50(1)-(2) provider scenarios.',
         icon: 'block',
         exclusive: true,
       },
@@ -166,7 +166,7 @@ const fallbackOptions = computed<Option[]>(() => {
       {
         value: 0,
         title: 'None of the above',
-        description: 'The system does not fall within Article 50(3)-(4) deployer scenarios.',
+        description: 'The system does not fall within AI Act Article 50(3)-(4) deployer scenarios.',
         icon: 'block',
         exclusive: true,
       },
@@ -176,7 +176,7 @@ const fallbackOptions = computed<Option[]>(() => {
     {
       value: 0,
       title: 'None of the above',
-      description: 'The system does not trigger Article 50 transparency scenarios.',
+      description: 'The system does not trigger AI Act Article 50 transparency scenarios.',
       icon: 'block',
       exclusive: true,
     },

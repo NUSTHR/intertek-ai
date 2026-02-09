@@ -38,7 +38,7 @@ const ui = computed(() =>
     : {
         legalContext: 'Legal Context',
         reference: 'REFERENCE',
-        articleTitle: 'Article 3(3) & 3(5)',
+        articleTitle: 'AI Act Article 3(3) & 3(5)',
         articleDesc: 'GPAI Model Providers are defined as persons who develop or have developed a model and place it on the market.',
         infoTip: 'Providers not established in the Union must appoint an authorized representative to ensure compliance oversight.',
         viewFullAct: 'View Full Act.',

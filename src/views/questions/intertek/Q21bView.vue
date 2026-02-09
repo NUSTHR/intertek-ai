@@ -38,7 +38,7 @@ const ui = computed(() =>
     : {
         legalContext: 'Legal Context',
         reference: 'REFERENCE',
-        articleTitle: 'Article 3(63)',
+        articleTitle: 'AI Act Article 3(63)',
         articleDesc:
           'General-purpose AI models are characterized by their ability to competently perform a wide range of distinct tasks, regardless of the way the model is placed on the market.',
         infoTip:

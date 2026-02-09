@@ -42,7 +42,7 @@ const ui = computed(() =>
         articleDesc: 'Testing in real world conditions shall not be covered by that exclusion.',
         infoTip: 'Testing in real-world conditions requires specific safeguards and oversight under the EU AI Act.',
         viewFullAct: 'View Full Act.',
-        tip: 'Real-world testing falls outside the Article 2(9) exclusion and triggers safeguards under the EU AI Act.',
+        tip: 'Real-world testing falls outside the AI Act Article 2(9) exclusion and triggers safeguards under the EU AI Act.',
       },
 )
 const fallbackOptions = computed(() =>

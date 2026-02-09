@@ -1,6 +1,6 @@
 module_id: 1
 title: "Scope & Universal R&D Exclusions"
-description: "Determines if the AI is outside the legal scope based on Article 2 exclusions for R&D."
+description: "Determines if the AI is outside the legal scope based on AI Act Article 2 exclusions for R&D."
 
 # 1. QUESTIONS SECTION
 questions:
@@ -67,9 +67,9 @@ variables:
     initial_value: ""
     rules:
       - condition: "q1.1 == 1"
-        value: "The system or model is specifically developed and put into service for the sole purpose of scientific research and development, granting it a total exclusion from the Regulation under Article 2(6)."
+        value: "The system or model is specifically developed and put into service for the sole purpose of scientific research and development, granting it a total exclusion from the Regulation under AI Act Article 2(6)."
       - condition: "q1.1 == 2 and q1.2 == False"
-        value: "The project is currently limited to internal research, testing, or development activities conducted in controlled environments and has not yet been placed on the market or put into service as per Article 2(8)."
+        value: "The project is currently limited to internal research, testing, or development activities conducted in controlled environments and has not yet been placed on the market or put into service as per AI Act Article 2(8)."
       - condition: "else"
         value: "None / In-Scope"
 

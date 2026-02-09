@@ -45,7 +45,7 @@ const ui = computed(() =>
         infoTip:
           "If your product is a 'model', specific obligations regarding documentation and transparency may apply under Chapter V.",
         viewFullAct: 'View Full Act.',
-        tip: "Unsure if it's a component or system? Check Annex I definitions of 'AI system' vs 'GPAI model'.",
+        tip: "Unsure if it's a component or system? Check AI Act Annex I definitions of 'AI system' vs 'GPAI model'.",
       },
 )
 const fallbackOptions = computed(() =>

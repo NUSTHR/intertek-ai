@@ -42,10 +42,10 @@ const ui = computed(() =>
     : {
         legalContext: 'Legal Context',
         reference: 'REFERENCE',
-        articleTitleRoles: 'Article 3(3-7): Operator Roles',
+        articleTitleRoles: 'AI Act Article 3(3-7): Operator Roles',
         articleDescRoles:
           "'Provider' means a person who develops an AI system with a view to placing it on the market under its own name. 'Deployer' means any person using an AI system under its authority.",
-        articleTitleScope: 'Article 2(1)(e): Scope',
+        articleTitleScope: 'AI Act Article 2(1)(e): Scope',
         articleDescScope:
           'The regulation applies to providers and deployers of AI systems that have their place of establishment or are located in the Union.',
         infoTip:

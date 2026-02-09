@@ -41,13 +41,13 @@ questions:
         description: "Choose this if the system scans people's faces or bodies in public to identify them instantly for police or law enforcement. [cite: 165]"
         value: 8
       - label: "None of the above"
-        cite: "N/A: This option indicates the system does not engage in practices prohibited by Article 5. [cite: 153]"
+        cite: "N/A: This option indicates the system does not engage in practices prohibited by AI Act Article 5. [cite: 153]"
         description: "Choose this if your AI system does not perform any of the illegal activities mentioned above. [cite: 153]"
         value: 0
         exclusive: true
 
   # -------------------------------------------------------------------------
-  # 1. MANIPULATIVE TECHNIQUES [Article 5(1)(a)]
+  # 1. MANIPULATIVE TECHNIQUES [AI Act Article 5(1)(a)]
   # -------------------------------------------------------------------------
   - id: "q4.1_a"
     text: "Does the system deploy subliminal techniques beyond a person’s consciousness OR purposefully manipulative or deceptive techniques?"
@@ -110,7 +110,7 @@ questions:
         value: False
 
   # -------------------------------------------------------------------------
-  # 2. EXPLOITATION OF VULNERABILITIES [Article 5(1)(b)]
+  # 2. EXPLOITATION OF VULNERABILITIES [AI Act Article 5(1)(b)]
   # -------------------------------------------------------------------------
   - id: "q4.2_a"
     text: "Does the system exploit vulnerabilities of a natural person or specific group due to their age, disability, or a specific social or economic situation?"
@@ -158,7 +158,7 @@ questions:
         value: False
 
   # -------------------------------------------------------------------------
-  # 3. SOCIAL SCORING [Article 5(1)(c)]
+  # 3. SOCIAL SCORING [AI Act Article 5(1)(c)]
   # -------------------------------------------------------------------------
   - id: "q4.3_a"
     text: "Does the system evaluate or classify natural persons or groups over a period of time based on their social behaviour or known, inferred, or predicted personal/personality characteristics?"
@@ -206,7 +206,7 @@ questions:
         value: False
 
   # -------------------------------------------------------------------------
-  # 4. PREDICTIVE POLICING [Article 5(1)(d)]
+  # 4. PREDICTIVE POLICING [AI Act Article 5(1)(d)]
   # -------------------------------------------------------------------------
   - id: "q4.4_a"
     text: "Is the system used for making risk assessments of natural persons to assess or predict the risk of them committing a criminal offense?"
@@ -239,7 +239,7 @@ questions:
         value: False
 
   # -------------------------------------------------------------------------
-  # 5. FACIAL SCRAPING [Article 5(1)(e)]
+  # 5. FACIAL SCRAPING [AI Act Article 5(1)(e)]
   # -------------------------------------------------------------------------
   - id: "q4.5_a"
     text: "Does the system create or expand facial recognition databases?"
@@ -272,7 +272,7 @@ questions:
         value: False
 
   # -------------------------------------------------------------------------
-  # 6. EMOTION RECOGNITION [Article 5(1)(f)]
+  # 6. EMOTION RECOGNITION [AI Act Article 5(1)(f)]
   # -------------------------------------------------------------------------
   - id: "q4.6_a"
     text: "Is the system used to infer emotions of a natural person?"
@@ -305,7 +305,7 @@ questions:
         value: False
 
   # -------------------------------------------------------------------------
-  # 7. BIOMETRIC CATEGORIZATION [Article 5(1)(g)]
+  # 7. BIOMETRIC CATEGORIZATION [AI Act Article 5(1)(g)]
   # -------------------------------------------------------------------------
   - id: "q4.7_a"
     text: "Does the system categorise individually natural persons based on their biometric data?"
@@ -353,7 +353,7 @@ questions:
         value: False
 
   # -------------------------------------------------------------------------
-  # 8. REAL-TIME RBI [Article 5(1)(h)]
+  # 8. REAL-TIME RBI [AI Act Article 5(1)(h)]
   # -------------------------------------------------------------------------
   - id: "q4.8_a"
     text: "Is the system a 'real-time' remote biometric identification system used in publicly accessible spaces?"
@@ -386,14 +386,14 @@ questions:
         value: False
 
   - id: "q4.8_c"
-    text: "Is this 'real-time' remote biometric identification system's use strictly necessary for: (i) searching for victims/missing persons, (ii) preventing imminent threat to life/terrorism, or (iii) identifying suspects of serious crimes (AI Act Annex II)  ?"
-    ref: "Art 5(1)(h)(i)-(iii): (i) the targeted search for specific victims of abduction, trafficking in human beings or sexual exploitation of human beings, as well as the search for missing persons; (ii) the prevention of a specific, substantial and imminent threat to the life or physical safety of natural persons or a genuine and present or genuine and foreseeable threat of a terrorist attack; (iii) the localisation or identification of a person suspected of having committed a criminal offence referred to in Annex II..."
+    text: "Is this 'real-time' remote biometric identification system's use strictly necessary for: (i) searching for victims/missing persons, (ii) preventing imminent threat to life/terrorism, or (iii) identifying suspects of serious crimes (AI Act AI Act Annex II)  ?"
+    ref: "Art 5(1)(h)(i)-(iii): (i) the targeted search for specific victims of abduction, trafficking in human beings or sexual exploitation of human beings, as well as the search for missing persons; (ii) the prevention of a specific, substantial and imminent threat to the life or physical safety of natural persons or a genuine and present or genuine and foreseeable threat of a terrorist attack; (iii) the localisation or identification of a person suspected of having committed a criminal offence referred to in AI Act Annex II..."
     type: "single_choice"
     dependency: "q4.8_b == True"
     options:
       - label: "Yes"
-        cite: "Art 5(1)(h)(i-iii): 'strictly necessary for... search for missing persons; prevention of a terrorist attack; localisation of a person suspected of... criminal offence referred to in Annex II...' [cite: 166, 167, 168]"
-        description: "The system is used for one of the specific emergency objectives, or to identify a suspect of a serious crime (Annex II) with a maximum sentence of at least 4 years. [cite: 166, 167, 168]"
+        cite: "Art 5(1)(h)(i-iii): 'strictly necessary for... search for missing persons; prevention of a terrorist attack; localisation of a person suspected of... criminal offence referred to in AI Act Annex II...' [cite: 166, 167, 168]"
+        description: "The system is used for one of the specific emergency objectives, or to identify a suspect of a serious crime (AI Act Annex II) with a maximum sentence of at least 4 years. [cite: 166, 167, 168]"
         value: True
       - label: "No"
         cite: "N/A: Use is for general policing or non-excepted offenses. [cite: 166, 167, 168]"
@@ -447,37 +447,37 @@ variables:
     initial_value: []
     description: "Collects all specific reasons for prohibition based on detailed logic checks"
     rules:
-      # 1. Manipulative Techniques [Article 5(1)(a)]
+      # 1. Manipulative Techniques [AI Act Article 5(1)(a)]
       - condition: "q4.1_a == True and q4.1_b == True and q4.1_c == True and q4.1_d == True"
         value: "The system uses hidden or deceptive techniques that trick people into making harmful decisions they wouldn't otherwise make, violating the prohibition on manipulative practices in Art 5(1)(a)"
 
-      # 2. Exploitation of Vulnerabilities [Article 5(1)(b)]
+      # 2. Exploitation of Vulnerabilities [AI Act Article 5(1)(b)]
       - condition: "q4.2_a == True and q4.2_b == True and q4.2_c == True"
         value: "The system exploits the vulnerabilities of specific groups—such as children, the elderly, or those in financial hardship—causing them significant harm in violation of Art 5(1)(b)"
 
-      # 3. Social Scoring [Article 5(1)(c)]
+      # 3. Social Scoring [AI Act Article 5(1)(c)]
       - condition: "q4.3_a == True and (q4.3_b == True or q4.3_c == True)"
         value: "The system operates as a 'social scoring' tool, judging people based on their behavior to deny them unrelated opportunities or services in an unfair or disproportionate way under Art 5(1)(c)"
 
-      # 4. Predictive Policing [Article 5(1)(d)]
+      # 4. Predictive Policing [AI Act Article 5(1)(d)]
       - condition: "q4.4_a == True and q4.4_b == True"
         value: "The system performs prohibited 'predictive policing' by assessing the risk of someone committing a crime based solely on their personality or profile rather than objective evidence, per Art 5(1)(d)"
 
-      # 5. Facial Scraping [Article 5(1)(e)]
+      # 5. Facial Scraping [AI Act Article 5(1)(e)]
       - condition: "q4.5_a == True and q4.5_b == True"
         value: "The system creates or expands facial recognition databases through the mass, untargeted collection of images from the internet or CCTV, a practice strictly banned under Art 5(1)(e)"
 
-      # 6. Emotion Recognition [Article 5(1)(f)]
+      # 6. Emotion Recognition [AI Act Article 5(1)(f)]
       # Prohibited if it infers emotions (a=True) AND is NOT for medical/safety reasons (b=False)
       - condition: "q4.6_a == True and q4.6_b == False"
         value: "The system is used to guess the emotions of individuals within a workplace or school for purposes other than medical or safety reasons, violating Art 5(1)(f)"
 
-      # 7. Biometric Categorization [Article 5(1)(g)]
+      # 7. Biometric Categorization [AI Act Article 5(1)(g)]
       # Prohibited if it categorizes (a=True), infers sensitive traits (b=True), AND is NOT law enforcement filtering (c=False)
       - condition: "q4.7_a == True and q4.7_b == True and q4.7_c == False"
         value: "The system uses body measurements to sort people into categories based on sensitive traits like race, religion, or sexual orientation, which is prohibited under Art 5(1)(g)"
 
-      # 8. Real-time RBI [Article 5(1)(h)]
+      # 8. Real-time RBI [AI Act Article 5(1)(h)]
       # Prohibited if Real-time RBI (a=True), Law Enforcement (b=True), AND NOT a strictly necessary exception (c=False)
       - condition: "q4.8_a == True and q4.8_b == True and q4.8_c == False"
         value: "The system identifies people instantly in public spaces for general law enforcement without meeting the strict, urgent emergency exceptions required by Art 5(1)(h)"

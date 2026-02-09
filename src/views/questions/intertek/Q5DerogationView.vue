@@ -38,7 +38,7 @@ const ui = computed(() =>
         reference: '参考',
         articleTitle: '法规第6(3)条条件',
         articleDesc:
-          '根据第6(3)条，法案附件 III 所列高风险 AI 系统在不对健康、安全或基本权利造成重大风险，且不实质影响决策结果时，可不被视为高风险，前提是满足(a)至(d)项条件。',
+          '根据人工智能法案第6(3)条，法案附件 III 所列高风险 AI 系统在不对健康、安全或基本权利造成重大风险，且不实质影响决策结果时，可不被视为高风险，前提是满足(a)至(d)项条件。',
         infoTip: '若系统对自然人进行画像处理，上述减免不适用。',
         viewFullAct: '查看法规全文。',
         tip: '仅当系统不实质影响决策且满足(a)-(d)条件时，方适用第6(3)条减免。',
@@ -48,10 +48,10 @@ const ui = computed(() =>
         reference: 'REFERENCE',
         articleTitle: 'ARTICLE 6(3) CONDITIONS',
         articleDesc:
-          'According to Article 6(3), a high-risk AI system mentioned in Annex III shall not be considered high-risk if it does not pose a significant risk of harm to the health, safety or fundamental rights, including by not materially influencing the outcome of decision making. This applies if it fulfills conditions (a) to (d).',
+          'According to AI Act Article 6(3), a high-risk AI system mentioned in AI Act Annex III shall not be considered high-risk if it does not pose a significant risk of harm to the health, safety or fundamental rights, including by not materially influencing the outcome of decision making. This applies if it fulfills conditions (a) to (d).',
         infoTip: 'These derogations do not apply if the AI system performs profiling of natural persons.',
         viewFullAct: 'View Full Act.',
-        tip: 'Article 6(3) derogations apply only when the system does not materially influence decisions and the conditions (a)–(d) are satisfied.',
+        tip: 'AI Act Article 6(3) derogations apply only when the system does not materially influence decisions and the conditions (a)–(d) are satisfied.',
       },
 )
 const fallbackOptions = computed<Option[]>(() =>

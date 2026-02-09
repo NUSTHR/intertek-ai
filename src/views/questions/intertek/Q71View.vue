@@ -38,11 +38,11 @@ const ui = computed(() =>
         legalContext: 'Legal Context',
         reference: 'REFERENCE',
         articleDesc:
-          'Article 51 establishes criteria for classifying general-purpose AI (GPAI) models as having systemic risk. A model is considered to have systemic risk if it has high-impact capabilities, evaluated through technical tools/methodologies, or based on the cumulative computation used for training.',
+          'AI Act Article 51 establishes criteria for classifying general-purpose AI (GPAI) models as having systemic risk. A model is considered to have systemic risk if it has high-impact capabilities, evaluated through technical tools/methodologies, or based on the cumulative computation used for training.',
         infoTip:
           'The 10^25 FLOPs threshold is a rebuttable presumption that the model possesses high-impact capabilities.',
         viewFullAct: 'View Full Act.',
-        tip: 'Models with systemic risk are subject to additional transparency and risk management obligations under Articles 51–55.',
+        tip: 'Models with systemic risk are subject to additional transparency and risk management obligations under AI Act Articles 51–55.',
       },
 )
 const fallbackOptions = computed(() =>

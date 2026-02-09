@@ -1,6 +1,6 @@
 module_id: 3
 title: "System Exclusion Check"
-description: "Screens for specific exclusions from the Regulation as defined in Article 2."
+description: "Screens for specific exclusions from the Regulation as defined in AI Act Article 2."
 
 # 1. QUESTIONS SECTION
 questions:
@@ -33,7 +33,7 @@ questions:
         description: "Select this if you are an individual using the AI for private purposes (e.g., leisure, household) unrelated to any business, employment, or commercial activity."
         value: True
       - label: "No, for professional, commercial, or organizational use."
-        cite: "Should your activity entail any use other than purely personal and non-professional use, it shall not fall within the scope of the exemption set out in Article 2(10) of the Regulation."
+        cite: "Should your activity entail any use other than purely personal and non-professional use, it shall not fall within the scope of the exemption set out in AI Act Article 2(10) of the Regulation."
         description: "Select this if you represent a legal entity (e.g., a company) or if the AI is used for work, business operations, or any professional context."
         value: False
 
@@ -56,11 +56,11 @@ variables:
     initial_value: ""
     rules:
       - condition: "q3a.1 == 1"
-        value: "The AI system is used exclusively for military, defense, or national security purposes, placing it entirely outside the scope of this Regulation as per Article 2(3)."
+        value: "The AI system is used exclusively for military, defense, or national security purposes, placing it entirely outside the scope of this Regulation as per AI Act Article 2(3)."
       - condition: "q3a.1 == 2"
-        value: "The system is operated by third-country public authorities or international organizations under a law enforcement cooperation agreement with the Union, qualifying for the exclusion under Article 2(4)."
+        value: "The system is operated by third-country public authorities or international organizations under a law enforcement cooperation agreement with the Union, qualifying for the exclusion under AI Act Article 2(4)."
       - condition: "q3a.2 == True"
-        value: "The system is used by a natural person for purely personal, non-professional activities, exempting the user from deployer obligations under Article 2(10)"
+        value: "The system is used by a natural person for purely personal, non-professional activities, exempting the user from deployer obligations under AI Act Article 2(10)"
       - condition: "else"
         value: "N/A"
 

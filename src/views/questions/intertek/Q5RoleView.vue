@@ -44,14 +44,14 @@ const ui = computed(() =>
         reference: 'REFERENCE',
         articleTitleRisk: 'Art 6(1)(a)',
         articleDescRisk:
-          'An AI system is high-risk if it is intended to be used as a safety component of a product, or is itself a product, covered by Union harmonisation legislation listed in Annex I.',
+          'An AI system is high-risk if it is intended to be used as a safety component of a product, or is itself a product, covered by Union harmonisation legislation listed in AI Act Annex I.',
         articleTitleSafety: 'Art 3(14)',
         articleDescSafety:
           "Defines 'safety component' as a component of a product or a system which fulfils a safety function for that product or system or the failure or malfunction of which endangers the health and safety of persons or property.",
         infoTip:
-          'Identifying the product role is critical for determining if the AI system falls under Article 6(1) classification.',
+          'Identifying the product role is critical for determining if the AI system falls under AI Act Article 6(1) classification.',
         viewFullAct: 'View Full Act.',
-        tip: 'Safety components are those whose failure endangers health or safety and fall under Annex I harmonisation legislation.',
+        tip: 'Safety components are those whose failure endangers health or safety and fall under AI Act Annex I harmonisation legislation.',
       },
 )
 const fallbackOptions = computed(() =>
@@ -88,7 +88,7 @@ const fallbackOptions = computed(() =>
           value: 1,
           title: 'Standalone Product',
           description:
-            'The AI system is itself a product covered by the Union harmonisation legislation listed in Annex I.',
+            'The AI system is itself a product covered by the Union harmonisation legislation listed in AI Act Annex I.',
           icon: 'inventory_2',
         },
         {
@@ -109,7 +109,7 @@ const fallbackOptions = computed(() =>
           value: 0,
           title: 'None of the above',
           description:
-            'The AI system is not related to products covered by the specific Union harmonisation legislation listed in Annex I.',
+            'The AI system is not related to products covered by the specific Union harmonisation legislation listed in AI Act Annex I.',
           icon: 'block',
         },
       ],

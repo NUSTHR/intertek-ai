@@ -1,6 +1,6 @@
 module_id: 6
 title: "Transparency Obligation Check"
-description: "Determines if the AI system triggers specific transparency obligations under Article 50 of the EU AI Act based on the user's Role (Provider or Deployer)."
+description: "Determines if the AI system triggers specific transparency obligations under AI Act Article 50 of the EU AI Act based on the user's Role (Provider or Deployer)."
 
 # 1. QUESTIONS SECTION
 questions:

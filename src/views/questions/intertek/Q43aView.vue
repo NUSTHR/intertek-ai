@@ -43,7 +43,7 @@ const ui = computed(() =>
           'Prohibits the placing on the market, putting into service or use of AI systems for the evaluation or classification of natural persons or groups over a period of time based on their social behaviour or known, inferred or predicted personal or personality characteristics.',
         infoTip: 'Social scoring systems are classified as "Unacceptable Risk" and are prohibited within the Union.',
         viewFullAct: 'View Full Act.',
-        tip: 'Social scoring systems are prohibited under Article 5(1)(c) and classified as unacceptable risk.',
+        tip: 'Social scoring systems are prohibited under AI Act Article 5(1)(c) and classified as unacceptable risk.',
       },
 )
 const fallbackOptions = computed(() =>

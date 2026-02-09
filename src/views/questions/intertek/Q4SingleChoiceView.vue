@@ -164,7 +164,7 @@ const legalTextMap = computed<Record<string, string>>(() =>
         'q4.8_b':
           'Art 5(1)(h): for the purposes of law enforcement, unless and in so far as such use is strictly necessary for one of the following objectives...',
         'q4.8_c':
-          'Art 5(1)(h)(i)-(iii): (i) the targeted search for specific victims of abduction, trafficking in human beings or sexual exploitation of human beings, as well as the search for missing persons; (ii) the prevention of a specific, substantial and imminent threat to the life or physical safety of natural persons or a genuine and present or genuine and foreseeable threat of a terrorist attack; (iii) the localisation or identification of a person suspected of having committed a criminal offence referred to in Annex II...',
+          'Art 5(1)(h)(i)-(iii): (i) the targeted search for specific victims of abduction, trafficking in human beings or sexual exploitation of human beings, as well as the search for missing persons; (ii) the prevention of a specific, substantial and imminent threat to the life or physical safety of natural persons or a genuine and present or genuine and foreseeable threat of a terrorist attack; (iii) the localisation or identification of a person suspected of having committed a criminal offence referred to in AI Act Annex II...',
       },
 )
 const legalCopy = computed(() => props.question?.ref ?? legalTextMap.value[props.question?.id ?? ''] ?? '')

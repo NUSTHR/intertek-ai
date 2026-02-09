@@ -43,7 +43,7 @@ const ui = computed(() =>
         infoTip:
           'Profiling is a critical factor in determining if an AI system falls under certain High-Risk categories, particularly in HR and credit scoring.',
         viewFullAct: 'View Full Act.',
-        tip: 'Unsure if your system qualifies as profiling? Review Article 3(58) for the full definition or contact our experts.',
+        tip: 'Unsure if your system qualifies as profiling? Review AI Act Article 3(58) for the full definition or contact our experts.',
       },
 )
 const fallbackOptions = computed(() =>

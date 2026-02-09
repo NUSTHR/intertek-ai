@@ -1,11 +1,11 @@
 module_id: 7 #"07_gpai_systemic_risk_check"
 title: "GPAI Systemic Risk Check"
-description: "Determines if a GPAI model has systemic risk based on the quantitative threshold in Article 51(2) or a designation decision under Article 51(1)(b)."
+description: "Determines if a GPAI model has systemic risk based on the quantitative threshold in AI Act Article 51(2) or a designation decision under AI Act Article 51(1)(b)."
 
 questions:
   - id: "q7.1"
     text: "Does the general-purpose AI model meet either of the following criteria for classification as a model with systemic risk?"
-    ref: "Art 51, Annex XIII; Art 51(1): A general-purpose AI model shall be classified as a general-purpose AI model with systemic risk if it meets any of the following criteria: (a) it has high-impact capabilities, as assessed on the basis of appropriate technical tools and methodologies, including indicators and benchmarks; (b) based on a decision of the Commission, ex officio or following a qualified alert from the scientific panel, it has capabilities or an impact equivalent to those set out in point (a) in accordance with the criteria set out in Annex XIII. Art 51(2): A general-purpose AI model shall be presumed to have high-impact capabilities as referred to in paragraph 1, point (a), when the cumulative amount of computation used for its training measured in floating point operations is greater than 10^25. Annex XIII: Criteria for the designation of general-purpose AI models with systemic risk referred to in Article 51: (a) the number of parameters of the model; (b) the quality or size of the data set, for example measured through tokens; (c) the amount of computation used for training the model... (f) whether it has a high impact on the internal market due to its reach, which shall be presumed when it has been made available to at least 10 000 registered business users established in the Union; (g) the number of registered end-users."
+    ref: "Art 51, Annex XIII; Art 51(1): A general-purpose AI model shall be classified as a general-purpose AI model with systemic risk if it meets any of the following criteria: (a) it has high-impact capabilities, as assessed on the basis of appropriate technical tools and methodologies, including indicators and benchmarks; (b) based on a decision of the Commission, ex officio or following a qualified alert from the scientific panel, it has capabilities or an impact equivalent to those set out in point (a) in accordance with the criteria set out in Annex XIII. Art 51(2): A general-purpose AI model shall be presumed to have high-impact capabilities as referred to in paragraph 1, point (a), when the cumulative amount of computation used for its training measured in floating point operations is greater than 10^25. Annex XIII: Criteria for the designation of general-purpose AI models with systemic risk referred to in AI Act Article 51: (a) the number of parameters of the model; (b) the quality or size of the data set, for example measured through tokens; (c) the amount of computation used for training the model... (f) whether it has a high impact on the internal market due to its reach, which shall be presumed when it has been made available to at least 10 000 registered business users established in the Union; (g) the number of registered end-users."
     description: "A model is classified as having systemic risk if it meets the training compute threshold or if the Commission has explicitly designated it as such."
     type: "single_choice"
     options:
@@ -40,9 +40,9 @@ variables:
     initial_value: ""
     rules:
       - condition: "q7.1 == 1"
-        value: "The model is presumed to pose systemic risk because its training used more than 10^25 floating-point operations, meeting the 'high-impact' quantitative threshold set in Article 51(2)."
+        value: "The model is presumed to pose systemic risk because its training used more than 10^25 floating-point operations, meeting the 'high-impact' quantitative threshold set in AI Act Article 51(2)."
       - condition: "q7.1 == 2"
-        value: "The model is officially designated as having systemic risk by a European Commission decision, due to its significant market reach or capabilities equivalent to high-impact models under Article 51(1)(b)."
+        value: "The model is officially designated as having systemic risk by a European Commission decision, due to its significant market reach or capabilities equivalent to high-impact models under AI Act Article 51(1)(b)."
       - condition: "else"
         value: "None of the specific Systemic risk conditions were met"
 

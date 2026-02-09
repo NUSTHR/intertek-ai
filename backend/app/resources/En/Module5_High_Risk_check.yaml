@@ -1,384 +1,384 @@
 module_id: 5 #"05_high_risk_check"
 title: "High-Risk AI System Check"
-description: "Determines if the system is High-Risk under Article 6 pathways (Annex I or Annex III) using strict legal definitions and automated logic."
+description: "Determines if the system is High-Risk under AI Act Article 6 pathways (AI Act Annex I or AI Act Annex III) using strict legal definitions and automated logic."
 
 questions:
   # =========================================================================
-  # PATHWAY 1: Safety Components of Regulated Products (Article 6(1))
+  # PATHWAY 1: Safety Components of Regulated Products (AI Act Article 6(1))
   # =========================================================================
   
   - id: "q5.role"
     text: "What is the role of your AI system regarding a product?"
-    ref: "Art 6(1)(a): the AI system is intended to be used as a safety component of a product, or the AI system is itself a product, covered by the Union harmonisation legislation listed in Annex I; Art 3(14): ‘safety component’ means a component of a product or of a system which fulfils a safety function for that product or system, or the failure or malfunctioning of which endangers the health and safety of persons or property;"
+    ref: "Art 6(1)(a): the AI system is intended to be used as a safety component of a product, or the AI system is itself a product, covered by the Union harmonisation legislation listed in AI Act Annex I; Art 3(14): ‘safety component’ means a component of a product or of a system which fulfils a safety function for that product or system, or the failure or malfunctioning of which endangers the health and safety of persons or property;"
     description: "Define the nature of your AI system's integration or independent function."
     type: "single_choice"
     options:
       - label: "Standalone Product: The AI system itself is the product (e.g., medical device software)."
-        cite: "Art 6(1)(a): the AI system is itself a product, covered by the Union harmonisation legislation listed in Annex I. [cite: 196]"
-        description: "Choose this if the AI software is the main product you are selling, such as a standalone medical app. [cite: 196]"
+        cite: "Art 6(1)(a): the AI system is itself a product, covered by the Union harmonisation legislation listed in AI Act Annex I. "
+        description: "Choose this if the AI software is the main product you are selling, such as a standalone medical app. "
         value: 1
       - label: "Safety Component: The AI is integrated into another product and performs a safety function."
-        cite: "Art 3(14): ‘safety component’ means a component of a product... which fulfils a safety function for that product... or the failure or malfunctioning of which endangers the health and safety of persons or property. [cite: 78]"
-        description: "Choose this if the AI is a part of a larger machine and its job is to keep people safe or prevent accidents. [cite: 78]"
+        cite: "Art 3(14): ‘safety component’ means a component of a product... which fulfils a safety function for that product... or the failure or malfunctioning of which endangers the health and safety of persons or property. "
+        description: "Choose this if the AI is a part of a larger machine and its job is to keep people safe or prevent accidents. "
         value: 2
       - label: "Non-Safety Component: The AI is a component of a product but does not perform a safety function."
-        cite: "Art 3(14): Logic inferred as not fulfilling a safety function as defined in Article 3(14). [cite: 78]"
-        description: "Choose this if the AI is part of a machine but doesn't handle critical safety tasks, like a screen for music in a car. [cite: 78]"
+        cite: "Art 3(14): Logic inferred as not fulfilling a safety function as defined in AI Act Article 3(14). "
+        description: "Choose this if the AI is part of a machine but doesn't handle critical safety tasks, like a screen for music in a car. "
         value: 3
       - label: "None of the above"
         cite: "None of the above description apply"
-        description: "Choose this if your AI isn't related to physical machines or any of the product categories listed. [cite: 195]"
+        description: "Choose this if your AI isn't related to physical machines or any of the product categories listed. "
         value: 0
 
   - id: "q5.sector"
     text: "Which broad sector does the product belong to?"
-    ref: "Annex I: LIST OF UNION HARMONISATION LEGISLATION. this may include various EU Regulations and Directives covering machinery, toys, lifts, medical devices, and transport systems."
+    ref: "AI Act Annex I: LIST OF UNION HARMONISATION LEGISLATION. this may include various EU Regulations and Directives covering machinery, toys, lifts, medical devices, and transport systems."
     type: "single_choice"
     dependency: "q5.role in [1, 2]"
     options:
       - label: "Transport (Aviation, Road, Marine, Rail, Specialized Vehicles)"
-        cite: "Annex I, Section B: List of Union harmonisation legislation covering aviation, motor vehicles, marine, and rail systems. [cite: 1681-1691]"
-        description: "Includes cars, planes, trains, ships, or the equipment used to operate them safely. [cite: 1681-1691]"
+        cite: "AI Act Annex I, Section B: List of Union harmonisation legislation covering aviation, motor vehicles, marine, and rail systems. "
+        description: "Includes cars, planes, trains, ships, or the equipment used to operate them safely. "
         value: "A"
       - label: "Health (Medical devices & IVD)"
-        cite: "Annex I, Section A (11, 12): Regulation (EU) 2017/745 on medical devices and Regulation (EU) 2017/746 on in vitro diagnostic medical devices. [cite: 1679-1680]"
-        description: "Covers software or devices used for medical treatment, patient testing, or health diagnosis. [cite: 1679-1680]"
+        cite: "AI Act Annex I, Section A (11, 12): Regulation (EU) 2017/745 on medical devices and Regulation (EU) 2017/746 on in vitro diagnostic medical devices. "
+        description: "Covers software or devices used for medical treatment, patient testing, or health diagnosis. "
         value: "B"
       - label: "Industrial & Special Infrastructure (Machinery, Lifts, Pressure, ATEX, Gas)"
-        cite: "Annex I, Section A (1, 4, 5, 7, 10): Legislation covering machinery, lifts, explosive atmospheres, pressure equipment, and gas appliances. [cite: 1669, 1672, 1673, 1675, 1678]"
-        description: "Includes elevators, factory machinery, and equipment used in heavy-duty or high-pressure industrial settings. [cite: 1669, 1672, 1673, 1675, 1678]"
+        cite: "AI Act Annex I, Section A (1, 4, 5, 7, 10): Legislation covering machinery, lifts, explosive atmospheres, pressure equipment, and gas appliances. "
+        description: "Includes elevators, factory machinery, and equipment used in heavy-duty or high-pressure industrial settings. "
         value: "C"
       - label: "Personal Safety & General Consumer (Toys, PPE, Radio, Cableways)"
-        cite: "Annex I, Section A (2, 6, 8, 9): Legislation covering toys, personal protective equipment, radio equipment, and cableways. [cite: 1670, 1674, 1676, 1677]"
-        description: "Includes children's toys, safety gear like helmets, and wireless communication devices. [cite: 1670, 1674, 1676, 1677]"
+        cite: "AI Act Annex I, Section A (2, 6, 8, 9): Legislation covering toys, personal protective equipment, radio equipment, and cableways. "
+        description: "Includes children's toys, safety gear like helmets, and wireless communication devices. "
         value: "D"
       - label: "None of the above"
-        cite: "Article 6(1): Sectoral exclusion from the Annex I high-risk pathway. [cite: 195-197]"
-        description: "Choose this if the product does not fall under any of these specific European safety laws. [cite: 195-197]"
+        cite: "AI Act Article 6(1): Sectoral exclusion from the AI Act Annex I high-risk pathway. "
+        description: "Choose this if the product does not fall under any of these specific European safety laws. "
         value: "E"
 
   # --- Sector A: Transport Specifics ---
   - id: "q5.spec_a"
     text: "Identify the specific transport category:"
-    ref: "Annex I: (13) Regulation (EC) No 300/2008; (20) Regulation (EU) 2018/1139; (18) Regulation (EU) 2018/858; (19) Regulation (EU) 2019/2144; (15) Regulation (EU) No 167/2013; (14) Regulation (EU) No 168/2013; (16) Directive 2014/90/EU; (3) Directive 2013/53/EU; (17) Directive (EU) 2016/797."
+    ref: "AI Act Annex I: (13) Regulation (EC) No 300/2008; (20) Regulation (EU) 2018/1139; (18) Regulation (EU) 2018/858; (19) Regulation (EU) 2019/2144; (15) Regulation (EU) No 167/2013; (14) Regulation (EU) No 168/2013; (16) Directive 2014/90/EU; (3) Directive 2013/53/EU; (17) Directive (EU) 2016/797."
     type: "multi_choice"
     dependency: "q5.sector == 'A'"
     options:
       - label: "Civil Aviation Security (Reg. 300/2008)"
-        cite: "Annex I, Section B (1): Regulation (EC) No 300/2008 on common rules in the field of civil aviation security. [cite: 1682]"
-        description: "Choose this if the AI is used for airport security, passenger screening, or checking luggage. [cite: 1682]"
+        cite: "AI Act Annex I, Section B (1): Regulation (EC) No 300/2008 on common rules in the field of civil aviation security. "
+        description: "Choose this if the AI is used for airport security, passenger screening, or checking luggage. "
         value: 13
       - label: "Civil Aviation Safety (Reg. 2018/1139) including Unmanned Aircraft"
-        cite: "Annex I, Section B (9): Regulation (EU) 2018/1139 on common rules in the field of civil aviation safety. [cite: 1690]"
-        description: "Choose this for flight safety systems, drones, or equipment used to fly aircraft remotely. [cite: 1690]"
+        cite: "AI Act Annex I, Section B (9): Regulation (EU) 2018/1139 on common rules in the field of civil aviation safety. "
+        description: "Choose this for flight safety systems, drones, or equipment used to fly aircraft remotely. "
         value: 20
       - label: "Motor Vehicles and Trailers (Reg. 2018/858)"
-        cite: "Annex I, Section B (6): Regulation (EU) 2018/858 on the approval of motor vehicles and their trailers. [cite: 1687]"
-        description: "Choose this if the AI is a part of a standard car, truck, or trailer. [cite: 1687]"
+        cite: "AI Act Annex I, Section B (6): Regulation (EU) 2018/858 on the approval of motor vehicles and their trailers. "
+        description: "Choose this if the AI is a part of a standard car, truck, or trailer. "
         value: 18
       - label: "Vehicle Type-approval - General Safety (Reg. 2019/2144)"
-        cite: "Annex I, Section B (7): Regulation (EU) 2019/2144 on type-approval requirements for motor vehicle general safety. [cite: 1688]"
-        description: "Choose this for specific safety features required by law for a vehicle to be sold in the EU. [cite: 1688]"
+        cite: "AI Act Annex I, Section B (7): Regulation (EU) 2019/2144 on type-approval requirements for motor vehicle general safety. "
+        description: "Choose this for specific safety features required by law for a vehicle to be sold in the EU. "
         value: 19
       - label: "Agricultural and Forestry Vehicles (Reg. 167/2013)"
-        cite: "Annex I, Section B (3): Regulation (EU) No 167/2013 on the approval of agricultural and forestry vehicles. [cite: 1684]"
-        description: "Choose this if the AI is used in tractors or other farming and forest machinery. [cite: 1684]"
+        cite: "AI Act Annex I, Section B (3): Regulation (EU) No 167/2013 on the approval of agricultural and forestry vehicles. "
+        description: "Choose this if the AI is used in tractors or other farming and forest machinery. "
         value: 15
       - label: "Two- or Three-wheel Vehicles & Quadricycles (Reg. 168/2013)"
-        cite: "Annex I, Section B (2): Regulation (EU) No 168/2013 on the approval of two- or three-wheel vehicles. [cite: 1683]"
-        description: "Choose this for motorcycles, mopeds, or small four-wheeled leisure vehicles. [cite: 1683]"
+        cite: "AI Act Annex I, Section B (2): Regulation (EU) No 168/2013 on the approval of two- or three-wheel vehicles. "
+        description: "Choose this for motorcycles, mopeds, or small four-wheeled leisure vehicles. "
         value: 14
       - label: "Marine Equipment (Dir. 2014/90/EU)"
-        cite: "Annex I, Section B (4): Directive 2014/90/EU on marine equipment. [cite: 1685]"
-        description: "Choose this for safety equipment used on large commercial ships or boats. [cite: 1685]"
+        cite: "AI Act Annex I, Section B (4): Directive 2014/90/EU on marine equipment. "
+        description: "Choose this for safety equipment used on large commercial ships or boats. "
         value: 16
       - label: "Recreational Craft and Personal Watercraft (Dir. 2013/53/EU)"
-        cite: "Annex I, Section A (3): Directive 2013/53/EU on recreational craft and personal watercraft. [cite: 1671]"
-        description: "Choose this for private boats, jet skis, or other leisure watercraft. [cite: 1671]"
+        cite: "AI Act Annex I, Section A (3): Directive 2013/53/EU on recreational craft and personal watercraft. "
+        description: "Choose this for private boats, jet skis, or other leisure watercraft. "
         value: 3
       - label: "Interoperability of the Rail System (Dir. 2016/797)"
-        cite: "Annex I, Section B (5): Directive (EU) 2016/797 on the interoperability of the rail system. [cite: 1686]"
-        description: "Choose this for systems used in trains or on railway tracks and infrastructure. [cite: 1686]"
+        cite: "AI Act Annex I, Section B (5): Directive (EU) 2016/797 on the interoperability of the rail system. "
+        description: "Choose this for systems used in trains or on railway tracks and infrastructure. "
         value: 17
       - label: "None of the above"
-        cite: "Article 6(1): Specific transport sub-sector exclusion. [cite: 195-197]"
-        description: "Choose this if none of these specific transport rules apply to your AI. [cite: 195-197]"
+        cite: "AI Act Article 6(1): Specific transport sub-sector exclusion. "
+        description: "Choose this if none of these specific transport rules apply to your AI. "
         value: 0
         exclusive: true
 
   # --- Sector B: Health Specifics ---
   - id: "q5.spec_b"
     text: "Identify the medical category:"
-    ref: "Annex I: (11) Regulation (EU) 2017/745 on medical devices; (12) Regulation (EU) 2017/746 on in vitro diagnostic medical devices."
+    ref: "AI Act Annex I: (11) Regulation (EU) 2017/745 on medical devices; (12) Regulation (EU) 2017/746 on in vitro diagnostic medical devices."
     type: "multi_choice"
     dependency: "q5.sector == 'B'"
     options:
       - label: "Medical Devices (Reg. 2017/745)"
-        cite: "Annex I, Section A (11): Regulation (EU) 2017/745 on medical devices. [cite: 1679]"
-        description: "Choose this if the AI is part of a medical tool or software used to treat or monitor patients. [cite: 1679]"
+        cite: "AI Act Annex I, Section A (11): Regulation (EU) 2017/745 on medical devices. "
+        description: "Choose this if the AI is part of a medical tool or software used to treat or monitor patients. "
         value: 11
       - label: "In Vitro Diagnostic Medical Devices (Reg. 2017/746)"
-        cite: "Annex I, Section A (12): Regulation (EU) 2017/746 on in vitro diagnostic medical devices. [cite: 1680]"
-        description: "Choose this for AI used in lab tests, like analyzing blood samples or other body fluids. [cite: 1680]"
+        cite: "AI Act Annex I, Section A (12): Regulation (EU) 2017/746 on in vitro diagnostic medical devices. "
+        description: "Choose this for AI used in lab tests, like analyzing blood samples or other body fluids. "
         value: 12
       - label: "None of the above"
-        cite: "Article 6(1): General health sub-sector exclusion. [cite: 195-197]"
-        description: "Choose this if your health product isn't covered by these specific medical device laws. [cite: 195-197]"
+        cite: "AI Act Article 6(1): General health sub-sector exclusion. "
+        description: "Choose this if your health product isn't covered by these specific medical device laws. "
         value: 0
         exclusive: true
 
   # --- Sector C: Industrial Specifics ---
   - id: "q5.spec_c"
     text: "Identify the industrial/infrastructure category:"
-    ref: "Annex I: (1) Directive 2006/42/EC; (4) Directive 2014/33/EU; (5) Directive 2014/34/EU; (7) Directive 2014/68/EU; (10) Regulation (EU) 2016/426."
+    ref: "AI Act Annex I: (1) Directive 2006/42/EC; (4) Directive 2014/33/EU; (5) Directive 2014/34/EU; (7) Directive 2014/68/EU; (10) Regulation (EU) 2016/426."
     type: "multi_choice"
     dependency: "q5.sector == 'C'"
     options:
       - label: "Machinery (Dir. 2006/42/EC)"
-        cite: "Annex I, Section A (1): Directive 2006/42/EC on machinery. [cite: 1669]"
-        description: "Choose this for AI used in factory machines or tools used for manufacturing. [cite: 1669]"
+        cite: "AI Act Annex I, Section A (1): Directive 2006/42/EC on machinery. "
+        description: "Choose this for AI used in factory machines or tools used for manufacturing. "
         value: 1
       - label: "Lifts (Dir. 2014/33/EU)"
-        cite: "Annex I, Section A (4): Directive 2014/33/EU on lifts and safety components for lifts. [cite: 1672]"
-        description: "Choose this for AI used to control or secure elevators for people or goods. [cite: 1672]"
+        cite: "AI Act Annex I, Section A (4): Directive 2014/33/EU on lifts and safety components for lifts. "
+        description: "Choose this for AI used to control or secure elevators for people or goods. "
         value: 4
       - label: "Equipment for Explosive Atmospheres (ATEX) (Dir. 2014/34/EU)"
-        cite: "Annex I, Section A (5): Directive 2014/34/EU on equipment for use in potentially explosive atmospheres. [cite: 1673]"
-        description: "Choose this for equipment used in places with a high risk of explosions, like oil rigs or mines. [cite: 1673]"
+        cite: "AI Act Annex I, Section A (5): Directive 2014/34/EU on equipment for use in potentially explosive atmospheres. "
+        description: "Choose this for equipment used in places with a high risk of explosions, like oil rigs or mines. "
         value: 5
       - label: "Pressure Equipment (Dir. 2014/68/EU)"
-        cite: "Annex I, Section A (7): Directive 2014/68/EU on pressure equipment. [cite: 1675]"
-        description: "Choose this for AI managing high-pressure containers, pipes, or safety valves. [cite: 1675]"
+        cite: "AI Act Annex I, Section A (7): Directive 2014/68/EU on pressure equipment. "
+        description: "Choose this for AI managing high-pressure containers, pipes, or safety valves. "
         value: 7
       - label: "Appliances Burning Gaseous Fuels (Reg. 2016/426)"
-        cite: "Annex I, Section A (10): Regulation (EU) 2016/426 on appliances burning gaseous fuels. [cite: 1678]"
-        description: "Choose this for AI in gas-powered devices used for cooking, heating, or lighting. [cite: 1678]"
+        cite: "AI Act Annex I, Section A (10): Regulation (EU) 2016/426 on appliances burning gaseous fuels. "
+        description: "Choose this for AI in gas-powered devices used for cooking, heating, or lighting. "
         value: 10
       - label: "None of the above"
-        cite: "Article 6(1): General industrial sub-sector exclusion. [cite: 195-197]"
-        description: "Choose this if your industrial AI doesn't fall under these specific categories. [cite: 195-197]"
+        cite: "AI Act Article 6(1): General industrial sub-sector exclusion. "
+        description: "Choose this if your industrial AI doesn't fall under these specific categories. "
         value: 0
         exclusive: true
 
   # --- Sector D: Personal Safety & General Specifics ---
   - id: "q5.spec_d"
     text: "Identify the specific consumer category:"
-    ref: "Annex I: (2) Directive 2009/48/EC; (9) Regulation (EU) 2016/425; (6) Directive 2014/53/EU; (8) Regulation (EU) 2016/424."
+    ref: "AI Act Annex I: (2) Directive 2009/48/EC; (9) Regulation (EU) 2016/425; (6) Directive 2014/53/EU; (8) Regulation (EU) 2016/424."
     type: "multi_choice"
     dependency: "q5.sector == 'D'"
     options:
       - label: "Toys Safety (Dir. 2009/48/EC)"
-        cite: "Annex I, Section A (2): Directive 2009/48/EC on the safety of toys. [cite: 1670]"
-        description: "Choose this for AI built into toys or other products meant for children to play with. [cite: 1670]"
+        cite: "AI Act Annex I, Section A (2): Directive 2009/48/EC on the safety of toys. "
+        description: "Choose this for AI built into toys or other products meant for children to play with. "
         value: 2
       - label: "Personal Protective Equipment (PPE) (Reg. 2016/425)"
-        cite: "Annex I, Section A (9): Regulation (EU) 2016/425 on personal protective equipment. [cite: 1677]"
-        description: "Choose this for AI in safety gear, like smart helmets or high-tech protective vests. [cite: 1677]"
+        cite: "AI Act Annex I, Section A (9): Regulation (EU) 2016/425 on personal protective equipment. "
+        description: "Choose this for AI in safety gear, like smart helmets or high-tech protective vests. "
         value: 9
       - label: "Radio Equipment (Dir. 2014/53/EU)"
-        cite: "Annex I, Section A (6): Directive 2014/53/EU on radio equipment. [cite: 1674]"
-        description: "Choose this for AI in devices that communicate using radio waves, like smartphones or specialized sensors. [cite: 1674]"
+        cite: "AI Act Annex I, Section A (6): Directive 2014/53/EU on radio equipment. "
+        description: "Choose this for AI in devices that communicate using radio waves, like smartphones or specialized sensors. "
         value: 6
       - label: "Cableway Installations (Reg. 2016/424)"
-        cite: "Annex I, Section A (8): Regulation (EU) 2016/424 on cableway installations. [cite: 1676]"
-        description: "Choose this for AI used in ski lifts, gondolas, or cable cars. [cite: 1676]"
+        cite: "AI Act Annex I, Section A (8): Regulation (EU) 2016/424 on cableway installations. "
+        description: "Choose this for AI used in ski lifts, gondolas, or cable cars. "
         value: 8
       - label: "None of the above"
-        cite: "Article 6(1): General consumer sub-sector exclusion. [cite: 195-197]"
-        description: "Choose this if the consumer product isn't covered by these specific safety rules. [cite: 195-197]"
+        cite: "AI Act Article 6(1): General consumer sub-sector exclusion. "
+        description: "Choose this if the consumer product isn't covered by these specific safety rules. "
         value: 0
         exclusive: true
 
   - id: "q5.3rd_party"
     text: "Is a third-party conformity assessment required for this product under sectoral regulations?"
-    ref: "Art 6(1)(b): the product whose safety component is the AI system, or the AI system itself as a product, is required to undergo a third-party conformity assessment, with a view to the placing on the market or putting into service of that product pursuant to the Union harmonisation legislation listed in Annex I."
+    ref: "Art 6(1)(b): the product whose safety component is the AI system, or the AI system itself as a product, is required to undergo a third-party conformity assessment, with a view to the placing on the market or putting into service of that product pursuant to the Union harmonisation legislation listed in AI Act Annex I."
     description: "Does the applicable law mandate external assessment by a Notified Body?"
     type: "single_choice"
     dependency: "(q5.spec_a and 0 not in q5.spec_a) or (q5.spec_b and 0 not in q5.spec_b) or (q5.spec_c and 0 not in q5.spec_c) or (q5.spec_d and 0 not in q5.spec_d)"
     options:
       - label: "Yes"
-        cite: "Art 6(1)(b): the product... is required to undergo a third-party conformity assessment... pursuant to the Union harmonisation legislation listed in Annex I. [cite: 197]"
-        description: "Choose this if the law says an outside expert (like a certification agency) must check your product before you can sell it. [cite: 197]"
+        cite: "Art 6(1)(b): the product... is required to undergo a third-party conformity assessment... pursuant to the Union harmonisation legislation listed in AI Act Annex I. "
+        description: "Choose this if the law says an outside expert (like a certification agency) must check your product before you can sell it. "
         value: 1
       - label: "No"
         cite: "It is not reuiqred to undergo a mandatory third-party assessment."
-        description: "Choose this if you are allowed to check and certify the product's safety yourself without an outside agency. [cite: 197]"
+        description: "Choose this if you are allowed to check and certify the product's safety yourself without an outside agency. "
         value: 0
 
   # =========================================================================
-  # PATHWAY 2: Annex III Critical Areas (Article 6(2))
+  # PATHWAY 2: AI Act Annex III Critical Areas (AI Act Article 6(2))
   # =========================================================================
 
   - id: "q5.area_select"
     text: "Does your AI system operate in any of these sensitive areas?"
-    ref: "Annex III, Points 1-8: HIGH-RISK AI SYSTEMS REFERRED TO IN ARTICLE 6(2). this may include biometrics, critical infrastructure, education, employment, essential services, law enforcement, migration, and justice."
+    ref: "AI Act Annex III, Points 1-8: HIGH-RISK AI SYSTEMS REFERRED TO IN ARTICLE 6(2). this may include biometrics, critical infrastructure, education, employment, essential services, law enforcement, migration, and justice."
     description: "Select the broad area of intended use. If none apply, select 'None'."
     type: "single_choice"
     dependency: "q5.3rd_party != 1"
     options:
       - label: "Biometrics"
-        cite: "Annex III, Point 1: AI systems in the area of biometrics. [cite: 1714]"
-        description: "Choose this if the AI identifies or sorts people based on physical traits like their face, fingerprints, or voice. [cite: 1714]"
+        cite: "AI Act Annex III, Point 1: AI systems in the area of biometrics."
+        description: "Choose this if the AI identifies or sorts people based on physical traits like their face, fingerprints, or voice."
         value: 1
       - label: "Critical Infrastructure"
-        cite: "Annex III, Point 2: AI systems in the area of critical infrastructure. [cite: 1719]"
-        description: "Choose this if the AI manages essential services like the power grid, water supply, or city traffic. [cite: 1719]"
+        cite: "AI Act Annex III, Point 2: AI systems in the area of critical infrastructure. "
+        description: "Choose this if the AI manages essential services like the power grid, water supply, or city traffic. "
         value: 2
       - label: "Education and Vocational Training"
-        cite: "Annex III, Point 3: AI systems in the area of education and vocational training. [cite: 1720]"
-        description: "Choose this for AI used in schools for things like admissions, grading students, or watching for cheating. [cite: 1720]"
+        cite: "AI Act Annex III, Point 3: AI systems in the area of education and vocational training."
+        description: "Choose this for AI used in schools for things like admissions, grading students, or watching for cheating"
         value: 3
       - label: "Employment and Worker Management"
-        cite: "Annex III, Point 4: AI systems in the area of employment, workers’ management and access to self-employment. [cite: 1725]"
-        description: "Choose this for AI used to hire people, monitor employee work, or decide on promotions and firings. [cite: 1725]"
+        cite: "AI Act Annex III, Point 4: AI systems in the area of employment, workers’ management and access to self-employment."
+        description: "Choose this for AI used to hire people, monitor employee work, or decide on promotions and firings."
         value: 4
       - label: "Essential Private and Public Services"
-        cite: "Annex III, Point 5: AI systems in the area of access to and enjoyment of essential private services and essential public services and benefits. [cite: 1728]"
-        description: "Choose this for AI used for credit scores, insurance prices, or managing emergency services like 112 calls. [cite: 1728]"
+        cite: "AI Act Annex III, Point 5: AI systems in the area of access to and enjoyment of essential private services and essential public services and benefits."
+        description: "Choose this for AI used for credit scores, insurance prices, or managing emergency services like 112 calls."
         value: 5
       - label: "Law Enforcement"
-        cite: "Annex III, Point 6: AI systems in the area of law enforcement. [cite: 1733]"
-        description: "Choose this for AI used by the police for things like analyzing evidence or predicting crime risks. [cite: 1733]"
+        cite: "AI Act Annex III, Point 6: AI systems in the area of law enforcement. "
+        description: "Choose this for AI used by the police for things like analyzing evidence or predicting crime risks."
         value: 6
       - label: "Migration, Asylum and Border Control"
-        cite: "Annex III, Point 7: AI systems in the area of migration, asylum and border control management. [cite: 1739]"
-        description: "Choose this for AI used at borders, for visa applications, or for processing asylum seekers. [cite: 1739]"
+        cite: "AI Act Annex III, Point 7: AI systems in the area of migration, asylum and border control management."
+        description: "Choose this for AI used at borders, for visa applications, or for processing asylum seekers."
         value: 7
       - label: "Administration of Justice and Democracy"
-        cite: "Annex III, Point 8: AI systems in the area of administration of justice and democratic processes. [cite: 1744]"
-        description: "Choose this for AI that helps judges make decisions or is used during elections. [cite: 1744]"
+        cite: "AI Act Annex III, Point 8: AI systems in the area of administration of justice and democratic processes."
+        description: "Choose this for AI that helps judges make decisions or is used during elections."
         value: 8
       - label: "None of the above"
-        cite: "Annex III: General exclusion from critical area high-risk pathway. [cite: 1711-1713]"
-        description: "Choose this if your AI isn't used in any of these major public or government sectors. [cite: 1711-1713]"
+        cite: "AI Act Annex III: General exclusion from critical area high-risk pathway. "
+        description: "Choose this if your AI isn't used in any of these major public or government sectors."
         value: 0
 
   # --- Area 1: Biometrics ---
   - id: "q5.spec_bi"
     text: "Identify the specific biometric use cases:"
-    ref: "Annex III, Point 1: 1. Biometrics, in so far as their use is permitted under relevant Union or national law: (a) Remote biometric identification systems... (b) AI systems intended to be used to categorise natural persons according to sensitive or protected characteristics... (c) AI systems intended to be used for emotion recognition."
+    ref: "AI Act Annex III, Point 1: 1. Biometrics, in so far as their use is permitted under relevant Union or national law: (a) Remote biometric identification systems... (b) AI systems intended to be used to categorise natural persons according to sensitive or protected characteristics... (c) AI systems intended to be used for emotion recognition."
     type: "multi_choice"
     dependency: "q5.area_select == 1"
     options:
       - label: "Remote biometric identification systems (real-time and post identification, excluding sole verification/authentication)"
-        cite: "Annex III, Point 1(a): remote biometric identification systems. [cite: 1715]"
-        description: "Choose this if the system identifies people from a distance in a crowd, either in real-time or from old recordings. [cite: 1715]"
+        cite: "AI Act Annex III, Point 1(a): remote biometric identification systems. "
+        description: "Choose this if the system identifies people from a distance in a crowd, either in real-time or from old recordings."
         value: 1
       - label: "Biometric categorization to infer sensitive/protected attributes (race, politics, religion, sex life, etc.)"
-        cite: "Annex III, Point 1(b): AI systems intended to be used for biometric categorisation, according to sensitive or protected attributes. [cite: 1717]"
-        description: "Choose this if the system sorts people into groups based on sensitive traits like race or religion. [cite: 1717]"
+        cite: "AI Act Annex III, Point 1(b): AI systems intended to be used for biometric categorisation, according to sensitive or protected attributes. "
+        description: "Choose this if the system sorts people into groups based on sensitive traits like race or religion."
         value: 2
       - label: "Emotion recognition systems"
-        cite: "Annex III, Point 1(c): AI systems intended to be used for emotion recognition. [cite: 1718]"
-        description: "Choose this if the AI is built to figure out a person's mood or feelings from their physical appearance. [cite: 1718]"
+        cite: "AI Act Annex III, Point 1(c): AI systems intended to be used for emotion recognition. "
+        description: "Choose this if the AI is built to figure out a person's mood or feelings from their physical appearance."
         value: 3
       - label: "None of the above"
-        cite: "Annex III, Point 1: Exclusion for sole purpose of biometric verification (1:1). [cite: 1716]"
-        description: "Choose this if you only use biometrics for simple tasks like letting a specific user unlock their own device. [cite: 1716]"
+        cite: "AI Act Annex III, Point 1: Exclusion for sole purpose of biometric verification (1:1). "
+        description: "Choose this if you only use biometrics for simple tasks like letting a specific user unlock their own device."
         value: 0
         exclusive: true
 
   # --- Area 2: Critical Infrastructure ---
   - id: "q5.spec_ci"
     text: "Identify the critical infrastructure safety functions:"
-    ref: "Annex III, Point 2: 2. Critical infrastructure: (a) AI systems intended to be used as safety components in the management and operation of critical digital infrastructure, road traffic and the supply of water, gas, heating and electricity."
+    ref: "AI Act Annex III, Point 2: 2. Critical infrastructure: (a) AI systems intended to be used as safety components in the management and operation of critical digital infrastructure, road traffic and the supply of water, gas, heating and electricity."
     type: "multi_choice"
     dependency: "q5.area_select == 2"
     options:
       - label: "Safety components in road traffic management or the supply of water, gas, heating or electricity"
-        cite: "Annex III, Point 2: AI systems intended to be used as safety components in... road traffic and the supply of water, gas, heating and electricity. [cite: 1719]"
-        description: "Choose this if the AI helps prevent crashes or utility failures in physical networks like water or roads. [cite: 1719]"
+        cite: "AI Act Annex III, Point 2: AI systems intended to be used as safety components in... road traffic and the supply of water, gas, heating and electricity. "
+        description: "Choose this if the AI helps prevent crashes or utility failures in physical networks like water or roads."
         value: 1
       - label: "Safety components in the management and operation of critical digital infrastructure"
-        cite: "Annex III, Point 2: AI systems intended to be used as safety components in the management and operation of critical digital infrastructure. [cite: 1719]"
-        description: "Choose this if the AI keeps essential internet systems and digital communications running safely. [cite: 1719]"
+        cite: "AI Act Annex III, Point 2: AI systems intended to be used as safety components in the management and operation of critical digital infrastructure. "
+        description: "Choose this if the AI keeps essential internet systems and digital communications running safely."
         value: 2
       - label: "None of the above"
-        cite: "Annex III, Point 2: Exclusion for non-safety related management of infrastructure. [cite: 1719]"
-        description: "Choose this if the AI doesn't handle safety-critical tasks for these utility networks. [cite: 1719]"
+        cite: "AI Act Annex III, Point 2: Exclusion for non-safety related management of infrastructure. "
+        description: "Choose this if the AI doesn't handle safety-critical tasks for these utility networks."
         value: 0
         exclusive: true
 
   # --- Area 3: Education ---
   - id: "q5.spec_ed"
     text: "Identify the educational use cases:"
-    ref: "Annex III, Point 3: 3. Education and vocational training: (a) AI systems intended to be used to determine access or admission or to assign natural persons to educational and vocational training institutions at all levels; (b) AI systems intended to be used to evaluate learning outcomes, including those that may be used to steer the learning process... (c) AI systems intended to be used for monitoring and detecting prohibited behaviour of students during tests."
+    ref: "AI Act Annex III, Point 3: 3. Education and vocational training: (a) AI systems intended to be used to determine access or admission or to assign natural persons to educational and vocational training institutions at all levels; (b) AI systems intended to be used to evaluate learning outcomes, including those that may be used to steer the learning process... (c) AI systems intended to be used for monitoring and detecting prohibited behaviour of students during tests."
     type: "multi_choice"
     dependency: "q5.area_select == 3"
     options:
       - label: "Determining access, admission, or assigning individuals to educational and vocational training institutions"
-        cite: "Annex III, Point 3(a): AI systems intended to be used to determine access or admission or to assign natural persons. [cite: 1721]"
-        description: "Choose this if the AI decides which students get into a school or which class they are placed in. [cite: 1721]"
+        cite: "AI Act Annex III, Point 3(a): AI systems intended to be used to determine access or admission or to assign natural persons. "
+        description: "Choose this if the AI decides which students get into a school or which class they are placed in."
         value: 1
       - label: "Evaluating learning outcomes, including for people who may be assigned to a specific level of education"
-        cite: "Annex III, Point 3(b): AI systems intended to be used to evaluate learning outcomes. [cite: 1722]"
-        description: "Choose this if the AI grades students or judges their academic progress and skills. [cite: 1722]"
+        cite: "AI Act Annex III, Point 3(b): AI systems intended to be used to evaluate learning outcomes. "
+        description: "Choose this if the AI grades students or judges their academic progress and skills."
         value: 2
       - label: "Assessing the appropriate level of education or steering the learning process of an individual"
-        cite: "Annex III, Point 3(b) & (c): AI systems intended to be used for... steering the learning process... or assessing the appropriate level of education. [cite: 1722-1723]"
-        description: "Choose this if the AI guides how a student learns or decides what difficulty level they should study at. [cite: 1722-1723]"
+        cite: "AI Act Annex III, Point 3(b) & (c): AI systems intended to be used for... steering the learning process... or assessing the appropriate level of education. "
+        description: "Choose this if the AI guides how a student learns or decides what difficulty level they should study at."
         value: 3
       - label: "Monitoring and detecting prohibited behavior by students during tests"
-        cite: "Annex III, Point 3(d): AI systems intended to be used for monitoring and detecting prohibited behaviour of students during tests. [cite: 1724]"
-        description: "Choose this if the AI watches students during exams to catch cheating or unusual behavior. [cite: 1724]"
+        cite: "AI Act Annex III, Point 3(d): AI systems intended to be used for monitoring and detecting prohibited behaviour of students during tests. "
+        description: "Choose this if the AI watches students during exams to catch cheating or unusual behavior."
         value: 4
       - label: "None of the above"
-        cite: "Annex III, Point 3: Exclusion for purely administrative education tools. [cite: 1720]"
-        description: "Choose this if the AI is used for general tasks that don't directly affect student grades or admissions. [cite: 1720]"
+        cite: "AI Act Annex III, Point 3: Exclusion for purely administrative education tools. "
+        description: "Choose this if the AI is used for general tasks that don't directly affect student grades or admissions."
         value: 0
         exclusive: true
 
   # --- Area 4: Employment ---
   - id: "q5.spec_em"
     text: "Identify the employment use cases:"
-    ref: "Annex III, Point 4: 4. Employment, workers management and access to self-employment: (a) AI systems intended to be used for recruitment or selection of natural persons... (b) AI systems intended to be used to make decisions affecting terms of work-related relationships, the promotion and as well as the termination of work-related contractual relationships, to allocate tasks... and to monitor and evaluate performance and behaviour of persons in such relationships."
+    ref: "AI Act Annex III, Point 4: 4. Employment, workers management and access to self-employment: (a) AI systems intended to be used for recruitment or selection of natural persons... (b) AI systems intended to be used to make decisions affecting terms of work-related relationships, the promotion and as well as the termination of work-related contractual relationships, to allocate tasks... and to monitor and evaluate performance and behaviour of persons in such relationships."
     type: "multi_choice"
     dependency: "q5.area_select == 4"
     options:
       - label: "Recruitment or selection (placing job ads, screening applications, evaluating candidates)"
-        cite: "Annex III, Point 4(a): AI systems intended to be used for the recruitment or selection of natural persons. [cite: 1726]"
-        description: "Choose this if the AI helps find new hires by filtering resumes or scoring job applicants. [cite: 1726]"
+        cite: "AI Act Annex III, Point 4(a): AI systems intended to be used for the recruitment or selection of natural persons. "
+        description: "Choose this if the AI helps find new hires by filtering resumes or scoring job applicants."
         value: 1
       - label: "Making decisions on promotions, termination, or task allocation based on behavior or traits"
-        cite: "Annex III, Point 4(b): AI systems intended to be used to make decisions affecting... promotion or termination... or to allocate tasks. [cite: 1727]"
-        description: "Choose this if the AI decides who gets promoted, who gets fired, or who gets assigned specific work tasks. [cite: 1727]"
+        cite: "AI Act Annex III, Point 4(b): AI systems intended to be used to make decisions affecting... promotion or termination... or to allocate tasks. "
+        description: "Choose this if the AI decides who gets promoted, who gets fired, or who gets assigned specific work tasks."
         value: 2
       - label: "Monitoring and evaluating performance and behavior of persons in employment relationships"
-        cite: "Annex III, Point 4(b): AI systems intended to be used... to monitor and evaluate the performance and behaviour of persons. [cite: 1727]"
-        description: "Choose this if the AI tracks how well employees are doing their jobs or how they act at work. [cite: 1727]"
+        cite: "AI Act Annex III, Point 4(b): AI systems intended to be used... to monitor and evaluate the performance and behaviour of persons. "
+        description: "Choose this if the AI tracks how well employees are doing their jobs or how they act at work."
         value: 3
       - label: "None of the above"
-        cite: "Annex III, Point 4: Exclusion for administrative tasks like payroll or general scheduling. [cite: 1725]"
-        description: "Choose this if the AI handles simple tasks like paying employees or setting basic schedules. [cite: 1725]"
+        cite: "AI Act Annex III, Point 4: Exclusion for administrative tasks like payroll or general scheduling. "
+        description: "Choose this if the AI handles simple tasks like paying employees or setting basic schedules."
         value: 0
         exclusive: true
 
   # --- Area 5: Essential Services ---
   - id: "q5.spec_es"
     text: "Identify the essential services use cases:"
-    ref: "Annex III, Point 5: 5. Access to and enjoyment of essential private services and essential public services and benefits: (a) AI systems intended to be used by public authorities... to determine eligibility for public assistance benefits and services... (b) AI systems intended to be used to evaluate the creditworthiness of natural persons... (c) AI systems intended to be used to evaluate and classify emergency calls... (d) AI systems intended to be used for risk assessment and pricing in relation to natural persons in the case of life and health insurance."
+    ref: "AI Act Annex III, Point 5: 5. Access to and enjoyment of essential private services and essential public services and benefits: (a) AI systems intended to be used by public authorities... to determine eligibility for public assistance benefits and services... (b) AI systems intended to be used to evaluate the creditworthiness of natural persons... (c) AI systems intended to be used to evaluate and classify emergency calls... (d) AI systems intended to be used for risk assessment and pricing in relation to natural persons in the case of life and health insurance."
     type: "multi_choice"
     dependency: "q5.area_select == 5"
     options:
       - label: "Determining eligibility for public assistance benefits and services"
-        cite: "Annex III, Point 5(a): AI systems intended to be used... to evaluate the eligibility of natural persons for essential public assistance benefits. [cite: 1729]"
-        description: "Choose this if the AI decides who gets government help, like social security or public housing. [cite: 1729]"
+        cite: "AI Act Annex III, Point 5(a): AI systems intended to be used... to evaluate the eligibility of natural persons for essential public assistance benefits. "
+        description: "Choose this if the AI decides who gets government help, like social security or public housing."
         value: 1
       - label: "Credit scoring or assessing creditworthiness (excluding fraud/financial crime prevention)"
-        cite: "Annex III, Point 5(b): AI systems intended to be used to evaluate the creditworthiness of natural persons. [cite: 1730]"
-        description: "Choose this if the AI decides if a person is reliable enough to get a bank loan or a credit card. [cite: 1730]"
+        cite: "AI Act Annex III, Point 5(b): AI systems intended to be used to evaluate the creditworthiness of natural persons. "
+        description: "Choose this if the AI decides if a person is reliable enough to get a bank loan or a credit card."
         value: 2
       - label: "Evaluating and pricing for life and health insurance"
-        cite: "Annex III, Point 5(c): AI systems intended to be used for risk assessment and pricing... in the case of life and health insurance. [cite: 1731]"
-        description: "Choose this if the AI calculates how much someone should pay for insurance or if they can get it at all. [cite: 1731]"
+        cite: "AI Act Annex III, Point 5(c): AI systems intended to be used for risk assessment and pricing... in the case of life and health insurance. "
+        description: "Choose this if the AI calculates how much someone should pay for insurance or if they can get it at all. "
         value: 3
       - label: "Evaluating, classifying, and prioritizing emergency calls (e.g., dispatching fire, medical, police)"
-        cite: "Annex III, Point 5(d): AI systems intended to evaluate and classify emergency calls... or to be used to dispatch emergency first response services. [cite: 1732]"
-        description: "Choose this if the AI sorts 112/emergency calls and decides how fast help should be sent. [cite: 1732]"
+        cite: "AI Act Annex III, Point 5(d): AI systems intended to evaluate and classify emergency calls... or to be used to dispatch emergency first response services. "
+        description: "Choose this if the AI sorts 112/emergency calls and decides how fast help should be sent. "
         value: 4
       - label: "None of the above"
-        cite: "Annex III, Point 5: Exclusion for non-evaluative customer service or pure fraud checks. [cite: 1728]"
-        description: "Choose this if your AI is only used for basic customer help or catching simple payment fraud. [cite: 1728]"
+        cite: "AI Act Annex III, Point 5: Exclusion for non-evaluative customer service or pure fraud checks."
+        description: "Choose this if your AI is only used for basic customer help or catching simple payment fraud. "
         value: 0
         exclusive: true
 
@@ -386,134 +386,134 @@ questions:
 # --- Area 6: Law Enforcement ---
   - id: "q5.spec_le"
     text: "Identify the law enforcement use cases:"
-    ref: "Annex III, Point 6: 6. Law enforcement... (a) risk of victimization... (b) polygraphs... (c) reliability of evidence... (d) risk of offending... (e) profiling..."
+    ref: "AI Act Annex III, Point 6: 6. Law enforcement... (a) risk of victimization... (b) polygraphs... (c) reliability of evidence... (d) risk of offending... (e) profiling..."
     type: "multi_choice"
     dependency: "q5.area_select == 6"
     options:
       - label: "Assessing the risk of a person becoming a victim of criminal offences"
-        cite: "Annex III, Point 6(a): AI systems intended to be used... to assess the risk of a natural person becoming the victim of criminal offences. "
+        cite: "AI Act Annex III, Point 6(a): AI systems intended to be used... to assess the risk of a natural person becoming the victim of criminal offences. "
         description: "Choose this if the AI predicts who might be at risk of having a crime committed against them. "
         value: 1
       - label: "Polygraphs (lie detectors) and similar tools"
-        cite: "Annex III, Point 6(b): AI systems intended to be used... as polygraphs or similar tools. "
+        cite: "AI Act Annex III, Point 6(b): AI systems intended to be used... as polygraphs or similar tools. "
         description: "Choose this if the AI is used to judge if someone is telling the truth during a police interview. "
         value: 2
       - label: "Evaluating the reliability of evidence during investigation or prosecution"
-        cite: "Annex III, Point 6(c): AI systems intended to be used... to evaluate the reliability of evidence in the course of the investigation or prosecution. "
+        cite: "AI Act Annex III, Point 6(c): AI systems intended to be used... to evaluate the reliability of evidence in the course of the investigation or prosecution. "
         description: "Choose this if the AI helps check if evidence is trustworthy. "
         value: 3
       - label: "Assessing the risk of a person offending or re-offending"
-        cite: "Annex III, Point 6(d): AI systems intended to be used... for assessing the risk of a natural person offending or re-offending. "
+        cite: "AI Act Annex III, Point 6(d): AI systems intended to be used... for assessing the risk of a natural person offending or re-offending. "
         description: "Choose this if the AI predicts how likely it is that someone will commit a crime, not based solely on profiling. "
         value: 4
       - label: "Profiling natural persons during detection, investigation or prosecution"
-        cite: "Annex III, Point 6(e): AI systems intended to be used... for the profiling of natural persons as referred to in Article 3(4) of Directive (EU) 2016/680. "
+        cite: "AI Act Annex III, Point 6(e): AI systems intended to be used... for the profiling of natural persons as referred to in AI Act Article 3(4) of Directive (EU) 2016/680. "
         description: "Choose this if the AI creates profiles of suspects or individuals during criminal investigations. "
         value: 5
       - label: "None of the above"
-        cite: "Annex III, Point 6: Exclusion for basic police paperwork or logistics. [cite: 1733]"
-        description: "Choose this if the AI is used for standard office work or organizing police shifts. [cite: 1733]"
+        cite: "AI Act Annex III, Point 6: Exclusion for basic police paperwork or logistics. "
+        description: "Choose this if the AI is used for standard office work or organizing police shifts. "
         value: 0
         exclusive: true
 
   # --- Area 7: Migration ---
   - id: "q5.spec_mi"
     text: "Identify the migration and border control use cases:"
-    ref: "Annex III, Point 7: 7. Migration, asylum and border control management, in so far as their use is permitted under relevant Union or national law: (a) AI systems intended to be used as polygraphs... (b) AI systems intended to be used... to assess a risk... (c) AI systems intended to be used... to examine applications for asylum, visa and residence permits... (d) AI systems intended to be used for the purpose of detecting, identifying or locating natural persons..."
+    ref: "AI Act Annex III, Point 7: 7. Migration, asylum and border control management, in so far as their use is permitted under relevant Union or national law: (a) AI systems intended to be used as polygraphs... (b) AI systems intended to be used... to assess a risk... (c) AI systems intended to be used... to examine applications for asylum, visa and residence permits... (d) AI systems intended to be used for the purpose of detecting, identifying or locating natural persons..."
     type: "multi_choice"
     dependency: "q5.area_select == 7"
     options:
       - label: "Polygraphs or similar tools used in migration context"
-        cite: "Annex III, Point 7(a): AI systems intended to be used... as polygraphs or similar tools. [cite: 1740]"
-        description: "Choose this if the AI is used to check if travelers are being honest during border checks. [cite: 1740]"
+        cite: "AI Act Annex III, Point 7(a): AI systems intended to be used... as polygraphs or similar tools. "
+        description: "Choose this if the AI is used to check if travelers are being honest during border checks. "
         value: 1
       - label: "Assessing risks (security, health, illegal migration) for persons entering the Union"
-        cite: "Annex III, Point 7(b): AI systems intended to be used... to assess a risk... posed by a natural person who intends to enter. [cite: 1741]"
-        description: "Choose this if the AI flags people who might be security or health threats at the border. [cite: 1741]"
+        cite: "AI Act Annex III, Point 7(b): AI systems intended to be used... to assess a risk... posed by a natural person who intends to enter. "
+        description: "Choose this if the AI flags people who might be security or health threats at the border. "
         value: 2
       - label: "Assessing asylum, visa, and residence permit applications"
-        cite: "Annex III, Point 7(c): AI systems intended to be used... to assist... for the examination of applications for asylum, visa or residence permits. [cite: 1742]"
-        description: "Choose this if the AI helps decide who gets a visa or the right to stay in the country. [cite: 1742]"
+        cite: "AI Act Annex III, Point 7(c): AI systems intended to be used... to assist... for the examination of applications for asylum, visa or residence permits. "
+        description: "Choose this if the AI helps decide who gets a visa or the right to stay in the country. "
         value: 3
       - label: "Detecting, identifying or locating persons in border control context"
-        cite: "Annex III, Point 7(d): AI systems intended to be used... for the purpose of detecting, recognising or identifying natural persons. [cite: 1743]"
-        description: "Choose this if the AI is used to track or spot people at or near national borders. [cite: 1743]"
+        cite: "AI Act Annex III, Point 7(d): AI systems intended to be used... for the purpose of detecting, recognising or identifying natural persons. "
+        description: "Choose this if the AI is used to track or spot people at or near national borders. "
         value: 4
       - label: "None of the above"
-        cite: "Annex III, Point 7: Exclusion for airport logistics not related to person identification. [cite: 1739]"
-        description: "Choose this for simple things like managing airport traffic or moving luggage. [cite: 1739]"
+        cite: "AI Act Annex III, Point 7: Exclusion for airport logistics not related to person identification. "
+        description: "Choose this for simple things like managing airport traffic or moving luggage. "
         value: 0
         exclusive: true
 
   # --- Area 8: Justice & Democracy ---
   - id: "q5.spec_jd"
     text: "Identify the justice and democracy use cases:"
-    ref: "Annex III, Point 8: 8. Administration of justice and democratic processes: (a) AI systems intended to be used by a judicial authority or on their behalf to assist a judicial authority in researching and interpreting facts and the law... (b) AI systems intended to be used for influencing the outcome of an election or referendum or the voting behaviour of natural persons..."
+    ref: "AI Act Annex III, Point 8: 8. Administration of justice and democratic processes: (a) AI systems intended to be used by a judicial authority or on their behalf to assist a judicial authority in researching and interpreting facts and the law... (b) AI systems intended to be used for influencing the outcome of an election or referendum or the voting behaviour of natural persons..."
     type: "multi_choice"
     dependency: "q5.area_select == 8"
     options:
       - label: "Assisting a judicial authority in researching/interpreting facts and the law"
-        cite: "Annex III, Point 8(a): AI systems intended to be used by a judicial authority... to assist... in researching and interpreting facts and the law. [cite: 1745]"
-        description: "Choose this if the AI helps judges or courts study legal cases and evidence. [cite: 1745]"
+        cite: "AI Act Annex III, Point 8(a): AI systems intended to be used by a judicial authority... to assist... in researching and interpreting facts and the law. "
+        description: "Choose this if the AI helps judges or courts study legal cases and evidence. "
         value: 1
       - label: "Influencing the outcome of an election/referendum or voting behaviour"
-        cite: "Annex III, Point 8(b): AI systems intended to be used for influencing the outcome of an election... or the voting behaviour. [cite: 1746]"
-        description: "Choose this if the AI is used to target voters or manage how people vote in elections. [cite: 1746]"
+        cite: "AI Act Annex III, Point 8(b): AI systems intended to be used for influencing the outcome of an election... or the voting behaviour. "
+        description: "Choose this if the AI is used to target voters or manage how people vote in elections. "
         value: 2
       - label: "None of the above"
-        cite: "Annex III, Point 8: Exclusion for administrative logistics in courts or campaigns. [cite: 1747]"
-        description: "Choose this if the AI only handles court calendars or organizes political campaign logistics. [cite: 1747]"
+        cite: "AI Act Annex III, Point 8: Exclusion for administrative logistics in courts or campaigns. "
+        description: "Choose this if the AI only handles court calendars or organizes political campaign logistics. "
         value: 0
         exclusive: true
 
   # =========================================================================
-  # EXEMPTION & PROFILING CHECKS (Article 6(3))
+  # EXEMPTION & PROFILING CHECKS (AI Act Article 6(3))
   # =========================================================================
 
   - id: "q5.profiling"
     text: "Does the AI system perform 'profiling' of natural persons?"
-    cite: "Art 6(3): An AI system referred to in Annex III shall in any event be considered to be high-risk where the AI system performs profiling of natural persons. [cite: 206]"
-    ref: "Art 6(3): An AI system referred to in Annex III shall in any event be considered to be high-risk where the AI system performs profiling of natural persons. Art 3(58): ‘profiling’ means profiling as defined in Article 4, point (4), of Regulation (EU) 2016/679."
-    description: "Does your AI use a person's data to evaluate their personality, behavior, health, or economic situation automatically? [cite: 206]"
+    cite: "Art 6(3): An AI system referred to in AI Act Annex III shall in any event be considered to be high-risk where the AI system performs profiling of natural persons."
+    ref: "Art 6(3): An AI system referred to in AI Act Annex III shall in any event be considered to be high-risk where the AI system performs profiling of natural persons. Art 3(58): ‘profiling’ means profiling as defined in AI Act Article 4, point (4), of Regulation (EU) 2016/679."
+    description: "Does your AI use a person's data to evaluate their personality, behavior, health, or economic situation automatically? "
     type: "single_choice"
     dependency: "(q5.spec_bi and 0 not in q5.spec_bi) or (q5.spec_ci and 0 not in q5.spec_ci) or (q5.spec_ed and 0 not in q5.spec_ed) or (q5.spec_em and 0 not in q5.spec_em) or (q5.spec_es and 0 not in q5.spec_es) or (q5.spec_le and 0 not in q5.spec_le and 5 not in q5.spec_le) or (q5.spec_mi and 0 not in q5.spec_mi) or (q5.spec_jd and 0 not in q5.spec_jd)"
     options:
       - label: "Yes"
-        cite: "Art 6(3): AI system... shall always be considered to be high-risk where [it] performs profiling. [cite: 206]"
-        description: "Choose this if your system tries to predict or judge an individual's personal life or characteristics using their data. [cite: 206]"
+        cite: "Art 6(3): AI system... shall always be considered to be high-risk where [it] performs profiling. "
+        description: "Choose this if your system tries to predict or judge an individual's personal life or characteristics using their data. "
         value: 1
       - label: "No"
-        cite: "Art 6(3): Condition for potential exemption if profiling is absent. [cite: 206]"
-        description: "Choose this if the AI doesn't create or use individual profiles to judge specific people. [cite: 206]"
+        cite: "Art 6(3): Condition for potential exemption if profiling is absent. "
+        description: "Choose this if the AI doesn't create or use individual profiles to judge specific people. "
         value: 0
 
   - id: "q5.derogation"
     text: "Does the AI system fulfill any of these operational conditions?"
-    cite: "Art 6(3), second subparagraph: specific conditions under which an Annex III system is not high-risk. [cite: 200-205]"
-    ref: "Art 6(3): ...an AI system referred to in Annex III shall not be considered to be high-risk if it does not pose a significant risk of harm... where any of the following conditions is fulfilled: (a) it is intended to perform a narrow procedural task; (b) it is intended to improve the result of a previously completed human activity; (c) it is intended to detect decision-making patterns or deviations... and is not meant to replace or influence the previously completed human assessment... (d) it is intended to perform a preparatory task..."
-    description: "Meeting these specific conditions might mean your AI is not High-Risk, even if it is in a sensitive area. [cite: 199]"
+    cite: "Art 6(3), second subparagraph: specific conditions under which an AI Act Annex III system is not high-risk. "
+    ref: "Art 6(3): ...an AI system referred to in AI Act Annex III shall not be considered to be high-risk if it does not pose a significant risk of harm... where any of the following conditions is fulfilled: (a) it is intended to perform a narrow procedural task; (b) it is intended to improve the result of a previously completed human activity; (c) it is intended to detect decision-making patterns or deviations... and is not meant to replace or influence the previously completed human assessment... (d) it is intended to perform a preparatory task..."
+    description: "Meeting these specific conditions might mean your AI is not High-Risk, even if it is in a sensitive area. "
     type: "multi_choice"
     dependency: "q5.profiling == 0 and (5 not in q5.spec_le)"
     options:
       - label: "It is intended to perform a narrow procedural task"
-        cite: "Art 6(3), second subparagraph, (a): the AI system is intended to perform a narrow procedural task. [cite: 201]"
-        description: "Choose this if the AI only handles small steps like changing data formats or organizing lists. [cite: 201]"
+        cite: "Art 6(3), second subparagraph, (a): the AI system is intended to perform a narrow procedural task. "
+        description: "Choose this if the AI only handles small steps like changing data formats or organizing lists. "
         value: 1
       - label: "It is intended to improve the result of a previously completed human activity"
-        cite: "Art 6(3), second subparagraph, (b): the AI system is intended to improve the result of a previously completed human activity. [cite: 202]"
-        description: "Choose this if the AI simply checks for typos or small errors in work already finished by a person. [cite: 202]"
+        cite: "Art 6(3), second subparagraph, (b): the AI system is intended to improve the result of a previously completed human activity. "
+        description: "Choose this if the AI simply checks for typos or small errors in work already finished by a person. "
         value: 2
       - label: "It is intended to detect decision-making patterns or deviations from prior patterns and is not meant to replace or influence the previously completed human assessment, without proper human review"
-        cite: "Art 6(3), second subparagraph, (c): the AI system is intended to detect decision-making patterns or deviations... without proper human review. [cite: 203]"
-        description: "Choose this if the AI only highlights unusual decisions for review but doesn't try to change how people decide things. [cite: 203]"
+        cite: "Art 6(3), second subparagraph, (c): the AI system is intended to detect decision-making patterns or deviations... without proper human review. "
+        description: "Choose this if the AI only highlights unusual decisions for review but doesn't try to change how people decide things. "
         value: 3
-      - label: "It is intended to perform a preparatory task to an assessment relevant for the purposes of the use cases listed in Annex III"
-        cite: "Art 6(3), second subparagraph, (d): the AI system is intended to perform a preparatory task to an assessment. [cite: 205]"
-        description: "Choose this if the AI only gets data ready (like scanning documents) for a person to make the actual decision. [cite: 205]"
+      - label: "It is intended to perform a preparatory task to an assessment relevant for the purposes of the use cases listed in AI Act Annex III"
+        cite: "Art 6(3), second subparagraph, (d): the AI system is intended to perform a preparatory task to an assessment. "
+        description: "Choose this if the AI only gets data ready (like scanning documents) for a person to make the actual decision. "
         value: 4
       - label: "None of the above"
-        cite: "Art 6(3): Failure to meet any derogation conditions resulting in high-risk status. [cite: 199-200]"
-        description: "Choose this if your AI has a major role in the decision and doesn't fit these minor task descriptions. [cite: 199-200]"
+        cite: "Art 6(3): Failure to meet any derogation conditions resulting in high-risk status. "
+        description: "Choose this if your AI has a major role in the decision and doesn't fit these minor task descriptions. "
         value: 0
         exclusive: true
 # =========================================================================
@@ -547,13 +547,13 @@ variables:
     initial_value: ""
     rules:
       - condition: "q5.3rd_party == 1"
-        value: "The AI system is a safety component or a standalone product that requires an external safety audit by law (Annex I), making it High-Risk under Article 6(1)."
+        value: "The AI system is a safety component or a standalone product that requires an external safety audit by law (AI Act Annex I), making it High-Risk under AI Act Article 6(1)."
       - condition: "Annex_III_Hit == True and (q5.profiling == 1 or (q5.spec_le and 5 in q5.spec_le))"
-        value: "The system is used in a sensitive public or private sector (Annex III) and performs individual profiling, which automatically classifies it as High-Risk under Article 6(3)."
+        value: "The system is used in a sensitive public or private sector (AI Act Annex III) and performs individual profiling, which automatically classifies it as High-Risk under AI Act Article 6(3)."
       - condition: "Annex_III_Hit == True and q5.profiling == 0 and (0 in q5.derogation)"
-        value: "The system operates in a sensitive area (Annex III) and performs a significant role in decision-making that does not qualify for a 'minor task' exemption, making it High-Risk under Article 6(2)."
+        value: "The system operates in a sensitive area (AI Act Annex III) and performs a significant role in decision-making that does not qualify for a 'minor task' exemption, making it High-Risk under AI Act Article 6(2)."
       - condition: "Annex_III_Hit == True and q5.profiling == 0 and (0 not in q5.derogation)"
-        value: "The system is exempt from High-Risk status because its functions are limited to narrow, preparatory, or purely procedural tasks that pose no significant risk of harm, as per Article 6(3)."
+        value: "The system is exempt from High-Risk status because its functions are limited to narrow, preparatory, or purely procedural tasks that pose no significant risk of harm, as per AI Act Article 6(3)."
       - condition: "else"
         value: "N/A"
 

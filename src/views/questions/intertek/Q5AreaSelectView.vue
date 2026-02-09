@@ -40,11 +40,11 @@ const ui = computed(() =>
         reference: 'REFERENCE',
         annexTitle: 'ANNEX III POINTS 1-8',
         annexDesc:
-          'Lists the specific areas where AI systems are considered high-risk due to their potential impact on fundamental rights, health, or safety. Systems falling under these categories require strict compliance with Article 9-15.',
+          'Lists the specific areas where AI systems are considered high-risk due to their potential impact on fundamental rights, health, or safety. Systems falling under these categories require strict compliance with AI Act Article 9-15.',
         infoTip:
-          'Determining if a system falls under Annex III is a critical step in the Pathway 2 assessment for high-risk classification.',
+          'Determining if a system falls under AI Act Annex III is a critical step in the Pathway 2 assessment for high-risk classification.',
         viewFullAct: 'View Full Act.',
-        tip: 'If your system is used in any Annex III sector listed here, it may be classified as high-risk and must meet Articles 9–15 requirements.',
+        tip: 'If your system is used in any AI Act Annex III sector listed here, it may be classified as high-risk and must meet AI Act Articles 9–15 requirements.',
       },
 )
 const fallbackOptions = computed(() =>
@@ -158,7 +158,7 @@ const fallbackOptions = computed(() =>
         {
           value: 0,
           title: 'None of the above',
-          description: 'My AI system does not operate in any of these sensitive Annex III areas.',
+          description: 'My AI system does not operate in any of these sensitive AI Act Annex III areas.',
           icon: 'block',
           span: 'md:col-span-2',
         },

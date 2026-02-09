@@ -40,8 +40,8 @@ const ui = computed(() =>
         reference: 'REFERENCE',
         articleTitle: 'ARTICLE 6(1)(b)',
         articleDesc:
-          'Third-party conformity assessment is required when mandated by the applicable Union harmonisation legislation in Annex I.',
-        infoTip: 'A Yes answer classifies the system as High-Risk under Annex I.',
+          'Third-party conformity assessment is required when mandated by the applicable Union harmonisation legislation in AI Act Annex I.',
+        infoTip: 'A Yes answer classifies the system as High-Risk under AI Act Annex I.',
         viewFullAct: 'View Full Act.',
         tip: 'Check the sector legislation for whether a notified body is required.',
       },

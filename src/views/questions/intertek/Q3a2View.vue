@@ -38,7 +38,7 @@ const ui = computed(() =>
     : {
         legalContext: 'Legal Context',
         reference: 'REFERENCE',
-        articleTitle: 'Article 2(10)',
+        articleTitle: 'AI Act Article 2(10)',
         articleDesc:
           'This Regulation shall not apply to AI systems that are used by natural persons for purely personal, non-professional activity.',
         infoTip:

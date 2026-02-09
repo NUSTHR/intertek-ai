@@ -41,10 +41,10 @@ const ui = computed(() =>
     : {
         legalContext: 'Legal Context',
         reference: 'REFERENCE',
-        articleTitleSystem: 'Article 3(1) - AI System',
+        articleTitleSystem: 'AI Act Article 3(1) - AI System',
         articleDescSystem:
           "'AI system' means a machine-based system that is designed to operate with varying levels of autonomy and that may exhibit adaptiveness after deployment, and that, for explicit or implicit objectives, infers, from the input it receives, how to generate outputs such as predictions, content, recommendations, or decisions that can influence physical or virtual environments.",
-        articleTitleGpai: 'Article 3(63) - GPAI',
+        articleTitleGpai: 'AI Act Article 3(63) - GPAI',
         articleDescGpai:
           "'General-purpose AI model' means an AI model, including when trained with a large amount of data using self-supervision at scale, that displays significant generality and is capable to competently perform a wide range of distinct tasks regardless of the way the model is placed on the market and that can be integrated into a variety of downstream systems or applications.",
         viewFullAct: 'View Full Act.',

@@ -1,6 +1,6 @@
 module_id: 2
 title: "Classification & Role Identification"
-description: "Determines the regulatory nature of the product and the entity's legal role based on Article 3 definitions."
+description: "Determines the regulatory nature of the product and the entity's legal role based on AI Act Article 3 definitions."
 
 questions:
   # --- Part 1: Classification (AI System vs GPAI vs Non-AI) ---

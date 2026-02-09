@@ -30,7 +30,7 @@ const ui = computed(() =>
         reference: '参考',
         articleTitle: '法规第50(4)条',
         articleDesc:
-          '根据第50(4)条，若内容经过人工审核或编辑控制，并由自然人或法人承担发布责任，则对 AI 生成内容的标识义务可不适用。',
+          '根据人工智能法案第50(4)条，若内容经过人工审核或编辑控制，并由自然人或法人承担发布责任，则对 AI 生成内容的标识义务可不适用。',
         infoTip: '编辑责任意味着对内容准确性、合法性及符合标准承担责任。',
         viewFullAct: '查看法规全文。',
         tip: '仅当内容由人类审阅且由自然人或法人承担编辑责任时，才可适用豁免。',
@@ -40,11 +40,11 @@ const ui = computed(() =>
         reference: 'REFERENCE',
         articleTitle: 'ARTICLE 50(4)',
         articleDesc:
-          'According to Article 50(4), the labeling obligations for AI-generated content do not apply if the content has undergone a process of human review or editorial control and a natural or legal person holds editorial responsibility for the publication of the content.',
+          'According to AI Act Article 50(4), the labeling obligations for AI-generated content do not apply if the content has undergone a process of human review or editorial control and a natural or legal person holds editorial responsibility for the publication of the content.',
         infoTip:
           "Editorial responsibility implies accountability for the content's accuracy, legality, and conformity with standards.",
         viewFullAct: 'View Full Act.',
-        tip: 'The exemption applies only when content is reviewed by humans and a natural or legal person assumes editorial responsibility under Article 50.',
+        tip: 'The exemption applies only when content is reviewed by humans and a natural or legal person assumes editorial responsibility under AI Act Article 50.',
       },
 )
 const fallbackOptions = computed(() =>

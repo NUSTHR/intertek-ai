@@ -38,7 +38,7 @@ const ui = computed(() =>
     : {
         legalContext: 'Legal Context',
         reference: 'REFERENCE',
-        articleTitle: 'Article 2(6) & 2(8)',
+        articleTitle: 'AI Act Article 2(6) & 2(8)',
         articleDesc:
           'The regulation does not apply to AI systems developed and put into service for the sole purpose of scientific research and development.',
         infoTip:

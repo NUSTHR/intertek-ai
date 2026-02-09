@@ -1,20 +1,20 @@
 module_id: 1
 title: "范围与通用研发豁免"
-description: "根据第 2 条关于研发的豁免规定，确定该人工智能是否超出法律适用范围。"
+description: "根据人工智能法案第 2 条关于研发的豁免规定，确定该人工智能是否超出法律适用范围。"
 
 # 1. QUESTIONS SECTION
 questions:
   - id: "q1.1"
     text: "您会如何最好地描述您的人工智能产品或项目？"
-    ref: "法规第2(6) 条：本法规不适用于专门为科学研究和开发目的而开发并投入使用的 AI 系统或 AI 模型，包括其输出 [cite: 52]。第 2(8) 条：本法规不适用于在 AI 系统或 AI 模型投放市场或投入使用之前的任何研究、测试或开发活动 [cite: 55]。"
+    ref: "法规第2(6) 条：本法规不适用于专门为科学研究和开发目的而开发并投入使用的 AI 系统或 AI 模型，包括其输出。第 2(8) 条：本法规不适用于在 AI 系统或 AI 模型投放市场或投入使用之前的任何研究、测试或开发活动。"
     type: "single_choice"
     options:
       - label: "仅用于纯科学研究。"
-        cite: "法规第2(6) 条：本法规不适用于……专门为科学研究和开发目的而开发并投入使用的 AI 系统或 AI 模型 [cite: 52]。"
+        cite: "法规第2(6) 条：本法规不适用于……专门为科学研究和开发目的而开发并投入使用的 AI 系统或 AI 模型。"
         description: "若 AI 仅用于科学发现，而非用于商业或业务用途，请选择此项。"
         value: 1
       - label: "这是一个尚未投放市场的开发项目。"
-        cite: "法规第2(8) 条：本法规不适用于……投放市场或投入使用之前的任何研究、测试或开发活动 [cite: 55]。"
+        cite: "法规第2(8) 条：本法规不适用于……投放市场或投入使用之前的任何研究、测试或开发活动。"
         description: "如果您仍在构建或测试，尚未发布该系统供使用或销售，请选择此项。"
         value: 2
       - label: "用于商业或运营用途。"
@@ -23,16 +23,16 @@ questions:
 
   - id: "q1.2"
     text: "您是否在真实世界环境中测试该人工智能？"
-    ref: "法规第2(9) 条：真实世界条件下的测试不应包含在该豁免范围内 [cite: 57]。"
+    ref: "法规第2(9) 条：真实世界条件下的测试不应包含在该豁免范围内。"
     type: "single_choice"
     dependency: "q1.1 == 2"
     options:
       - label: "是"
-        cite: "法规第2(9) 条：真实世界条件下的测试不应包含在该豁免范围内 [cite: 57]。"
+        cite: "法规第2(9) 条：真实世界条件下的测试不应包含在该豁免范围内。"
         description: "如果您是在实验室之外，通过真人测试 AI 的预期用途，请选择此项。"
         value: True
       - label: "否"
-        cite: "法规第3(45) 条：‘真实世界条件下的测试’是指……在实验室或其他模拟环境之外……进行的临时测试 [cite: 130]。"
+        cite: "法规第3(45) 条：‘真实世界条件下的测试’是指……在实验室或其他模拟环境之外……进行的临时测试。"
         description: "如果测试严格限制在实验室或受控的计算机模拟环境中，请选择此项。"
         value: False
 
@@ -56,7 +56,7 @@ variables:
     type: "boolean"
     initial_value: False
     rules:
-      # Testing in real world conditions is not covered by the R&D exclusion [cite: 57]
+      # Testing in real world conditions is not covered by the R&D exclusion
       - condition: "q1.1 == 2 and q1.2 == True"
         value: True
       - condition: "else"
@@ -67,9 +67,9 @@ variables:
     initial_value: ""
     rules:
       - condition: "q1.1 == 1"
-        value: "该系统或模型是专门为科学研究和开发目的而开发并投入使用的，因此根据第 2(6) 条获得本法规的完全豁免。"
+        value: "该系统或模型是专门为科学研究和开发目的而开发并投入使用的，因此根据人工智能法案第 2(6) 条获得本法规的完全豁免。"
       - condition: "q1.1 == 2 and q1.2 == False"
-        value: "根据第 2(8) 条，该项目目前仅限于在受控环境中进行的内部研究、测试或开发活动，尚未投放市场或投入使用。"
+        value: "根据人工智能法案第 2(8) 条，该项目目前仅限于在受控环境中进行的内部研究、测试或开发活动，尚未投放市场或投入使用。"
       - condition: "else"
         value: "无 / 属于适用范围"
 

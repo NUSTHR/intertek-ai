@@ -39,13 +39,13 @@ const ui = computed(() =>
     : {
         legalContext: 'Legal Context',
         reference: 'REFERENCE',
-        articleTitle: 'Article 2(3) & 2(4)',
+        articleTitle: 'AI Act Article 2(3) & 2(4)',
         articleDesc:
           'The EU AI Act does not apply to AI systems developed or used exclusively for military, defense, or national security purposes, nor to systems used for judicial and law enforcement cooperation under international agreements.',
         infoTip:
           'Member States must ensure these systems comply with existing national security frameworks and international obligations.',
         viewFullAct: 'View Full Act.',
-        tip: 'The exclusion applies only when the system is developed or used exclusively for the specified purposes in Article 2(3) or 2(4).',
+        tip: 'The exclusion applies only when the system is developed or used exclusively for the specified purposes in AI Act Article 2(3) or 2(4).',
       },
 )
 const fallbackOptions = computed(() =>

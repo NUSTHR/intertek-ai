@@ -40,7 +40,7 @@ const ui = computed(() =>
         reference: 'REFERENCE',
         articleTitle: 'ARTICLE 50(4) REFERENCE',
         articleDesc:
-          "Article 50(4) establishes that the disclosure obligations for 'deep fakes' or generated content do not apply where the content forms part of an evidently artistic, creative, satirical, fictional or analogous work or programme, subject to appropriate safeguards for the rights and freedoms of third parties.",
+          "AI Act Article 50(4) establishes that the disclosure obligations for 'deep fakes' or generated content do not apply where the content forms part of an evidently artistic, creative, satirical, fictional or analogous work or programme, subject to appropriate safeguards for the rights and freedoms of third parties.",
         infoTip:
           'Exemptions are limited to the extent that they do not prejudice the rights and freedoms of third parties or public interest.',
         viewFullAct: 'View Full Act.',

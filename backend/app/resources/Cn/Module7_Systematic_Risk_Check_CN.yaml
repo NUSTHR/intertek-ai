@@ -1,6 +1,6 @@
 module_id: 7 #"07_gpai_systemic_risk_check"
 title: "通用人工智能模型（GPAI）系统风险检查"
-description: "根据第 51(2) 条的数量阈值或第 51(1)(b) 条下的指定决定，确定通用人工智能模型是否存在系统风险。"
+description: "根据人工智能法案第 51(2) 条的数量阈值或第 51(1)(b) 条下的指定决定，确定通用人工智能模型是否存在系统风险。"
 
 questions:
   - id: "q7.1"

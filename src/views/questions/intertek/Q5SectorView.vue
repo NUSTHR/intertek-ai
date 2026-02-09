@@ -38,11 +38,11 @@ const ui = computed(() =>
     : {
         legalContext: 'Legal Context',
         reference: 'REFERENCE',
-        annexTitle: 'Annex I',
+        annexTitle: 'AI Act Annex I',
         annexDesc:
-          'Refers to the list of Union harmonisation legislation for products as specified in Article 6(1). The high-risk classification depends on whether the AI system is intended to be used as a safety component of a product, or is itself a product, covered by the legislation listed in Annex I.',
+          'Refers to the list of Union harmonisation legislation for products as specified in AI Act Article 6(1). The high-risk classification depends on whether the AI system is intended to be used as a safety component of a product, or is itself a product, covered by the legislation listed in AI Act Annex I.',
         infoTip:
-          'Systems covered by Annex I harmonisation legislation are subject to specific high-risk conformity assessment procedures.',
+          'Systems covered by AI Act Annex I harmonisation legislation are subject to specific high-risk conformity assessment procedures.',
         viewFullAct: 'View Full Act.',
         tip: "Unsure about your product's sector? Check your product's technical documentation for references to CE marking directives.",
       },

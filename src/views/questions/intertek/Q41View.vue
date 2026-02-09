@@ -54,7 +54,7 @@ const ui = computed(() =>
         selectAll: 'Select all that apply',
         legalContext: 'Legal Context',
         reference: 'REFERENCE',
-        articleTitle: 'Article 5: Prohibited AI Practices',
+        articleTitle: 'AI Act Article 5: Prohibited AI Practices',
         articleIntro: '1. The following AI practices shall be prohibited:',
         articleItems: [
           "The placing on the market, the putting into service or the use of an AI system that deploys subliminal techniques beyond a person's consciousness in order to materially distort a person's behavior.",
@@ -64,7 +64,7 @@ const ui = computed(() =>
         ],
         tip: "Any AI system falling under these categories is considered to pose an 'Unacceptable Risk' and is banned in the EU.",
         viewFullAct: 'View Full Act.',
-        complianceTip: 'Compliance with Article 5 is mandatory. Systems identified as prohibited cannot be placed on the EU market.',
+        complianceTip: 'Compliance with AI Act Article 5 is mandatory. Systems identified as prohibited cannot be placed on the EU market.',
       },
 )
 const fallbackOptions = computed<Option[]>(() =>
