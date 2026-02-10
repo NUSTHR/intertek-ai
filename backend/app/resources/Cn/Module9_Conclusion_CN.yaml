@@ -54,7 +54,7 @@ variables:
       - condition: "AI_type == 1 and Systemic_risk == False and Open_source == False"
         value: "Standard GPAI"
       - condition: "AI_type == 1 and Systemic_risk == False and Open_source == True"
-        value: "Standard GPAI (Open Source Exempt)"
+        value: "Standard GPAI (Open Source)"
 
       # Group 4: AI Systems Market Placement
       - condition: "AI_type == 2 and High_risk == True and Transparency_obligation == True"
@@ -128,13 +128,13 @@ variables:
       - condition: "Risk_level == 'Minimal Risk'"
         value: "最小风险"
       - condition: "Risk_level == 'Minimal Risk (Open Source)'"
-        value: "最小风险（开源豁免）"
+        value: "最小风险（开源）"
       - condition: "Risk_level == 'Systemic Risk GPAI'"
         value: "具有系统风险的通用人工智能模型"
       - condition: "Risk_level == 'Standard GPAI'"
         value: "标准通用人工智能模型"
-      - condition: "Risk_level == 'Standard GPAI (Open Source Exempt)'"
-        value: "标准通用人工智能模型（开源豁免）"
+      - condition: "Risk_level == 'Standard GPAI (Open Source)'"
+        value: "标准通用人工智能模型（开源）"
       - condition: "Risk_level == 'High Risk with Additional Transparency Obligations'"
         value: "具有额外透明度义务的高风险"
       - condition: "Risk_level == 'High Risk'"
@@ -185,7 +185,7 @@ variables:
       - condition: "AI_type == 2 and High_risk == False and Transparency_obligation == False and Open_source == False"
         value: "本系统被归类为“最小风险”，因其未触及本法规所定义的不可接受风险、高风险或透明度义务的相关条件。"
       - condition: "AI_type == 2 and High_risk == False and Transparency_obligation == False and Open_source == True"
-        value: "本系统被归类为“最小风险（开源豁免）”。因此系统依据免费及开源许可发布，且因未触及“禁止的人工智能实践”、“高风险人工智能系统”或“受透明度义务约束的系统”之认定标准，故不属于本法规的适用范围。"
+        value: "本系统被归类为“最小风险（开源）”。因此系统依据免费及开源许可发布，且因未触及“禁止的人工智能实践”、“高风险人工智能系统”或“受透明度义务约束的系统”之认定标准，故不属于本法规的适用范围。"
       # 回退选项
       - condition: "else"
         value: "无法根据提供的输入确定具体的风险分类原因。"
@@ -321,12 +321,12 @@ variables:
           授权代表必须核实技术文档已编写且义务已履行，将文档副本供人工智能办公室和国家主管部门查阅并保存 10 年，根据合理要求向人工智能办公室提供必要信息，并配合当局采取的任何行动。如果他们认为提供者违反了义务，必须终止授权并立即通知人工智能办公室。下游提供者有权就违反本法规的行为提出投诉。
           更多详情，请参阅《人工智能法案》第 54 条（授权代表）及第 89 条（补救措施）。
 
-      - condition: "(Risk_level == 'Standard GPAI (Open Source Exempt)') and (Role == 'provider')"
+      - condition: "(Risk_level == 'Standard GPAI (Open Source)') and (Role == 'provider')"
         value: |
           如果您的模型是根据允许访问、使用、修改和分发的免费开源许可证发布的，并且其参数、架构和使用信息已公开发布，则您免除向主管部门和下游提供者提供技术文档的义务。但是，如果模型存在系统性风险，此豁免不适用。您仍必须实施遵守欧盟版权法的政策，发布训练内容摘要，并与委员会和国家主管部门合作。
-          更多详情，请参阅《人工智能法案》第 53(2) 条（开源豁免）及第 53(1)(c)-(d) 条（版权和摘要）。
+          更多详情，请参阅《人工智能法案》第 53(2) 条（开源）及第 53(1)(c)-(d) 条（版权和摘要）。
 
-      - condition: "(Risk_level == 'Standard GPAI (Open Source Exempt)') and (Role != 'provider')"
+      - condition: "(Risk_level == 'Standard GPAI (Open Source)') and (Role != 'provider')"
         value: |
           除非模型存在系统性风险，否则指派授权代表的义务不适用于第 53(2) 条定义的开源模型提供者。下游提供者应核实提供者已实施遵守欧盟版权法的政策，并已发布训练内容摘要。
           更多详情，请参阅《人工智能法案》第 54(6) 条（授权代表例外覆盖）。

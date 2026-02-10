@@ -54,7 +54,7 @@ variables:
       - condition: "AI_type == 1 and Systemic_risk == False and Open_source == False"
         value: "Standard GPAI"
       - condition: "AI_type == 1 and Systemic_risk == False and Open_source == True"
-        value: "Standard GPAI (Open Source Exempt)"
+        value: "Standard GPAI (Open Source)"
 
       # Group 4: AI Systems Market Placement
       - condition: "AI_type == 2 and High_risk == True and Transparency_obligation == True"
@@ -245,12 +245,12 @@ variables:
           Authorised Representatives must verify that the technical documentation has been drawn up and obligations fulfilled, keep a copy of the documentation at the disposal of the AI Office and national competent authorities for 10 years, provide necessary information to the AI Office upon a reasoned request, and cooperate with authorities in any action taken. They must terminate the mandate if they consider the provider is acting contrary to obligations and immediately inform the AI Office. Downstream providers have the right to lodge a complaint alleging an infringement of this Regulation.
           For more details, please refer to AI Act Article 54 (Authorised Representatives) and Article 89 (Remedies).
 
-      - condition: "(Risk_level == 'Standard GPAI (Open Source Exempt)') and (Role == 'provider')"
+      - condition: "(Risk_level == 'Standard GPAI (Open Source)') and (Role == 'provider')"
         value: |
           If your model is released under a free and open-source licence that allows for access, usage, modification, and distribution, and its parameters, architecture, and usage information are made publicly available, you are exempt from the obligations to provide technical documentation to authorities and downstream providers. However, this exemption does not apply if the model presents systemic risk. You must still put in place a policy to comply with Union copyright law, publish a summary of the training content, and cooperate with the Commission and national competent authorities.
           For more details, please refer to AI Act Article 53(2) (Open Source Exemption) and Article 53(1)(c)-(d) (Copyright & Summary).
 
-      - condition: "(Risk_level == 'Standard GPAI (Open Source Exempt)') and (Role != 'provider')"
+      - condition: "(Risk_level == 'Standard GPAI (Open Source)') and (Role != 'provider')"
         value: |
           The obligation to appoint an authorised representative does not apply to providers of open-source models defined in Article 53(2), unless the model presents systemic risks. Downstream providers should verify that the provider has put in place a policy to comply with Union copyright law and made the summary of training content available.
           For more details, please refer to AI Act Article 54(6) (Authorised Rep Exception Override).
