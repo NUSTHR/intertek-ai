@@ -30,10 +30,10 @@ const ui = computed(() =>
     ? {
         legalContext: '法律依据',
         reference: '参考',
-        articleTitleRoles: '法规第3(3)-(7)条：运营者角色',
+        articleTitleRoles: '人工智能法案第3(3)-(7)条：运营者角色',
         articleDescRoles:
           '“提供方”是指以自身名义或商标投放市场或投入使用而开发 AI 系统的人；“部署方”是指在其权限下使用 AI 系统从事专业活动的人。',
-        articleTitleScope: '法规第2(1)(e)条：适用范围',
+        articleTitleScope: '人工智能法案第2(1)(e)条：适用范围',
         articleDescScope: '本法规适用于在欧盟境内设立或位于欧盟的 AI 系统提供方与部署方。',
         infoTip: '不同角色的义务差异显著，正确选择对合规映射至关重要。',
         viewFullAct: '查看法规全文。',

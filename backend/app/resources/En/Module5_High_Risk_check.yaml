@@ -9,20 +9,20 @@ questions:
   
   - id: "q5.role"
     text: "What is the role of your AI system regarding a product?"
-    ref: "Art 6(1)(a): the AI system is intended to be used as a safety component of a product, or the AI system is itself a product, covered by the Union harmonisation legislation listed in AI Act Annex I; Art 3(14): ‘safety component’ means a component of a product or of a system which fulfils a safety function for that product or system, or the failure or malfunctioning of which endangers the health and safety of persons or property;"
+    ref: "AI Act Art 6(1)(a): the AI system is intended to be used as a safety component of a product, or the AI system is itself a product, covered by the Union harmonisation legislation listed in AI Act Annex I; Art 3(14): ‘safety component’ means a component of a product or of a system which fulfils a safety function for that product or system, or the failure or malfunctioning of which endangers the health and safety of persons or property;"
     description: "Define the nature of your AI system's integration or independent function."
     type: "single_choice"
     options:
       - label: "Standalone Product: The AI system itself is the product (e.g., medical device software)."
-        cite: "Art 6(1)(a): the AI system is itself a product, covered by the Union harmonisation legislation listed in AI Act Annex I. "
+        cite: "AI Act Art 6(1)(a): the AI system is itself a product, covered by the Union harmonisation legislation listed in AI Act Annex I. "
         description: "Choose this if the AI software is the main product you are selling, such as a standalone medical app. "
         value: 1
       - label: "Safety Component: The AI is integrated into another product and performs a safety function."
-        cite: "Art 3(14): ‘safety component’ means a component of a product... which fulfils a safety function for that product... or the failure or malfunctioning of which endangers the health and safety of persons or property. "
+        cite: "AI Act Art 3(14): ‘safety component’ means a component of a product... which fulfils a safety function for that product... or the failure or malfunctioning of which endangers the health and safety of persons or property. "
         description: "Choose this if the AI is a part of a larger machine and its job is to keep people safe or prevent accidents. "
         value: 2
       - label: "Non-Safety Component: The AI is a component of a product but does not perform a safety function."
-        cite: "Art 3(14): Logic inferred as not fulfilling a safety function as defined in AI Act Article 3(14). "
+        cite: "AI Act Art 3(14): Logic inferred as not fulfilling a safety function as defined in AI Act Article 3(14). "
         description: "Choose this if the AI is part of a machine but doesn't handle critical safety tasks, like a screen for music in a car. "
         value: 3
       - label: "None of the above"
@@ -191,13 +191,13 @@ questions:
 
   - id: "q5.3rd_party"
     text: "Is a third-party conformity assessment required for this product under sectoral regulations?"
-    ref: "Art 6(1)(b): the product whose safety component is the AI system, or the AI system itself as a product, is required to undergo a third-party conformity assessment, with a view to the placing on the market or putting into service of that product pursuant to the Union harmonisation legislation listed in AI Act Annex I."
+    ref: "AI Act Art 6(1)(b): the product whose safety component is the AI system, or the AI system itself as a product, is required to undergo a third-party conformity assessment, with a view to the placing on the market or putting into service of that product pursuant to the Union harmonisation legislation listed in AI Act Annex I."
     description: "Does the applicable law mandate external assessment by a Notified Body?"
     type: "single_choice"
     dependency: "(q5.spec_a and 0 not in q5.spec_a) or (q5.spec_b and 0 not in q5.spec_b) or (q5.spec_c and 0 not in q5.spec_c) or (q5.spec_d and 0 not in q5.spec_d)"
     options:
       - label: "Yes"
-        cite: "Art 6(1)(b): the product... is required to undergo a third-party conformity assessment... pursuant to the Union harmonisation legislation listed in AI Act Annex I. "
+        cite: "AI Act Art 6(1)(b): the product... is required to undergo a third-party conformity assessment... pursuant to the Union harmonisation legislation listed in AI Act Annex I. "
         description: "Choose this if the law says an outside expert (like a certification agency) must check your product before you can sell it. "
         value: 1
       - label: "No"
@@ -472,47 +472,47 @@ questions:
 
   - id: "q5.profiling"
     text: "Does the AI system perform 'profiling' of natural persons?"
-    cite: "Art 6(3): An AI system referred to in AI Act Annex III shall in any event be considered to be high-risk where the AI system performs profiling of natural persons."
-    ref: "Art 6(3): An AI system referred to in AI Act Annex III shall in any event be considered to be high-risk where the AI system performs profiling of natural persons. Art 3(58): ‘profiling’ means profiling as defined in AI Act Article 4, point (4), of Regulation (EU) 2016/679."
+    cite: "AI Act Art 6(3): An AI system referred to in AI Act Annex III shall in any event be considered to be high-risk where the AI system performs profiling of natural persons."
+    ref: "AI Act Art 6(3): An AI system referred to in AI Act Annex III shall in any event be considered to be high-risk where the AI system performs profiling of natural persons. Art 3(58): ‘profiling’ means profiling as defined in AI Act Article 4, point (4), of Regulation (EU) 2016/679."
     description: "Does your AI use a person's data to evaluate their personality, behavior, health, or economic situation automatically? "
     type: "single_choice"
     dependency: "(q5.spec_bi and 0 not in q5.spec_bi) or (q5.spec_ci and 0 not in q5.spec_ci) or (q5.spec_ed and 0 not in q5.spec_ed) or (q5.spec_em and 0 not in q5.spec_em) or (q5.spec_es and 0 not in q5.spec_es) or (q5.spec_le and 0 not in q5.spec_le and 5 not in q5.spec_le) or (q5.spec_mi and 0 not in q5.spec_mi) or (q5.spec_jd and 0 not in q5.spec_jd)"
     options:
       - label: "Yes"
-        cite: "Art 6(3): AI system... shall always be considered to be high-risk where [it] performs profiling. "
+        cite: "AI Act Art 6(3): AI system... shall always be considered to be high-risk where [it] performs profiling. "
         description: "Choose this if your system tries to predict or judge an individual's personal life or characteristics using their data. "
         value: 1
       - label: "No"
-        cite: "Art 6(3): Condition for potential exemption if profiling is absent. "
+        cite: "AI Act Art 6(3): Condition for potential exemption if profiling is absent. "
         description: "Choose this if the AI doesn't create or use individual profiles to judge specific people. "
         value: 0
 
   - id: "q5.derogation"
     text: "Does the AI system fulfill any of these operational conditions?"
-    cite: "Art 6(3), second subparagraph: specific conditions under which an AI Act Annex III system is not high-risk. "
-    ref: "Art 6(3): ...an AI system referred to in AI Act Annex III shall not be considered to be high-risk if it does not pose a significant risk of harm... where any of the following conditions is fulfilled: (a) it is intended to perform a narrow procedural task; (b) it is intended to improve the result of a previously completed human activity; (c) it is intended to detect decision-making patterns or deviations... and is not meant to replace or influence the previously completed human assessment... (d) it is intended to perform a preparatory task..."
+    cite: "AI Act Art 6(3), second subparagraph: specific conditions under which an AI Act Annex III system is not high-risk. "
+    ref: "AI Act Art 6(3): ...an AI system referred to in AI Act Annex III shall not be considered to be high-risk if it does not pose a significant risk of harm... where any of the following conditions is fulfilled: (a) it is intended to perform a narrow procedural task; (b) it is intended to improve the result of a previously completed human activity; (c) it is intended to detect decision-making patterns or deviations... and is not meant to replace or influence the previously completed human assessment... (d) it is intended to perform a preparatory task..."
     description: "Meeting these specific conditions might mean your AI is not High-Risk, even if it is in a sensitive area. "
     type: "multi_choice"
     dependency: "q5.profiling == 0 and (5 not in q5.spec_le)"
     options:
       - label: "It is intended to perform a narrow procedural task"
-        cite: "Art 6(3), second subparagraph, (a): the AI system is intended to perform a narrow procedural task. "
+        cite: "AI Act Art 6(3), second subparagraph, (a): the AI system is intended to perform a narrow procedural task. "
         description: "Choose this if the AI only handles small steps like changing data formats or organizing lists. "
         value: 1
       - label: "It is intended to improve the result of a previously completed human activity"
-        cite: "Art 6(3), second subparagraph, (b): the AI system is intended to improve the result of a previously completed human activity. "
+        cite: "AI Act Art 6(3), second subparagraph, (b): the AI system is intended to improve the result of a previously completed human activity. "
         description: "Choose this if the AI simply checks for typos or small errors in work already finished by a person. "
         value: 2
       - label: "It is intended to detect decision-making patterns or deviations from prior patterns and is not meant to replace or influence the previously completed human assessment, without proper human review"
-        cite: "Art 6(3), second subparagraph, (c): the AI system is intended to detect decision-making patterns or deviations... without proper human review. "
+        cite: "AI Act Art 6(3), second subparagraph, (c): the AI system is intended to detect decision-making patterns or deviations... without proper human review. "
         description: "Choose this if the AI only highlights unusual decisions for review but doesn't try to change how people decide things. "
         value: 3
       - label: "It is intended to perform a preparatory task to an assessment relevant for the purposes of the use cases listed in AI Act Annex III"
-        cite: "Art 6(3), second subparagraph, (d): the AI system is intended to perform a preparatory task to an assessment. "
+        cite: "AI Act Art 6(3), second subparagraph, (d): the AI system is intended to perform a preparatory task to an assessment. "
         description: "Choose this if the AI only gets data ready (like scanning documents) for a person to make the actual decision. "
         value: 4
       - label: "None of the above"
-        cite: "Art 6(3): Failure to meet any derogation conditions resulting in high-risk status. "
+        cite: "AI Act Art 6(3): Failure to meet any derogation conditions resulting in high-risk status. "
         description: "Choose this if your AI has a major role in the decision and doesn't fit these minor task descriptions. "
         value: 0
         exclusive: true

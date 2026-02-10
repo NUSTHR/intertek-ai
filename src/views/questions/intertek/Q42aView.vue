@@ -28,7 +28,7 @@ const ui = computed(() =>
     ? {
         legalContext: '法律依据',
         reference: '参考',
-        articleTitle: '法规第5(1)(b)条',
+        articleTitle: '人工智能法案第5(1)(b)条',
         articleDesc:
           '禁止将利用自然人或特定群体因年龄、残疾或特定社会或经济状况的脆弱性的 AI 系统投放市场、投入使用或使用，其目的或效果是实质性扭曲该人或该群体成员的行为。',
         infoTip: '利用脆弱性被归类为“不可接受风险”，在欧盟市场严格禁止。',

@@ -5,39 +5,39 @@ description: "This section checks if your AI system is completely banned in the 
 questions:
   - id: "q4.1"
     text: "Which of the following categories best describes the AI system's practice?"
-    ref: "Art 5: Prohibited AI practices. 1. The following AI practices shall be prohibited: (a) the placing on the market, the putting into service or the use of an AI system that deploys subliminal techniques beyond a person’s consciousness or purposefully manipulative or deceptive techniques... (b) the placing on the market, the putting into service or the use of an AI system that exploits any of the vulnerabilities of a natural person or a specific group of persons due to their age, disability or a specific social or economic situation... (c) the placing on the market, the putting into service or the use of AI systems for the evaluation or classification of natural persons or groups of persons over a certain period of time based on their social behaviour or known, inferred or predicted personal or personality characteristics... (d) the placing on the market, the putting into service for this specific purpose, or the use of an AI system for making risk assessments of natural persons in order to assess or predict the risk of a natural person committing a criminal offence... (e) the placing on the market, the putting into service for this specific purpose, or the use of an AI system that create or expand facial recognition databases through the untargeted scraping of facial images from the internet or CCTV footage; (f) the placing on the market, the putting into service for this specific purpose, or the use of AI systems to infer emotions of a natural person in the areas of workplace and education institutions... (g) the placing on the market, the putting into service for this specific purpose, or the use of biometric categorisation systems that categorise individually natural persons based on their biometric data to deduce or infer their race, political opinions, trade union membership, religious or philosophical beliefs, sex life or sexual orientation; (h) the use of ‘real-time’ remote biometric identification systems in publicly accessible spaces for the purposes of law enforcement..."
+    ref: "AI Act Art 5: Prohibited AI practices. 1. The following AI practices shall be prohibited: (a) the placing on the market, the putting into service or the use of an AI system that deploys subliminal techniques beyond a person’s consciousness or purposefully manipulative or deceptive techniques... (b) the placing on the market, the putting into service or the use of an AI system that exploits any of the vulnerabilities of a natural person or a specific group of persons due to their age, disability or a specific social or economic situation... (c) the placing on the market, the putting into service or the use of AI systems for the evaluation or classification of natural persons or groups of persons over a certain period of time based on their social behaviour or known, inferred or predicted personal or personality characteristics... (d) the placing on the market, the putting into service for this specific purpose, or the use of an AI system for making risk assessments of natural persons in order to assess or predict the risk of a natural person committing a criminal offence... (e) the placing on the market, the putting into service for this specific purpose, or the use of an AI system that create or expand facial recognition databases through the untargeted scraping of facial images from the internet or CCTV footage; (f) the placing on the market, the putting into service for this specific purpose, or the use of AI systems to infer emotions of a natural person in the areas of workplace and education institutions... (g) the placing on the market, the putting into service for this specific purpose, or the use of biometric categorisation systems that categorise individually natural persons based on their biometric data to deduce or infer their race, political opinions, trade union membership, religious or philosophical beliefs, sex life or sexual orientation; (h) the use of ‘real-time’ remote biometric identification systems in publicly accessible spaces for the purposes of law enforcement..."
     type: "multi_choice"
     options:
       - label: "Use of subliminal, manipulative, or deceptive techniques"
-        cite: "Art 5(1)(a): 'the placing on the market, the putting into service or the use of an AI system that deploys subliminal techniques beyond a person’s consciousness or purposefully manipulative or deceptive techniques...' [cite: 154]"
+        cite: "AI Act Art 5(1)(a): 'the placing on the market, the putting into service or the use of an AI system that deploys subliminal techniques beyond a person’s consciousness or purposefully manipulative or deceptive techniques...' [cite: 154]"
         description: "Choose this if the system uses 'tricks' like hidden messages or confusing designs to influence people without them knowing. [cite: 154]"
         value: 1
       - label: "Exploitation of vulnerabilities of specific groups"
-        cite: "Art 5(1)(b): 'the placing on the market, the putting into service or the use of an AI system that exploits any of the vulnerabilities of a natural person or a specific group of persons due to their age, disability or a specific social or economic situation...' [cite: 155]"
+        cite: "AI Act Art 5(1)(b): 'the placing on the market, the putting into service or the use of an AI system that exploits any of the vulnerabilities of a natural person or a specific group of persons due to their age, disability or a specific social or economic situation...' [cite: 155]"
         description: "Choose this if the system takes advantage of people because of their age, a disability, or their financial situation to change how they act. [cite: 155]"
         value: 2
       - label: "Social scoring or classification"
-        cite: "Art 5(1)(c): 'AI systems for the evaluation or classification of natural persons or groups of persons over a certain period of time based on their social behaviour or known, inferred or predicted personal or personality characteristics...' [cite: 156]"
+        cite: "AI Act Art 5(1)(c): 'AI systems for the evaluation or classification of natural persons or groups of persons over a certain period of time based on their social behaviour or known, inferred or predicted personal or personality characteristics...' [cite: 156]"
         description: "Choose this if the system gives people a 'social score' or ranks them based on their social behavior, leading to unfair treatment later. [cite: 156]"
         value: 3
       - label: "Risk assessment for criminal offenses (Predictive Policing)"
-        cite: "Art 5(1)(d): 'the use of an AI system for making risk assessments of natural persons in order to assess or predict the risk of a natural person committing a criminal offence...' [cite: 159]"
+        cite: "AI Act Art 5(1)(d): 'the use of an AI system for making risk assessments of natural persons in order to assess or predict the risk of a natural person committing a criminal offence...' [cite: 159]"
         description: "Choose this if the system is used to predict if someone will commit a crime just by looking at their personality traits or profile. [cite: 159]"
         value: 4
       - label: "Scraping of facial images for databases"
-        cite: "Art 5(1)(e): 'AI systems that create or expand facial recognition databases through the untargeted scraping of facial images from the internet or CCTV footage;' [cite: 161]"
+        cite: "AI Act Art 5(1)(e): 'AI systems that create or expand facial recognition databases through the untargeted scraping of facial images from the internet or CCTV footage;' [cite: 161]"
         description: "Choose this if the system gathers face photos from the web or security cameras to build a massive recognition database without a specific legal target. [cite: 161]"
         value: 5
       - label: "Emotion recognition in workplace or education"
-        cite: "Art 5(1)(f): 'AI systems to infer emotions of a natural person in the areas of workplace and education institutions...' [cite: 162]"
+        cite: "AI Act Art 5(1)(f): 'AI systems to infer emotions of a natural person in the areas of workplace and education institutions...' [cite: 162]"
         description: "Choose this if the system tries to guess how employees or students are feeling while they are at work or in school. [cite: 162]"
         value: 6
       - label: "Biometric categorization of sensitive traits"
-        cite: "Art 5(1)(g): 'biometric categorisation systems that categorise individually natural persons based on their biometric data to deduce or infer their race, political opinions, trade union membership, religious or philosophical beliefs, sex life or sexual orientation;' [cite: 163]"
+        cite: "AI Act Art 5(1)(g): 'biometric categorisation systems that categorise individually natural persons based on their biometric data to deduce or infer their race, political opinions, trade union membership, religious or philosophical beliefs, sex life or sexual orientation;' [cite: 163]"
         description: "Choose this if the system uses body measurements (like faces or fingerprints) to sort people by sensitive traits like race, religion, sexual orientation,political opinions or trade union membership. [cite: 163]"
         value: 7
       - label: "Real-time remote biometric identification (RBI)"
-        cite: "Art 5(1)(h): 'the use of ‘real-time’ remote biometric identification systems in publicly accessible spaces for the purposes of law enforcement...' [cite: 165]"
+        cite: "AI Act Art 5(1)(h): 'the use of ‘real-time’ remote biometric identification systems in publicly accessible spaces for the purposes of law enforcement...' [cite: 165]"
         description: "Choose this if the system scans people's faces or bodies in public to identify them instantly for police or law enforcement. [cite: 165]"
         value: 8
       - label: "None of the above"
@@ -51,12 +51,12 @@ questions:
   # -------------------------------------------------------------------------
   - id: "q4.1_a"
     text: "Does the system deploy subliminal techniques beyond a person’s consciousness OR purposefully manipulative or deceptive techniques?"
-    ref: "Art 5(1)(a): the placing on the market, the putting into service or the use of an AI system that deploys subliminal techniques beyond a person’s consciousness or purposefully manipulative or deceptive techniques..."
+    ref: "AI Act Art 5(1)(a): the placing on the market, the putting into service or the use of an AI system that deploys subliminal techniques beyond a person’s consciousness or purposefully manipulative or deceptive techniques..."
     type: "single_choice"
     dependency: "1 in q4.1"
     options:
       - label: "Yes"
-        cite: "Art 5(1)(a): 'an AI system that deploys subliminal techniques beyond a person’s consciousness or purposefully manipulative or deceptive techniques...' [cite: 154]"
+        cite: "AI Act Art 5(1)(a): 'an AI system that deploys subliminal techniques beyond a person’s consciousness or purposefully manipulative or deceptive techniques...' [cite: 154]"
         description: "The system uses hidden cues or tricky designs to influence people without them being aware of it. [cite: 154]"
         value: True
       - label: "No"
@@ -66,12 +66,12 @@ questions:
 
   - id: "q4.1_b"
     text: "Is the objective or the effect of these techniques to materially distort the behaviour of a person or a group of persons by appreciably impairing their ability to make an informed decision?"
-    ref: "Art 5(1)(a): with the objective, or the effect of materially distorting the behaviour of a person or a group of persons by appreciably impairing their ability to make an informed decision..."
+    ref: "AI Act Art 5(1)(a): with the objective, or the effect of materially distorting the behaviour of a person or a group of persons by appreciably impairing their ability to make an informed decision..."
     type: "single_choice"
     dependency: "q4.1_a == True"
     options:
       - label: "Yes"
-        cite: "Art 5(1)(a): 'with the objective, or the effect of materially distorting the behaviour of a person... by appreciably impairing their ability to make an informed decision...' [cite: 154]"
+        cite: "AI Act Art 5(1)(a): 'with the objective, or the effect of materially distorting the behaviour of a person... by appreciably impairing their ability to make an informed decision...' [cite: 154]"
         description: "The system's influence is strong enough that it stops people from making their own normal, smart choices. [cite: 154]"
         value: True
       - label: "No"
@@ -81,12 +81,12 @@ questions:
 
   - id: "q4.1_c"
     text: "Does this distortion cause the person to take a decision that they would not have otherwise taken?"
-    ref: "Art 5(1)(a): thereby causing them to take a decision that they would not have otherwise taken..."
+    ref: "AI Act Art 5(1)(a): thereby causing them to take a decision that they would not have otherwise taken..."
     type: "single_choice"
     dependency: "q4.1_b == True"
     options:
       - label: "Yes"
-        cite: "Art 5(1)(a): 'thereby causing them to take a decision that they would not have otherwise taken...' [cite: 154]"
+        cite: "AI Act Art 5(1)(a): 'thereby causing them to take a decision that they would not have otherwise taken...' [cite: 154]"
         description: "Because of the AI's influence, the person did something they would normally have refused to do. [cite: 154]"
         value: True
       - label: "No"
@@ -96,12 +96,12 @@ questions:
 
   - id: "q4.1_d"
     text: "Does taking that decision cause, or is it reasonably likely to cause, significant harm to that person, another person, or a group of persons?"
-    ref: "Art 5(1)(a): in a manner that causes or is reasonably likely to cause that person, another person or group of persons significant harm;"
+    ref: "AI Act Art 5(1)(a): in a manner that causes or is reasonably likely to cause that person, another person or group of persons significant harm;"
     type: "single_choice"
     dependency: "q4.1_c == True"
     options:
       - label: "Yes"
-        cite: "Art 5(1)(a): 'in a manner that causes or is reasonably likely to cause that person, another person or group of persons significant harm;' [cite: 154]"
+        cite: "AI Act Art 5(1)(a): 'in a manner that causes or is reasonably likely to cause that person, another person or group of persons significant harm;' [cite: 154]"
         description: "This forced decision leads to serious injury, major mental distress, or significant financial loss. [cite: 154]"
         value: True
       - label: "No"
@@ -114,12 +114,12 @@ questions:
   # -------------------------------------------------------------------------
   - id: "q4.2_a"
     text: "Does the system exploit vulnerabilities of a natural person or specific group due to their age, disability, or a specific social or economic situation?"
-    ref: "Art 5(1)(b): the placing on the market, the putting into service or the use of an AI system that exploits any of the vulnerabilities of a natural person or a specific group of persons due to their age, disability or a specific social or economic situation..."
+    ref: "AI Act Art 5(1)(b): the placing on the market, the putting into service or the use of an AI system that exploits any of the vulnerabilities of a natural person or a specific group of persons due to their age, disability or a specific social or economic situation..."
     type: "single_choice"
     dependency: "2 in q4.1"
     options:
       - label: "Yes"
-        cite: "Art 5(1)(b): 'an AI system that exploits any of the vulnerabilities of a natural person or a specific group... due to their age, disability or a specific social or economic situation...' [cite: 155]"
+        cite: "AI Act Art 5(1)(b): 'an AI system that exploits any of the vulnerabilities of a natural person or a specific group... due to their age, disability or a specific social or economic situation...' [cite: 155]"
         description: "The system specifically targets weaknesses in certain people, like children, the elderly, or those in poverty. [cite: 155]"
         value: True
       - label: "No"
@@ -129,12 +129,12 @@ questions:
 
   - id: "q4.2_b"
     text: "Is the objective or effect to materially distort the behaviour of that person or a person belonging to that group?"
-    ref: "Art 5(1)(b): with the objective, or the effect, of materially distorting the behaviour of that person or a person belonging to that group..."
+    ref: "AI Act Art 5(1)(b): with the objective, or the effect, of materially distorting the behaviour of that person or a person belonging to that group..."
     type: "single_choice"
     dependency: "q4.2_a == True"
     options:
       - label: "Yes"
-        cite: "Art 5(1)(b): 'with the objective, or the effect, of materially distorting the behaviour of that person or a person belonging to that group...' [cite: 155]"
+        cite: "AI Act Art 5(1)(b): 'with the objective, or the effect, of materially distorting the behaviour of that person or a person belonging to that group...' [cite: 155]"
         description: "The AI is designed to significantly change how these vulnerable people act. [cite: 155]"
         value: True
       - label: "No"
@@ -144,12 +144,12 @@ questions:
 
   - id: "q4.2_c"
     text: "Does this distortion cause, or is it reasonably likely to cause, significant harm to that person or another person?"
-    ref: "Art 5(1)(b): in a manner that causes or is reasonably likely to cause that person or another person significant harm;"
+    ref: "AI Act Art 5(1)(b): in a manner that causes or is reasonably likely to cause that person or another person significant harm;"
     type: "single_choice"
     dependency: "q4.2_b == True"
     options:
       - label: "Yes"
-        cite: "Art 5(1)(b): 'in a manner that causes or is reasonably likely to cause that person or another person significant harm;' [cite: 155]"
+        cite: "AI Act Art 5(1)(b): 'in a manner that causes or is reasonably likely to cause that person or another person significant harm;' [cite: 155]"
         description: "The change in behavior is likely to lead to serious injury or other major damage. [cite: 155]"
         value: True
       - label: "No"
@@ -162,12 +162,12 @@ questions:
   # -------------------------------------------------------------------------
   - id: "q4.3_a"
     text: "Does the system evaluate or classify natural persons or groups over a period of time based on their social behaviour or known, inferred, or predicted personal/personality characteristics?"
-    ref: "Art 5(1)(c): the placing on the market, the putting into service or the use of AI systems for the evaluation or classification of natural persons or groups of persons over a certain period of time based on their social behaviour or known, inferred or predicted personal or personality characteristics..."
+    ref: "AI Act Art 5(1)(c): the placing on the market, the putting into service or the use of AI systems for the evaluation or classification of natural persons or groups of persons over a certain period of time based on their social behaviour or known, inferred or predicted personal or personality characteristics..."
     type: "single_choice"
     dependency: "3 in q4.1"
     options:
       - label: "Yes"
-        cite: "Art 5(1)(c): 'the evaluation or classification of natural persons or groups... over a certain period of time based on their social behaviour or known, inferred or predicted personal or personality characteristics...' [cite: 156]"
+        cite: "AI Act Art 5(1)(c): 'the evaluation or classification of natural persons or groups... over a certain period of time based on their social behaviour or known, inferred or predicted personal or personality characteristics...' [cite: 156]"
         description: "The system watches people over time to judge their character or how they behave in society. [cite: 156]"
         value: True
       - label: "No"
@@ -177,12 +177,12 @@ questions:
 
   - id: "q4.3_b"
     text: "Does this social score lead to detrimental or unfavourable treatment in social contexts that are UNRELATED to the contexts in which the data was originally generated or collected?"
-    ref: "Art 5(1)(c)(i): detrimental or unfavourable treatment of certain natural persons or groups of persons in social contexts that are unrelated to the contexts in which the data was originally generated or collected;"
+    ref: "AI Act Art 5(1)(c)(i): detrimental or unfavourable treatment of certain natural persons or groups of persons in social contexts that are unrelated to the contexts in which the data was originally generated or collected;"
     type: "single_choice"
     dependency: "q4.3_a == True"
     options:
       - label: "Yes"
-        cite: "Art 5(1)(c)(i): 'detrimental or unfavourable treatment... in social contexts that are unrelated to the contexts in which the data was originally generated or collected;' [cite: 157]"
+        cite: "AI Act Art 5(1)(c)(i): 'detrimental or unfavourable treatment... in social contexts that are unrelated to the contexts in which the data was originally generated or collected;' [cite: 157]"
         description: "The score causes problems for the person in a completely different part of their life (e.g., social media behavior affecting a bank loan). [cite: 157]"
         value: True
       - label: "No"
@@ -192,12 +192,12 @@ questions:
 
   - id: "q4.3_c"
     text: "Does this social score lead to detrimental or unfavourable treatment that is unjustified or disproportionate to the social behaviour or its gravity?"
-    ref: "Art 5(1)(c)(ii): detrimental or unfavourable treatment of certain natural persons or groups of persons that is unjustified or disproportionate to their social behaviour or its gravity;"
+    ref: "AI Act Art 5(1)(c)(ii): detrimental or unfavourable treatment of certain natural persons or groups of persons that is unjustified or disproportionate to their social behaviour or its gravity;"
     type: "single_choice"
     dependency: "q4.3_a == True"
     options:
       - label: "Yes"
-        cite: "Art 5(1)(c)(ii): 'detrimental or unfavourable treatment... that is unjustified or disproportionate to their social behaviour or its gravity;' [cite: 158]"
+        cite: "AI Act Art 5(1)(c)(ii): 'detrimental or unfavourable treatment... that is unjustified or disproportionate to their social behaviour or its gravity;' [cite: 158]"
         description: "The punishment or negative result is way too harsh compared to what the person actually did. [cite: 158]"
         value: True
       - label: "No"
@@ -210,12 +210,12 @@ questions:
   # -------------------------------------------------------------------------
   - id: "q4.4_a"
     text: "Is the system used for making risk assessments of natural persons to assess or predict the risk of them committing a criminal offense?"
-    ref: "Art 5(1)(d): the placing on the market, the putting into service for this specific purpose, or the use of an AI system for making risk assessments of natural persons in order to assess or predict the risk of a natural person committing a criminal offence..."
+    ref: "AI Act Art 5(1)(d): the placing on the market, the putting into service for this specific purpose, or the use of an AI system for making risk assessments of natural persons in order to assess or predict the risk of a natural person committing a criminal offence..."
     type: "single_choice"
     dependency: "4 in q4.1"
     options:
       - label: "Yes"
-        cite: "Art 5(1)(d): 'making risk assessments of natural persons in order to assess or predict the risk of a natural person committing a criminal offence...' [cite: 159]"
+        cite: "AI Act Art 5(1)(d): 'making risk assessments of natural persons in order to assess or predict the risk of a natural person committing a criminal offence...' [cite: 159]"
         description: "The AI tries to figure out how likely it is that a specific person will commit a crime in the future. [cite: 159]"
         value: True
       - label: "No"
@@ -225,16 +225,16 @@ questions:
 
   - id: "q4.4_b"
     text: "Is this assessment based SOLELY on the profiling of a natural person or on assessing their personality traits and characteristics?"
-    ref: "Art 5(1)(d): based solely on the profiling of a natural person or on assessing their personality traits and characteristics; this prohibition shall not apply to AI systems used to support the human assessment of the involvement of a person in a criminal activity, which is already based on objective and verifiable facts directly linked to a criminal activity;"
+    ref: "AI Act Art 5(1)(d): based solely on the profiling of a natural person or on assessing their personality traits and characteristics; this prohibition shall not apply to AI systems used to support the human assessment of the involvement of a person in a criminal activity, which is already based on objective and verifiable facts directly linked to a criminal activity;"
     type: "single_choice"
     dependency: "q4.4_a == True"
     options:
       - label: "Yes, Based solely on profiling"
-        cite: "Art 5(1)(d): 'based solely on the profiling of a natural person or on assessing their personality traits and characteristics;' [cite: 159]"
+        cite: "AI Act Art 5(1)(d): 'based solely on the profiling of a natural person or on assessing their personality traits and characteristics;' [cite: 159]"
         description: "The prediction is made just based on who the person is or their traits, not on any actual evidence. [cite: 159]"
         value: True
       - label: "No, It supports human assessment based on objective/verifiable facts"
-        cite: "Art 5(1)(d): 'this prohibition shall not apply to AI systems used to support the human assessment... based on objective and verifiable facts directly linked to a criminal activity;' [cite: 160]"
+        cite: "AI Act Art 5(1)(d): 'this prohibition shall not apply to AI systems used to support the human assessment... based on objective and verifiable facts directly linked to a criminal activity;' [cite: 160]"
         description: "The assessment relies on objective facts (not just personality/profiling) or supports a human officer assessing involvement in a crime based on verifiable facts. [cite: 159, 160]"
         value: False
 
@@ -243,12 +243,12 @@ questions:
   # -------------------------------------------------------------------------
   - id: "q4.5_a"
     text: "Does the system create or expand facial recognition databases?"
-    ref: "Art 5(1)(e): the placing on the market, the putting into service for this specific purpose, or the use of AI systems that create or expand facial recognition databases..."
+    ref: "AI Act Art 5(1)(e): the placing on the market, the putting into service for this specific purpose, or the use of AI systems that create or expand facial recognition databases..."
     type: "single_choice"
     dependency: "5 in q4.1"
     options:
       - label: "Yes"
-        cite: "Art 5(1)(e): 'AI systems that create or expand facial recognition databases...' [cite: 161]"
+        cite: "AI Act Art 5(1)(e): 'AI systems that create or expand facial recognition databases...' [cite: 161]"
         description: "The system is designed to build or grow a library of faces used to identify people. [cite: 161]"
         value: True
       - label: "No"
@@ -258,12 +258,12 @@ questions:
 
   - id: "q4.5_b"
     text: "Is this achieved through the UNTARGETED scraping of facial images from the internet or CCTV footage?"
-    ref: "Art 5(1)(e): through the untargeted scraping of facial images from the internet or CCTV footage;"
+    ref: "AI Act Art 5(1)(e): through the untargeted scraping of facial images from the internet or CCTV footage;"
     type: "single_choice"
     dependency: "q4.5_a == True"
     options:
       - label: "Yes"
-        cite: "Art 5(1)(e): 'through the untargeted scraping of facial images from the internet or CCTV footage;' [cite: 161]"
+        cite: "AI Act Art 5(1)(e): 'through the untargeted scraping of facial images from the internet or CCTV footage;' [cite: 161]"
         description: "The system grabs face photos from the whole internet or from any camera it can find without a specific reason. [cite: 161]"
         value: True
       - label: "No"
@@ -276,12 +276,12 @@ questions:
   # -------------------------------------------------------------------------
   - id: "q4.6_a"
     text: "Is the system used to infer emotions of a natural person?"
-    ref: "Art 5(1)(f): the placing on the market, the putting into service for this specific purpose, or the use of AI systems to infer emotions of a natural person in the areas of workplace and education institutions..."
+    ref: "AI Act Art 5(1)(f): the placing on the market, the putting into service for this specific purpose, or the use of AI systems to infer emotions of a natural person in the areas of workplace and education institutions..."
     type: "single_choice"
     dependency: "6 in q4.1"
     options:
       - label: "Yes"
-        cite: "Art 5(1)(f): 'AI systems to infer emotions of a natural person in the areas of workplace and education institutions...' [cite: 162]"
+        cite: "AI Act Art 5(1)(f): 'AI systems to infer emotions of a natural person in the areas of workplace and education institutions...' [cite: 162]"
         description: "The system tries to figure out if someone is happy, sad, angry, or stressed. [cite: 162]"
         value: True
       - label: "No"
@@ -291,12 +291,12 @@ questions:
 
   - id: "q4.6_b"
     text: "Is the system intended to be put in place for medical or safety reasons?"
-    ref: "Art 5(1)(f): except where the use of the AI system is intended to be put in place or into the market for medical or safety reasons;"
+    ref: "AI Act Art 5(1)(f): except where the use of the AI system is intended to be put in place or into the market for medical or safety reasons;"
     type: "single_choice"
     dependency: "q4.6_a == True"
     options:
       - label: "Yes"
-        cite: "Art 5(1)(f): 'except where the use... is intended to be put in place... for medical or safety reasons;' [cite: 162]"
+        cite: "AI Act Art 5(1)(f): 'except where the use... is intended to be put in place... for medical or safety reasons;' [cite: 162]"
         description: "The system only reads emotions for a health treatment or to keep people safe from immediate danger. [cite: 162]"
         value: True
       - label: "No"
@@ -309,12 +309,12 @@ questions:
   # -------------------------------------------------------------------------
   - id: "q4.7_a"
     text: "Does the system categorise individually natural persons based on their biometric data?"
-    ref: "Art 5(1)(g): the placing on the market, the putting into service for this specific purpose, or the use of biometric categorisation systems that categorise individually natural persons based on their biometric data..."
+    ref: "AI Act Art 5(1)(g): the placing on the market, the putting into service for this specific purpose, or the use of biometric categorisation systems that categorise individually natural persons based on their biometric data..."
     type: "single_choice"
     dependency: "7 in q4.1"
     options:
       - label: "Yes"
-        cite: "Art 5(1)(g): 'biometric categorisation systems that categorise individually natural persons based on their biometric data...' [cite: 163]"
+        cite: "AI Act Art 5(1)(g): 'biometric categorisation systems that categorise individually natural persons based on their biometric data...' [cite: 163]"
         description: "The system uses body features like your face or walk to put you into a group. [cite: 163]"
         value: True
       - label: "No"
@@ -324,12 +324,12 @@ questions:
 
   - id: "q4.7_b"
     text: "Is the purpose to deduce or infer their race, political opinions, trade union membership, religious or philosophical beliefs, sex life, or sexual orientation?"
-    ref: "Art 5(1)(g): to deduce or infer their race, political opinions, trade union membership, religious or philosophical beliefs, sex life or sexual orientation;"
+    ref: "AI Act Art 5(1)(g): to deduce or infer their race, political opinions, trade union membership, religious or philosophical beliefs, sex life or sexual orientation;"
     type: "single_choice"
     dependency: "q4.7_a == True"
     options:
       - label: "Yes"
-        cite: "Art 5(1)(g): 'to deduce or infer their race, political opinions, trade union membership, religious or philosophical beliefs, sex life or sexual orientation;' [cite: 163]"
+        cite: "AI Act Art 5(1)(g): 'to deduce or infer their race, political opinions, trade union membership, religious or philosophical beliefs, sex life or sexual orientation;' [cite: 163]"
         description: "The AI is trying to guess sensitive things about you, like your religion, race, or who you love. [cite: 163]"
         value: True
       - label: "No"
@@ -339,12 +339,12 @@ questions:
 
   - id: "q4.7_c"
     text: "Is this strictly for the labelling or filtering of lawfully acquired biometric datasets in the area of law enforcement?"
-    ref: "Art 5(1)(g): this prohibition does not cover any labelling or filtering of lawfully acquired biometric datasets, such as images, based on biometric data or categorizing of biometric data in the area of law enforcement;"
+    ref: "AI Act Art 5(1)(g): this prohibition does not cover any labelling or filtering of lawfully acquired biometric datasets, such as images, based on biometric data or categorizing of biometric data in the area of law enforcement;"
     type: "single_choice"
     dependency: "q4.7_b == True"
     options:
       - label: "Yes"
-        cite: "Art 5(1)(g): 'this prohibition does not cover any labelling or filtering of lawfully acquired biometric datasets... in the area of law enforcement;' [cite: 164]"
+        cite: "AI Act Art 5(1)(g): 'this prohibition does not cover any labelling or filtering of lawfully acquired biometric datasets... in the area of law enforcement;' [cite: 164]"
         description: "The police are just using it to organize evidence they got legally for a specific case. [cite: 164]"
         value: True
       - label: "No"
@@ -357,12 +357,12 @@ questions:
   # -------------------------------------------------------------------------
   - id: "q4.8_a"
     text: "Is the system a 'real-time' remote biometric identification system used in publicly accessible spaces?"
-    ref: "Art 5(1)(h): the use of ‘real-time’ remote biometric identification systems in publicly accessible spaces for the purposes of law enforcement..."
+    ref: "AI Act Art 5(1)(h): the use of ‘real-time’ remote biometric identification systems in publicly accessible spaces for the purposes of law enforcement..."
     type: "single_choice"
     dependency: "8 in q4.1"
     options:
       - label: "Yes"
-        cite: "Art 5(1)(h): 'the use of ‘real-time’ remote biometric identification systems in publicly accessible spaces...' [cite: 165]"
+        cite: "AI Act Art 5(1)(h): 'the use of ‘real-time’ remote biometric identification systems in publicly accessible spaces...' [cite: 165]"
         description: "The system identifies people on the street or in public parks as soon as they walk by. [cite: 165]"
         value: True
       - label: "No"
@@ -372,12 +372,12 @@ questions:
 
   - id: "q4.8_b"
     text: "Is this 'real-time' remote biometric identification system used for the purposes of law enforcement?"
-    ref: "Art 5(1)(h): for the purposes of law enforcement, unless and in so far as such use is strictly necessary for one of the following objectives..."
+    ref: "AI Act Art 5(1)(h): for the purposes of law enforcement, unless and in so far as such use is strictly necessary for one of the following objectives..."
     type: "single_choice"
     dependency: "q4.8_a == True"
     options:
       - label: "Yes"
-        cite: "Art 5(1)(h): 'for the purposes of law enforcement, unless and in so far as such use is strictly necessary...' [cite: 165]"
+        cite: "AI Act Art 5(1)(h): 'for the purposes of law enforcement, unless and in so far as such use is strictly necessary...' [cite: 165]"
         description: "The police or other authorities are using it to catch criminals or keep the peace. [cite: 165]"
         value: True
       - label: "No"
@@ -387,12 +387,12 @@ questions:
 
   - id: "q4.8_c"
     text: "Is this 'real-time' remote biometric identification system's use strictly necessary for: (i) searching for victims/missing persons, (ii) preventing imminent threat to life/terrorism, or (iii) identifying suspects of serious crimes (AI Act AI Act Annex II)  ?"
-    ref: "Art 5(1)(h)(i)-(iii): (i) the targeted search for specific victims of abduction, trafficking in human beings or sexual exploitation of human beings, as well as the search for missing persons; (ii) the prevention of a specific, substantial and imminent threat to the life or physical safety of natural persons or a genuine and present or genuine and foreseeable threat of a terrorist attack; (iii) the localisation or identification of a person suspected of having committed a criminal offence referred to in AI Act Annex II..."
+    ref: "AI Act Art 5(1)(h)(i)-(iii): (i) the targeted search for specific victims of abduction, trafficking in human beings or sexual exploitation of human beings, as well as the search for missing persons; (ii) the prevention of a specific, substantial and imminent threat to the life or physical safety of natural persons or a genuine and present or genuine and foreseeable threat of a terrorist attack; (iii) the localisation or identification of a person suspected of having committed a criminal offence referred to in AI Act Annex II..."
     type: "single_choice"
     dependency: "q4.8_b == True"
     options:
       - label: "Yes"
-        cite: "Art 5(1)(h)(i-iii): 'strictly necessary for... search for missing persons; prevention of a terrorist attack; localisation of a person suspected of... criminal offence referred to in AI Act Annex II...' [cite: 166, 167, 168]"
+        cite: "AI Act Art 5(1)(h)(i-iii): 'strictly necessary for... search for missing persons; prevention of a terrorist attack; localisation of a person suspected of... criminal offence referred to in AI Act Annex II...' [cite: 166, 167, 168]"
         description: "The system is used for one of the specific emergency objectives, or to identify a suspect of a serious crime (AI Act Annex II) with a maximum sentence of at least 4 years. [cite: 166, 167, 168]"
         value: True
       - label: "No"

@@ -28,7 +28,7 @@ const ui = computed(() =>
     ? {
         legalContext: '法律依据',
         reference: '参考',
-        articleTitle: '法规第50(4)条',
+        articleTitle: '人工智能法案第50(4)条',
         articleDesc:
           '根据人工智能法案第50(4)条，若内容经过人工审核或编辑控制，并由自然人或法人承担发布责任，则对 AI 生成内容的标识义务可不适用。',
         infoTip: '编辑责任意味着对内容准确性、合法性及符合标准承担责任。',

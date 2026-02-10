@@ -28,7 +28,7 @@ const ui = computed(() =>
     ? {
         legalContext: '法律依据',
         reference: '参考',
-        articleTitle: '法规第6(3)条与第3(58)条',
+        articleTitle: '人工智能法案第6(3)条与第3(58)条',
         articleDesc: '“画像”是指自动化处理个人数据，用于评估个人的某些方面。',
         infoTip: '画像是判断高风险类别的重要因素，尤其在招聘与信贷评分场景。',
         viewFullAct: '查看法规全文。',

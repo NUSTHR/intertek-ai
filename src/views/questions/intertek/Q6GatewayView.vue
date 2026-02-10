@@ -37,8 +37,8 @@ const ui = computed(() =>
     ? {
         legalContext: '法律依据',
         reference: '参考',
-        articleTitle: '法规第 50 条参考',
-        articleDesc: '法规第 50 条规定了特定 AI 系统的透明度义务，以确保相关人员知悉与 AI 的交互或技术使用。',
+        articleTitle: '人工智能法案第 50 条参考',
+        articleDesc: '人工智能法案第 50 条规定了特定 AI 系统的透明度义务，以确保相关人员知悉与 AI 的交互或技术使用。',
         infoTip: '无论系统是否为高风险分类，都需要遵守这些透明度规则。',
         viewFullAct: '查看法规全文。',
         tip: '如果系统生成或操纵的内容可能误导用户真实性，应视为深度伪造内容并履行第 50 条义务。',

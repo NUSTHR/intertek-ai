@@ -5,16 +5,16 @@ description: "Evaluates if the system qualifies for open-source exemptions under
 questions:
   - id: "q8.1"
     text: "Is the model/system released under a free and open-source license?"
-    ref: "Art 2(12): This Regulation does not apply to AI systems released under free and open-source licences, unless they are placed on the market or put into service as high-risk AI systems or as an AI system that falls under AI Act Article 5 or 50. Art 53(2): The obligations set out in paragraph 1, points (a) and (b), shall not apply to providers of general-purpose AI models that are released under a free and open-source licence that allows for the access, usage, modification, and distribution of the model, and whose parameters, including the weights, the information on the model architecture, and the information on model usage, are made publicly available. This exception shall not apply to general-purpose AI models with systemic risks."
+    ref: "AI Act Art 2(12): This Regulation does not apply to AI systems released under free and open-source licences, unless they are placed on the market or put into service as high-risk AI systems or as an AI system that falls under AI Act Article 5 or 50. Art 53(2): The obligations set out in paragraph 1, points (a) and (b), shall not apply to providers of general-purpose AI models that are released under a free and open-source licence that allows for the access, usage, modification, and distribution of the model, and whose parameters, including the weights, the information on the model architecture, and the information on model usage, are made publicly available. This exception shall not apply to general-purpose AI models with systemic risks."
     description: "A license that allows for the access, usage, modification, and distribution of the model, and where parameters/weights are made publicly available."
     type: "single_choice"
     options:
       - label: "Yes"
-        cite: "Art 53(2): The obligations... shall not apply to providers of general-purpose AI models... released under a free and open-source licence that allows for the access, usage, modification, and distribution... and whose parameters... are made publicly available."
+        cite: "AI Act Art 53(2): The obligations... shall not apply to providers of general-purpose AI models... released under a free and open-source licence that allows for the access, usage, modification, and distribution... and whose parameters... are made publicly available."
         description: "Select this if the AI system or model is provided under a license that grants users the freedom to use, study, modify, and redistribute the software or model weights."
         value: True
       - label: "No"
-        cite: "Art 2(12) & Art 53(2): Systems that do not meet the criteria for free and open-source licenses, including public availability of parameters and weights, remain subject to the full obligations of the Regulation."
+        cite: "AI Act Art 2(12) & Art 53(2): Systems that do not meet the criteria for free and open-source licenses, including public availability of parameters and weights, remain subject to the full obligations of the Regulation."
         description: "Select this if the system is proprietary or if access to the source code, architecture, or model parameters is restricted."
         value: False
 

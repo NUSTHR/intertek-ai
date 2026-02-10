@@ -29,10 +29,10 @@ const ui = computed(() =>
     ? {
         legalContext: '法律依据',
         reference: '参考',
-        articleTitleRisk: '法规第6(1)(a)条',
+        articleTitleRisk: '人工智能法案第6(1)(a)条',
         articleDescRisk:
           '当 AI 系统作为法规AI法案附件 I 所列协调立法覆盖产品的安全组件，或其本身即为产品时，为高风险。',
-        articleTitleSafety: '法规第3(14)条',
+        articleTitleSafety: '人工智能法案第3(14)条',
         articleDescSafety:
           '“安全组件”是指履行安全功能的产品或系统部件，其失效或故障将危及人员健康安全或财产安全。',
         infoTip: '明确产品角色是判断是否适用第6(1)条分类的关键。',

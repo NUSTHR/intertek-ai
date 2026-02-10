@@ -29,7 +29,7 @@ const ui = computed(() =>
     ? {
         legalContext: '法律依据',
         reference: '参考',
-        articleTitle: '法规第3(3)与3(5)条',
+        articleTitle: '人工智能法案第3(3)与3(5)条',
         articleDesc: 'GPAI 模型提供方指开发或委托开发并将模型投放市场的主体。',
         infoTip: '未在欧盟设立的提供方必须指定授权代表以承担合规监督。',
         viewFullAct: '查看法规全文。',

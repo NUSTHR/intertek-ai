@@ -36,7 +36,7 @@ const ui = computed(() =>
     ? {
         legalContext: '法律依据',
         reference: '参考',
-        articleTitle: '法规第6(3)条条件',
+        articleTitle: '人工智能法案第6(3)条条件',
         articleDesc:
           '根据人工智能法案第6(3)条，法案附件 III 所列高风险 AI 系统在不对健康、安全或基本权利造成重大风险，且不实质影响决策结果时，可不被视为高风险，前提是满足(a)至(d)项条件。',
         infoTip: '若系统对自然人进行画像处理，上述减免不适用。',

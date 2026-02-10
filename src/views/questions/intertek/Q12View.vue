@@ -29,7 +29,7 @@ const ui = computed(() =>
     ? {
         legalContext: '法律依据',
         reference: '参考',
-        articleTitle: '法规第 2(9) 条',
+        articleTitle: '人工智能法案第 2(9) 条',
         articleDesc: '真实世界条件下的测试不适用该排除条款。',
         infoTip: '真实世界测试需要符合欧盟 AI 法下的特定保障与监督要求。',
         viewFullAct: '查看法规全文。',

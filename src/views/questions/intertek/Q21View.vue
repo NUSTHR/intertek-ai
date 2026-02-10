@@ -29,10 +29,10 @@ const ui = computed(() =>
     ? {
         legalContext: '法律依据',
         reference: '参考',
-        articleTitleSystem: '法规第3(1)条：AI 系统',
+        articleTitleSystem: '人工智能法案第3(1)条：AI 系统',
         articleDescSystem:
           '“AI 系统”是指具有不同程度自治、部署后可适应的机器系统，并基于明确或隐含目标，从输入推断输出（如预测、内容、建议或决策），影响物理或虚拟环境。',
-        articleTitleGpai: '法规第3(63)条：GPAI',
+        articleTitleGpai: '人工智能法案第3(63)条：GPAI',
         articleDescGpai:
           '“通用目的 AI 模型”是指通常在规模化自监督训练下具备显著通用性，能胜任多种任务，可集成到多类下游系统或应用的 AI 模型。',
         viewFullAct: '查看法规全文。',

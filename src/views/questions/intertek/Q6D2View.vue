@@ -29,7 +29,7 @@ const ui = computed(() =>
     ? {
         legalContext: '法律依据',
         reference: '参考',
-        articleTitle: '法规第50(4)条',
+        articleTitle: '人工智能法案第50(4)条',
         articleDesc: '在依法授权用于侦测、预防、调查或起诉犯罪的情况下，披露义务不适用。',
         infoTip: '适用豁免前需核对法律授权范围。',
         viewFullAct: '查看法规全文。',

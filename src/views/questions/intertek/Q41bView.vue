@@ -28,7 +28,7 @@ const ui = computed(() =>
     ? {
         legalContext: '法律依据',
         reference: '参考',
-        articleTitle: '法规第5(1)(a)条',
+        articleTitle: '人工智能法案第5(1)(a)条',
         articleDesc:
           '禁止将使用超出个人意识的潜意识技术或有目的的操控或欺骗技术的 AI 系统投放市场、投入使用或使用，其目的或效果是通过显著削弱其作出知情决定的能力来实质性扭曲个人或群体行为……',
         infoTip: '通过此类扭曲导致身体或心理伤害的系统被严格禁止。',

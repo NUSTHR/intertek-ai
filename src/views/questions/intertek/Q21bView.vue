@@ -29,7 +29,7 @@ const ui = computed(() =>
     ? {
         legalContext: '法律依据',
         reference: '参考',
-        articleTitle: '法规第3(63)条',
+        articleTitle: '人工智能法案第3(63)条',
         articleDesc: '通用目的 AI 模型具备广泛通用性，可胜任多种不同任务，与投放市场方式无关。',
         infoTip: '通用性通常通过多样基准测试表现及对下游任务的适配能力衡量。',
         viewFullAct: '查看法规全文。',
