@@ -23,16 +23,16 @@ questions:
 
   - id: "q1.2"
     text: "Are you testing the AI in real-world settings?"
-    ref: "AI Act Art 2(9): Testing in real world conditions shall not be covered by that exclusion."
+    ref: "AI Act Art 2(8): Testing in real world conditions shall not be covered by that exclusion."
     type: "single_choice"
     dependency: "q1.1 == 2"
     options:
       - label: "Yes"
-        cite: "AI Act Art 2(9): Testing in real world conditions shall not be covered by that exclusion[cite: 57]."
+        cite: "AI Act Art 2(8): Testing in real world conditions shall not be covered by that exclusion[cite: 57]."
         description: "Select this if you are testing the AI for its intended use with real people outside of a lab."
         value: True
       - label: "No"
-        cite: "AI Act Art 3(45): ‘testing in real-world conditions’ means the temporary testing... outside a laboratory or otherwise simulated environment[cite: 130]."
+        cite: "AI Act Art 3(57): ‘testing in real-world conditions’ means the temporary testing... outside a laboratory or otherwise simulated environment[cite: 130]."
         description: "Select this if testing stays strictly inside a lab or a controlled computer simulation."
         value: False
 
@@ -69,7 +69,7 @@ variables:
       - condition: "q1.1 == 1"
         value: "The system or model is specifically developed and put into service for the sole purpose of scientific research and development, granting it a total exclusion from the Regulation under AI Act Article 2(6)."
       - condition: "q1.1 == 2 and q1.2 == False"
-        value: "The project is currently limited to internal research, testing, or development activities conducted in controlled environments and has not yet been placed on the market or put into service as per AI Act Article 2(8)."
+        value: "The project is currently limited to internal research, testing, or development activities conducted within a controlled environment, and has not yet been placed on the market or put into service. Therefore, it is fully exempted from the scope of this Regulation pursuant to Article 2(8) of the AI Act."
       - condition: "else"
         value: "None / In-Scope"
 

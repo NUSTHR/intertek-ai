@@ -115,7 +115,7 @@ const summaryRows = computed(() => [
 const riskLevelText = computed(() => String(riskValue.value ?? '').trim())
 const statusTitle = computed(() => {
   const raw = riskLevelText.value
-  if (!raw) return locale.isZh ? '不受监管' : 'Out of Regulation'
+  if (!raw) return locale.isZh ? '不受法案监管' : 'Out of Regulation'
   return raw
 })
 const statusSubtitle = computed(() => {

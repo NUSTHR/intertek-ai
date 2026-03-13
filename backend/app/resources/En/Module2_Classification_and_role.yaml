@@ -29,17 +29,17 @@ questions:
     type: "single_choice"
     dependency: "q2.1 == 4"
     options:
-      - label: "A foundational model meant for other systems"
+      - label: "An AI foundation model intended to be integrated into other systems"
         cite: "AI Act Art 3(63): A general-purpose AI model is one that displays significant generality and is capable of performing a wide range of tasks and being integrated into downstream systems." [cite: 141]
         description: "Select this if the project is a model that is a core component meant to be used inside other software."
         value: 1
-      - label: "A completed system for a specific job"
+      - label: "A complete AI system designed for a specific purpose or task"
         cite: "AI Act Art 3(1): An AI system is a machine-based system designed to operate with autonomy to generate specific outputs based on its objectives." [cite: 65]
         description: "Select this if the product is a complete tool designed for a specific purpose."
         value: 2
       - label: "None of the above"
         cite: "AI Act Art 3(1): Systems that do not use machine-based inference to produce outputs like predictions or content are not classified as AI systems." [cite: 65]
-        description: "Select this if the product is not neither a completed system nor a model."
+        description: "Select this if the product is not neither a completed AI system nor an AI model."
         value: 0
 
   - id: "q2.1b"
@@ -69,15 +69,15 @@ questions:
         description: "Select this if you built the AI or had it built to sell under your name."
         value: 1
       - label: "Deployer"
-        cite: "AI Act Art 3(4): ‘deployer’ means a... body using an AI system under its authority except where the AI system is used in the course of a personal non-professional activity." [cite: 68]
+        cite: "AI Act Art 3(4): ‘deployer’ means a natural or legal person, public authority, agency or other body using an AI system under its authority except where the AI system is used in the course of a personal non-professional activity;" 
         description: "Select this if you use the AI for your business or professional work."
         value: 2
       - label: "Importer"
-        cite: "AI Act Art 3(6): ‘importer’ means a... person located or established in the Union that places on the market an AI system that bears the name... of a person established in a third country." [cite: 70]
+        cite: "AI Act Art 3(6): ‘importer’ means a... person located or established in the Union that places on the market an AI system that bears the name... of a person established in a third country." 
         description: "Select this if you are the first to bring a non-EU AI system into the European market."
         value: 3
       - label: "Distributor"
-        cite: "AI Act Art 3(7): ‘distributor’ means a... person in the supply chain, other than the provider or the importer, that makes an AI system available on the Union market." [cite: 71]
+        cite: "AI Act Art 3(7): ‘distributor’ means a... person in the supply chain, other than the provider or the importer, that makes an AI system available on the Union market." 
         description: "Select this if you sell or provide an AI system that is already in the EU."
         value: 4
       - label: "Authorized Representative"

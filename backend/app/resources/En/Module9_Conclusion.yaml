@@ -85,7 +85,7 @@ variables:
       - condition: "Unacceptable_risk == True"
         value: "This AI practice is classified as 'Unacceptable Risk' and is strictly prohibited. Reason: {{Prohibited_reason}}" 
       - condition: "AI_type == 3"
-        value: "This software falls outside the scope of the Regulation because it does not meet the legal definition of an 'AI System' or a 'General-Purpose AI Model' under AI Act Article 3."
+        value: "This product currently does not qualify as an 'AI system' or 'general-purpose AI model'  under Article 3 of the AI Act, meaning the Act's specific obligations do not apply. Please ensure compliance with standard digital product regulations (e.g., data protection, product safety) upon market launch, and continue to monitor regulatory developments as the product iterates."
 
       # Group 2: Real World Testing (RWT) overrides
       - condition: "Real_world_Testing == True and AI_type == 2 and High_risk == True"
@@ -131,7 +131,7 @@ variables:
       - condition: "Role == 'product_manufacturer'"
         value: "Per AI Act Article 2(1)(e), you are the manufacturer placing an AI system on the market or putting it into service together with your product and under your own name or trademark."
       - condition: "Role == 'Undetermined'"
-        value: "The legal role of the entity remains undefined based on the provided inputs, preventing the assignment of specific liability or obligations under AI Act."
+        value: "The legal role of the entity remains undefined based on the provided inputs."
 
   - name: "Product_Type_Description"
     type: "string"
@@ -142,9 +142,9 @@ variables:
       - condition: "Type == 'General-Purpose AI Model'"
         value: "Per AI Act Article 3(63), this is an AI model that displays significant generality, is capable of competently performing a wide range of distinct tasks, and can be integrated into a variety of downstream systems or applications."
       - condition: "Type == 'Non-regulated products'"
-        value: "Based on the user input, the software does not meet the definition of an AI system under AI Act Article 3(1) or a general-purpose AI model under AI Act Article 3(63) and is therefore outside the scope of the AI Act."
+        value: "Based on the user input, the software does not meet the definition of an AI system under AI Act Article 3(1) or a general-purpose AI model under AI Act Article 3(63)."
       - condition: "else"
-        value: "Based on the user input, the specific category of the product remains undefined, preveting the determination of  theprecise scope of obligations under the AI Act."
+        value: "Based on the user input, the specific category of the product remains undefined."
 
   - name: "View"
     type: "string"
@@ -308,16 +308,15 @@ variables:
 
       - condition: "(Risk_level == 'Transparency Obligation Only') and (Role != 'provider' and Role != 'deployer')"
         value: |
-          As a Distributor, Importer, or other third party, you are subject to the following:
-          1. Deemed Provider Status: You will be considered a "provider" and subject to all provider obligations (including Article 50 transparency) if you place the system on the market under your own name or trademark, make a substantial modification, or modify the intended purpose of the AI system.
-          2. Verification: Importers must verify that the provider has drawn up the technical documentation and that the system is accompanied by instructions for use. Distributors must verify that the system is accompanied by instructions for use and that the provider and importer have complied with their obligations.
-          For more details, please refer to AI Act Article 25, AI Act Article 23, AI Act Article 24, AI Act Article 22.
+          As a distributor, importer, or authorised representative, since this system is not a high-risk AI system, you are exempt from the mandatory obligations set out in Chapter III of the AI Act (such as the verification of technical documentation, CE marking, or conformity assessments). Furthermore, the transparency obligations stipulated in Article 50 (e.g., informing users of AI interaction or marking synthetic content) legally fall directly upon the "providers" and "deployers" of the system.
+          [IMPORTANT NOTICE / WARNING ON CHANGE OF ROLE]:
+          Please be advised that if you place this AI system on the market under your own name or trademark, or if you modify it, you will be legally reclassified as the "provider" of the system pursuant to the definition in Article 3(3) of the AI Act. Should such a transition of roles occur, you will assume direct liability for all transparency obligations laid down in Article 50 (e.g., ensuring the system is equipped with capabilities to mark AI-generated content in a machine-readable format).
       # ------------------------------------------------------------------------
       # PRIORITY 6: MINIMAL RISK
       # ------------------------------------------------------------------------
       - condition: "Risk_level == 'Minimal Risk'"
         value: |
-          This system falls into the Minimal Risk category. The AI Act imposes no mandatory obligations. However, Providers and Deployers are encouraged to voluntarily adhere to Codes of Conduct.
+          This system falls under the Minimal Risk category. It is exempt from the stringent regulatory requirements pertaining to high-risk AI systems or transparency obligations. However, pursuant to Article 4 of the Artificial Intelligence Act, providers and deployers must take measures to ensure a sufficient level of "AI literacy" among their staff and operational personnel. Furthermore, you are encouraged to voluntarily adhere to codes of conduct (Article 95).
           For more details, please refer to AI Act Article 95.
       
       - condition: "Risk_level == 'Minimal Risk (Open Source)'"

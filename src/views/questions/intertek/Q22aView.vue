@@ -89,7 +89,7 @@ const fallbackOptions = computed(() =>
         },
         {
           value: 6,
-          title: '产品制造商',
+          title: '生产商',
           description: '将 AI 系统与其产品一并以自身名义或商标投放市场或投入使用。',
           icon: 'precision_manufacturing',
         },

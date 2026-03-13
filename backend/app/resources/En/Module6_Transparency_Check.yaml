@@ -133,7 +133,7 @@ questions:
 
   # --- DEPLOYER TRACK C: Emotion/Biometric (Art 50.3) ---
   - id: "q6.d.1.le_perm"
-    text: "Is the use of this system permitted by law for crime detection/investigation, subject to appropriate safeguards and in accordance with Union law?"
+    text: "Is the use of this system permitted by law to detect, prevent or investigate criminal offences, subject to appropriate safeguards and in accordance with Union law?"
     ref: "AI Act Art 50(3): This obligation shall not apply... which are permitted by law to detect, prevent or investigate criminal offences..."
     type: "single_choice"
     dependency: "q6.gateway_deployer contains 1"
@@ -248,23 +248,23 @@ variables:
     rules:
       # Provider Reasons
       - condition: "Role == 'provider' and q6.gateway_provider contains 1 and q6.p.1.obvious == False and (q6.p.1.le_auth == False or q6.p.1.public_report == True)"
-        value: "As a provider of an AI system intended to interact directly with natural persons (where it is not obvious), the transparency obligation applies (Art 50(1))"
+        value: "As a provider of an AI system intended to interact directly with natural persons (where it is not obvious), the transparency obligation applies (Art 50(1))."
 
       - condition: "Role == 'provider' and q6.gateway_provider contains 2 and q6.p.2.assistive == False and q6.p.2.le_auth == False"
-        value: "As a provider of an AI system generating synthetic content, the transparency obligation applies (Art 50(2))"
+        value: "As a provider of an AI system generating synthetic content, the transparency obligation applies (Art 50(2))."
 
       # Deployer Reasons
       - condition: "Role == 'deployer' and q6.gateway_deployer contains 1 and q6.d.1.le_perm == False"
-        value: "As a deployer of an emotion recognition system or a biometric categorisation system, the transparency obligation applies (Art 50(3))"
+        value: "As a deployer of an emotion recognition system or a biometric categorisation system, the transparency obligation applies (Art 50(3))."
 
       - condition: "Role == 'deployer' and q6.gateway_deployer contains 2 and q6.d.2.le_auth == False and q6.d.2.artistic == False"
-        value: "As a deployer of an AI system generating deep fakes, the transparency obligation applies (Art 50(4))"
+        value: "As a deployer of an AI system generating deep fakes, the transparency obligation applies (Art 50(4))."
 
       - condition: "Role == 'deployer' and q6.gateway_deployer contains 2 and q6.d.2.le_auth == False and q6.d.2.artistic == True"
-        value: "As a deployer of an AI system generating deep fakes, the transparency obligation applies (Art 50(4)). Though In an artistic context, this transparency obligation is limited to disclosing the existence of the deep fake in an appropriate manner that does not hamper the display or enjoyment of the work"
+        value: "As a deployer of an AI system generating deep fakes, the transparency obligation applies (Art 50(4)). Though In an artistic context, this transparency obligation is limited to disclosing the existence of the deep fake in an appropriate manner that does not hamper the display or enjoyment of the work."
 
       - condition: "Role == 'deployer' and q6.gateway_deployer contains 3 and q6.d.3.le_auth == False and q6.d.3.human_review == False"
-        value: "As a deployer publishing AI-generated text on matters of public interest without human editorial responsibility, the transparency obligation applies (Art 50(4))"
+        value: "As a deployer publishing AI-generated text on matters of public interest without human editorial responsibility, the transparency obligation applies (Art 50(4))."
 
 router:
   - condition: "True"

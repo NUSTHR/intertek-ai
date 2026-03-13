@@ -22,7 +22,7 @@ questions:
         description: "Choose this if the AI is a part of a larger machine and its job is to keep people safe or prevent accidents. "
         value: 2
       - label: "Non-Safety Component: The AI is a component of a product but does not perform a safety function."
-        cite: "AI Act Art 3(14): Logic inferred as not fulfilling a safety function as defined in AI Act Article 3(14). "
+        cite: "AI Act Art 3(14): A component is determined to be a non-safety component if it does not fulfill a safety function for the product or AI system, and its failure does not endanger the health and safety of persons or property."
         description: "Choose this if the AI is part of a machine but doesn't handle critical safety tasks, like a screen for music in a car. "
         value: 3
       - label: "None of the above"
@@ -69,7 +69,7 @@ questions:
         description: "Choose this if the AI is used for airport security, passenger screening, or checking luggage. "
         value: 13
       - label: "Civil Aviation Safety (Reg. 2018/1139) including Unmanned Aircraft"
-        cite: "AI Act Annex I, Section B (9): Regulation (EU) 2018/1139 on common rules in the field of civil aviation safety. "
+        cite: "AI Act Annex I, Section B (8): Regulation (EU) 2018/1139 on common rules in the field of civil aviation safety. "
         description: "Choose this for flight safety systems, drones, or equipment used to fly aircraft remotely. "
         value: 20
       - label: "Motor Vehicles and Trailers (Reg. 2018/858)"
@@ -435,7 +435,7 @@ questions:
         cite: "AI Act Annex III, Point 7(c): AI systems intended to be used... to assist... for the examination of applications for asylum, visa or residence permits. "
         description: "Choose this if the AI helps decide who gets a visa or the right to stay in the country. "
         value: 3
-      - label: "Detecting, identifying or locating persons in border control context"
+      - label: "Detecting or identifying persons in border control context"
         cite: "AI Act Annex III, Point 7(d): AI systems intended to be used... for the purpose of detecting, recognising or identifying natural persons. "
         description: "Choose this if the AI is used to track or spot people at or near national borders. "
         value: 4

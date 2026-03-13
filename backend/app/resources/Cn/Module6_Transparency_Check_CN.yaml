@@ -8,7 +8,7 @@ questions:
   # PROVIDER GATEWAY (提供者入口)
   # ---------------------------------------------------------
   - id: "q6.gateway_provider"
-    text: "作为提供者，您的人工智能系统是否执行以下任何功能？"
+    text: "作为提供者，您的人工智能系统是否具备以下任一功能？"
     ref: "第50(1)-(2)条：规定了提供者在与自然人交互和合成内容生成方面的义务。"
     type: "multi_choice"
     dependency: "Role == 'provider'"
@@ -29,7 +29,7 @@ questions:
 
   # --- PROVIDER TRACK A: Interaction (Art 50.1) (提供者路径A：交互) ---
   - id: "q6.p.1.obvious"
-    text: "对于一个消息灵通、观察敏锐且审慎的自然人来说，他们正在与该人工智能系统进行交互这一事实是否显而易见？"
+    text: "对于一个消息灵通、观察敏锐且审慎的自然人来说，其正在与该人工智能系统进行交互这一事实是否显而易见？"
     ref: "第50(1)条：……除非这对一个消息灵通、观察敏锐且审慎的自然人来说是显而易见的……"
     type: "single_choice"
     dependency: "q6.gateway_provider contains 1"
@@ -133,7 +133,7 @@ questions:
 
   # --- DEPLOYER TRACK C: Emotion/Biometric (Art 50.3) (部署者路径C：情绪/生物特征) ---
   - id: "q6.d.1.le_perm"
-    text: "使用该情绪识别或生物特征分类系统是否为法律所允许用于侦查、预防或调查刑事犯罪？"
+    text: "该情绪识别或生物特征分类系统是否获得法律许可，用于侦查、预防或调查刑事犯罪？"
     ref: "第50(3)条：对于法律允许用于侦查、预防或调查刑事犯罪的……此义务不适用……"
     type: "single_choice"
     dependency: "q6.gateway_deployer contains 1"
@@ -149,7 +149,7 @@ questions:
 
   # --- DEPLOYER TRACK D: Deep Fakes (Art 50.4) (部署者路径D：深度伪造) ---
   - id: "q6.d.2.le_auth"
-    text: "使用该深度伪造生成系统是否获得法律授权用于侦查、预防、调查或起诉刑事犯罪？"
+    text: "该深度伪造生成系统是否获得法律授权，用于侦查、预防、调查或起诉刑事犯罪？"
     ref: "第50(4)条：在法律授权用于侦查、预防、调查或起诉刑事犯罪的情况下，此义务不适用。"
     type: "single_choice"
     dependency: "q6.gateway_deployer contains 2"
@@ -164,7 +164,7 @@ questions:
         value: False
 
   - id: "q6.d.2.artistic"
-    text: "该深度伪造内容是否构成明显的艺术、创意、讽刺、虚构或类似作品的一部分？"
+    text: "该深度伪造内容是否属于明显的艺术、创意、讽刺、虚构或同类作品？"
     ref: "第50(4)条：如果内容构成明显的艺术……作品的一部分……本款规定的透明度义务仅限于……披露，且不得妨碍对作品的展示或欣赏……"
     type: "single_choice"
     dependency: "q6.gateway_deployer contains 2 and q6.d.2.le_auth == False"
@@ -261,10 +261,10 @@ variables:
         value: "作为生成深度伪造的人工智能系统的部署者，透明度义务适用（第50(4)条）。"
 
       - condition: "Role == 'deployer' and q6.gateway_deployer contains 2 and q6.d.2.le_auth == False and q6.d.2.artistic == True"
-        value: "作为生成深度伪造的人工智能系统的部署者，透明度义务适用（第50(4)条）。虽然在艺术背景下，此透明度义务仅限于以不妨碍作品展示或欣赏的适当方式披露深度伪造的存在。"
+        value: "作为生成深度伪造的人工智能系统的部署者，透明度义务适用（第50(4)条）。虽然在艺术背景下，此透明度义务能够以不妨碍作品展示或欣赏的适当方式披露深度伪造的存在。"
 
       - condition: "Role == 'deployer' and q6.gateway_deployer contains 3 and q6.d.3.le_auth == False and q6.d.3.human_review == False"
-        value: "作为在无人承担编辑责任的情况下发布关于公共利益事项的人工智能生成文本的部署者，透明度义务适用（第50(4)条）。"
+        value: "您作为部署者，发布人工智能生成的公共利益事项文本且无主体承担编辑责任，根据第 50 (4) 条，需履行透明度义务。"
 
 router:
   - condition: "True"
