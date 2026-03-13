@@ -45,7 +45,6 @@ variables:
       # Scenario A: Scientific R&D (Art 2(6)) -> Excluded
       - condition: "q1.1 == 1"
         value: True
-      # Scenario B: Pre-market R&D (Art 2(8)) AND NOT Real-world testing (Art 2(9)) -> Excluded
       - condition: "q1.1 == 2 and q1.2 == False"
         value: True
       # Scenario C: Real-world testing (2 + True) OR None (0) -> In Scope
