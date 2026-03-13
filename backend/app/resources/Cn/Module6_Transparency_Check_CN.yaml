@@ -248,23 +248,23 @@ variables:
     rules:
       # Provider Reasons
       - condition: "Role == 'provider' and q6.gateway_provider contains 1 and q6.p.1.obvious == False and (q6.p.1.le_auth == False or q6.p.1.public_report == True)"
-        value: "作为旨在与自然人直接交互的人工智能系统的提供者（在不明显的情况下），透明度义务适用（第50(1)条）。"
+        value: "系统属于面向自然人直接交互的人工智能系统，且AI使用身份并非显而易见，同时不属于可豁免的授权执法使用情形。"
 
       - condition: "Role == 'provider' and q6.gateway_provider contains 2 and q6.p.2.assistive == False and q6.p.2.le_auth == False"
-        value: "作为生成合成内容的人工智能系统的提供者，透明度义务适用（第50(2)条）。"
+        value: "系统属于生成合成音频、图像、视频或文本内容的人工智能系统，且不属于辅助编辑功能及授权执法使用的豁免范围。"
 
       # Deployer Reasons
       - condition: "Role == 'deployer' and q6.gateway_deployer contains 1 and q6.d.1.le_perm == False"
-        value: "作为情绪识别系统或生物特征分类系统的部署者，透明度义务适用（第50(3)条）。"
+        value: "所部署系统属于情绪识别或生物特征分类类人工智能系统，且不属于可豁免的授权执法使用情形。"
 
       - condition: "Role == 'deployer' and q6.gateway_deployer contains 2 and q6.d.2.le_auth == False and q6.d.2.artistic == False"
-        value: "作为生成深度伪造的人工智能系统的部署者，透明度义务适用（第50(4)条）。"
+        value: "所部署系统用于生成深度伪造类内容，且不属于授权执法使用及艺术创作相关豁免情形。"
 
       - condition: "Role == 'deployer' and q6.gateway_deployer contains 2 and q6.d.2.le_auth == False and q6.d.2.artistic == True"
-        value: "作为生成深度伪造的人工智能系统的部署者，透明度义务适用（第50(4)条）。虽然在艺术背景下，此透明度义务能够以不妨碍作品展示或欣赏的适当方式披露深度伪造的存在。"
+        value: "所部署系统用于生成深度伪造类内容，虽然在艺术背景下，但根据人工智能法案第50(4)条依然需以不妨碍作品展示或欣赏的适当方式披露深度伪造的存在。"
 
       - condition: "Role == 'deployer' and q6.gateway_deployer contains 3 and q6.d.3.le_auth == False and q6.d.3.human_review == False"
-        value: "您作为部署者，发布人工智能生成的公共利益事项文本且无主体承担编辑责任，根据第 50 (4) 条，需履行透明度义务。"
+        value: "所部署系统用于对外发布涉及公共利益事项的人工智能生成文本，且未设置人工审查机制及编辑责任主体，同时不属于可豁免的授权执法使用情形。"
 
 router:
   - condition: "True"
