@@ -165,7 +165,7 @@ variables:
 
       - condition: "Type == 'Non-regulated products'"
         value: |
-          The software meet the conditions of Exclusion or does not meet the legal definition of an 'AI System' or a 'General-Purpose AI Model'. Therefore, it falls outside the regulatory scope. You should strictly monitor the software's development to ensure it does not evolve into an AI system (e.g., by adding varying levels of autonomy or inference capabilities).
+          The software meet the conditions of Exclusion or does not meet the legal definition of an 'AI System' or a 'General-Purpose AI Model'. Therefore, it falls outside the regulatory scope. You should strictly monitor the software's development to ensure it does not evolve into an AI system.
           For more details, please refer to AI Act Article 3.
 
       # ------------------------------------------------------------------------

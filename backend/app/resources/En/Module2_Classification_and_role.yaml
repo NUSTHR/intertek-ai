@@ -10,15 +10,15 @@ questions:
     type: "single_choice"
     options:
       - label: "General-Purpose AI Model (GPAI)"
-        cite: "AI Act Art 3(63): ‘general-purpose AI model’ means an AI model... that displays significant generality and is capable of competently performing a wide range of distinct tasks... and that can be integrated into a variety of downstream systems or applications." [cite: 141]
+        cite: "AI Act Art 3(63): ‘general-purpose AI model’ means an AI model... that displays significant generality and is capable of competently performing a wide range of distinct tasks... and that can be integrated into a variety of downstream systems or applications." 
         description: "Select this if the product is a versatile base model that can do many different tasks and be built into other software."
         value: 1
       - label: "AI System"
-        cite: "AI Act Art 3(1): ‘AI system’ means a machine-based system that... infers, from the input it receives, how to generate outputs such as predictions, content, recommendations, or decisions that can influence physical or virtual environments." [cite: 65]
-        description: "Select this if the product is a software application that uses data to create specific results like content or decisions."
+        cite: "AI Act Art 3(1): ‘AI system’ means a machine-based system that... infers, from the input it receives, how to generate outputs such as predictions, content, recommendations, or decisions that can influence physical or virtual environments." 
+        description: "Select this if the product is a complete software system that uses data to create specific results like content or decisions."
         value: 2
       - label: "Non-AI Software / Non-General-Purpose AI Model"
-        description: "Select this option if your software operates on fixed, deterministic logic without learning or inferring from data, or if it is a model (not a complete software system) lacking the capability to perform a wide range of distinct tasks."
+        description: "Select this option if your software operates on fixed, deterministic logic without learning or inferring from data, or if it is a AI model (not a complete software system) lacking the capability to perform a wide range of distinct tasks."
         value: 3
       - label: "Not Sure"
         description: "Select this if you need more help classifying the technology."
@@ -30,15 +30,15 @@ questions:
     dependency: "q2.1 == 4"
     options:
       - label: "An AI model intended to be integrated into other systems"
-        cite: "AI Act Art 3(63): A general-purpose AI model is one that displays significant generality and is capable of performing a wide range of tasks and being integrated into downstream systems." [cite: 141]
+        cite: "AI Act Art 3(63): A general-purpose AI model is one that displays significant generality and is capable of performing a wide range of tasks and being integrated into downstream systems." 
         description: "Select this if the project is a model that is a core component meant to be used inside other software."
         value: 1
       - label: "A complete AI system designed for a specific purpose or task"
-        cite: "AI Act Art 3(1): An AI system is a machine-based system designed to operate with autonomy to generate specific outputs based on its objectives." [cite: 65]
+        cite: "AI Act Art 3(1): An AI system is a machine-based system designed to operate with autonomy to generate specific outputs based on its objectives." 
         description: "Select this if the product is a complete tool designed for a specific purpose."
         value: 2
       - label: "None of the above"
-        cite: "AI Act Art 3(1): Systems that do not use machine-based inference to produce outputs like predictions or content are not classified as AI systems." [cite: 65]
+        cite: "AI Act Art 3(1): Systems that do not use machine-based inference to produce outputs like predictions or content are not classified as AI systems." 
         description: "Select this if the product is not neither a completed AI system nor an AI model."
         value: 0
 
@@ -49,11 +49,11 @@ questions:
     dependency: "q2.1 == 4 and q2.1a == 1"
     options:
       - label: "Yes"
-        cite: "AI Act Art 3(63): General-purpose AI models are characterized by their significant generality and ability to perform a wide range of distinct tasks." [cite: 141]
+        cite: "AI Act Art 3(63): General-purpose AI models are characterized by their significant generality and ability to perform a wide range of distinct tasks." 
         description: "Select this if the model is a 'jack-of-all-trades' that can handle varied tasks like writing, coding, or identifying images."
         value: True
       - label: "No"
-        cite: "AI Act Art 3(63): If a model is not capable of performing a wide range of tasks or lacks significant generality, it does not meet the criteria for a general-purpose AI model." [cite: 141]
+        cite: "AI Act Art 3(63): If a model is not capable of performing a wide range of tasks or lacks significant generality, it does not meet the criteria for a general-purpose AI model." 
         description: "Select this if the model is built for one specific, narrow purpose."
         value: False
 
