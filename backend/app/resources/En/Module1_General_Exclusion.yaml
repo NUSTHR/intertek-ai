@@ -18,7 +18,7 @@ questions:
         description: "Select this if you are still building or testing and have not yet released the system for use or sale."
         value: 2
       - label: "It is for commercial or operational use."
-        description: "Select this if your AI is intended for business, public service, or is already available to users."
+        description: "Select this if your AI is intended for business, public service, or is already available to public users."
         value: 0
 
   - id: "q1.2"

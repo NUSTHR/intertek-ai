@@ -18,7 +18,7 @@ questions:
         description: "如果您仍在构建或测试，尚未发布该系统供使用或销售，请选择此项。"
         value: 2
       - label: "用于商业或运营用途。"
-        description: "如果您的 AI 旨在用于商业、公共服务，或已经可供用户使用，请选择此项。"
+        description: "如果您的 AI 旨在用于商业、公共服务，或提供对外服务，请选择此项。"
         value: 0
 
   - id: "q1.2"
