@@ -386,7 +386,7 @@ questions:
         value: False
 
   - id: "q4.8_c"
-    text: "Is this 'real-time' remote biometric identification system's use strictly necessary for: (i) searching for victims/missing persons, (ii) preventing imminent threat to life/terrorism, or (iii) identifying suspects of serious crimes (AI Act AI Act Annex II)  ?"
+    text: "Is the use of this ‘real-time’ remote biometric identification system strictly necessary for the following objectives and has it obtained the required judicial authorization: (i) searching for victims or missing persons, (ii) preventing imminent threats to life or terrorism, or (iii) identifying suspects of serious crimes (Annex II of the Act)?"
     ref: "AI Act Art 5(1)(h)(i)-(iii): (i) the targeted search for specific victims of abduction, trafficking in human beings or sexual exploitation of human beings, as well as the search for missing persons; (ii) the prevention of a specific, substantial and imminent threat to the life or physical safety of natural persons or a genuine and present or genuine and foreseeable threat of a terrorist attack; (iii) the localisation or identification of a person suspected of having committed a criminal offence referred to in AI Act Annex II..."
     type: "single_choice"
     dependency: "q4.8_b == True"

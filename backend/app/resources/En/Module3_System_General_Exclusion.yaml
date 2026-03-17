@@ -56,11 +56,11 @@ variables:
     initial_value: ""
     rules:
       - condition: "q3a.1 == 1"
-        value: "The AI system is used exclusively for military, defense, or national security purposes, placing it entirely outside the scope of this Regulation as per AI Act Article 2(3)."
+        value: "The AI system is used exclusively for military, defense, or national security purposes, placing it outside the scope of this Regulation as per AI Act Article 2(3)."
       - condition: "q3a.1 == 2"
         value: "The system is operated by third-country public authorities or international organizations under a law enforcement cooperation agreement with the Union, qualifying for the exclusion under AI Act Article 2(4)."
       - condition: "q3a.2 == True"
-        value: "As the user's activities relating to the system are confined to a purely personal non-professional activity, the user is exempt from the obligations of a deployer under Article 2(10) of the AI Act."
+        value: "As the user's activities relating to the system are confined to a purely personal non-professional activity, the user is exempt from the obligations of a deployer under AI Act Article 2(10)."
       - condition: "else"
         value: "N/A"
 

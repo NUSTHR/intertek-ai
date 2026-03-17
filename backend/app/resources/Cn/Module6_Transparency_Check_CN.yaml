@@ -171,7 +171,7 @@ questions:
     options:
       - label: "是"
         cite: "第50(4)条：如果内容构成明显的艺术、创意、讽刺、虚构或类似作品或节目的一部分，本款规定的透明度义务仅限于披露……"
-        description: "如果是电影、艺术或讽刺作品，且标签不应打断观看，请选择此项。"
+        description: "如果是电影、艺术或讽刺作品，且水印标识不应明显影响观看，请选择此项。"
         value: True
       - label: "否"
         cite: "第50(4)条：（适用标准披露义务）。"
@@ -187,7 +187,7 @@ questions:
     options:
       - label: "是"
         cite: "第50(4)条：在法律授权用于侦查、预防、调查或起诉刑事犯罪的情况下，此义务不适用……"
-        description: "如果文本用于合法的打击犯罪任务，请选择此项。"
+        description: "如果生成文本用于合法的打击犯罪任务，请选择此项。"
         value: True
       - label: "否"
         cite: "第50(4)条：（适用一般规则）。"
@@ -261,7 +261,7 @@ variables:
         value: "所部署系统用于生成深度伪造类内容，且不属于授权执法使用及艺术创作相关豁免情形。"
 
       - condition: "Role == 'deployer' and q6.gateway_deployer contains 2 and q6.d.2.le_auth == False and q6.d.2.artistic == True"
-        value: "所部署系统用于生成深度伪造类内容，虽然在艺术背景下，但根据人工智能法案第50(4)条依然需以不妨碍作品展示或欣赏的适当方式披露深度伪造的存在。"
+        value: "所部署系统用于生成深度伪造类内容，尽管在艺术背景下，根据《人工智能法案》第50(4)条仍需以不妨碍作品展示或欣赏的适当方式披露深度伪造的存在。"
 
       - condition: "Role == 'deployer' and q6.gateway_deployer contains 3 and q6.d.3.le_auth == False and q6.d.3.human_review == False"
         value: "所部署系统用于对外发布涉及公共利益事项的人工智能生成文本，且未设置人工审查机制及编辑责任主体，同时不属于可豁免的授权执法使用情形。"

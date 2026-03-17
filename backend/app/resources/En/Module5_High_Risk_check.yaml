@@ -488,7 +488,7 @@ questions:
         value: 0
 
   - id: "q5.derogation"
-    text: "Does the AI system fulfill any of these operational conditions?"
+    text: "Provided that the AI system does not pose a significant risk of harm to the health, safety or fundamental rights of natural persons, does the system fulfill any of the following specific operational conditions?"
     cite: "AI Act Art 6(3), second subparagraph: specific conditions under which an AI Act Annex III system is not high-risk. "
     ref: "AI Act Art 6(3): ...an AI system referred to in AI Act Annex III shall not be considered to be high-risk if it does not pose a significant risk of harm... where any of the following conditions is fulfilled: (a) it is intended to perform a narrow procedural task; (b) it is intended to improve the result of a previously completed human activity; (c) it is intended to detect decision-making patterns or deviations... and is not meant to replace or influence the previously completed human assessment... (d) it is intended to perform a preparatory task..."
     description: "Meeting these specific conditions might mean your AI is not High-Risk, even if it is in a sensitive area. "

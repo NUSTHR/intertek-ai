@@ -1,6 +1,6 @@
 module_id: 5 #"05_high_risk_check"
 title: "高风险人工智能系统检查"
-description: "使用严格的法律定义和自动化逻辑，确定系统根据人工智能法案第6条路径（人工智能法案附件I或人工智能法案附件III）是否属于高风险。"
+description: "使用严格的法律定义和自动化逻辑，确定系统根据《人工智能法案》第6条路径（人工智能法案附件I或人工智能法案附件III）是否属于高风险。"
 
 questions:
   # =========================================================================
@@ -191,13 +191,13 @@ questions:
 
   - id: "q5.3rd_party"
     text: "根据行业监管规定，该产品是否需要进行第三方合格评定？"
-    ref: "第6(1)(b)条：其安全组件为人工智能系统的产品，或作为产品的人工智能系统本身，必须根据人工智能法案人工智能法案附件I所列的欧盟协调立法进行第三方符合性评估，以便将该产品投放市场或投入使用。"
+    ref: "第6(1)(b)条：其安全组件为人工智能系统的产品，或作为产品的人工智能系统本身，必须根据《人工智能法案》附件I所列的欧盟协调立法进行第三方符合性评估，以便将该产品投放市场或投入使用。"
     description: "适用法律是否强制要求由公告机构（Notified Body）进行外部评估？"
     type: "single_choice"
     dependency: "(q5.spec_a and 0 not in q5.spec_a) or (q5.spec_b and 0 not in q5.spec_b) or (q5.spec_c and 0 not in q5.spec_c) or (q5.spec_d and 0 not in q5.spec_d)"
     options:
       - label: "是"
-        cite: "第6(1)(b)条：该产品...必须根据人工智能法案人工智能法案附件I所列的欧盟协调立法进行第三方符合性评估。"
+        cite: "第6(1)(b)条：该产品...必须根据《人工智能法案》附件I所列的欧盟协调立法进行第三方符合性评估。"
         description: "如果法律规定外部专家（如认证机构）必须在您销售产品前对其进行检查，请选择此项。"
         value: 1
       - label: "否"
@@ -310,9 +310,9 @@ questions:
         cite: "人工智能法案附件III，第3(a)点：旨在用于决定进入或录取或将自然人分配至...的人工智能系统。"
         description: "如果AI决定哪些学生可以入学或分班，请选择此项。"
         value: 1
-      - label: "评估学习成果，包括可能用于被分配到特定教育水平的人员"
+      - label: "评估学习成果，包括可能决定人员是否被分配到特定的教育水平"
         cite: "人工智能法案附件III，第3(b)点：旨在用于评估学习成果的人工智能系统。"
-        description: "如果AI为学生评分或评判其学业进步和技能，请选择此项。"
+        description: "如果AI为学生评分或评判其学业进步情况和技能掌握程度，请选择此项。"
         value: 2
       - label: "评估适当的教育水平或指导个人的学习过程"
         cite: "人工智能法案附件III，第3(b) & (c)点：旨在用于...指导学习过程...或评估适当教育水平的人工智能系统。"
@@ -488,7 +488,7 @@ questions:
         value: 0
 
   - id: "q5.derogation"
-    text: "该人工智能系统是否满足以下任何操作条件？"
+    text: "在未对自然人的健康、安全或基本权利构成重大伤害风险的前提下，该人工智能系统是否满足以下任一特定操作条件？"
     cite: "第6(3)条第二款：人工智能法案附件III系统不属于高风险的具体条件。"
     ref: "AI Act Art 6(3): ...an AI system referred to in AI Act Annex III shall not be considered to be high-risk if it does not pose a significant risk of harm... where any of the following conditions is fulfilled: (a) it is intended to perform a narrow procedural task; (b) it is intended to improve the result of a previously completed human activity; (c) it is intended to detect decision-making patterns or deviations... and is not meant to replace or influence the previously completed human assessment... (d) it is intended to perform a preparatory task..."
     description: "满足这些特定条件可能意味着您的AI不是高风险，即使它处于敏感领域。"
@@ -507,7 +507,7 @@ questions:
         cite: "第6(3)条第二款(c)：AI系统旨在检测决策模式或偏差...未经适当的人工审查。"
         description: "如果AI仅标记异常决策以供审查，但不尝试改变人们的决策方式，请选择此项。"
         value: 3
-      - label: "旨在执行人工智能法案附件III所列用例评估的准备任务"
+      - label: "旨在执行一项预备性任务，为人工智能法案附件三所列用例相关评估的目的提供支持。"
         cite: "第6(3)条第二款(d)：AI系统旨在执行评估的准备任务。"
         description: "如果AI仅准备数据（如扫描文档）供人做出实际决定，请选择此项。"
         value: 4
@@ -547,13 +547,13 @@ variables:
     initial_value: ""
     rules:
       - condition: "q5.3rd_party == 1"
-        value: "该AI系统是法律（人工智能法案附件I）要求进行外部安全审计的安全组件或独立产品，根据人工智能法案第6(1)条属于高风险。"
+        value: "该AI系统是法律（人工智能法案附件I）要求进行外部安全审计的安全组件或独立产品，根据《人工智能法案》第6(1)条属于高风险。"
       - condition: "Annex_III_Hit == True and (q5.profiling == 1 or (q5.spec_le and 5 in q5.spec_le))"
-        value: "该系统用于敏感的公共或私营部门（人工智能法案附件III）并执行个人特征分析，根据人工智能法案第6(3)条自动归类为高风险。"
+        value: "该系统用于敏感的公共或私营部门（人工智能法案附件III）并执行个人特征分析，根据《人工智能法案》第6(3)条自动归类为高风险。"
       - condition: "Annex_III_Hit == True and q5.profiling == 0 and (0 in q5.derogation)"
-        value: "该系统在敏感领域（人工智能法案附件III）运行，并在决策中发挥重要作用，不符合'次要任务'豁免条件，根据人工智能法案第6(2)条属于高风险。"
+        value: "该系统在敏感领域（人工智能法案附件III）运行，并在决策中发挥重要作用，不符合'次要任务'豁免条件，根据《人工智能法案》第6(2)条属于高风险。"
       - condition: "Annex_III_Hit == True and q5.profiling == 0 and (0 not in q5.derogation)"
-        value: "该系统免于高风险状态，因为根据人工智能法案第6(3)条，其功能仅限于狭窄的、准备性的或纯粹的过程性任务，不会造成重大伤害风险。"
+        value: "该系统免于高风险状态，因为根据《人工智能法案》第6(3)条，其功能仅限于狭窄的、准备性的或纯粹的过程性任务，不会造成重大伤害风险。"
       - condition: "else"
         value: "不适用"
 

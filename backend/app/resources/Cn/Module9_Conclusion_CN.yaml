@@ -1,6 +1,6 @@
 module_id: 9 #"09_compliance_conclusions"
 title: "最终合规判定"
-description: "根据人工智能法案第 2024/1689 号条例（欧盟），将参数状态映射到最终法律结论和综合义务视图。"
+description: "根据《人工智能法案》第 2024/1689 号条例（欧盟），将参数状态映射到最终法律结论和综合义务视图。"
 
 # ==============================================================================
 # VARIABLES SECTION
@@ -132,9 +132,9 @@ variables:
       - condition: "Risk_level == 'Systemic Risk GPAI'"
         value: "具有系统性风险的通用人工智能模型"
       - condition: "Risk_level == 'Standard GPAI'"
-        value: "普通通用人工智能模型"
+        value: "一般通用人工智能模型"
       - condition: "Risk_level == 'Standard GPAI (Open Source)'"
-        value: "普通通用人工智能模型（开源版本）"
+        value: "一般通用人工智能模型（开源版本）"
       - condition: "Risk_level == 'High Risk with Additional Transparency Obligations'"
         value: "高风险（含额外透明度义务）"
       - condition: "Risk_level == 'High Risk'"
@@ -160,7 +160,7 @@ variables:
       - condition: "System_excluded == True"
         value: "该系统属于法规明确豁免的对象。原因为：{{Exclusion_Reason}}" 
       - condition: "Unacceptable_risk == True"
-        value: "该人工智能实践被归类为 “不可接受风险” 类，属于《人工智能法案》依法严格禁止的行为。禁止原因为： {{Prohibited_reason}}" 
+        value: "该人工智能实践被归类为 “不可接受风险” 类，属于《人工智能法案》严格禁止的行为。禁止原因为： {{Prohibited_reason}}" 
       - condition: "AI_type == 3"
         value: "该产品当前不满足《人工智能法案》第 3 条中‘人工智能系统’或‘通用人工智能模型’的界定条件，故不适用本法案的专项义务。对于常规数字化产品，请您确保其在投放市场时遵守现行的数据保护、产品安全等其他相关法定要求，并建议您密切关注产品后续迭代中的技术合规动态。"
 
@@ -173,7 +173,7 @@ variables:
       - condition: "AI_type == 1 and Systemic_risk == True"
         value: "此模型被归类为具有系统性风险的通用人工智能模型。原因为：{{Systemic_reason}}" 
       - condition: "AI_type == 1 and Systemic_risk == False"
-        value: "此模型被归类为普通通用人工智能模型。它未达到系统性风险的阈值，因为：{{Systemic_reason}}"
+        value: "此模型被归类为一般通用人工智能模型。它未达到系统性风险的阈值，因为：{{Systemic_reason}}"
 
       # 第 4 组：人工智能系统市场投放（提取自模块 5 和 6）
       - condition: "AI_type == 2 and High_risk == True and Transparency_obligation == True"
@@ -185,7 +185,7 @@ variables:
       - condition: "AI_type == 2 and High_risk == False and Transparency_obligation == False and Open_source == False"
         value: "本系统被归类为“最小风险”，因其未触及本法规所定义的不可接受风险、高风险或透明度义务的相关条件。"
       - condition: "AI_type == 2 and High_risk == False and Transparency_obligation == False and Open_source == True"
-        value: "本系统被归类为“最小风险（开源版本）”。因此系统依据免费及开源许可发布，且因未触及“禁止的人工智能实践”、“高风险人工智能系统”或“受透明度义务约束的系统”之认定标准，故不属于本法规的适用范围。"
+        value: "本系统被归类为“最小风险（开源版本）”。因系统依据免费及开源许可发布，且未触及“禁止的人工智能实践”、“高风险人工智能系统”或“受透明度义务约束的系统”的认定标准，故不属于本法规的适用范围。"
       # 回退选项
       - condition: "else"
         value: "无法根据提供的输入确定具体的风险分类原因。"
@@ -195,17 +195,17 @@ variables:
     initial_value: "No regulated role identified based on current inputs."
     rules:
       - condition: "Role == 'provider'"
-        value: "根据人工智能法案第 3(3) 条，您是开发 AI 系统或通用 AI 模型，或让人开发并以您的名义或商标将其投放市场或投入使用的实体。"
+        value: "根据《人工智能法案》第 3(3) 条，您是开发 AI 系统或通用 AI 模型，或让人开发并以您的名义或商标将其投放市场或投入使用的实体。"
       - condition: "Role == 'deployer'"
-        value: "根据人工智能法案第 3(4) 条，您是在您的权限下将 AI 系统用于职业目的（不包括个人非职业活动）的实体。"
+        value: "根据《人工智能法案》第 3(4) 条，您是在您的权限下将 AI 系统用于职业目的（不包括个人非职业活动）的实体。"
       - condition: "Role == 'importer'"
-        value: "根据人工智能法案第 3(6) 条，您是位于欧盟境内，将冠以第三国设立的自然人或法人名称或商标的 AI 系统投放市场的实体。"
+        value: "根据《人工智能法案》第 3 (6) 条，您是位于欧盟境内，将由第三国自然人或法人以其名称或商标运营的人工智能系统投放欧盟市场的实体。"
       - condition: "Role == 'distributor'"
-        value: "根据人工智能法案第 3(7) 条，您是供应链中除提供者或进口商之外，使 AI 系统在欧盟市场上可获得的实体。"
+        value: "根据《人工智能法案》第 3(7) 条，您是供应链中除提供者或进口商之外，使 AI 系统在欧盟市场上可获得的实体。"
       - condition: "Role == 'authorized_representative'"
-        value: "根据人工智能法案第 3(5) 条，您是位于欧盟境内，已收到并接受提供者的书面授权，代表其履行特定义务和程序的实体。"
+        value: "根据《人工智能法案》第 3(5) 条，您是位于欧盟境内，已收到并接受提供者的书面授权，代表其履行特定义务和程序的实体。"
       - condition: "Role == 'product_manufacturer'"
-        value: "根据人工智能法案第 2(1)(e) 条，您是将 AI 系统与您的产品一起并以您的名义或商标投放市场或投入使用的制造商。"
+        value: "根据《人工智能法案》第 2(1)(e) 条，您是将 AI 系统与您的产品一起并以您的名义或商标投放市场或投入使用的制造商。"
       - condition: "Role == 'Undetermined'"
         value: "根据提供的输入，实体的法律角色尚未定义"
 
@@ -214,9 +214,9 @@ variables:
     initial_value: "Product type undetermined."
     rules:
       - condition: "Type == 'AI System'"
-        value: "根据人工智能法案第 3(1) 条，这是一个基于机器的系统，可按不同自主程度运行，通过对输入信息推断，生成预测、内容、推荐或决策类输出，并对实际环境产生影响。"
+        value: "根据《人工智能法案》第 3(1) 条，这是一个基于机器的系统，可按不同自主程度运行，通过对输入信息推断，生成预测、内容、推荐或决策类输出，并对实际环境产生影响。"
       - condition: "Type == 'General-Purpose AI Model'"
-        value: "根据人工智能法案第 3(63) 条，这是一种显示出显著通用性、能够胜任广泛的独特任务，并可以集成到各种下游系统或应用中的 AI 模型。"
+        value: "根据《人工智能法案》第 3(63) 条，这是一种显示出显著通用性、能够胜任广泛的独特任务，并可以集成到各种下游系统或应用中的 AI 模型。"
       - condition: "Type == 'Non-regulated products'"
         value: "根据用户输入，该软件不符合法案第 3(1) 条下人工智能系统或第 3(63) 条下通用人工智能模型的定义"
       - condition: "else"
